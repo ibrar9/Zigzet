@@ -1,22 +1,22 @@
 import React from 'react';
-import { Heart, User, Truck, ShieldCheck, Mail, ArrowRight } from 'lucide-react';
+import { Heart, User, ShieldCheck } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
 export const Footer = () => {
-  const { setIsWishlistOpen, setViewMode, navigatePage } = useStore();
+  const { setIsWishlistOpen, navigatePage, setViewMode } = useStore();
 
   return (
     <footer className="main-footer">
       {/* Top Footer Links Grid */}
-      <div className="container" style={{ padding: '40px 20px 32px 20px', borderBottom: '1px solid #f1f5f9' }}>
+      <div className="container" style={{ padding: '36px 20px 28px 20px', borderBottom: '1px solid #f1f5f9' }}>
         <div className="footer-links-grid">
           {/* Brand Info */}
           <div className="footer-col brand-col">
             <h4 style={{ fontSize: '18px', fontWeight: '800', marginBottom: '8px' }}>ShopNest</h4>
-            <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: '1.6', marginBottom: '16px' }}>
+            <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: '1.6', marginBottom: '14px' }}>
               Your premium destination for curated electronics, modern apparel, and home living essentials with fast USA shipping.
             </p>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12.5px', color: '#10b981', fontWeight: '600' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#10b981', fontWeight: '600' }}>
               <ShieldCheck size={16} />
               <span>100% Encrypted & Safe Checkout</span>
             </div>
@@ -38,7 +38,7 @@ export const Footer = () => {
             <span className="footer-nav-link" onClick={() => navigatePage('contact')}>Help Center & FAQs</span>
             <span className="footer-nav-link" onClick={() => navigatePage('about')}>About ShopNest</span>
             <span className="footer-nav-link" onClick={() => setIsWishlistOpen(true)}>Saved Wishlist</span>
-            <span className="footer-nav-link" onClick={() => setViewMode('admin')}>Admin Portal</span>
+            <span className="footer-nav-link" onClick={() => navigatePage('contact')}>Contact Support</span>
           </div>
 
           {/* Newsletter Signup */}
@@ -79,8 +79,8 @@ export const Footer = () => {
         </div>
       </div>
 
-      {/* Bottom Bar matching original screenshot */}
-      <div className="container footer-container" style={{ paddingTop: '20px' }}>
+      {/* Bottom Bar matching exact reference image */}
+      <div className="container footer-container" style={{ paddingTop: '18px' }}>
         {/* Footer Left */}
         <div className="footer-left">
           <span 
@@ -93,7 +93,10 @@ export const Footer = () => {
           <span className="footer-divider">|</span>
           <span 
             className="footer-link" 
-            onClick={() => setViewMode('admin')}
+            onClick={() => {
+              window.location.hash = '#admin';
+              setViewMode('admin');
+            }}
           >
             <User size={15} />
             <span>My Account</span>

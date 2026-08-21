@@ -6,17 +6,22 @@ import {
   Settings, 
   Store, 
   ArrowLeft,
-  Sparkles,
-  ExternalLink 
+  LogOut 
 } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
+import { AdminLogin } from './AdminLogin';
 import { AdminDashboard } from './AdminDashboard';
 import { AdminProducts } from './AdminProducts';
 import { AdminOrders } from './AdminOrders';
 import { AdminSettings } from './AdminSettings';
 
 export const AdminPanel = () => {
-  const { adminTab, setAdminTab, setViewMode } = useStore();
+  const { adminTab, setAdminTab, setViewMode, isAdminAuthenticated, logoutAdmin } = useStore();
+
+  // If not authenticated, show secure Login Portal
+  if (!isAdminAuthenticated) {
+    return <AdminLogin />;
+  }
 
   const tabs = [
     { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={16} /> },
@@ -31,11 +36,11 @@ export const AdminPanel = () => {
       <header className="admin-header">
         <div className="admin-brand">
           <button 
-            onClick={() => setViewMode('store')}
+            onClick={() => { window.location.hash = ''; setViewMode('store'); }}
             style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', fontWeight: '600', color: '#4b5563', marginRight: '8px' }}
           >
             <ArrowLeft size={16} />
-            <span>Back to Store</span>
+            <span>Storefront</span>
           </button>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -58,24 +63,43 @@ export const AdminPanel = () => {
           ))}
         </div>
 
-        {/* View Storefront CTA */}
-        <div>
+        {/* Action buttons: View Store & Logout */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <button
-            onClick={() => setViewMode('store')}
+            onClick={() => { window.location.hash = ''; setViewMode('store'); }}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: '6px',
               backgroundColor: '#111827',
               color: '#ffffff',
-              padding: '8px 16px',
+              padding: '7px 14px',
               borderRadius: '9999px',
-              fontSize: '13px',
+              fontSize: '12.5px',
               fontWeight: '600'
             }}
           >
-            <Store size={15} />
-            <span>View Live Store</span>
+            <Store size={14} />
+            <span>View Store</span>
+          </button>
+
+          <button
+            onClick={logoutAdmin}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              backgroundColor: '#fee2e2',
+              color: '#ef4444',
+              padding: '7px 14px',
+              borderRadius: '9999px',
+              fontSize: '12.5px',
+              fontWeight: '600'
+            }}
+            title="Log Out of Admin Panel"
+          >
+            <LogOut size={14} />
+            <span>Logout</span>
           </button>
         </div>
       </header>

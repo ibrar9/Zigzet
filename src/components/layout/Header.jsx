@@ -8,13 +8,7 @@ import {
   ChevronDown, 
   Menu, 
   X,
-  Flame,
-  Truck,
-  Sparkles,
-  ArrowRight,
-  Grid,
-  Tag,
-  ShieldCheck
+  Flame
 } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 import { categories } from '../../data/categories';
@@ -28,11 +22,9 @@ export const Header = () => {
     setIsSearchOpen,
     searchQuery,
     setSearchQuery,
-    viewMode,
-    setViewMode,
     currentPage,
     navigatePage,
-    setActiveCategory
+    setViewMode
   } = useStore();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -188,7 +180,7 @@ export const Header = () => {
 
           {/* Flash Deals */}
           <span 
-            className={`nav-item deals-nav-highlight ${currentPage === 'deals' ? 'active' : ''}`}
+            className={`nav-item ${currentPage === 'deals' ? 'active' : ''}`}
             onClick={() => navigatePage('deals')}
             style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#ea580c' }}
           >
@@ -227,25 +219,15 @@ export const Header = () => {
             <Search size={16} color="#9ca3af" />
             <input 
               type="text" 
-              placeholder="Search products..." 
+              placeholder="Search for products..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </form>
         </div>
 
-        {/* Header Actions */}
+        {/* Header Actions matching exact screenshot */}
         <div className="header-actions">
-          {/* Admin Switcher Button */}
-          <button 
-            className={`admin-toggle-btn ${viewMode === 'admin' ? 'active-admin' : ''}`}
-            onClick={() => setViewMode(viewMode === 'store' ? 'admin' : 'store')}
-            title="Toggle Admin Management Portal"
-          >
-            <Sparkles size={14} />
-            <span>{viewMode === 'store' ? 'Admin' : 'Store'}</span>
-          </button>
-
           {/* Wishlist Button */}
           <button 
             className="action-icon-btn" 
@@ -262,9 +244,12 @@ export const Header = () => {
           {/* Account Profile Button */}
           <button 
             className="action-icon-btn" 
-            onClick={() => setViewMode('admin')}
-            aria-label="Account"
-            title="User Profile & Admin"
+            onClick={() => {
+              window.location.hash = '#admin';
+              setViewMode('admin');
+            }}
+            aria-label="Account Login"
+            title="My Account / Admin Login"
           >
             <User size={20} />
           </button>
@@ -317,9 +302,6 @@ export const Header = () => {
               </span>
               <span className="mobile-nav-link" onClick={() => { navigatePage('contact'); setMobileMenuOpen(false); }}>
                 💬 Contact & FAQs
-              </span>
-              <span className="mobile-nav-link" onClick={() => { setViewMode('admin'); setMobileMenuOpen(false); }}>
-                ⚡ Admin Suite
               </span>
             </div>
           </div>

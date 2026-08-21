@@ -17,7 +17,8 @@ const STORAGE_KEYS = {
   ORDERS: 'shopnest_orders_v1',
   CART: 'shopnest_cart_v1',
   WISHLIST: 'shopnest_wishlist_v1',
-  SETTINGS: 'shopnest_settings_v1'
+  SETTINGS: 'shopnest_settings_v1',
+  ADMIN_AUTH: 'shopnest_admin_auth_v1'
 };
 
 const defaultSettings = {
@@ -26,12 +27,23 @@ const defaultSettings = {
   currency: 'USD',
   currencySymbol: '$',
   storeName: 'ShopNest',
-  contactEmail: 'support@shopnest.com'
+  contactEmail: 'support@shopnest.com',
+  adminUsername: 'admin',
+  adminPassword: 'admin123'
 };
 
 export const StoreProvider = ({ children }) => {
   // Navigation & Page State
   const [currentPage, setCurrentPage] = useState('home'); // 'home' | 'shop' | 'categories' | 'deals' | 'track' | 'about' | 'contact'
+
+  // Admin Authentication State
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(() => {
+    try {
+      return sessionStorage.getItem(STORAGE_KEYS.ADMIN_AUTH) === 'true';
+    } catch {
+      return false;
+    }
+  });
 
   // Products state
   const [products, setProducts] = useState(() => {
@@ -84,7 +96,13 @@ export const StoreProvider = ({ children }) => {
   });
 
   // UI state
-  const [viewMode, setViewMode] = useState('store'); // 'store' | 'admin'
+  const [viewMode, setViewMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.location.hash === '#admin' || window.location.pathname === '/admin' ? 'admin' : 'store';
+    }
+    return 'store';
+  });
+
   const [adminTab, setAdminTab] = useState('dashboard'); // 'dashboard' | 'products' | 'orders' | 'settings'
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -94,6 +112,17 @@ export const StoreProvider = ({ children }) => {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState(null);
   const [toasts, setToasts] = useState([]);
+
+  // Listen to URL hash changes for #admin route
+  useEffect(() => {
+    const handleHashChange = () => {
+      if (window.location.hash === '#admin') {
+        setViewMode('admin');
+      }
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   // LocalStorage sync
   useEffect(() => {
@@ -115,6 +144,32 @@ export const StoreProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
   }, [settings]);
+
+  // Admin Auth functions
+  const loginAdmin = (inputUser, inputPass) => {
+    const validUser = settings.adminUsername || 'admin';
+    const validPass = settings.adminPassword || 'admin123';
+
+    if (inputUser.trim() === validUser && inputPass === validPass) {
+      setIsAdminAuthenticated(true);
+      try {
+        sessionStorage.setItem(STORAGE_KEYS.ADMIN_AUTH, 'true');
+      } catch {}
+      showToast('Admin Logged In', 'Welcome back, Administrator!');
+      return true;
+    }
+    return false;
+  };
+
+  const logoutAdmin = () => {
+    setIsAdminAuthenticated(false);
+    try {
+      sessionStorage.removeItem(STORAGE_KEYS.ADMIN_AUTH);
+    } catch {}
+    window.location.hash = '';
+    setViewMode('store');
+    showToast('Logged Out', 'Admin session terminated safely.', 'info');
+  };
 
   // Navigate helper with smooth scroll
   const navigatePage = (pageName, categoryFilter = null) => {
@@ -275,7 +330,7 @@ export const StoreProvider = ({ children }) => {
     setOrders((prev) => [newOrder, ...prev]);
     clearCart();
     setIsCheckoutOpen(false);
-    showToast('Order Placed Successfully! 🎉', `Order #${orderId} has been placed. Check Admin orders.`);
+    showToast('Order Placed Successfully! 🎉', `Order #${orderId} has been placed.`);
     return newOrder;
   };
 
@@ -307,6 +362,9 @@ export const StoreProvider = ({ children }) => {
         currentPage,
         setCurrentPage,
         navigatePage,
+        isAdminAuthenticated,
+        loginAdmin,
+        logoutAdmin,
         products,
         orders,
         cart,

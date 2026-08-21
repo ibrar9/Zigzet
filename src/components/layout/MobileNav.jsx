@@ -1,48 +1,50 @@
 import React from 'react';
-import { Home, Grid, Heart, ShoppingBag, UserCheck } from 'lucide-react';
+import { Home, ShoppingBag, Grid, Heart, Tag } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
 export const MobileNav = () => {
   const { 
-    viewMode, 
-    setViewMode, 
+    currentPage,
+    navigatePage,
     cartItemsCount, 
     wishlist, 
     setIsCartOpen, 
-    setIsWishlistOpen,
-    setActiveCategory 
+    setIsWishlistOpen
   } = useStore();
 
   return (
     <nav className="mobile-bottom-nav">
       <div className="mobile-nav-items">
         <button 
-          className={`mobile-nav-btn ${viewMode === 'store' ? 'active' : ''}`}
-          onClick={() => { setActiveCategory('all'); setViewMode('store'); }}
+          className={`mobile-nav-btn ${currentPage === 'home' ? 'active' : ''}`}
+          onClick={() => navigatePage('home')}
         >
           <Home size={20} />
           <span>Home</span>
         </button>
 
         <button 
-          className="mobile-nav-btn"
-          onClick={() => {
-            setViewMode('store');
-            const catElem = document.getElementById('shop-by-category');
-            if (catElem) catElem.scrollIntoView({ behavior: 'smooth' });
-          }}
+          className={`mobile-nav-btn ${currentPage === 'shop' ? 'active' : ''}`}
+          onClick={() => navigatePage('shop')}
+        >
+          <ShoppingBag size={20} />
+          <span>Shop</span>
+        </button>
+
+        <button 
+          className={`mobile-nav-btn ${currentPage === 'categories' ? 'active' : ''}`}
+          onClick={() => navigatePage('categories')}
         >
           <Grid size={20} />
           <span>Categories</span>
         </button>
 
         <button 
-          className="mobile-nav-btn"
-          onClick={() => setIsWishlistOpen(true)}
+          className={`mobile-nav-btn ${currentPage === 'deals' ? 'active' : ''}`}
+          onClick={() => navigatePage('deals')}
         >
-          <Heart size={20} />
-          {wishlist.length > 0 && <span className="action-badge">{wishlist.length}</span>}
-          <span>Wishlist</span>
+          <Tag size={20} />
+          <span>Deals</span>
         </button>
 
         <button 
@@ -50,16 +52,10 @@ export const MobileNav = () => {
           onClick={() => setIsCartOpen(true)}
         >
           <ShoppingBag size={20} />
-          <span className="action-badge">{cartItemsCount}</span>
-          <span>Cart</span>
-        </button>
-
-        <button 
-          className={`mobile-nav-btn ${viewMode === 'admin' ? 'active' : ''}`}
-          onClick={() => setViewMode(viewMode === 'admin' ? 'store' : 'admin')}
-        >
-          <UserCheck size={20} />
-          <span>Admin</span>
+          {cartItemsCount > 0 && (
+            <span className="action-badge">{cartItemsCount}</span>
+          )}
+          <span>Bag</span>
         </button>
       </div>
     </nav>
