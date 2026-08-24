@@ -26,8 +26,8 @@ const defaultSettings = {
   freeShippingThreshold: 50,
   currency: 'USD',
   currencySymbol: '$',
-  storeName: 'ShopNest',
-  contactEmail: 'support@shopnest.com',
+  storeName: 'Zigzet',
+  contactEmail: 'support@zigzet.com',
   adminUsername: 'admin',
   adminPassword: 'admin123'
 };

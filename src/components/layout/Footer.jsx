@@ -12,7 +12,7 @@ export const Footer = () => {
         <div className="footer-links-grid">
           {/* Brand Info */}
           <div className="footer-col brand-col">
-            <h4 style={{ fontSize: '18px', fontWeight: '800', marginBottom: '8px' }}>ShopNest</h4>
+            <h4 style={{ fontSize: '18px', fontWeight: '800', marginBottom: '8px' }}>Zigzet</h4>
             <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: '1.6', marginBottom: '14px' }}>
               Your premium destination for curated electronics, modern apparel, and home living essentials with fast USA shipping.
             </p>
@@ -36,7 +36,7 @@ export const Footer = () => {
           <div className="footer-col">
             <h5>Customer Support</h5>
             <span className="footer-nav-link" onClick={() => navigatePage('contact')}>Help Center & FAQs</span>
-            <span className="footer-nav-link" onClick={() => navigatePage('about')}>About ShopNest</span>
+            <span className="footer-nav-link" onClick={() => navigatePage('about')}>About Zigzet</span>
             <span className="footer-nav-link" onClick={() => setIsWishlistOpen(true)}>Saved Wishlist</span>
             <span className="footer-nav-link" onClick={() => navigatePage('contact')}>Contact Support</span>
           </div>
@@ -105,16 +105,16 @@ export const Footer = () => {
 
         {/* Footer Center */}
         <div className="footer-center">
-          <span>ShopNest © 2024. All rights reserved.</span>
+          <span>Zigzet © 2026. All rights reserved.</span>
         </div>
 
         {/* Footer Right */}
         <div className="footer-right">
-          <a href="#privacy" onClick={(e) => { e.preventDefault(); alert('ShopNest Privacy Policy: 100% secure personal data handling.'); }}>
+          <a href="#privacy" onClick={(e) => { e.preventDefault(); alert('Zigzet Privacy Policy: 100% secure personal data handling.'); }}>
             Privacy Policy
           </a>
           <span className="footer-divider">|</span>
-          <a href="#terms" onClick={(e) => { e.preventDefault(); alert('ShopNest Terms of Service: 30-day money-back guarantee.'); }}>
+          <a href="#terms" onClick={(e) => { e.preventDefault(); alert('Zigzet Terms of Service: 30-day money-back guarantee.'); }}>
             Terms of Service
           </a>
           <span className="footer-flag" title="United States">🇺🇸</span>

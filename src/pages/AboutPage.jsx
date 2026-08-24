@@ -35,7 +35,7 @@ export const AboutPage = () => {
         <div className="container">
           <div style={{ maxWidth: '640px', margin: '0 auto', textAlign: 'center' }}>
             <span style={{ fontSize: '12.5px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#6b7280' }}>
-              About ShopNest
+              About Zigzet
             </span>
             <h1 style={{ fontSize: '40px', fontWeight: '800', marginTop: '6px', marginBottom: '12px', letterSpacing: '-0.02em' }}>
               Empowering Everyday Life with Premium Essentials
@@ -58,7 +58,7 @@ export const AboutPage = () => {
               Shop Smarter. Live Better.
             </h2>
             <p style={{ color: '#4b5563', fontSize: '15px', lineHeight: '1.7', marginBottom: '16px' }}>
-              At ShopNest, we curate high-performance electronics, trendy fashion apparel, modern home living comfort, and wellness essentials so you never have to guess the quality.
+              At Zigzet, we curate high-performance electronics, trendy fashion apparel, modern home living comfort, and wellness essentials so you never have to guess the quality.
             </p>
             <p style={{ color: '#4b5563', fontSize: '15px', lineHeight: '1.7', marginBottom: '24px' }}>
               We partner directly with leading manufacturing hubs to bring you premium design and factory-direct savings, backed by full warranty coverage and rapid delivery across the United States.
@@ -72,7 +72,7 @@ export const AboutPage = () => {
           <div style={{ borderRadius: '24px', overflow: 'hidden', boxShadow: 'var(--shadow-lg)', border: '1px solid #e5e7eb' }}>
             <img 
               src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&auto=format&fit=crop&q=80" 
-              alt="ShopNest Team and Modern Fulfillment" 
+              alt="Zigzet Team and Modern Fulfillment" 
               style={{ width: '100%', height: '360px', objectFit: 'cover' }}
             />
           </div>
@@ -81,7 +81,7 @@ export const AboutPage = () => {
         {/* 4 Pillars Grid */}
         <div style={{ marginBottom: '64px' }}>
           <div style={{ textAlign: 'center', maxWidth: '500px', margin: '0 auto 36px auto' }}>
-            <h3 style={{ fontSize: '26px', fontWeight: '800' }}>Why Thousands Choose ShopNest</h3>
+            <h3 style={{ fontSize: '26px', fontWeight: '800' }}>Why Thousands Choose Zigzet</h3>
             <p style={{ color: '#6b7280', fontSize: '14px', marginTop: '6px' }}>Built on trust, speed, and uncompromising customer focus.</p>
           </div>
 

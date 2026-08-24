@@ -273,7 +273,7 @@ export const CheckoutModal = () => {
               Order Placed Successfully!
             </h3>
             <p style={{ color: '#6b7280', fontSize: '14px', marginBottom: '24px' }}>
-              Thank you for shopping with <strong>ShopNest</strong>. Your confirmation email is on the way.
+              Thank you for shopping with <strong>Zigzet</strong>. Your confirmation email is on the way.
             </p>
 
             <div style={{ background: '#f9fafb', padding: '18px 24px', borderRadius: '16px', border: '1px solid #e5e7eb', textAlign: 'left', maxWidth: '480px', margin: '0 auto 28px auto' }}>

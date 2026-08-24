@@ -41,7 +41,7 @@ export const AdminLogin = () => {
           <div className="admin-lock-icon">
             <ShieldCheck size={32} />
           </div>
-          <h2>ShopNest Admin Portal</h2>
+          <h2>Zigzet Admin Portal</h2>
           <p>Please enter your credentials to access store management</p>
         </div>
 

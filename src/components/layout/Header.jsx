@@ -8,7 +8,14 @@ import {
   ChevronDown, 
   Menu, 
   X,
-  Flame
+  Flame,
+  Home,
+  Grid,
+  Truck,
+  Sparkles,
+  MessageCircle,
+  ShieldCheck,
+  ChevronRight
 } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 import { categories } from '../../data/categories';
@@ -24,7 +31,8 @@ export const Header = () => {
     setSearchQuery,
     currentPage,
     navigatePage,
-    setViewMode
+    setViewMode,
+    settings
   } = useStore();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -38,16 +46,18 @@ export const Header = () => {
     }
   };
 
+  const storeName = settings?.storeName || 'Zigzet';
+
   return (
     <header className="main-header">
       <div className="container header-container">
         {/* Mobile Menu Button */}
         <button 
           className="mobile-menu-btn" 
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          onClick={() => setMobileMenuOpen(true)}
           aria-label="Toggle menu"
         >
-          {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+          <Menu size={22} />
         </button>
 
         {/* Brand Logo */}
@@ -56,8 +66,14 @@ export const Header = () => {
           onClick={() => navigatePage('home')}
           style={{ cursor: 'pointer' }}
         >
-          <ShoppingBag size={26} strokeWidth={2.3} />
-          <span>ShopNest</span>
+          <div className="brand-logo-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#7c3aed" />
+              <path d="M2 17L12 22L22 17" stroke="#7c3aed" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M2 12L12 17L22 12" stroke="#9333ea" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+          <span>{storeName}</span>
         </div>
 
         {/* Desktop Navigation Links */}
@@ -116,7 +132,7 @@ export const Header = () => {
                       🏀 Sports & Fitness
                     </span>
                     <span className="mega-link" onClick={() => { navigatePage('categories'); setShopDropdownOpen(false); }}>
-                      View All 8 Categories →
+                      View All Categories →
                     </span>
                   </div>
 
@@ -150,7 +166,7 @@ export const Header = () => {
 
             {catDropdownOpen && (
               <div 
-                className="simple-dropdown-menu"
+                className="simple-dropdown-menu" 
                 onClick={(e) => e.stopPropagation()}
                 onMouseEnter={() => setCatDropdownOpen(true)}
                 onMouseLeave={() => setCatDropdownOpen(false)}
@@ -226,7 +242,7 @@ export const Header = () => {
           </form>
         </div>
 
-        {/* Header Actions matching exact screenshot */}
+        {/* Header Actions */}
         <div className="header-actions">
           {/* Wishlist Button */}
           <button 
@@ -241,17 +257,17 @@ export const Header = () => {
             )}
           </button>
 
-          {/* Account Profile Button */}
+          {/* Account Profile / Admin Button */}
           <button 
-            className="action-icon-btn" 
+            className="action-icon-btn admin-portal-btn" 
             onClick={() => {
               window.location.hash = '#admin';
               setViewMode('admin');
             }}
-            aria-label="Account Login"
-            title="My Account / Admin Login"
+            aria-label="Admin Dashboard"
+            title="Admin Suite Portal"
           >
-            <User size={20} />
+            <ShieldCheck size={20} color="#7c3aed" />
           </button>
 
           {/* Shopping Cart Button */}
@@ -267,42 +283,145 @@ export const Header = () => {
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
+      {/* =========================================================================
+          Mobile Navigation Slide-over Drawer (Fixed overlay & native app drawer)
+          ========================================================================= */}
       {mobileMenuOpen && (
         <div className="mobile-menu-overlay" onClick={() => setMobileMenuOpen(false)}>
           <div className="mobile-menu-drawer" onClick={(e) => e.stopPropagation()}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', borderBottom: '1px solid #f1f5f9', paddingBottom: '14px' }}>
+            {/* Drawer Header */}
+            <div className="mobile-drawer-header">
               <div className="brand-logo">
-                <ShoppingBag size={22} />
-                <span>ShopNest</span>
+                <div className="brand-logo-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#7c3aed" />
+                    <path d="M2 17L12 22L22 17" stroke="#7c3aed" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M2 12L12 17L22 12" stroke="#9333ea" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+                <span>{storeName}</span>
               </div>
-              <button onClick={() => setMobileMenuOpen(false)}>
+              <button 
+                className="mobile-drawer-close-btn"
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="Close menu"
+              >
                 <X size={20} />
               </button>
             </div>
 
-            <div className="mobile-nav-links">
-              <span className="mobile-nav-link" onClick={() => { navigatePage('home'); setMobileMenuOpen(false); }}>
-                🏠 Home
-              </span>
-              <span className="mobile-nav-link" onClick={() => { navigatePage('shop', 'all'); setMobileMenuOpen(false); }}>
-                🛍️ All Products Catalog
-              </span>
-              <span className="mobile-nav-link" onClick={() => { navigatePage('categories'); setMobileMenuOpen(false); }}>
-                🗂️ Categories & Departments
-              </span>
-              <span className="mobile-nav-link" onClick={() => { navigatePage('deals'); setMobileMenuOpen(false); }}>
-                🔥 Flash Deals & Discounts
-              </span>
-              <span className="mobile-nav-link" onClick={() => { navigatePage('track'); setMobileMenuOpen(false); }}>
-                🚚 Track Order Status
-              </span>
-              <span className="mobile-nav-link" onClick={() => { navigatePage('about'); setMobileMenuOpen(false); }}>
-                ✨ About ShopNest
-              </span>
-              <span className="mobile-nav-link" onClick={() => { navigatePage('contact'); setMobileMenuOpen(false); }}>
-                💬 Contact & FAQs
-              </span>
+            {/* Quick Search Inside Drawer */}
+            <div className="mobile-drawer-search">
+              <form onSubmit={handleSearchSubmit} className="search-input-box" onClick={() => { setMobileMenuOpen(false); setIsSearchOpen(true); }}>
+                <Search size={16} color="#9ca3af" />
+                <input 
+                  type="text" 
+                  placeholder="Search products in Zigzet..." 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </form>
+            </div>
+
+            {/* Drawer Scrollable Links */}
+            <div className="mobile-drawer-body">
+              <div className="mobile-nav-section-title">Navigation</div>
+              <div className="mobile-nav-links">
+                <button 
+                  className={`mobile-drawer-nav-item ${currentPage === 'home' ? 'active' : ''}`}
+                  onClick={() => { navigatePage('home'); setMobileMenuOpen(false); }}
+                >
+                  <Home size={18} />
+                  <span>Home</span>
+                  <ChevronRight size={15} className="drawer-nav-arrow" />
+                </button>
+
+                <button 
+                  className={`mobile-drawer-nav-item ${currentPage === 'shop' ? 'active' : ''}`}
+                  onClick={() => { navigatePage('shop', 'all'); setMobileMenuOpen(false); }}
+                >
+                  <ShoppingBag size={18} />
+                  <span>All Products Catalog</span>
+                  <ChevronRight size={15} className="drawer-nav-arrow" />
+                </button>
+
+                <button 
+                  className={`mobile-drawer-nav-item ${currentPage === 'deals' ? 'active' : ''}`}
+                  onClick={() => { navigatePage('deals'); setMobileMenuOpen(false); }}
+                >
+                  <Flame size={18} color="#ea580c" />
+                  <span style={{ color: '#ea580c', fontWeight: '700' }}>Flash Deals & Offers</span>
+                  <span className="mobile-deals-pill">HOT</span>
+                </button>
+
+                <button 
+                  className={`mobile-drawer-nav-item ${currentPage === 'categories' ? 'active' : ''}`}
+                  onClick={() => { navigatePage('categories'); setMobileMenuOpen(false); }}
+                >
+                  <Grid size={18} />
+                  <span>Categories & Departments</span>
+                  <ChevronRight size={15} className="drawer-nav-arrow" />
+                </button>
+
+                <button 
+                  className={`mobile-drawer-nav-item ${currentPage === 'track' ? 'active' : ''}`}
+                  onClick={() => { navigatePage('track'); setMobileMenuOpen(false); }}
+                >
+                  <Truck size={18} />
+                  <span>Track Order</span>
+                  <ChevronRight size={15} className="drawer-nav-arrow" />
+                </button>
+
+                <button 
+                  className={`mobile-drawer-nav-item ${currentPage === 'about' ? 'active' : ''}`}
+                  onClick={() => { navigatePage('about'); setMobileMenuOpen(false); }}
+                >
+                  <Sparkles size={18} />
+                  <span>About {storeName}</span>
+                  <ChevronRight size={15} className="drawer-nav-arrow" />
+                </button>
+
+                <button 
+                  className={`mobile-drawer-nav-item ${currentPage === 'contact' ? 'active' : ''}`}
+                  onClick={() => { navigatePage('contact'); setMobileMenuOpen(false); }}
+                >
+                  <MessageCircle size={18} />
+                  <span>Help & Contact Support</span>
+                  <ChevronRight size={15} className="drawer-nav-arrow" />
+                </button>
+              </div>
+
+              {/* Categories Section */}
+              <div className="mobile-nav-section-title" style={{ marginTop: '18px' }}>Popular Categories</div>
+              <div className="mobile-category-chips">
+                {categories.slice(0, 6).map((cat) => (
+                  <button
+                    key={cat.id}
+                    className="mobile-cat-chip"
+                    onClick={() => {
+                      navigatePage('shop', cat.id);
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    <span>{cat.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Drawer Footer with Admin & Currency Switcher */}
+            <div className="mobile-drawer-footer">
+              <button 
+                className="mobile-admin-btn"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  window.location.hash = '#admin';
+                  setViewMode('admin');
+                }}
+              >
+                <ShieldCheck size={18} />
+                <span>Admin Dashboard Suite</span>
+              </button>
             </div>
           </div>
         </div>

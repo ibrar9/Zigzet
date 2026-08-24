@@ -49,7 +49,7 @@ export const TrackOrderPage = () => {
               Track Your Shipment
             </h1>
             <p style={{ color: '#4b5563', fontSize: '14.5px' }}>
-              Enter your ShopNest Order ID to view current transit progress, courier status, and estimated delivery.
+              Enter your Zigzet Order ID to view current transit progress, courier status, and estimated delivery.
             </p>
           </div>
         </div>

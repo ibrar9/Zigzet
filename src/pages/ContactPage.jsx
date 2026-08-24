@@ -144,7 +144,7 @@ export const ContactPage = () => {
                 </div>
                 <div>
                   <h5>Email Support</h5>
-                  <p>support@shopnest.com</p>
+                  <p>support@zigzet.com</p>
                   <span>Replies within 2 hours</span>
                 </div>
               </div>
@@ -155,7 +155,7 @@ export const ContactPage = () => {
                 </div>
                 <div>
                   <h5>Toll-Free Phone</h5>
-                  <p>1-800-SHOPNEST (746-7637)</p>
+                  <p>1-800-ZIGZET (944-938)</p>
                   <span>Mon-Fri: 8AM - 8PM EST</span>
                 </div>
               </div>
