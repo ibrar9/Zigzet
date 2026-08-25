@@ -124,14 +124,14 @@ export const ProductQuickView = () => {
               </span>
             </div>
 
-            {/* Price */}
+            {/* Price (AED) */}
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginBottom: '16px' }}>
               <span style={{ fontSize: '26px', fontWeight: '900', color: '#0f172a' }}>
-                ${Number(product.price).toFixed(2)}
+                AED {Number(product.price).toFixed(2)}
               </span>
               {product.originalPrice && (
                 <span style={{ fontSize: '16px', color: '#94a3b8', textDecoration: 'line-through' }}>
-                  ${Number(product.originalPrice).toFixed(2)}
+                  AED {Number(product.originalPrice).toFixed(2)}
                 </span>
               )}
             </div>

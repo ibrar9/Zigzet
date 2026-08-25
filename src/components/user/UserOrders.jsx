@@ -95,7 +95,7 @@ export const UserOrders = ({ myOrders }) => {
                     <p className="ud2-order-name2">{item?.name || 'Order'}</p>
                     <p className="ud2-order-sub2">Order #{order.id} &nbsp;·&nbsp; {order.date} &nbsp;·&nbsp; {order.items?.length || 1} item(s)</p>
                   </div>
-                  <div className="ud2-order-price2">${(order.total || 0).toFixed(2)}</div>
+                  <div className="ud2-order-price2">AED {(order.total || 0).toFixed(2)}</div>
                   <span className="ud2-status-badge" style={{ color: meta.color, background: meta.bg }}>{meta.label}</span>
                   <div className="ud2-order-card2-btns">
                     <button className="ud2-btn-track" onClick={e => { e.stopPropagation(); navigatePage('track'); }}>
@@ -134,7 +134,7 @@ export const UserOrders = ({ myOrders }) => {
                             <p>{it.name}</p>
                             <span>Qty: {it.quantity}</span>
                           </div>
-                          <p className="ud2-item-price">${((it.price || 0) * it.quantity).toFixed(2)}</p>
+                          <p className="ud2-item-price">AED {((it.price || 0) * it.quantity).toFixed(2)}</p>
                         </div>
                       ))}
                     </div>

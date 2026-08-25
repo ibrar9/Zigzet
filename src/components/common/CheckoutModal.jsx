@@ -245,7 +245,7 @@ export const CheckoutModal = () => {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <Tag size={15} color="#10b981" />
                     <span style={{ fontSize: '13px', fontWeight: '700', color: '#065f46' }}>
-                      Coupon Applied: <strong>{appliedCoupon.code}</strong> (-${couponDiscountAmount.toFixed(2)})
+                      Coupon Applied: <strong>{appliedCoupon.code}</strong> (-AED {couponDiscountAmount.toFixed(2)})
                     </span>
                   </div>
                   <button
@@ -290,29 +290,29 @@ export const CheckoutModal = () => {
               )}
             </div>
 
-            {/* Order Summary Recap */}
+            {/* Order Summary Recap (AED) */}
             <div style={{ background: '#f8fafc', padding: '16px 20px', borderRadius: '12px', marginBottom: '20px', border: '1px solid #e2e8f0' }}>
               <div className="price-summary-row">
                 <span>Items Subtotal</span>
-                <span>${cartSubtotal.toFixed(2)}</span>
+                <span>AED {cartSubtotal.toFixed(2)}</span>
               </div>
               {appliedCoupon && (
                 <div className="price-summary-row" style={{ color: '#10b981', fontWeight: '700' }}>
                   <span>Promo Discount ({appliedCoupon.code})</span>
-                  <span>-${couponDiscountAmount.toFixed(2)}</span>
+                  <span>-AED {couponDiscountAmount.toFixed(2)}</span>
                 </div>
               )}
               <div className="price-summary-row">
-                <span>USA Shipping</span>
-                <span>{isFreeShipping ? 'FREE' : `$${shippingFee.toFixed(2)}`}</span>
+                <span>UAE Delivery</span>
+                <span>{isFreeShipping ? 'FREE' : `AED ${shippingFee.toFixed(2)}`}</span>
               </div>
               <div className="price-summary-row">
-                <span>Estimated Tax (8%)</span>
-                <span>${estimatedTax.toFixed(2)}</span>
+                <span>Estimated VAT (5%)</span>
+                <span>AED {estimatedTax.toFixed(2)}</span>
               </div>
               <div className="price-summary-row total">
                 <span>Total Amount Due</span>
-                <span style={{ color: '#10b981' }}>${cartTotal.toFixed(2)}</span>
+                <span style={{ color: '#10b981' }}>AED {cartTotal.toFixed(2)}</span>
               </div>
             </div>
 
@@ -329,7 +329,7 @@ export const CheckoutModal = () => {
                 onClick={handlePlaceOrder}
               >
                 <Lock size={15} />
-                <span>Place Order (${cartTotal.toFixed(2)})</span>
+                <span>Place Order (AED {cartTotal.toFixed(2)})</span>
               </button>
             </div>
           </div>

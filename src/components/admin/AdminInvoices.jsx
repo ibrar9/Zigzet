@@ -204,40 +204,40 @@ export const AdminInvoices = () => {
                       {item.quantity}
                     </td>
                     <td style={{ padding: '12px 0', textAlign: 'right', color: '#475569' }}>
-                      ${Number(item.price).toFixed(2)}
+                      AED {Number(item.price).toFixed(2)}
                     </td>
                     <td style={{ padding: '12px 0', textAlign: 'right', fontWeight: '800', color: '#0f172a' }}>
-                      ${(item.price * item.quantity).toFixed(2)}
+                      AED {(item.price * item.quantity).toFixed(2)}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
 
-            {/* Totals Calculation */}
+            {/* Totals Calculation (AED) */}
             <div style={{ display: 'flex', justifyContent: 'flex-end', borderTop: '2px solid #e2e8f0', paddingTop: '16px' }}>
               <div style={{ width: '260px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#64748b', marginBottom: '6px' }}>
                   <span>Subtotal</span>
-                  <span>${Number(selectedOrder.subtotal || selectedOrder.total * 0.9).toFixed(2)}</span>
+                  <span>AED {Number(selectedOrder.subtotal || selectedOrder.total * 0.95).toFixed(2)}</span>
                 </div>
                 {selectedOrder.discount > 0 && (
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#10b981', marginBottom: '6px', fontWeight: '700' }}>
                     <span>Promo Discount ({selectedOrder.couponCode || 'VOUCHER'})</span>
-                    <span>-${Number(selectedOrder.discount).toFixed(2)}</span>
+                    <span>-AED {Number(selectedOrder.discount).toFixed(2)}</span>
                   </div>
                 )}
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#64748b', marginBottom: '6px' }}>
-                  <span>Estimated Tax (8%)</span>
-                  <span>${Number(selectedOrder.total * 0.08).toFixed(2)}</span>
+                  <span>Estimated VAT (5%)</span>
+                  <span>AED {Number(selectedOrder.total * 0.05).toFixed(2)}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', color: '#64748b', marginBottom: '10px' }}>
                   <span>Shipping</span>
-                  <span style={{ color: '#10b981', fontWeight: '700' }}>FREE USA</span>
+                  <span style={{ color: '#10b981', fontWeight: '700' }}>FREE UAE</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', fontWeight: '900', color: '#0f172a', borderTop: '1.5px solid #0f172a', paddingTop: '8px' }}>
                   <span>Total Paid</span>
-                  <span style={{ color: '#7c3aed' }}>${Number(selectedOrder.total).toFixed(2)}</span>
+                  <span style={{ color: '#7c3aed' }}>AED {Number(selectedOrder.total).toFixed(2)}</span>
                 </div>
               </div>
             </div>

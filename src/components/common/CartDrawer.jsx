@@ -52,16 +52,16 @@ export const CartDrawer = () => {
           </button>
         </div>
 
-        {/* Free Shipping Meter */}
+        {/* Free Shipping Meter (AED) */}
         <div className="free-shipping-meter">
           <div className="meter-label">
             {isFreeShipping ? (
               <span style={{ color: '#10b981', fontWeight: '700' }}>
-                You've unlocked FREE USA Shipping!
+                🎉 You've unlocked FREE UAE Express Delivery!
               </span>
             ) : (
               <span>
-                Add <strong>${remainingForFree.toFixed(2)}</strong> more for <strong>FREE USA Shipping</strong>
+                Add <strong>AED {remainingForFree.toFixed(2)}</strong> more for <strong>FREE UAE Delivery</strong>
               </span>
             )}
             <span>{Math.round(progressPercent)}%</span>
@@ -78,12 +78,15 @@ export const CartDrawer = () => {
         <div className="drawer-body">
           {cart.length === 0 ? (
             <div className="drawer-empty-state">
-              <ShoppingBag size={54} strokeWidth={1.5} />
-              <h4>Your bag is empty</h4>
-              <p>Looks like you haven't added anything yet.</p>
+              <ShoppingBag size={48} strokeWidth={1} color="#9ca3af" />
+              <h3>Your shopping bag is empty</h3>
+              <p>Looks like you haven't added any K-Beauty favorites yet.</p>
               <button 
-                className="hero-cta-btn"
-                onClick={() => setIsCartOpen(false)}
+                className="drawer-start-shopping-btn"
+                onClick={() => {
+                  setIsCartOpen(false);
+                  navigatePage('shop');
+                }}
               >
                 Start Shopping
               </button>
@@ -91,8 +94,8 @@ export const CartDrawer = () => {
           ) : (
             <div className="cart-items-list">
               {cart.map((item) => (
-                <div className="cart-item-row" key={item.id}>
-                  <div className="cart-item-thumb">
+                <div key={item.id} className="cart-item-card">
+                  <div className="cart-item-img-box">
                     <img src={item.image} alt={item.name} />
                   </div>
 
@@ -126,7 +129,7 @@ export const CartDrawer = () => {
                       </div>
 
                       <span className="cart-item-price">
-                        ${(item.price * item.quantity).toFixed(2)}
+                        AED {(item.price * item.quantity).toFixed(2)}
                       </span>
                     </div>
                   </div>
@@ -141,22 +144,22 @@ export const CartDrawer = () => {
           <div className="drawer-footer">
             <div className="price-summary-row">
               <span>Subtotal</span>
-              <span>${cartSubtotal.toFixed(2)}</span>
+              <span>AED {cartSubtotal.toFixed(2)}</span>
             </div>
 
             <div className="price-summary-row">
               <span>Estimated Shipping</span>
-              <span>{isFreeShipping ? 'FREE' : `$${shippingFee.toFixed(2)}`}</span>
+              <span>{isFreeShipping ? 'FREE' : `AED ${shippingFee.toFixed(2)}`}</span>
             </div>
 
             <div className="price-summary-row">
-              <span>Estimated Tax (8%)</span>
-              <span>${estimatedTax.toFixed(2)}</span>
+              <span>Estimated VAT (5%)</span>
+              <span>AED {estimatedTax.toFixed(2)}</span>
             </div>
 
             <div className="price-summary-row total">
               <span>Total</span>
-              <span>${cartTotal.toFixed(2)}</span>
+              <span>AED {cartTotal.toFixed(2)}</span>
             </div>
 
             <button 

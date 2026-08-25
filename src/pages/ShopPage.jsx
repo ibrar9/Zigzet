@@ -219,12 +219,12 @@ export const ShopPage = () => {
                 </div>
               </div>
 
-              {/* Price Slider */}
+              {/* Price Slider (AED) */}
               <div className="filter-group">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                   <h4 className="filter-title" style={{ margin: 0 }}>Max Price</h4>
                   <span style={{ fontSize: '14px', fontWeight: '800', color: '#111827' }}>
-                    ${priceRange}
+                    AED {priceRange}
                   </span>
                 </div>
                 <input
@@ -237,9 +237,9 @@ export const ShopPage = () => {
                   style={{ width: '100%', accentColor: '#111827' }}
                 />
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#9ca3af', marginTop: '4px' }}>
-                  <span>$20</span>
-                  <span>$250</span>
-                  <span>$500+</span>
+                  <span>AED 20</span>
+                  <span>AED 250</span>
+                  <span>AED 500+</span>
                 </div>
               </div>
 
@@ -381,7 +381,7 @@ export const ShopPage = () => {
                 })}
                 {priceRange < 500 && (
                   <span className="filter-chip">
-                    Under ${priceRange}
+                    Under AED {priceRange}
                     <button onClick={() => setPriceRange(500)} aria-label="Remove price filter">
                       <X size={11} />
                     </button>

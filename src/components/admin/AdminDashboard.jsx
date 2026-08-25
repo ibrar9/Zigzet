@@ -402,7 +402,7 @@ export const AdminDashboard = () => {
                     <h4 className="top-prod-title" title={prod.name}>{prod.name}</h4>
 
                     <div className="top-prod-meta">
-                      <span className="top-prod-price">${Number(prod.price).toFixed(2)}</span>
+                      <span className="top-prod-price">AED {Number(prod.price).toFixed(2)}</span>
                       <span className="top-prod-sales">{prod.salesCount || 12} sales</span>
                     </div>
 
@@ -471,13 +471,13 @@ export const AdminDashboard = () => {
                         </div>
                         <div className="table-product-text">
                           <span className="table-prod-name">{p.name}</span>
-                          <span className="table-prod-sku">{p.categoryName || p.category || 'Apparel'}</span>
+                          <span className="table-prod-sku">{p.categoryName || p.category || 'Skincare'}</span>
                         </div>
                       </div>
                     </td>
 
-                    {/* Price */}
-                    <td className="table-price-cell">${Number(p.price).toFixed(2)}</td>
+                    {/* Price (AED) */}
+                    <td className="table-price-cell">AED {Number(p.price).toFixed(2)}</td>
 
                     {/* Stock */}
                     <td className="table-stock-cell">
@@ -592,7 +592,7 @@ export const AdminDashboard = () => {
                   <div className="sale-details-stack">
                     <span className="sale-item-name" title={title}>{order.customerName} - {title}</span>
                     <span className="sale-item-meta">
-                      <strong className="sale-amount">${Number(order.total).toFixed(2)}</strong> · #{order.id} ({order.date})
+                      <strong className="sale-amount">AED {Number(order.total).toFixed(2)}</strong> · #{order.id} ({order.date})
                     </span>
                   </div>
 

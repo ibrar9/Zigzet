@@ -164,12 +164,12 @@ export const TrackOrderPage = () => {
                   {searchedOrder.items && searchedOrder.items.map((item, i) => (
                     <div key={i} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
                       <span style={{ color: '#111827', fontWeight: '500' }}>{item.name} (x{item.quantity})</span>
-                      <span style={{ fontWeight: '700' }}>${(item.price * item.quantity).toFixed(2)}</span>
+                      <span style={{ fontWeight: '700' }}>AED {(item.price * item.quantity).toFixed(2)}</span>
                     </div>
                   ))}
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13.5px', fontWeight: '800', borderTop: '1px solid #e2e8f0', paddingTop: '6px', marginTop: '4px' }}>
                     <span>Total</span>
-                    <span>${Number(searchedOrder.total).toFixed(2)}</span>
+                    <span>AED {Number(searchedOrder.total).toFixed(2)}</span>
                   </div>
                 </div>
               </div>

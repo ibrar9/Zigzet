@@ -132,7 +132,7 @@ export const UserOverview = ({ setActiveTab, myOrders, inProgress }) => {
                           </div>
                         </td>
                         <td>
-                          <p className="ud2-order-price">${(order.total || 0).toFixed(2)}</p>
+                          <p className="ud2-order-price">AED {(order.total || 0).toFixed(2)}</p>
                           <p className="ud2-order-items-count">{order.items?.length || 1} Item</p>
                         </td>
                         <td>

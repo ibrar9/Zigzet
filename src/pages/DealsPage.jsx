@@ -51,21 +51,21 @@ export const DealsPage = () => {
     ? adminCoupons.filter((c) => c.isActive !== false)
     : [
         {
-          code: 'SHOP20',
+          code: 'KBEAUTY20',
           discount: '20% OFF',
-          description: 'Applicable on all electronics and apparel orders over $75',
+          description: 'Applicable on all skincare sets and creams over 150 AED',
           expires: 'Valid today'
         },
         {
-          code: 'FREESHIP50',
-          discount: 'FREE USA SHIPPING',
-          description: 'Unlock 100% free nationwide express shipping on all carts',
-          expires: 'No minimum'
+          code: 'UAESHIP',
+          discount: 'FREE UAE DELIVERY',
+          description: 'Unlock 100% free express delivery across all Emirates',
+          expires: 'Orders over 150 AED'
         },
         {
-          code: 'TECHVIP',
-          discount: '$30 OFF',
-          description: 'Exclusive discount on Noise Cancelling Headphones & Smart Watches',
+          code: 'GLOW50',
+          discount: '50 AED OFF',
+          description: 'Exclusive discount on Luxury NAD+ and Triple PDRN sets',
           expires: 'Limited quantity'
         }
       ];
@@ -78,14 +78,14 @@ export const DealsPage = () => {
           <div className="deals-hero-content">
             <div className="hero-offer-badge" style={{ backgroundColor: '#fee2e2', color: '#ef4444' }}>
               <Flame size={16} />
-              <span>{campaign?.name || 'Flash Sale Madness'}</span>
+              <span>{campaign?.name || 'K-Beauty Flash Deals'}</span>
             </div>
 
             <h1 style={{ fontSize: '42px', fontWeight: '800', margin: '12px 0 16px 0', letterSpacing: '-0.02em' }}>
-              {campaign?.headline || 'Up to 40% Off Top Brands'}
+              {campaign?.headline || 'Up to 45% Off Luxury Skincare Sets'}
             </h1>
             <p style={{ fontSize: '16px', color: '#4b5563', maxWidth: '520px', margin: '0 auto 28px auto' }}>
-              Grab unbeatable prices on high-demand electronics, shoes, and home comfort. Deals expire when timer hits zero!
+              Grab authentic Korean skincare formulas, sun care sticks, and cleansing sets. Deals expire when timer hits zero!
             </p>
 
             {/* Countdown Box */}
@@ -119,8 +119,8 @@ export const DealsPage = () => {
 
           <div className="coupons-grid">
             {activeCouponsList.map((c) => {
-              const discountLabel = c.discount || (c.type === 'percentage' ? `${c.value}% OFF` : `$${c.value} OFF`);
-              const descLabel = c.description || (c.minSpend ? `On orders over $${c.minSpend}` : 'Applicable on storewide items');
+              const discountLabel = c.discount || (c.type === 'percentage' ? `${c.value}% OFF` : `${c.value} AED OFF`);
+              const descLabel = c.description || (c.minSpend ? `On orders over ${c.minSpend} AED` : 'Applicable on storewide items');
               const expiryLabel = c.expires || (c.expiryDate ? `Expires ${c.expiryDate}` : 'Valid today');
 
               return (

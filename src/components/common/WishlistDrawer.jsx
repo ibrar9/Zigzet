@@ -88,7 +88,7 @@ export const WishlistDrawer = () => {
 
                     <div className="cart-item-footer">
                       <span className="cart-item-price">
-                        ${Number(product.price).toFixed(2)}
+                        AED {Number(product.price).toFixed(2)}
                       </span>
 
                       <button

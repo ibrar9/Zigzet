@@ -251,9 +251,9 @@ export const AdminOrders = () => {
                       </div>
                     </td>
 
-                    {/* Total */}
+                    {/* Total (AED) */}
                     <td className="table-bold-cell" style={{ color: '#0f172a' }}>
-                      ${Number(ord.total).toFixed(2)}
+                      AED {Number(ord.total).toFixed(2)}
                     </td>
 
                     {/* Payment Method */}

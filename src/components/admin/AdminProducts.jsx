@@ -318,11 +318,11 @@ export const AdminProducts = () => {
                     <td>
                       <div className="product-price-stack">
                         <span className="price-main-bold">
-                          ${Number(prod.price).toFixed(2)}
+                          AED {Number(prod.price).toFixed(2)}
                         </span>
                         {prod.originalPrice && (
                           <span className="price-original-slash">
-                            ${Number(prod.originalPrice).toFixed(2)}
+                            AED {Number(prod.originalPrice).toFixed(2)}
                           </span>
                         )}
                       </div>

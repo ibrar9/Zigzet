@@ -139,11 +139,11 @@ export const ProductCard = ({ product }) => {
           <span className="rating-number">({product.rating})</span>
         </div>
 
-        {/* Price Row */}
+        {/* Price Row (AED) */}
         <div className="product-price-row">
-          <span className="current-price">${Number(product.price).toFixed(2)}</span>
+          <span className="current-price">AED {Number(product.price).toFixed(2)}</span>
           {product.originalPrice && (
-            <span className="original-price">${Number(product.originalPrice).toFixed(2)}</span>
+            <span className="original-price">AED {Number(product.originalPrice).toFixed(2)}</span>
           )}
         </div>
 

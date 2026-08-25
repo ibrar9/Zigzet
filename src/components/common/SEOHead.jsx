@@ -179,7 +179,7 @@ export const SEOHead = () => {
         "offers": {
           "@type": "Offer",
           "url": pageUrl,
-          "priceCurrency": "USD",
+          "priceCurrency": "AED",
           "price": Number(quickViewProduct.price).toFixed(2),
           "priceValidUntil": "2026-12-31",
           "itemCondition": "https://schema.org/NewCondition",
@@ -192,7 +192,7 @@ export const SEOHead = () => {
           },
           "hasMerchantReturnPolicy": {
             "@type": "MerchantReturnPolicy",
-            "applicableCountry": "US",
+            "applicableCountry": "AE",
             "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
             "merchantReturnDays": 30,
             "returnMethod": "https://schema.org/ReturnByMail",
@@ -203,11 +203,11 @@ export const SEOHead = () => {
             "shippingRate": {
               "@type": "MonetaryAmount",
               "value": "0.00",
-              "currency": "USD"
+              "currency": "AED"
             },
             "shippingDestination": {
               "@type": "DefinedRegion",
-              "addressCountry": "US"
+              "addressCountry": "AE"
             },
             "deliveryTime": {
               "@type": "ShippingDeliveryTime",
@@ -219,8 +219,8 @@ export const SEOHead = () => {
               },
               "transitTime": {
                 "@type": "QuantitativeValue",
-                "minValue": 2,
-                "maxValue": 4,
+                "minValue": 1,
+                "maxValue": 3,
                 "unitCode": "DAY"
               }
             }

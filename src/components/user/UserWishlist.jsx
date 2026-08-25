@@ -53,9 +53,9 @@ export const UserWishlist = () => {
                   <span className="ud2-wish-rev">({product.reviewsCount || 0})</span>
                 </div>
                 <div className="ud2-wish-price">
-                  <span className="ud2-wish-cur">${product.price?.toFixed(2)}</span>
+                  <span className="ud2-wish-cur">AED {product.price?.toFixed(2)}</span>
                   {product.originalPrice && (
-                    <span className="ud2-wish-orig">${product.originalPrice?.toFixed(2)}</span>
+                    <span className="ud2-wish-orig">AED {product.originalPrice?.toFixed(2)}</span>
                   )}
                 </div>
                 <button className="ud2-wish-add" onClick={() => addToCart(product)}>

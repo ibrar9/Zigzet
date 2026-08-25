@@ -27,7 +27,7 @@ const STORAGE_KEYS = {
   ORDERS: 'zigzet_orders_v2',
   CART: 'zigzet_cart_v2',
   WISHLIST: 'zigzet_wishlist_v2',
-  SETTINGS: 'zigzet_settings_v2',
+  SETTINGS: 'zigzet_settings_v3',
   CUSTOMERS: 'zigzet_customers_v2',
   INBOX: 'zigzet_inbox_v2',
   NOTIFICATIONS: 'zigzet_notifications_v2',
@@ -97,10 +97,10 @@ const defaultSeo = {
 };
 
 const defaultSettings = {
-  announcement: 'Free Shipping on Orders Over $50 (USA & Worldwide)',
-  freeShippingThreshold: 50,
-  currency: 'USD',
-  currencySymbol: '$',
+  announcement: 'Free Express Delivery Across UAE on Orders Over 150 AED ✨',
+  freeShippingThreshold: 150,
+  currency: 'AED',
+  currencySymbol: 'AED ',
   storeName: 'Zigzet',
   contactEmail: 'support@zigzet.com',
   adminUsername: 'admin',
@@ -651,11 +651,11 @@ export const StoreProvider = ({ children }) => {
     return wishlist.some((item) => (typeof item === 'object' ? item.id : item) === targetId);
   };
 
-  // Cart Computations
+  // Cart Computations (AED)
   const cartSubtotal = cart.reduce((acc, item) => acc + (Number(item.price) || 0) * item.quantity, 0);
-  const isFreeShipping = cartSubtotal >= (settings.freeShippingThreshold || 50);
-  const shippingFee = cartSubtotal > 0 && !isFreeShipping ? 9.99 : 0;
-  const estimatedTax = cartSubtotal * 0.08;
+  const isFreeShipping = cartSubtotal >= (settings.freeShippingThreshold || 150);
+  const shippingFee = cartSubtotal > 0 && !isFreeShipping ? 20 : 0;
+  const estimatedTax = cartSubtotal * 0.05;
 
   // Coupon discount calculation
   let couponDiscountAmount = 0;

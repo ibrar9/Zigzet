@@ -174,10 +174,10 @@ export const AdminAbandonedCarts = () => {
                       </div>
                     </td>
 
-                    {/* Cart Total */}
+                    {/* Cart Total (AED) */}
                     <td>
                       <span style={{ fontWeight: '800', color: '#0f172a', fontSize: '14px' }}>
-                        ${Number(c.cartTotal).toFixed(2)}
+                        AED {Number(c.cartTotal).toFixed(2)}
                       </span>
                     </td>
 

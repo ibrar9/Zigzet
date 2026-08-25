@@ -322,10 +322,10 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
                       https://zigzet.com › shop › {formData.name ? formData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') : 'product'}
                     </span>
                     <span style={{ fontSize: '15px', color: '#1a0dab', fontWeight: '400', display: 'block', margin: '2px 0' }}>
-                      {formData.metaTitle || (formData.name ? `${formData.name} - Only $${formData.price || '0.00'} | Zigzet` : 'Product Title')}
+                      {formData.metaTitle || (formData.name ? `${formData.name} - Only AED ${formData.price || '0.00'} | Zigzet` : 'Product Title')}
                     </span>
                     <span style={{ fontSize: '12px', color: '#4d5156', display: 'block', lineHeight: '1.4' }}>
-                      {formData.metaDescription || (formData.description ? formData.description.slice(0, 130) + '...' : 'Buy authentic products online with fast USA delivery on Zigzet.')}
+                      {formData.metaDescription || (formData.description ? formData.description.slice(0, 130) + '...' : 'Buy authentic K-Beauty skincare online with fast UAE express delivery on Zigzet.')}
                     </span>
                   </div>
                 </div>
