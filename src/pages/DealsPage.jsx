@@ -4,63 +4,32 @@ import { useStore } from '../context/StoreContext';
 import { ProductCard } from '../components/common/ProductCard';
 
 export const DealsPage = () => {
-  const { products, showToast } = useStore();
+  const { products, showToast, coupons: adminCoupons } = useStore();
   const [copiedCode, setCopiedCode] = useState(null);
 
-  // Countdown timer state
-  const [timeLeft, setTimeLeft] = useState({
-    hours: 8,
-    minutes: 42,
-    seconds: 15
-  });
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev.seconds > 0) {
-          return { ...prev, seconds: prev.seconds - 1 };
-        } else if (prev.minutes > 0) {
-          return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
-        } else if (prev.hours > 0) {
-          return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
-        } else {
-          return { hours: 12, minutes: 0, seconds: 0 };
+  // Dynamic active coupons from StoreContext
+  const activeCouponsList = adminCoupons && adminCoupons.length > 0
+    ? adminCoupons.filter((c) => c.isActive !== false)
+    : [
+        {
+          code: 'SHOP20',
+          discount: '20% OFF',
+          description: 'Applicable on all electronics and apparel orders over $75',
+          expires: 'Valid today'
+        },
+        {
+          code: 'FREESHIP50',
+          discount: 'FREE USA SHIPPING',
+          description: 'Unlock 100% free nationwide express shipping on all carts',
+          expires: 'No minimum'
+        },
+        {
+          code: 'TECHVIP',
+          discount: '$30 OFF',
+          description: 'Exclusive discount on Noise Cancelling Headphones & Smart Watches',
+          expires: 'Limited quantity'
         }
-      });
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const copyCoupon = (code) => {
-    navigator.clipboard.writeText(code);
-    setCopiedCode(code);
-    showToast('Coupon Copied!', `Code "${code}" copied to clipboard.`);
-    setTimeout(() => setCopiedCode(null), 3000);
-  };
-
-  const saleProducts = products.filter((p) => p.isSale || p.originalPrice);
-
-  const coupons = [
-    {
-      code: 'SHOP20',
-      discount: '20% OFF',
-      description: 'Applicable on all electronics and apparel orders over $75',
-      expires: 'Valid today'
-    },
-    {
-      code: 'FREESHIP50',
-      discount: 'FREE USA SHIPPING',
-      description: 'Unlock 100% free nationwide express shipping on all carts',
-      expires: 'No minimum'
-    },
-    {
-      code: 'TECHVIP',
-      discount: '$30 OFF',
-      description: 'Exclusive discount on Noise Cancelling Headphones & Smart Watches',
-      expires: 'Limited quantity'
-    }
-  ];
+      ];
 
   return (
     <div className="deals-page-wrapper">
@@ -110,13 +79,18 @@ export const DealsPage = () => {
           </div>
 
           <div className="coupons-grid">
-            {coupons.map((c) => (
-              <div key={c.code} className="coupon-ticket-card">
-                <div className="ticket-left">
-                  <span className="ticket-discount">{c.discount}</span>
-                  <span className="ticket-desc">{c.description}</span>
-                  <span className="ticket-expiry">⏳ {c.expires}</span>
-                </div>
+            {activeCouponsList.map((c) => {
+              const discountLabel = c.discount || (c.type === 'percentage' ? `${c.value}% OFF` : `$${c.value} OFF`);
+              const descLabel = c.description || (c.minSpend ? `On orders over $${c.minSpend}` : 'Applicable on storewide items');
+              const expiryLabel = c.expires || (c.expiryDate ? `Expires ${c.expiryDate}` : 'Valid today');
+
+              return (
+                <div key={c.id || c.code} className="coupon-ticket-card">
+                  <div className="ticket-left">
+                    <span className="ticket-discount">{discountLabel}</span>
+                    <span className="ticket-desc">{descLabel}</span>
+                    <span className="ticket-expiry">⏳ {expiryLabel}</span>
+                  </div>
 
                 <div className="ticket-right">
                   <button 
@@ -137,7 +111,8 @@ export const DealsPage = () => {
                   </button>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 

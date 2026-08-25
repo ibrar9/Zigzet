@@ -4,7 +4,7 @@ import { categories } from '../data/categories';
 import { useStore } from '../context/StoreContext';
 
 export const CategoriesPage = () => {
-  const { navigatePage } = useStore();
+  const { products, navigatePage } = useStore();
 
   const handleExploreCategory = (catId) => {
     navigatePage('shop', catId);
@@ -20,7 +20,7 @@ export const CategoriesPage = () => {
               Shop By Department
             </span>
             <h1 style={{ fontSize: '36px', fontWeight: '800', marginTop: '4px', marginBottom: '8px' }}>
-              All Departments & Categories
+              All Departments &amp; Categories
             </h1>
             <p style={{ color: '#4b5563', fontSize: '14.5px' }}>
               Discover curated departments designed for your modern lifestyle. Fast shipping across all departments.
@@ -32,53 +32,46 @@ export const CategoriesPage = () => {
       {/* Categories Grid */}
       <div className="container" style={{ padding: '40px 20px 70px 20px' }}>
         <div className="category-directory-grid">
-          {categories.map((cat) => (
-            <div 
-              key={cat.id} 
-              className="category-directory-card"
-              onClick={() => handleExploreCategory(cat.id)}
-            >
-              <div className="category-banner-image">
-                <img src={cat.image} alt={cat.name} loading="lazy" />
-                <div className="category-overlay-badge">
-                  {cat.itemCount}
-                </div>
-              </div>
+          {categories.map((cat) => {
+            const dynamicCount = products.filter((p) => p.isActive !== false && p.category === cat.id).length;
+            const countLabel = `${dynamicCount} Product${dynamicCount === 1 ? '' : 's'}`;
 
-              <div className="category-directory-info">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                  <h3 style={{ fontSize: '20px', fontWeight: '800', color: '#111827' }}>
-                    {cat.name}
-                  </h3>
-                  <div className="category-arrow-circle">
-                    <ArrowRight size={16} />
+            return (
+              <div 
+                key={cat.id} 
+                className="category-directory-card"
+                onClick={() => handleExploreCategory(cat.id)}
+              >
+                <div className="category-banner-image">
+                  <img src={cat.image} alt={cat.name} loading="lazy" />
+                  <div className="category-overlay-badge">
+                    {countLabel}
                   </div>
                 </div>
 
-                <p style={{ fontSize: '13px', color: '#6b7280', marginBottom: '14px', lineHeight: '1.4' }}>
-                  Explore top-rated {cat.name.toLowerCase()} selected for quality, durability, and value.
-                </p>
+                <div className="category-directory-info">
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                    <h3 style={{ fontSize: '20px', fontWeight: '800', color: '#111827' }}>
+                      {cat.name}
+                    </h3>
+                    <div className="category-arrow-circle">
+                      <ArrowRight size={16} />
+                    </div>
+                  </div>
 
-                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                  {['Trending', 'USA Stock', 'Best Seller'].map((tag, i) => (
-                    <span 
-                      key={i}
-                      style={{
-                        fontSize: '11px',
-                        fontWeight: '600',
-                        backgroundColor: '#f3f4f6',
-                        color: '#4b5563',
-                        padding: '3px 8px',
-                        borderRadius: '6px'
-                      }}
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                  <p style={{ fontSize: '13px', color: '#6b7280', marginBottom: '14px', lineHeight: '1.4' }}>
+                    Explore top-rated {cat.name.toLowerCase()} selected for quality, durability, and value.
+                  </p>
+
+                  <div className="category-subtags-row">
+                    <span className="category-subtag">Bestsellers</span>
+                    <span className="category-subtag">New Arrivals</span>
+                    <span className="category-subtag">Deals</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>

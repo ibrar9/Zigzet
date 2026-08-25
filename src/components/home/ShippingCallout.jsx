@@ -1,7 +1,11 @@
 import React from 'react';
 import { Truck, ArrowRight } from 'lucide-react';
+import { useStore } from '../../context/StoreContext';
 
 export const ShippingCallout = () => {
+  const { settings, navigatePage } = useStore();
+  const threshold = settings?.freeShippingThreshold || 50;
+
   return (
     <section className="shipping-callout-section">
       <div className="container">
@@ -11,16 +15,17 @@ export const ShippingCallout = () => {
               <Truck size={36} strokeWidth={1.8} />
             </div>
             <div className="callout-text">
-              <h3>Fast & Reliable USA Shipping</h3>
-              <p>Get your favorite products delivered quickly across the United States.</p>
+              <h3>Fast &amp; Reliable USA Shipping</h3>
+              <p>Enjoy free expedited delivery on orders over ${threshold} with full real-time package tracking.</p>
             </div>
           </div>
 
           <button 
             className="callout-btn"
-            onClick={() => alert('Fast USA Shipping: All orders are dispatched within 24 hours with real-time tracking numbers.')}
+            onClick={() => navigatePage('track')}
+            title="Track your shipment"
           >
-            <span>Learn More</span>
+            <span>Track Order</span>
             <ArrowRight size={15} />
           </button>
         </div>
