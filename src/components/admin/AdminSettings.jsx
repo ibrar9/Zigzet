@@ -47,7 +47,7 @@ export const AdminSettings = () => {
                 name="announcement"
                 value={formSettings.announcement}
                 onChange={handleChange}
-                placeholder="⭐ Free Shipping on Orders Over $50 (USA & Worldwide)"
+                placeholder="Free Shipping on Orders Over $50 (USA & Worldwide)"
               />
               <span style={{ fontSize: '12px', color: '#64748b', marginTop: '4px', display: 'block' }}>
                 Displayed across the very top notification ticker on the customer storefront.

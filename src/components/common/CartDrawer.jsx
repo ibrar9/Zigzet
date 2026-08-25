@@ -57,7 +57,7 @@ export const CartDrawer = () => {
           <div className="meter-label">
             {isFreeShipping ? (
               <span style={{ color: '#10b981', fontWeight: '700' }}>
-                🎉 You've unlocked FREE USA Shipping!
+                You've unlocked FREE USA Shipping!
               </span>
             ) : (
               <span>

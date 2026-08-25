@@ -110,26 +110,26 @@ export const Header = () => {
                       All Products Catalog
                     </span>
                     <span className="mega-link" onClick={() => { navigatePage('deals'); setShopDropdownOpen(false); }}>
-                      🔥 Flash Sale Deals
+                      Flash Sale Deals
                     </span>
                     <span className="mega-link" onClick={() => { navigatePage('shop', 'electronics'); setShopDropdownOpen(false); }}>
-                      ⚡ Tech & Gadgets
+                      Tech & Gadgets
                     </span>
                     <span className="mega-link" onClick={() => { navigatePage('shop', 'fashion'); setShopDropdownOpen(false); }}>
-                      👕 Modern Fashion
+                      Modern Fashion
                     </span>
                   </div>
 
                   <div className="mega-col">
                     <h5 className="mega-col-title">Departments</h5>
                     <span className="mega-link" onClick={() => { navigatePage('shop', 'home-living'); setShopDropdownOpen(false); }}>
-                      🛋️ Home & Living
+                      Home & Living
                     </span>
                     <span className="mega-link" onClick={() => { navigatePage('shop', 'beauty'); setShopDropdownOpen(false); }}>
-                      ✨ Beauty & Wellness
+                      Beauty & Wellness
                     </span>
                     <span className="mega-link" onClick={() => { navigatePage('shop', 'sports'); setShopDropdownOpen(false); }}>
-                      🏀 Sports & Fitness
+                      Sports & Fitness
                     </span>
                     <span className="mega-link" onClick={() => { navigatePage('categories'); setShopDropdownOpen(false); }}>
                       View All Categories →

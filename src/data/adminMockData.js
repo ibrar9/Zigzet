@@ -22,7 +22,7 @@ export const geoLocationData = [
   {
     country: 'United Kingdom',
     code: 'GB',
-    flag: '🇬🇧',
+    flag: 'GB',
     sales: '340 Sales',
     revenue: '$17,879',
     change: '+12%',
@@ -32,7 +32,7 @@ export const geoLocationData = [
   {
     country: 'Spain',
     code: 'ES',
-    flag: '🇪🇸',
+    flag: 'ES',
     sales: '100 Sales',
     revenue: '$5,500',
     change: '-5%',
@@ -42,7 +42,7 @@ export const geoLocationData = [
   {
     country: 'United States',
     code: 'US',
-    flag: '🇺🇸',
+    flag: 'US',
     sales: '840 Sales',
     revenue: '$45,920',
     change: '+24%',
@@ -52,7 +52,7 @@ export const geoLocationData = [
   {
     country: 'Germany',
     code: 'DE',
-    flag: '🇩🇪',
+    flag: 'DE',
     sales: '210 Sales',
     revenue: '$12,400',
     change: '+8%',

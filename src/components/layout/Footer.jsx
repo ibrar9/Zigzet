@@ -28,8 +28,8 @@ export const Footer = () => {
             <span className="footer-nav-link" onClick={() => navigatePage('home')}>Home</span>
             <span className="footer-nav-link" onClick={() => navigatePage('shop')}>All Products</span>
             <span className="footer-nav-link" onClick={() => navigatePage('categories')}>Departments</span>
-            <span className="footer-nav-link" onClick={() => navigatePage('deals')}>Flash Deals 🔥</span>
-            <span className="footer-nav-link" onClick={() => navigatePage('track')}>Track Order 🚚</span>
+            <span className="footer-nav-link" onClick={() => navigatePage('deals')}>Flash Deals</span>
+            <span className="footer-nav-link" onClick={() => navigatePage('track')}>Track Order</span>
           </div>
 
           {/* Customer Care */}
@@ -117,7 +117,7 @@ export const Footer = () => {
           <a href="#terms" onClick={(e) => { e.preventDefault(); alert('Zigzet Terms of Service: 30-day money-back guarantee.'); }}>
             Terms of Service
           </a>
-          <span className="footer-flag" title="United States">🇺🇸</span>
+          <span className="footer-flag" title="United States">USA</span>
         </div>
       </div>
     </footer>

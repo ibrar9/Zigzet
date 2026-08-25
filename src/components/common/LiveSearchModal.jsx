@@ -136,7 +136,7 @@ export const LiveSearchModal = () => {
                         {prod.name}
                       </h4>
                       <span style={{ fontSize: '12px', color: '#6b7280' }}>
-                        {prod.categoryName} • ⭐ {prod.rating}
+                        {prod.categoryName} • Rating {prod.rating}
                       </span>
                     </div>
                   </div>

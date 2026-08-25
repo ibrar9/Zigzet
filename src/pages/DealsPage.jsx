@@ -35,7 +35,7 @@ export const DealsPage = () => {
   const copyCoupon = (code) => {
     navigator.clipboard.writeText(code);
     setCopiedCode(code);
-    showToast('Coupon Copied! 🎟️', `Code "${code}" copied to clipboard.`);
+    showToast('Coupon Copied!', `Code "${code}" copied to clipboard.`);
     setTimeout(() => setCopiedCode(null), 3000);
   };
 

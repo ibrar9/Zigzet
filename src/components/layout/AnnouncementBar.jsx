@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronDown, Star } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
 export const AnnouncementBar = () => {
@@ -9,8 +9,7 @@ export const AnnouncementBar = () => {
     <div className="announcement-bar">
       <div className="container announcement-content">
         <div className="announcement-text">
-          <span>⭐</span>
-          <span>{settings.announcement}</span>
+          <span>{(settings.announcement || '').replace(/[^\x20-\x7E]/g, '').trim()}</span>
         </div>
 
         <div className="announcement-controls">

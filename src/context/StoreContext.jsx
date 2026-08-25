@@ -32,7 +32,7 @@ const STORAGE_KEYS = {
 };
 
 const defaultSettings = {
-  announcement: '⭐ Free Shipping on Orders Over $50 (USA & Worldwide)',
+  announcement: 'Free Shipping on Orders Over $50 (USA & Worldwide)',
   freeShippingThreshold: 50,
   currency: 'USD',
   currencySymbol: '$',
@@ -377,7 +377,7 @@ export const StoreProvider = ({ children }) => {
     setNotifications((prev) => [
       {
         id: 'notif-' + Date.now(),
-        title: 'New Product Added 📦',
+        title: 'New Product Added',
         description: `"${newProduct.name}" added to catalog ($${newProduct.price.toFixed(2)}).`,
         time: 'Just now',
         type: 'alert',
@@ -477,7 +477,7 @@ export const StoreProvider = ({ children }) => {
             setNotifications((prevN) => [
               {
                 id: 'notif-low-' + Date.now() + Math.random(),
-                title: 'Low Stock Alert ⚠️',
+                title: 'Low Stock Alert',
                 description: `"${p.name}" has only ${newStock} units left in stock!`,
                 time: 'Just now',
                 type: 'alert',
@@ -544,7 +544,7 @@ export const StoreProvider = ({ children }) => {
     setNotifications((prevNotifs) => [
       {
         id: 'notif-' + Date.now(),
-        title: 'New High-Value Order 🛍️',
+        title: 'New High-Value Order',
         description: `Order #${orderId} for $${orderTotal.toFixed(2)} by ${orderData.customerName}.`,
         time: 'Just now',
         type: 'order',
@@ -556,7 +556,7 @@ export const StoreProvider = ({ children }) => {
     // F. Clear Cart & Close Modal
     clearCart();
     setIsCheckoutOpen(false);
-    showToast('Order Placed Successfully! 🎉', `Order #${orderId} has been confirmed.`);
+    showToast('Order Placed Successfully!', `Order #${orderId} has been confirmed.`);
     return newOrder;
   };
 
@@ -602,7 +602,7 @@ export const StoreProvider = ({ children }) => {
     setNotifications((prev) => [
       {
         id: 'notif-' + Date.now(),
-        title: 'New Support Inquiry 💬',
+        title: 'New Support Inquiry',
         description: `${name}: "${subject}"`,
         time: 'Just now',
         type: 'alert',
@@ -611,7 +611,7 @@ export const StoreProvider = ({ children }) => {
       ...prev
     ]);
 
-    showToast('Message Sent! ✉️', 'Our support team has received your message and will respond promptly.');
+    showToast('Message Sent!', 'Our support team has received your message and will respond promptly.');
     return newMsg;
   };
 
@@ -661,7 +661,7 @@ export const StoreProvider = ({ children }) => {
     setNotifications((prev) => [
       {
         id: 'notif-' + Date.now(),
-        title: 'Payout Processed Successfully 💰',
+        title: 'Payout Processed Successfully',
         description: `Instant payout of $${amount.toLocaleString('en-US', { minimumFractionDigits: 2 })} transferred to primary bank.`,
         time: 'Just now',
         type: 'wallet',
@@ -670,7 +670,7 @@ export const StoreProvider = ({ children }) => {
       ...prev
     ]);
 
-    showToast('Payout Requested! 🏦', `$${amount.toFixed(2)} instant payout has been initiated.`);
+    showToast('Payout Requested!', `$${amount.toFixed(2)} instant payout has been initiated.`);
   };
 
   // 11. Settings & Store Reset

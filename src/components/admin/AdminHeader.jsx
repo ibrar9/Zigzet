@@ -60,9 +60,9 @@ export const AdminHeader = ({
   const { title, subtitle } = getPageTitle();
 
   const currencies = [
-    { code: 'USD', flag: '🇺🇸', label: 'USD ($)' },
-    { code: 'EUR', flag: '🇪🇺', label: 'EUR (€)' },
-    { code: 'GBP', flag: '🇬🇧', label: 'GBP (£)' }
+    { code: 'USD', label: 'USD ($)' },
+    { code: 'EUR', label: 'EUR (€)' },
+    { code: 'GBP', label: 'GBP (£)' }
   ];
 
   return (
@@ -107,9 +107,6 @@ export const AdminHeader = ({
             onClick={() => setIsCurrencyOpen(!isCurrencyOpen)}
             title="Change Currency"
           >
-            <span className="country-flag">
-              {currencies.find((c) => c.code === selectedCurrency)?.flag || '🇺🇸'}
-            </span>
             <span className="currency-code">{selectedCurrency}</span>
             <ChevronDown size={13} />
           </button>
@@ -125,7 +122,6 @@ export const AdminHeader = ({
                     setIsCurrencyOpen(false);
                   }}
                 >
-                  <span>{curr.flag}</span>
                   <span>{curr.label}</span>
                 </button>
               ))}

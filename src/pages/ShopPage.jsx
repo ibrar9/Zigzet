@@ -189,9 +189,9 @@ export const ShopPage = () => {
               <div className="filter-radio-list">
                 {[
                   { label: 'All Ratings', value: 0 },
-                  { label: '4.5★ & Above', value: 4.5 },
-                  { label: '4.0★ & Above', value: 4.0 },
-                  { label: '3.5★ & Above', value: 3.5 }
+                  { label: '4.5 Stars & Above', value: 4.5 },
+                  { label: '4.0 Stars & Above', value: 4.0 },
+                  { label: '3.5 Stars & Above', value: 3.5 }
                 ].map((r) => (
                   <label key={r.value} className="radio-item" onClick={() => setMinRating(r.value)}>
                     <span className={`radio-dot ${minRating === r.value ? 'selected' : ''}`} />
