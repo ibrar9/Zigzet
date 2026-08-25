@@ -93,13 +93,22 @@ export const Footer = () => {
           <span className="footer-divider">|</span>
           <span 
             className="footer-link" 
+            onClick={() => navigatePage(currentUser ? 'user-dashboard' : 'user-login')}
+          >
+            <User size={15} />
+            <span>My Account</span>
+          </span>
+          <span className="footer-divider">|</span>
+          <span 
+            className="footer-link" 
             onClick={() => {
               window.location.hash = '#admin';
               setViewMode('admin');
             }}
+            title="Open Store Administration Suite"
           >
-            <User size={15} />
-            <span>My Account</span>
+            <ShieldCheck size={15} color="#7c3aed" />
+            <span style={{ color: '#7c3aed', fontWeight: '700' }}>Admin Portal</span>
           </span>
         </div>
 

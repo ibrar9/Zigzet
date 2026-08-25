@@ -364,15 +364,25 @@ export const StoreProvider = ({ children }) => {
   useEffect(() => { localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings)); }, [settings]);
 
   useEffect(() => {
-    const handleHashChange = () => {
-      if (window.location.hash === '#admin') {
+    const handleRouteChange = () => {
+      const isHashAdmin = window.location.hash === '#admin';
+      const isPathAdmin = window.location.pathname.startsWith('/admin');
+      const isQueryAdmin = new URLSearchParams(window.location.search).get('view') === 'admin' || new URLSearchParams(window.location.search).get('page') === 'admin';
+
+      if (isHashAdmin || isPathAdmin || isQueryAdmin) {
         setViewMode('admin');
       } else {
         setViewMode('store');
       }
     };
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+
+    handleRouteChange();
+    window.addEventListener('hashchange', handleRouteChange);
+    window.addEventListener('popstate', handleRouteChange);
+    return () => {
+      window.removeEventListener('hashchange', handleRouteChange);
+      window.removeEventListener('popstate', handleRouteChange);
+    };
   }, []);
 
   // Toast System
@@ -444,9 +454,45 @@ export const StoreProvider = ({ children }) => {
       address: '',
       city: '',
       zip: '',
-      joinedAt: new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+      joinedAt: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
     };
     setUserAccounts(prev => [...prev, newAccount]);
+
+    // Immediately sync with CRM customers list for the Admin Panel
+    setCustomers(prev => {
+      const existingIdx = prev.findIndex(c => c.email.toLowerCase() === email.toLowerCase());
+      if (existingIdx === -1) {
+        const newCust = {
+          id: 'cust-' + Date.now(),
+          name,
+          email,
+          avatar: `https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80`,
+          orders: 0,
+          spent: '$0.00',
+          location: 'Registered Member',
+          status: 'Registered Member',
+          lastActive: 'Just now',
+          isRegistered: true,
+          registeredAt: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+        };
+        return [newCust, ...prev];
+      }
+      return prev;
+    });
+
+    // Notify Admin Panel
+    setNotifications(prev => [
+      {
+        id: 'notif-user-' + Date.now(),
+        title: 'New Member Registered',
+        description: `${name} (${email}) created an account on Zigzet.`,
+        time: 'Just now',
+        type: 'user',
+        unread: true
+      },
+      ...prev
+    ]);
+
     const { password: _pw, ...safeUser } = newAccount;
     setCurrentUser(safeUser);
     sessionStorage.setItem(STORAGE_KEYS.USER_AUTH, JSON.stringify(safeUser));
@@ -466,6 +512,22 @@ export const StoreProvider = ({ children }) => {
     sessionStorage.setItem(STORAGE_KEYS.USER_AUTH, JSON.stringify(updated));
     // Also update the accounts array
     setUserAccounts(prev => prev.map(a => a.id === updated.id ? { ...a, ...updates } : a));
+
+    // Also update CRM customer record
+    setCustomers(prev => prev.map(c => {
+      if (c.email.toLowerCase() === updated.email.toLowerCase() || (currentUser && c.email.toLowerCase() === currentUser.email.toLowerCase())) {
+        return {
+          ...c,
+          name: updated.name || c.name,
+          email: updated.email || c.email,
+          phone: updated.phone || c.phone,
+          location: updated.city ? `${updated.city}, US` : (updated.address || c.location),
+          address: updated.address || c.address
+        };
+      }
+      return c;
+    }));
+
     showToast('Profile Updated', 'Your profile information has been saved.');
   };
 
@@ -1072,6 +1134,7 @@ export const StoreProvider = ({ children }) => {
         updateCmsContent,
         updateCampaign,
         updateLoyaltyProgram,
+        userAccounts,
         currentUser,
         loginUser,
         registerUser,

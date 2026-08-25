@@ -4348,6 +4348,10 @@ img {
   color: #7c3aed;
 }
 
+.stat-val.highlight-green {
+  color: #10b981;
+}
+
 .stat-divider {
   width: 1px;
   height: 24px;
@@ -4358,23 +4362,295 @@ img {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
   margin-top: 14px;
   padding-top: 12px;
   border-top: 1px solid #f8fafc;
 }
 
-.customer-active-time {
-  font-size: 11px;
-  color: #94a3b8;
+.customer-view-history-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #334155;
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.customer-view-history-btn:hover {
+  background-color: #e2e8f0;
+  color: #0f172a;
 }
 
 .customer-contact-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   font-size: 11.5px;
   font-weight: 700;
   color: #7c3aed;
   background-color: #f5f3ff;
-  padding: 4px 10px;
+  border: 1px solid #ede9fe;
+  padding: 6px 10px;
   border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.customer-contact-btn:hover {
+  background-color: #ede9fe;
+}
+
+.customer-status-pill.registered {
+  background-color: #ede9fe;
+  color: #7c3aed;
+}
+
+.customer-active-badge.online {
+  background-color: #10b981;
+  box-shadow: 0 0 0 2px #ffffff;
+}
+
+/* Customer CRM Metrics & Tabs */
+.admin-customer-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.customer-stat-mini-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+}
+
+.stat-mini-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stat-mini-icon.purple { background-color: #f5f3ff; color: #7c3aed; }
+.stat-mini-icon.green { background-color: #ecfdf5; color: #10b981; }
+.stat-mini-icon.blue { background-color: #eff6ff; color: #3b82f6; }
+.stat-mini-icon.orange { background-color: #fff7ed; color: #f97316; }
+
+.stat-mini-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  display: block;
+}
+
+.stat-mini-val {
+  font-size: 20px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.2;
+  margin: 2px 0;
+}
+
+.stat-mini-sub {
+  font-size: 11px;
+  color: #94a3b8;
+  display: block;
+}
+
+.admin-customer-filter-tabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.filter-tab-pill {
+  padding: 7px 14px;
+  border-radius: 9999px;
+  border: 1px solid #e2e8f0;
+  background-color: #ffffff;
+  color: #475569;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-tab-pill:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.filter-tab-pill.active {
+  background-color: #7c3aed;
+  border-color: #7c3aed;
+  color: #ffffff;
+}
+
+/* Customer Dossier Modal */
+.admin-customer-modal-box {
+  padding: 28px;
+}
+
+.customer-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.customer-modal-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #7c3aed;
+  flex-shrink: 0;
+}
+
+.customer-modal-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.customer-modal-stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 18px 0;
+}
+
+.modal-stat-pill {
+  background-color: #f8fafc;
+  border: 1px solid #f1f5f9;
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-stat-pill .m-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.modal-stat-pill .m-val {
+  font-size: 16px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-top: 2px;
+}
+
+.modal-stat-pill .m-val.green {
+  color: #10b981;
+}
+
+.modal-stat-pill .m-val.text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.customer-orders-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 380px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.customer-order-item-card {
+  background-color: #ffffff;
+  border: 1.5px solid #eef2f6;
+  border-radius: 12px;
+  padding: 14px;
+  transition: all 0.2s ease;
+}
+
+.customer-order-item-card:hover {
+  border-color: #cbd5e1;
+}
+
+.customer-order-item-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f8fafc;
+  margin-bottom: 10px;
+}
+
+.customer-order-products-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.customer-order-prod-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #f8fafc;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+
+.prod-thumb-mini {
+  width: 36px;
+  height: 36px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.prod-thumb-mini img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.customer-order-meta-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed #f1f5f9;
+  font-size: 11.5px;
+  color: #64748b;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.order-meta-col {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 /* Wallet Styles */
