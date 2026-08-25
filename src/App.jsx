@@ -3,7 +3,6 @@ import { useStore } from './context/StoreContext';
 import { AnnouncementBar } from './components/layout/AnnouncementBar';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
-import { MobileNav } from './components/layout/MobileNav';
 import { MobileNavBar } from './components/layout/MobileNavBar';
 
 // Home sections
@@ -95,7 +94,6 @@ function App() {
         {currentPage === 'contact' && <ContactPage />}
       </main>
       <Footer />
-      <MobileNav />
       <MobileNavBar />
       <StoreAiChat />
 

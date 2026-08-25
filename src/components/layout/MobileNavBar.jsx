@@ -17,11 +17,16 @@ export const MobileNavBar = () => {
     setIsCartOpen, 
     wishlist, 
     setIsWishlistOpen,
-    viewMode
+    viewMode,
+    currentUser
   } = useStore();
 
-  // If in admin mode, hide customer storefront mobile bottom bar
-  if (viewMode === 'admin') return null;
+  // If in admin mode or full-screen dashboard/login mode, hide storefront bottom bar
+  if (viewMode === 'admin' || currentPage === 'user-dashboard' || currentPage === 'user-login') {
+    return null;
+  }
+
+  const isAccountActive = currentPage === 'user-dashboard' || currentPage === 'user-login';
 
   return (
     <nav className="mobile-native-bottom-bar" aria-label="Mobile Navigation">
@@ -71,13 +76,26 @@ export const MobileNavBar = () => {
         <span>Saved</span>
       </button>
 
-      {/* Track Order */}
+      {/* User Account / Profile */}
       <button
-        className={`mobile-nav-item ${currentPage === 'track-order' ? 'active' : ''}`}
-        onClick={() => navigatePage('track-order')}
+        className={`mobile-nav-item ${isAccountActive ? 'active' : ''}`}
+        onClick={() => navigatePage(currentUser ? 'user-dashboard' : 'user-login')}
       >
-        <Truck size={20} />
-        <span>Track</span>
+        <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+          <User size={20} />
+          {currentUser && (
+            <span style={{
+              position: 'absolute',
+              top: '-1px',
+              right: '-1px',
+              width: '7px',
+              height: '7px',
+              borderRadius: '50%',
+              backgroundColor: '#10b981'
+            }} />
+          )}
+        </div>
+        <span>{currentUser ? 'Account' : 'Sign In'}</span>
       </button>
     </nav>
   );
