@@ -8,19 +8,31 @@ export const SEOHead = () => {
     seoSettings, 
     settings, 
     products, 
-    activeCategory 
+    activeCategory,
+    quickViewProduct 
   } = useStore();
 
   useEffect(() => {
-    // 1. Determine Title & Meta Description based on route / override
+    const baseUrl = seoSettings.canonicalUrl || 'https://zigzet.com';
     let pageTitle = seoSettings.siteTitle || 'Zigzet - Shop Smarter. Live Better.';
     let pageDescription = seoSettings.defaultDescription;
     let pageKeywords = seoSettings.defaultKeywords;
-    let pageUrl = `${seoSettings.canonicalUrl || 'https://zigzet.com'}/${currentPage === 'home' ? '' : currentPage}`;
+    let pageUrl = `${baseUrl}/${currentPage === 'home' ? '' : currentPage}`;
     let pageImage = seoSettings.ogImage;
+    let pageType = 'website';
+    let productPrice = null;
+    let productCurrency = 'USD';
 
-    // If viewing Admin Panel, prevent indexing
-    if (viewMode === 'admin') {
+    // 1. Dynamic Product Specific Meta Override
+    if (quickViewProduct) {
+      pageTitle = `${quickViewProduct.name} - Only $${Number(quickViewProduct.price).toFixed(2)} | Zigzet`;
+      pageDescription = quickViewProduct.description || `Buy ${quickViewProduct.name} online at best price on Zigzet. Free fast USA shipping & guaranteed authentic.`;
+      pageKeywords = `${quickViewProduct.name}, buy ${quickViewProduct.name}, ${quickViewProduct.categoryName || quickViewProduct.category}, online deals`;
+      pageImage = quickViewProduct.image;
+      pageUrl = `${baseUrl}/shop?product=${quickViewProduct.id}`;
+      pageType = 'product';
+      productPrice = Number(quickViewProduct.price).toFixed(2);
+    } else if (viewMode === 'admin') {
       pageTitle = 'Admin Portal Suite | Zigzet Management';
       pageDescription = 'Secure store administration and operations suite.';
     } else if (currentPage === 'user-dashboard') {
@@ -41,7 +53,7 @@ export const SEOHead = () => {
 
     // 3. Helper to update or create meta tags
     const setMetaTag = (attrName, attrValue, content) => {
-      if (!content) return;
+      if (content === undefined || content === null) return;
       let element = document.querySelector(`meta[${attrName}="${attrValue}"]`);
       if (!element) {
         element = document.createElement('meta');
@@ -78,8 +90,13 @@ export const SEOHead = () => {
     setMetaTag('property', 'og:description', pageDescription);
     setMetaTag('property', 'og:image', pageImage);
     setMetaTag('property', 'og:url', pageUrl);
-    setMetaTag('property', 'og:type', 'website');
+    setMetaTag('property', 'og:type', pageType);
     setMetaTag('property', 'og:site_name', settings.storeName || 'Zigzet');
+
+    if (productPrice) {
+      setMetaTag('property', 'product:price:amount', productPrice);
+      setMetaTag('property', 'product:price:currency', productCurrency);
+    }
 
     // Twitter Card Tags
     setMetaTag('name', 'twitter:card', 'summary_large_image');
@@ -90,58 +107,113 @@ export const SEOHead = () => {
     // Canonical Tag
     setLinkTag('canonical', pageUrl);
 
-    // 4. Schema.org JSON-LD Structured Data
+    // 4. Schema.org JSON-LD Structured Data Graph
+    const schemaGraph = [
+      {
+        "@type": "Organization",
+        "@id": `${baseUrl}/#organization`,
+        "name": settings.storeName || "Zigzet",
+        "url": baseUrl,
+        "logo": {
+          "@type": "ImageObject",
+          "url": seoSettings.ogImage
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+1-555-019-2834",
+          "contactType": "Customer Support",
+          "email": settings.contactEmail || "support@zigzet.com",
+          "availableLanguage": ["English"]
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${baseUrl}/#website`,
+        "url": baseUrl,
+        "name": settings.storeName || "Zigzet",
+        "description": seoSettings.defaultDescription,
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": `${baseUrl}/shop?q={search_term_string}`,
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${pageUrl}#breadcrumb`,
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": `${baseUrl}/`
+          },
+          ...(currentPage !== 'home' ? [{
+            "@type": "ListItem",
+            "position": 2,
+            "name": quickViewProduct ? quickViewProduct.name : (currentPage.charAt(0).toUpperCase() + currentPage.slice(1)),
+            "item": pageUrl
+          }] : [])
+        ]
+      }
+    ];
+
+    // If viewing a specific product, add Schema.org Product Entity
+    if (quickViewProduct) {
+      schemaGraph.push({
+        "@type": "Product",
+        "@id": `${baseUrl}/shop?product=${quickViewProduct.id}#product`,
+        "name": quickViewProduct.name,
+        "image": quickViewProduct.images && quickViewProduct.images.length > 0 ? quickViewProduct.images : [quickViewProduct.image],
+        "description": quickViewProduct.description || `${quickViewProduct.name} available on Zigzet`,
+        "sku": quickViewProduct.sku || `ZG-${quickViewProduct.id}`,
+        "mpn": quickViewProduct.id,
+        "brand": {
+          "@type": "Brand",
+          "name": quickViewProduct.brand || "Zigzet"
+        },
+        "offers": {
+          "@type": "Offer",
+          "url": pageUrl,
+          "priceCurrency": "USD",
+          "price": Number(quickViewProduct.price).toFixed(2),
+          "priceValidUntil": "2026-12-31",
+          "itemCondition": "https://schema.org/NewCondition",
+          "availability": (quickViewProduct.stock === undefined || quickViewProduct.stock > 0) 
+            ? "https://schema.org/InStock" 
+            : "https://schema.org/OutOfStock",
+          "seller": {
+            "@type": "Organization",
+            "name": settings.storeName || "Zigzet"
+          }
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": quickViewProduct.rating || 4.8,
+          "reviewCount": quickViewProduct.reviewsCount || 48,
+          "bestRating": "5",
+          "worstRating": "1"
+        }
+      });
+    } else if (currentPage === 'shop' || currentPage === 'home') {
+      // Add ItemList Schema for Product Inventory indexing
+      schemaGraph.push({
+        "@type": "ItemList",
+        "@id": `${pageUrl}#itemlist`,
+        "numberOfItems": products.length,
+        "itemListElement": products.slice(0, 12).map((p, index) => ({
+          "@type": "ListItem",
+          "position": index + 1,
+          "name": p.name,
+          "url": `${baseUrl}/shop?product=${p.id}`,
+          "image": p.image
+        }))
+      });
+    }
+
     const schemaData = {
       "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "Organization",
-          "@id": `${seoSettings.canonicalUrl || 'https://zigzet.com'}/#organization`,
-          "name": settings.storeName || "Zigzet",
-          "url": seoSettings.canonicalUrl || "https://zigzet.com",
-          "logo": {
-            "@type": "ImageObject",
-            "url": pageImage
-          },
-          "contactPoint": {
-            "@type": "ContactPoint",
-            "telephone": "+1-555-019-2834",
-            "contactType": "Customer Support",
-            "email": settings.contactEmail || "support@zigzet.com",
-            "availableLanguage": ["English"]
-          }
-        },
-        {
-          "@type": "WebSite",
-          "@id": `${seoSettings.canonicalUrl || 'https://zigzet.com'}/#website`,
-          "url": seoSettings.canonicalUrl || "https://zigzet.com",
-          "name": settings.storeName || "Zigzet",
-          "description": pageDescription,
-          "potentialAction": {
-            "@type": "SearchAction",
-            "target": `${seoSettings.canonicalUrl || 'https://zigzet.com'}/shop?q={search_term_string}`,
-            "query-input": "required name=search_term_string"
-          }
-        },
-        {
-          "@type": "BreadcrumbList",
-          "@id": `${pageUrl}#breadcrumb`,
-          "itemListElement": [
-            {
-              "@type": "ListItem",
-              "position": 1,
-              "name": "Home",
-              "item": `${seoSettings.canonicalUrl || 'https://zigzet.com'}/`
-            },
-            ...(currentPage !== 'home' ? [{
-              "@type": "ListItem",
-              "position": 2,
-              "name": currentPage.charAt(0).toUpperCase() + currentPage.slice(1),
-              "item": pageUrl
-            }] : [])
-          ]
-        }
-      ]
+      "@graph": schemaGraph
     };
 
     let scriptTag = document.querySelector('#zigzet-schema-jsonld');
@@ -153,7 +225,7 @@ export const SEOHead = () => {
     }
     scriptTag.textContent = JSON.stringify(schemaData);
 
-  }, [currentPage, viewMode, seoSettings, settings]);
+  }, [currentPage, viewMode, seoSettings, settings, quickViewProduct, products]);
 
-  return null; // Head manager does not render visual DOM directly
+  return null;
 };

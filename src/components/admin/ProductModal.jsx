@@ -14,8 +14,14 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
     originalPrice: '',
     stock: 25,
     image: '',
-    description: ''
+    description: '',
+    sku: '',
+    brand: 'Zigzet',
+    metaTitle: '',
+    metaDescription: ''
   });
+
+  const [showSeoFields, setShowSeoFields] = useState(false);
 
   const categoryOptions = categories.map((c) => ({
     value: c.id,
@@ -33,7 +39,11 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
         originalPrice: editingProduct.originalPrice ? editingProduct.originalPrice.toString() : '',
         stock: editingProduct.stock !== undefined ? editingProduct.stock : 20,
         image: editingProduct.image || '',
-        description: editingProduct.description || ''
+        description: editingProduct.description || '',
+        sku: editingProduct.sku || `ZG-${editingProduct.id || 'PROD'}`,
+        brand: editingProduct.brand || 'Zigzet',
+        metaTitle: editingProduct.metaTitle || '',
+        metaDescription: editingProduct.metaDescription || ''
       });
     } else {
       setFormData({
@@ -44,7 +54,11 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
         originalPrice: '',
         stock: 25,
         image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&auto=format&fit=crop&q=80',
-        description: ''
+        description: '',
+        sku: `ZG-PROD-${Math.floor(100 + Math.random() * 900)}`,
+        brand: 'Zigzet',
+        metaTitle: '',
+        metaDescription: ''
       });
     }
   }, [editingProduct, isOpen]);
@@ -191,6 +205,123 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 placeholder="Key specifications, materials, and benefits..."
               />
+            </div>
+
+            {/* Collapsible SEO & Google Snippet Section */}
+            <div className="form-group full-width" style={{ marginTop: '10px' }}>
+              <div 
+                onClick={() => setShowSeoFields(!showSeoFields)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '12px 16px',
+                  borderRadius: '10px',
+                  backgroundColor: showSeoFields ? '#f5f3ff' : '#f8fafc',
+                  border: '1px solid ' + (showSeoFields ? '#ddd6fe' : '#e2e8f0'),
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Sparkles size={16} color="#7c3aed" />
+                  <span style={{ fontSize: '13px', fontWeight: '800', color: '#1e293b' }}>
+                    Search Engine Optimization (SEO) & Google Rich Snippets
+                  </span>
+                </div>
+                <span style={{ fontSize: '12px', fontWeight: '700', color: '#7c3aed' }}>
+                  {showSeoFields ? 'Hide SEO Options ▴' : 'Edit Google SEO ▾'}
+                </span>
+              </div>
+
+              {showSeoFields && (
+                <div style={{
+                  marginTop: '12px',
+                  padding: '16px',
+                  borderRadius: '12px',
+                  backgroundColor: '#ffffff',
+                  border: '1px solid #e2e8f0',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '14px'
+                }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                    <div>
+                      <label style={{ fontSize: '11.5px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '4px' }}>
+                        Product SKU / Identifier
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.sku}
+                        onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
+                        placeholder="e.g. ZG-TECH-001"
+                        style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '13px' }}
+                      />
+                    </div>
+
+                    <div>
+                      <label style={{ fontSize: '11.5px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '4px' }}>
+                        Brand Name
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.brand}
+                        onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
+                        placeholder="e.g. Zigzet"
+                        style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '13px' }}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label style={{ fontSize: '11.5px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '4px' }}>
+                      Custom Google Meta Title (Optional)
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.metaTitle}
+                      onChange={(e) => setFormData({ ...formData, metaTitle: e.target.value })}
+                      placeholder={formData.name ? `${formData.name} - Buy Online | Zigzet` : 'Title for Google...'}
+                      style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '13px' }}
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{ fontSize: '11.5px', fontWeight: '700', color: '#475569', display: 'block', marginBottom: '4px' }}>
+                      Custom Google Meta Description (Optional)
+                    </label>
+                    <textarea
+                      rows="2"
+                      value={formData.metaDescription}
+                      onChange={(e) => setFormData({ ...formData, metaDescription: e.target.value })}
+                      placeholder={formData.description || 'Description for Google search results...'}
+                      style={{ width: '100%', padding: '8px 12px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '13px' }}
+                    />
+                  </div>
+
+                  {/* Mini Google SERP Preview */}
+                  <div style={{
+                    padding: '12px',
+                    borderRadius: '8px',
+                    backgroundColor: '#f8fafc',
+                    border: '1px solid #e2e8f0',
+                    fontFamily: 'arial, sans-serif'
+                  }}>
+                    <span style={{ fontSize: '10.5px', fontWeight: '700', color: '#64748b', textTransform: 'uppercase', display: 'block', marginBottom: '4px' }}>
+                      Google Search Result Preview
+                    </span>
+                    <span style={{ fontSize: '11px', color: '#202124', display: 'block' }}>
+                      https://zigzet.com › shop › {formData.name ? formData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') : 'product'}
+                    </span>
+                    <span style={{ fontSize: '15px', color: '#1a0dab', fontWeight: '400', display: 'block', margin: '2px 0' }}>
+                      {formData.metaTitle || (formData.name ? `${formData.name} - Only $${formData.price || '0.00'} | Zigzet` : 'Product Title')}
+                    </span>
+                    <span style={{ fontSize: '12px', color: '#4d5156', display: 'block', lineHeight: '1.4' }}>
+                      {formData.metaDescription || (formData.description ? formData.description.slice(0, 130) + '...' : 'Buy authentic products online with fast USA delivery on Zigzet.')}
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
