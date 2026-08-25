@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowRight, FilterX } from 'lucide-react';
 import { ProductCard } from '../common/ProductCard';
+import { ProductGridSkeleton } from '../common/Skeleton';
 import { useStore } from '../../context/StoreContext';
 
 export const FeaturedProducts = () => {
   const { products, activeCategory, setActiveCategory } = useStore();
+  const [isSwitching, setIsSwitching] = useState(false);
+
+  useEffect(() => {
+    setIsSwitching(true);
+    const timer = setTimeout(() => setIsSwitching(false), 180);
+    return () => clearTimeout(timer);
+  }, [activeCategory]);
 
   const activeProducts = products.filter((p) => p.isActive !== false);
 
@@ -50,11 +58,15 @@ export const FeaturedProducts = () => {
         </div>
 
         {/* Products Grid */}
-        <div className="products-grid">
-          {displayedProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+        {isSwitching ? (
+          <ProductGridSkeleton count={4} />
+        ) : (
+          <div className="products-grid">
+            {displayedProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
 
         {displayedProducts.length === 0 && (
           <div style={{ textAlign: 'center', padding: '48px 0', color: '#6b7280' }}>

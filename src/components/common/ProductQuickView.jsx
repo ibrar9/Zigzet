@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Heart, ShoppingCart, Star, Check, Shield, Truck, Zap, Bell } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
+import { ProductImageZoom } from './ProductImageZoom';
 
 export const ProductQuickView = () => {
   const { 
@@ -17,7 +18,6 @@ export const ProductQuickView = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
-  const [selectedImgIdx, setSelectedImgIdx] = useState(0);
 
   if (!quickViewProduct) return null;
 
@@ -62,7 +62,7 @@ export const ProductQuickView = () => {
 
   return (
     <div className="modal-overlay open" onClick={() => setQuickViewProduct(null)}>
-      <div className="modal-box" style={{ maxWidth: '780px' }} onClick={(e) => e.stopPropagation()}>
+      <div className="modal-box" style={{ maxWidth: '820px' }} onClick={(e) => e.stopPropagation()}>
         <button 
           className="modal-close-icon"
           onClick={() => setQuickViewProduct(null)}
@@ -72,34 +72,13 @@ export const ProductQuickView = () => {
         </button>
 
         <div className="quick-view-grid">
-          {/* Gallery Column */}
+          {/* Interactive Zoom & Multi-Angle Gallery Column */}
           <div className="quick-view-gallery">
-            <div className="quick-view-main-image">
-              <img src={images[selectedImgIdx] || currentColor?.image || product.image} alt={product.name} />
-            </div>
-
-            {images.length > 1 && (
-              <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px' }}>
-                {images.map((img, idx) => (
-                  <div
-                    key={idx}
-                    onClick={() => setSelectedImgIdx(idx)}
-                    style={{
-                      width: '60px',
-                      height: '60px',
-                      borderRadius: '8px',
-                      padding: '4px',
-                      border: selectedImgIdx === idx ? '2px solid #7c3aed' : '1px solid #e2e8f0',
-                      cursor: 'pointer',
-                      backgroundColor: '#f8fafc',
-                      overflow: 'hidden'
-                    }}
-                  >
-                    <img src={img} alt="Thumbnail" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-                  </div>
-                ))}
-              </div>
-            )}
+            <ProductImageZoom
+              images={images}
+              mainImage={currentColor?.image || product.image}
+              productName={product.name}
+            />
           </div>
 
           {/* Product Info Column */}

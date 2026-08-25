@@ -16,6 +16,7 @@ import { useStore } from '../context/StoreContext';
 import { categories } from '../data/categories';
 import { ProductCard } from '../components/common/ProductCard';
 import { CustomDropdown } from '../components/common/CustomDropdown';
+import { ProductGridSkeleton } from '../components/common/Skeleton';
 
 export const ShopPage = () => {
   const { 
@@ -36,6 +37,14 @@ export const ShopPage = () => {
   const [sortBy, setSortBy] = useState('featured');
   const [viewLayout, setViewLayout] = useState('grid'); // 'grid' | 'list'
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+  const [isFiltering, setIsFiltering] = useState(false);
+
+  // Trigger smooth skeleton shimmer when filters change
+  useEffect(() => {
+    setIsFiltering(true);
+    const timer = setTimeout(() => setIsFiltering(false), 220);
+    return () => clearTimeout(timer);
+  }, [selectedCategories, priceRange, minRating, onlyInStock, onlySale, sortBy, searchQuery]);
 
   // Sync activeCategory from store if changed externally
   useEffect(() => {
@@ -417,7 +426,9 @@ export const ShopPage = () => {
             )}
 
             {/* Products Grid */}
-            {filteredProducts.length === 0 ? (
+            {isFiltering ? (
+              <ProductGridSkeleton count={8} />
+            ) : filteredProducts.length === 0 ? (
               <div className="empty-catalog-state">
                 <Search size={48} color="#9ca3af" />
                 <h3>No products match your criteria</h3>
