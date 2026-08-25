@@ -36,6 +36,7 @@ import { NotifyModal } from './components/common/NotifyModal';
 import { StoreAiChat } from './components/common/StoreAiChat';
 import { Toast } from './components/common/Toast';
 import { PageLoader } from './components/common/Skeleton';
+import { SEOHead } from './components/common/SEOHead';
 
 function App() {
   const { viewMode, currentPage, currentUser } = useStore();
@@ -44,6 +45,7 @@ function App() {
   if (viewMode === 'admin') {
     return (
       <Suspense fallback={<PageLoader />}>
+        <SEOHead />
         <AdminPanel />
         <Toast />
       </Suspense>
@@ -54,6 +56,7 @@ function App() {
   if (currentPage === 'user-dashboard' && currentUser) {
     return (
       <Suspense fallback={<PageLoader />}>
+        <SEOHead />
         <UserDashboard />
         <Toast />
       </Suspense>
@@ -64,6 +67,7 @@ function App() {
   if (currentPage === 'user-login' || (currentPage === 'user-dashboard' && !currentUser)) {
     return (
       <Suspense fallback={<PageLoader />}>
+        <SEOHead />
         <UserLoginPage />
         <Toast />
       </Suspense>
@@ -72,6 +76,7 @@ function App() {
 
   return (
     <div className="app-root">
+      <SEOHead />
       <AnnouncementBar />
       <Header />
       <main>

@@ -42,7 +42,58 @@ const STORAGE_KEYS = {
   LOYALTY: 'zigzet_loyalty_v2',
   RESTOCK: 'zigzet_restock_alerts_v2',
   USER_AUTH: 'zigzet_user_auth_v2',
-  USER_ACCOUNTS: 'zigzet_user_accounts_v2'
+  USER_ACCOUNTS: 'zigzet_user_accounts_v2',
+  SEO: 'zigzet_seo_v2'
+};
+
+const defaultSeo = {
+  siteTitle: 'Zigzet - Shop Smarter. Live Better.',
+  titleFormat: '%page% | Zigzet',
+  defaultDescription: 'Discover top-quality electronics, trending fashion, and home living essentials with fast USA shipping on Zigzet. 100% encrypted & secure shopping.',
+  defaultKeywords: 'online shopping, electronics, fashion, home essentials, deals, discount store, fast shipping, zigzet',
+  canonicalUrl: 'https://zigzet.com',
+  ogImage: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=1200&auto=format&fit=crop&q=80',
+  googleSiteVerification: 'pWrOVdd1M2K-eGgalaSy6SBjoSIaXZVTeSc4W3fQc1I',
+  ga4Id: 'G-ZIGZET2026',
+  metaPixelId: '',
+  allowIndexing: true,
+  pageOverrides: {
+    home: {
+      title: 'Zigzet - Shop Smarter. Live Better.',
+      description: 'Discover curated electronics, trending modern apparel, and functional home essentials with free USA shipping.',
+      keywords: 'ecommerce, gadgets, trending clothes, home decor, shop online'
+    },
+    shop: {
+      title: 'All Products & Catalog | Zigzet Store',
+      description: 'Browse our complete catalog of electronics, smart wearables, lifestyle apparel, and home living products.',
+      keywords: 'all products, catalog, online shop, gadgets, fashion'
+    },
+    categories: {
+      title: 'Browse Departments & Categories | Zigzet',
+      description: 'Explore popular departments including Electronics, Fashion, Beauty, Home & Living, Sports, and Automotive.',
+      keywords: 'departments, shopping categories, tech, apparel'
+    },
+    deals: {
+      title: 'Flash Deals & Promo Vouchers (Up to 40% Off) | Zigzet',
+      description: 'Grab limited-time flash discounts, clearance savings, and verified checkout promo codes today.',
+      keywords: 'flash sale, deals, discount coupons, clearance'
+    },
+    track: {
+      title: 'Live Order Tracking & Courier Status | Zigzet',
+      description: 'Track your package in real-time with your order ID or courier waybill tracking number.',
+      keywords: 'track order, shipment status, delivery tracking'
+    },
+    about: {
+      title: 'About Zigzet | Our Mission, Vision & Quality Promise',
+      description: 'Learn how Zigzet delivers exceptional e-commerce experiences with authentic curated products.',
+      keywords: 'about us, brand story, quality guarantee'
+    },
+    contact: {
+      title: '24/7 Customer Support & Help Center | Zigzet',
+      description: 'Contact Zigzet customer care specialists for inquiries, order updates, returns, and live chat assistance.',
+      keywords: 'support, contact us, help desk, customer service'
+    }
+  }
 };
 
 const defaultSettings = {
@@ -317,6 +368,16 @@ export const StoreProvider = ({ children }) => {
     }
   });
 
+  // SEO Configuration
+  const [seoSettings, setSeoSettings] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.SEO);
+      return saved ? { ...defaultSeo, ...JSON.parse(saved) } : defaultSeo;
+    } catch {
+      return defaultSeo;
+    }
+  });
+
   // Settings
   const [settings, setSettings] = useState(() => {
     try {
@@ -362,6 +423,7 @@ export const StoreProvider = ({ children }) => {
   useEffect(() => { localStorage.setItem(STORAGE_KEYS.CART, JSON.stringify(cart)); }, [cart]);
   useEffect(() => { localStorage.setItem(STORAGE_KEYS.WISHLIST, JSON.stringify(wishlist)); }, [wishlist]);
   useEffect(() => { localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings)); }, [settings]);
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.SEO, JSON.stringify(seoSettings)); }, [seoSettings]);
 
   useEffect(() => {
     const handleRouteChange = () => {
@@ -1010,6 +1072,11 @@ export const StoreProvider = ({ children }) => {
     showToast('Settings Saved', 'Store configuration updated.');
   };
 
+  const updateSeoSettings = (newSeo) => {
+    setSeoSettings((prev) => ({ ...prev, ...newSeo }));
+    showToast('SEO & Metadata Saved', 'Search engine tags, social previews and schema updated.');
+  };
+
   const openNotifyModal = (product) => {
     setNotifyProduct(product);
     setIsNotifyOpen(true);
@@ -1155,6 +1222,8 @@ export const StoreProvider = ({ children }) => {
         markAllNotificationsRead,
         requestPayout,
         updateSettings,
+        seoSettings,
+        updateSeoSettings,
         resetToDefaults
       }}
     >

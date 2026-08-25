@@ -19,6 +19,7 @@ import { AdminLoyalty } from './AdminLoyalty';
 import { AdminCustomizer } from './AdminCustomizer';
 import { AdminInvoices } from './AdminInvoices';
 import { AdminStaff } from './AdminStaff';
+import { AdminSEO } from './AdminSEO';
 import { AdminInboxDrawer } from './AdminInboxDrawer';
 import { AdminNotificationsDrawer } from './AdminNotificationsDrawer';
 import { 
@@ -88,6 +89,7 @@ export const AdminPanel = () => {
           {adminTab === 'staff' && <AdminStaff />}
           {adminTab === 'wallet' && <AdminWallet />}
           {adminTab === 'transactions' && <AdminWallet isTransactionsOnly={true} />}
+          {adminTab === 'seo' && <AdminSEO />}
           {adminTab === 'settings' && <AdminSettings />}
 
           {/* Integrations Tab View */}

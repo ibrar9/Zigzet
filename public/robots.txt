@@ -1,0 +1,17 @@
+# robots.txt for Zigzet E-Commerce Platform
+User-agent: *
+Allow: /
+Allow: /shop
+Allow: /categories
+Allow: /deals
+Allow: /track
+Allow: /about
+Allow: /contact
+
+# Disallow private admin management paths from indexing
+Disallow: /#admin
+Disallow: /admin
+Disallow: /api/
+
+# XML Sitemap location
+Sitemap: https://zigzet.com/sitemap.xml
