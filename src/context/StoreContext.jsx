@@ -40,7 +40,9 @@ const STORAGE_KEYS = {
   CMS: 'zigzet_cms_v2',
   CAMPAIGNS: 'zigzet_campaigns_v2',
   LOYALTY: 'zigzet_loyalty_v2',
-  RESTOCK: 'zigzet_restock_alerts_v2'
+  RESTOCK: 'zigzet_restock_alerts_v2',
+  USER_AUTH: 'zigzet_user_auth_v2',
+  USER_ACCOUNTS: 'zigzet_user_accounts_v2'
 };
 
 const defaultSettings = {
@@ -103,6 +105,41 @@ export const StoreProvider = ({ children }) => {
       return false;
     }
   });
+
+  // User Authentication State
+  const [currentUser, setCurrentUser] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem(STORAGE_KEYS.USER_AUTH);
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  // Registered user accounts (persisted in localStorage)
+  const [userAccounts, setUserAccounts] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.USER_ACCOUNTS);
+      // Seed demo account
+      const defaults = [{
+        id: 'user-demo',
+        name: 'Sarah Jenkins',
+        email: 'sarah.j@example.com',
+        password: 'demo123',
+        phone: '+1 (555) 123-4567',
+        address: '742 Evergreen Terrace',
+        city: 'Springfield',
+        zip: '97477',
+        joinedAt: 'Aug 2026'
+      }];
+      return saved ? JSON.parse(saved) : defaults;
+    } catch {
+      return [];
+    }
+  });
+
+  // Persist user accounts
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.USER_ACCOUNTS, JSON.stringify(userAccounts)); }, [userAccounts]);
 
   // 1. Products state
   const [products, setProducts] = useState(() => {
@@ -378,6 +415,58 @@ export const StoreProvider = ({ children }) => {
     setIsAdminAuthenticated(false);
     sessionStorage.removeItem(STORAGE_KEYS.ADMIN_AUTH);
     showToast('Logged Out', 'Signed out from admin session.');
+  };
+
+  // User Auth Functions
+  const loginUser = (email, password) => {
+    const account = userAccounts.find(
+      a => a.email.toLowerCase() === email.toLowerCase() && a.password === password
+    );
+    if (account) {
+      const { password: _pw, ...safeUser } = account;
+      setCurrentUser(safeUser);
+      sessionStorage.setItem(STORAGE_KEYS.USER_AUTH, JSON.stringify(safeUser));
+      showToast('Welcome Back!', `Hello, ${safeUser.name}! You are now signed in.`);
+      return true;
+    }
+    return false;
+  };
+
+  const registerUser = ({ name, email, password }) => {
+    const exists = userAccounts.some(a => a.email.toLowerCase() === email.toLowerCase());
+    if (exists) return false;
+    const newAccount = {
+      id: 'user-' + Date.now(),
+      name,
+      email,
+      password,
+      phone: '',
+      address: '',
+      city: '',
+      zip: '',
+      joinedAt: new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+    };
+    setUserAccounts(prev => [...prev, newAccount]);
+    const { password: _pw, ...safeUser } = newAccount;
+    setCurrentUser(safeUser);
+    sessionStorage.setItem(STORAGE_KEYS.USER_AUTH, JSON.stringify(safeUser));
+    showToast('Account Created!', `Welcome to Zigzet, ${name}! 🎉`);
+    return true;
+  };
+
+  const logoutUser = () => {
+    setCurrentUser(null);
+    sessionStorage.removeItem(STORAGE_KEYS.USER_AUTH);
+    showToast('Signed Out', 'You have been signed out successfully.', 'info');
+  };
+
+  const updateUserProfile = (updates) => {
+    const updated = { ...currentUser, ...updates };
+    setCurrentUser(updated);
+    sessionStorage.setItem(STORAGE_KEYS.USER_AUTH, JSON.stringify(updated));
+    // Also update the accounts array
+    setUserAccounts(prev => prev.map(a => a.id === updated.id ? { ...a, ...updates } : a));
+    showToast('Profile Updated', 'Your profile information has been saved.');
   };
 
   // Cart Operations
@@ -983,6 +1072,11 @@ export const StoreProvider = ({ children }) => {
         updateCmsContent,
         updateCampaign,
         updateLoyaltyProgram,
+        currentUser,
+        loginUser,
+        registerUser,
+        logoutUser,
+        updateUserProfile,
         submitContactMessage,
         sendInboxReply,
         markAllNotificationsRead,

@@ -32,7 +32,8 @@ export const Header = () => {
     currentPage,
     navigatePage,
     setViewMode,
-    settings
+    settings,
+    currentUser
   } = useStore();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -268,6 +269,24 @@ export const Header = () => {
             title="Admin Suite Portal"
           >
             <ShieldCheck size={20} color="#7c3aed" />
+          </button>
+
+          {/* User Account Button */}
+          <button 
+            className="action-icon-btn user-account-btn" 
+            onClick={() => navigatePage(currentUser ? 'user-dashboard' : 'user-login')}
+            aria-label="My Account"
+            title={currentUser ? `${currentUser.name}'s Account` : 'Sign In'}
+            style={{ position: 'relative' }}
+          >
+            <User size={20} />
+            {currentUser && (
+              <span style={{
+                position: 'absolute', top: '-3px', right: '-3px',
+                width: '9px', height: '9px', borderRadius: '50%',
+                background: '#22c55e', border: '2px solid var(--bg-primary, #0f0f0f)'
+              }} />
+            )}
           </button>
 
           {/* Shopping Cart Button */}

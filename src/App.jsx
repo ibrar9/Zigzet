@@ -33,43 +33,71 @@ import { StoreAiChat } from './components/common/StoreAiChat';
 import { Toast } from './components/common/Toast';
 import { AdminPanel } from './components/admin/AdminPanel';
 
+// User Dashboard & Auth
+import { UserDashboard } from './components/user/UserDashboard';
+import { UserLoginPage } from './components/user/UserLoginPage';
+
 function App() {
-  const { viewMode, currentPage } = useStore();
+  const { viewMode, currentPage, currentUser } = useStore();
+
+  // Full-screen admin view
+  if (viewMode === 'admin') {
+    return (
+      <>
+        <AdminPanel />
+        <Toast />
+      </>
+    );
+  }
+
+  // Full-screen user dashboard (logged in)
+  if (currentPage === 'user-dashboard' && currentUser) {
+    return (
+      <>
+        <UserDashboard />
+        <Toast />
+      </>
+    );
+  }
+
+  // Full-screen user login (not logged in)
+  if (currentPage === 'user-login' || (currentPage === 'user-dashboard' && !currentUser)) {
+    return (
+      <>
+        <UserLoginPage />
+        <Toast />
+      </>
+    );
+  }
 
   return (
     <div className="app-root">
-      {viewMode === 'admin' ? (
-        <AdminPanel />
-      ) : (
-        <>
-          <AnnouncementBar />
-          <Header />
-          <main>
-            {currentPage === 'home' && (
-              <>
-                <HeroBanner />
-                <TrustBadges />
-                <CategorySection />
-                <PromoBanners />
-                <FeaturedProducts />
-                <ShippingCallout />
-              </>
-            )}
+      <AnnouncementBar />
+      <Header />
+      <main>
+        {currentPage === 'home' && (
+          <>
+            <HeroBanner />
+            <TrustBadges />
+            <CategorySection />
+            <PromoBanners />
+            <FeaturedProducts />
+            <ShippingCallout />
+          </>
+        )}
 
-            {currentPage === 'shop' && <ShopPage />}
-            {currentPage === 'categories' && <CategoriesPage />}
-            {currentPage === 'deals' && <DealsPage />}
-            {currentPage === 'track' && <TrackOrderPage />}
-            {currentPage === 'track-order' && <TrackOrderPage />}
-            {currentPage === 'about' && <AboutPage />}
-            {currentPage === 'contact' && <ContactPage />}
-          </main>
-          <Footer />
-          <MobileNav />
-          <MobileNavBar />
-          <StoreAiChat />
-        </>
-      )}
+        {currentPage === 'shop' && <ShopPage />}
+        {currentPage === 'categories' && <CategoriesPage />}
+        {currentPage === 'deals' && <DealsPage />}
+        {currentPage === 'track' && <TrackOrderPage />}
+        {currentPage === 'track-order' && <TrackOrderPage />}
+        {currentPage === 'about' && <AboutPage />}
+        {currentPage === 'contact' && <ContactPage />}
+      </main>
+      <Footer />
+      <MobileNav />
+      <MobileNavBar />
+      <StoreAiChat />
 
       {/* Global Interactive Modals and Drawers */}
       <CartDrawer />
