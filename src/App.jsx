@@ -4,6 +4,7 @@ import { AnnouncementBar } from './components/layout/AnnouncementBar';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
 import { MobileNav } from './components/layout/MobileNav';
+import { MobileNavBar } from './components/layout/MobileNavBar';
 
 // Home sections
 import { HeroBanner } from './components/home/HeroBanner';
@@ -21,12 +22,14 @@ import { TrackOrderPage } from './pages/TrackOrderPage';
 import { AboutPage } from './pages/AboutPage';
 import { ContactPage } from './pages/ContactPage';
 
-// Common Modals and Admin
+// Common Modals, Assistant and Admin
 import { CartDrawer } from './components/common/CartDrawer';
 import { WishlistDrawer } from './components/common/WishlistDrawer';
 import { ProductQuickView } from './components/common/ProductQuickView';
 import { CheckoutModal } from './components/common/CheckoutModal';
 import { LiveSearchModal } from './components/common/LiveSearchModal';
+import { NotifyModal } from './components/common/NotifyModal';
+import { StoreAiChat } from './components/common/StoreAiChat';
 import { Toast } from './components/common/Toast';
 import { AdminPanel } from './components/admin/AdminPanel';
 
@@ -57,11 +60,14 @@ function App() {
             {currentPage === 'categories' && <CategoriesPage />}
             {currentPage === 'deals' && <DealsPage />}
             {currentPage === 'track' && <TrackOrderPage />}
+            {currentPage === 'track-order' && <TrackOrderPage />}
             {currentPage === 'about' && <AboutPage />}
             {currentPage === 'contact' && <ContactPage />}
           </main>
           <Footer />
           <MobileNav />
+          <MobileNavBar />
+          <StoreAiChat />
         </>
       )}
 
@@ -71,6 +77,7 @@ function App() {
       <ProductQuickView />
       <CheckoutModal />
       <LiveSearchModal />
+      <NotifyModal />
       <Toast />
     </div>
   );

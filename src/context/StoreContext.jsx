@@ -39,7 +39,8 @@ const STORAGE_KEYS = {
   ABANDONED: 'zigzet_abandoned_v2',
   CMS: 'zigzet_cms_v2',
   CAMPAIGNS: 'zigzet_campaigns_v2',
-  LOYALTY: 'zigzet_loyalty_v2'
+  LOYALTY: 'zigzet_loyalty_v2',
+  RESTOCK: 'zigzet_restock_alerts_v2'
 };
 
 const defaultSettings = {
@@ -250,6 +251,16 @@ export const StoreProvider = ({ children }) => {
   // 14. Active Applied Coupon in Checkout
   const [appliedCoupon, setAppliedCoupon] = useState(null);
 
+  // 15. Restock Alerts Queue
+  const [restockAlerts, setRestockAlerts] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.RESTOCK);
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
   // Cart & Wishlist
   const [cart, setCart] = useState(() => {
     try {
@@ -291,6 +302,11 @@ export const StoreProvider = ({ children }) => {
   const [quickViewProduct, setQuickViewProduct] = useState(null);
   const [toasts, setToasts] = useState([]);
 
+  // New Frontend Feature Modals
+  const [isAiChatOpen, setIsAiChatOpen] = useState(false);
+  const [isNotifyOpen, setIsNotifyOpen] = useState(false);
+  const [notifyProduct, setNotifyProduct] = useState(null);
+
   // Persistence Effects
   useEffect(() => { localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products)); }, [products]);
   useEffect(() => { localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(orders)); }, [orders]);
@@ -305,6 +321,7 @@ export const StoreProvider = ({ children }) => {
   useEffect(() => { localStorage.setItem(STORAGE_KEYS.CMS, JSON.stringify(cmsContent)); }, [cmsContent]);
   useEffect(() => { localStorage.setItem(STORAGE_KEYS.CAMPAIGNS, JSON.stringify(campaign)); }, [campaign]);
   useEffect(() => { localStorage.setItem(STORAGE_KEYS.LOYALTY, JSON.stringify(loyaltyProgram)); }, [loyaltyProgram]);
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.RESTOCK, JSON.stringify(restockAlerts)); }, [restockAlerts]);
   useEffect(() => { localStorage.setItem(STORAGE_KEYS.CART, JSON.stringify(cart)); }, [cart]);
   useEffect(() => { localStorage.setItem(STORAGE_KEYS.WISHLIST, JSON.stringify(wishlist)); }, [wishlist]);
   useEffect(() => { localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings)); }, [settings]);
@@ -832,6 +849,31 @@ export const StoreProvider = ({ children }) => {
     showToast('Settings Saved', 'Store configuration updated.');
   };
 
+  const openNotifyModal = (product) => {
+    setNotifyProduct(product);
+    setIsNotifyOpen(true);
+  };
+
+  const closeNotifyModal = () => {
+    setIsNotifyOpen(false);
+    setNotifyProduct(null);
+  };
+
+  const requestRestockAlert = (product, email) => {
+    const newAlert = {
+      id: 'alert-' + Date.now(),
+      productId: product.id,
+      productName: product.name,
+      email: email,
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      status: 'Subscribed'
+    };
+
+    setRestockAlerts((prev) => [newAlert, ...prev]);
+    showToast('Subscribed to Restock!', `We will email ${email} the second this item is back in stock.`);
+    closeNotifyModal();
+  };
+
   const resetToDefaults = () => {
     setProducts(initialProducts.map((p) => ({ ...p, isActive: true, salesCount: 40, stock: 25 })));
     setOrders(initialOrders);
@@ -846,6 +888,7 @@ export const StoreProvider = ({ children }) => {
     setCmsContent(defaultCms);
     setCampaign(defaultCampaign);
     setLoyaltyProgram(defaultLoyalty);
+    setRestockAlerts([]);
     setCart([]);
     setWishlist([]);
     setSettings(defaultSettings);
@@ -876,6 +919,7 @@ export const StoreProvider = ({ children }) => {
         campaign,
         loyaltyProgram,
         appliedCoupon,
+        restockAlerts,
         cart,
         wishlist,
         settings,
@@ -897,6 +941,13 @@ export const StoreProvider = ({ children }) => {
         setIsCheckoutOpen,
         quickViewProduct,
         setQuickViewProduct,
+        isAiChatOpen,
+        setIsAiChatOpen,
+        isNotifyOpen,
+        notifyProduct,
+        openNotifyModal,
+        closeNotifyModal,
+        requestRestockAlert,
         toasts,
         showToast,
         removeToast,
