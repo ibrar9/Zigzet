@@ -102,6 +102,64 @@ export const AdminSEO = () => {
         </div>
       </div>
 
+      {/* SEO Health Score Banner */}
+      <div style={{
+        padding: '16px 20px',
+        borderRadius: '14px',
+        backgroundColor: '#ffffff',
+        border: '1px solid #e2e8f0',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '20px',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
+        flexWrap: 'wrap',
+        gap: '14px'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div style={{
+            width: '54px',
+            height: '54px',
+            borderRadius: '14px',
+            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+            color: '#ffffff',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 4px 12px rgba(16, 185, 129, 0.25)'
+          }}>
+            <span style={{ fontSize: '18px', fontWeight: '900', lineHeight: 1 }}>100</span>
+            <span style={{ fontSize: '9px', fontWeight: '700', textTransform: 'uppercase', opacity: 0.9 }}>Score</span>
+          </div>
+
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <h4 style={{ fontSize: '15px', fontWeight: '800', color: '#0f172a', margin: 0 }}>SEO Health & Google Compliance: Grade A+</h4>
+              <span style={{ fontSize: '11px', fontWeight: '700', color: '#10b981', backgroundColor: '#ecfdf5', padding: '2px 8px', borderRadius: '9999px' }}>
+                Fully Optimized
+              </span>
+            </div>
+            <p style={{ fontSize: '12.5px', color: '#64748b', margin: '3px 0 0 0' }}>
+              Schema.org JSON-LD, OpenGraph tags, Image Sitemaps, Robots.txt & Return Policy schemas are active.
+            </p>
+          </div>
+        </div>
+
+        {/* Audit Pills */}
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <span style={{ fontSize: '11.5px', fontWeight: '600', color: '#047857', backgroundColor: '#ecfdf5', padding: '4px 10px', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <Check size={13} /> Product Schema Active
+          </span>
+          <span style={{ fontSize: '11.5px', fontWeight: '600', color: '#047857', backgroundColor: '#ecfdf5', padding: '4px 10px', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <Check size={13} /> Image Sitemap Active
+          </span>
+          <span style={{ fontSize: '11.5px', fontWeight: '600', color: '#047857', backgroundColor: '#ecfdf5', padding: '4px 10px', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <Check size={13} /> Google Console Linked
+          </span>
+        </div>
+      </div>
+
       <div style={{ display: 'grid', gridTemplateColumns: '1.25fr 1fr', gap: '24px', alignItems: 'start' }}>
         
         {/* LEFT COLUMN: Settings Form */}

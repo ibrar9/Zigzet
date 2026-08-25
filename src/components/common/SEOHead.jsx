@@ -189,6 +189,41 @@ export const SEOHead = () => {
           "seller": {
             "@type": "Organization",
             "name": settings.storeName || "Zigzet"
+          },
+          "hasMerchantReturnPolicy": {
+            "@type": "MerchantReturnPolicy",
+            "applicableCountry": "US",
+            "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+            "merchantReturnDays": 30,
+            "returnMethod": "https://schema.org/ReturnByMail",
+            "returnFees": "https://schema.org/FreeReturn"
+          },
+          "shippingDetails": {
+            "@type": "OfferShippingDetails",
+            "shippingRate": {
+              "@type": "MonetaryAmount",
+              "value": "0.00",
+              "currency": "USD"
+            },
+            "shippingDestination": {
+              "@type": "DefinedRegion",
+              "addressCountry": "US"
+            },
+            "deliveryTime": {
+              "@type": "ShippingDeliveryTime",
+              "handlingTime": {
+                "@type": "QuantitativeValue",
+                "minValue": 0,
+                "maxValue": 1,
+                "unitCode": "DAY"
+              },
+              "transitTime": {
+                "@type": "QuantitativeValue",
+                "minValue": 2,
+                "maxValue": 4,
+                "unitCode": "DAY"
+              }
+            }
           }
         },
         "aggregateRating": {
@@ -212,6 +247,38 @@ export const SEOHead = () => {
           "url": `${baseUrl}/shop?product=${p.id}`,
           "image": p.image
         }))
+      });
+    } else if (currentPage === 'contact' || currentPage === 'about') {
+      // Add FAQ Schema for Rich Google Snippets
+      schemaGraph.push({
+        "@type": "FAQPage",
+        "@id": `${pageUrl}#faq`,
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How fast is shipping on Zigzet?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "We provide fast tracked USA delivery in 2-4 business days. Free shipping applies to all orders over $50."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the return policy?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "We offer a 30-day risk-free money-back guarantee with hassle-free prepaid returns."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Are payment methods encrypted and secure?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, all checkout transactions are 256-bit SSL encrypted supporting Visa, MasterCard, American Express, Apple Pay, and Google Pay."
+            }
+          }
+        ]
       });
     }
 
