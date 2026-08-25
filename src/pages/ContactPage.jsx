@@ -3,7 +3,7 @@ import { Mail, Phone, MapPin, Clock, Send, ChevronDown, MessageSquare, CheckCirc
 import { useStore } from '../context/StoreContext';
 
 export const ContactPage = () => {
-  const { showToast } = useStore();
+  const { submitContactMessage } = useStore();
 
   const [form, setForm] = useState({
     name: '',
@@ -16,7 +16,13 @@ export const ContactPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    showToast('Message Sent! ✉️', 'Thank you for reaching out. Our support team will reply within 2 hours.');
+    if (!form.name || !form.email || !form.message) return;
+    submitContactMessage({
+      name: form.name,
+      email: form.email,
+      subject: form.subject,
+      message: form.message
+    });
     setForm({ name: '', email: '', subject: 'General Inquiry', message: '' });
   };
 

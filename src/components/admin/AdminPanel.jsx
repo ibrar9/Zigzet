@@ -59,7 +59,7 @@ export const AdminPanel = () => {
           {adminTab === 'dashboard' && <AdminDashboard />}
           {adminTab === 'products' && <AdminProducts />}
           {adminTab === 'orders' && <AdminOrders />}
-          {adminTab === 'customers' && <AdminCustomers />}
+          {adminTab === 'customers' && <AdminCustomers onOpenInbox={() => setIsInboxOpen(true)} />}
           {adminTab === 'wallet' && <AdminWallet />}
           {adminTab === 'transactions' && <AdminWallet isTransactionsOnly={true} />}
           {adminTab === 'settings' && <AdminSettings />}

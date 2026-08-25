@@ -20,10 +20,13 @@ export const AdminHeader = ({
   searchVal,
   setSearchVal
 }) => {
-  const { adminTab, setAdminTab, setViewMode, logoutAdmin, settings } = useStore();
+  const { adminTab, setAdminTab, setViewMode, logoutAdmin, settings, inboxMessages, notifications } = useStore();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState('USD');
   const [isCurrencyOpen, setIsCurrencyOpen] = useState(false);
+
+  const unreadMessagesCount = inboxMessages.filter((m) => m.unread).length;
+  const unreadNotifsCount = notifications.filter((n) => n.unread).length;
 
   const getPageTitle = () => {
     switch (adminTab) {
@@ -40,7 +43,7 @@ export const AdminHeader = ({
       case 'transactions':
         return { title: 'Transactions Ledger', subtitle: 'Real-time financial activity and audit log' };
       case 'integrations':
-        return { title: 'Integrations & Apps', subtitle: 'Connected channels: Stripe, PayPal, DHL, Shopify' };
+        return { title: 'Integrations & Apps', subtitle: 'Connected channels: Stripe, PayPal, DHL, GA4' };
       case 'user':
         return { title: 'User Permissions', subtitle: 'Manage admin roles, team access, and security' };
       case 'history':
@@ -87,7 +90,7 @@ export const AdminHeader = ({
           <Search size={16} className="search-icon" />
           <input
             type="text"
-            placeholder="Search Dashboard"
+            placeholder="Search Dashboard..."
             value={searchVal || ''}
             onChange={(e) => setSearchVal && setSearchVal(e.target.value)}
             className="admin-search-input"
@@ -132,24 +135,28 @@ export const AdminHeader = ({
 
         {/* Action Buttons: Chat, Notification, Settings */}
         <div className="admin-action-icons-group">
-          {/* Inbox / Messages */}
+          {/* Inbox / Messages with Live Dynamic Badge */}
           <button 
             className="admin-icon-btn purple-btn" 
             onClick={onOpenInbox}
-            title="Open Inbox"
+            title="Customer Live Inbox"
           >
             <MessageSquare size={17} />
-            <span className="icon-badge">3</span>
+            {unreadMessagesCount > 0 && (
+              <span className="icon-badge">{unreadMessagesCount}</span>
+            )}
           </button>
 
-          {/* Notifications */}
+          {/* Notifications with Live Dynamic Dot */}
           <button 
             className="admin-icon-btn" 
             onClick={onOpenNotifications}
-            title="Notifications"
+            title="Notification Center"
           >
             <Bell size={17} />
-            <span className="icon-dot-badge"></span>
+            {unreadNotifsCount > 0 && (
+              <span className="icon-dot-badge"></span>
+            )}
           </button>
 
           {/* Settings */}

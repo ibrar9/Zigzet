@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Wallet,
   ArrowDownLeft,
@@ -9,18 +9,54 @@ import {
   DownloadCloud,
   CheckCircle2,
   Clock,
-  RotateCcw
+  RotateCcw,
+  Sparkles
 } from 'lucide-react';
-import { walletOverview } from '../../data/adminMockData';
+import { useStore } from '../../context/StoreContext';
 
 export const AdminWallet = ({ isTransactionsOnly = false }) => {
+  const { walletTransactions, orders, requestPayout, showToast } = useStore();
   const [activeFilter, setActiveFilter] = useState('all');
 
-  const filteredTxns = walletOverview.recentTransactions.filter((txn) => {
+  // Compute live wallet figures
+  const totalOrdersAmount = useMemo(() => {
+    return orders.reduce((sum, o) => sum + (Number(o.total) || 0), 0);
+  }, [orders]);
+
+  const totalPayouts = useMemo(() => {
+    return walletTransactions
+      .filter((t) => t.amount.startsWith('-'))
+      .reduce((sum, t) => {
+        const val = parseFloat(t.amount.replace(/[^0-9.-]+/g, '')) || 0;
+        return sum + Math.abs(val);
+      }, 0);
+  }, [walletTransactions]);
+
+  const liveTotalBalance = 48920.40 + totalOrdersAmount - totalPayouts;
+  const liveAvailablePayout = Math.max(0, 14250.00 + totalOrdersAmount * 0.7 - totalPayouts);
+  const livePendingSettlement = Math.max(0, 3890.00 + totalOrdersAmount * 0.3);
+
+  const filteredTxns = walletTransactions.filter((txn) => {
     if (activeFilter === 'completed') return txn.status === 'Completed';
     if (activeFilter === 'refunds') return txn.status === 'Refunded';
     return true;
   });
+
+  const handleExportCSV = () => {
+    const headers = 'Transaction ID,Type & Description,Date,Amount,Status\n';
+    const rows = filteredTxns
+      .map((t) => `"${t.id}","${t.type}","${t.date}","${t.amount}","${t.status}"`)
+      .join('\n');
+    const blob = new Blob([headers + rows], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `zigzet_transactions_${Date.now()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showToast('CSV Exported', 'Transaction records downloaded.');
+  };
 
   return (
     <div className="admin-page-container">
@@ -32,7 +68,9 @@ export const AdminWallet = ({ isTransactionsOnly = false }) => {
               <span className="metric-tag">Total Store Balance</span>
               <Wallet size={20} className="metric-icon" />
             </div>
-            <h3 className="metric-number">{walletOverview.totalBalance}</h3>
+            <h3 className="metric-number">
+              ${liveTotalBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </h3>
             <div className="metric-footer-row">
               <span className="metric-growth-text">
                 <TrendingUp size={13} />
@@ -47,9 +85,14 @@ export const AdminWallet = ({ isTransactionsOnly = false }) => {
               <span className="metric-tag">Available for Payout</span>
               <ArrowDownLeft size={20} className="metric-icon green" />
             </div>
-            <h3 className="metric-number">{walletOverview.availablePayout}</h3>
+            <h3 className="metric-number">
+              ${liveAvailablePayout.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </h3>
             <div className="metric-footer-row">
-              <button className="payout-now-btn">
+              <button 
+                className="payout-now-btn"
+                onClick={() => requestPayout(Math.min(5000, liveAvailablePayout))}
+              >
                 <span>Request Instant Payout</span>
               </button>
             </div>
@@ -60,7 +103,9 @@ export const AdminWallet = ({ isTransactionsOnly = false }) => {
               <span className="metric-tag">Pending Settlements</span>
               <Clock size={20} className="metric-icon orange" />
             </div>
-            <h3 className="metric-number">{walletOverview.pendingSettlement}</h3>
+            <h3 className="metric-number">
+              ${livePendingSettlement.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </h3>
             <div className="metric-footer-row">
               <span className="metric-sub">Estimated release in 48 hours</span>
             </div>
@@ -73,9 +118,9 @@ export const AdminWallet = ({ isTransactionsOnly = false }) => {
         <div className="dash-card-header">
           <div>
             <h2 className="dash-card-title">
-              {isTransactionsOnly ? 'All Transaction Records' : 'Recent Wallet Transactions'}
+              {isTransactionsOnly ? 'All Transaction Records' : 'Recent Wallet Transactions'} ({walletTransactions.length})
             </h2>
-            <p className="dash-card-subtitle">Detailed ledger of payments, payouts, and customer refunds</p>
+            <p className="dash-card-subtitle">Detailed ledger of customer payments, bank payouts, and settlements</p>
           </div>
 
           <div className="transactions-filters-group">
@@ -89,7 +134,7 @@ export const AdminWallet = ({ isTransactionsOnly = false }) => {
               </button>
             ))}
 
-            <button className="export-csv-btn">
+            <button className="export-csv-btn" onClick={handleExportCSV}>
               <DownloadCloud size={14} />
               <span>Export CSV</span>
             </button>
@@ -135,6 +180,14 @@ export const AdminWallet = ({ isTransactionsOnly = false }) => {
                   </td>
                 </tr>
               ))}
+
+              {filteredTxns.length === 0 && (
+                <tr>
+                  <td colSpan="5" style={{ textAlign: 'center', padding: '32px', color: '#9ca3af' }}>
+                    No transactions found in this filter.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

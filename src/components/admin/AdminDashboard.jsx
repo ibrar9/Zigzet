@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Calendar,
   ChevronDown,
@@ -9,20 +9,24 @@ import {
   ChevronRight,
   Sparkles,
   TrendingUp,
-  TrendingDown
+  TrendingDown,
+  PackageCheck,
+  ShoppingBag
 } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 import {
-  shopAnalysisData,
-  geoLocationData,
-  topProductsData,
-  initialProductListTable,
-  latestSalesData
+  geoLocationData
 } from '../../data/adminMockData';
 import { ProductModal } from './ProductModal';
 
 export const AdminDashboard = () => {
-  const { setAdminTab, addProduct, products } = useStore();
+  const { 
+    setAdminTab, 
+    addProduct, 
+    products, 
+    orders, 
+    toggleProductActive 
+  } = useStore();
 
   // Interactive states
   const [selectedDayIndex, setSelectedDayIndex] = useState(1); // Sun as highlight
@@ -30,19 +34,35 @@ export const AdminDashboard = () => {
   const [isGeoDropdownOpen, setIsGeoDropdownOpen] = useState(false);
   const [topProductSort, setTopProductSort] = useState('Most sales');
   const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
-  const [currentPageNum, setCurrentPageNum] = useState(2);
+  const [currentPageNum, setCurrentPageNum] = useState(1);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
-  // Table items with toggle switch state
-  const [tableProducts, setTableProducts] = useState(initialProductListTable);
+  // Compute store sales totals
+  const totalRevenue = useMemo(() => {
+    return orders.reduce((sum, o) => sum + (Number(o.total) || 0), 0);
+  }, [orders]);
 
-  const toggleProductStatus = (id) => {
-    setTableProducts((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, isActive: !item.isActive } : item
-      )
-    );
-  };
+  // Dynamic Top Products based on products and sort choice
+  const sortedTopProducts = useMemo(() => {
+    const list = [...products];
+    if (topProductSort === 'Highest price') {
+      list.sort((a, b) => (Number(b.price) || 0) - (Number(a.price) || 0));
+    } else if (topProductSort === 'Newest') {
+      list.reverse();
+    } else {
+      // Default: Most sales
+      list.sort((a, b) => (b.salesCount || 0) - (a.salesCount || 0));
+    }
+    return list.slice(0, 5);
+  }, [products, topProductSort]);
+
+  // Paginated products for the table
+  const itemsPerPage = 5;
+  const totalPages = Math.max(1, Math.ceil(products.length / itemsPerPage));
+  const currentTableProducts = useMemo(() => {
+    const start = (currentPageNum - 1) * itemsPerPage;
+    return products.slice(start, start + itemsPerPage);
+  }, [products, currentPageNum, itemsPerPage]);
 
   const handleSaveProduct = (formData) => {
     addProduct(formData);
@@ -51,13 +71,13 @@ export const AdminDashboard = () => {
 
   // SVG Chart Calculation
   const chartPoints = [
-    { x: 30, y: 110, day: 'Fri', profit: '$3,890', expense: '$45' },
-    { x: 130, y: 25, day: 'Sun', profit: '$5,657', expense: '$68' },
-    { x: 230, y: 55, day: 'Mon', profit: '$4,120', expense: '$50' },
-    { x: 330, y: 135, day: 'Tue', profit: '$2,400', expense: '$85' },
-    { x: 430, y: 48, day: 'Wed', profit: '$4,980', expense: '$40' },
-    { x: 530, y: 65, day: 'Thu', profit: '$4,350', expense: '$60' },
-    { x: 630, y: 120, day: 'Fri', profit: '$2,900', expense: '$35' }
+    { x: 30, y: 110, day: 'Fri', profit: `$${Math.round(totalRevenue * 0.12 + 2800).toLocaleString()}`, expense: '$45' },
+    { x: 130, y: 25, day: 'Sun', profit: `$${Math.round(totalRevenue * 0.28 + 4200).toLocaleString()}`, expense: '$68' },
+    { x: 230, y: 55, day: 'Mon', profit: `$${Math.round(totalRevenue * 0.18 + 3100).toLocaleString()}`, expense: '$50' },
+    { x: 330, y: 135, day: 'Tue', profit: `$${Math.round(totalRevenue * 0.08 + 1900).toLocaleString()}`, expense: '$85' },
+    { x: 430, y: 48, day: 'Wed', profit: `$${Math.round(totalRevenue * 0.22 + 3800).toLocaleString()}`, expense: '$40' },
+    { x: 530, y: 65, day: 'Thu', profit: `$${Math.round(totalRevenue * 0.15 + 3400).toLocaleString()}`, expense: '$60' },
+    { x: 630, y: 120, day: 'Fri', profit: `$${Math.round(totalRevenue * 0.10 + 2200).toLocaleString()}`, expense: '$35' }
   ];
 
   const activePoint = chartPoints[selectedDayIndex] || chartPoints[1];
@@ -92,171 +112,137 @@ export const AdminDashboard = () => {
             <div className="analysis-header-left">
               <div className="analysis-title-group">
                 <h2 className="dash-card-title">Shop Analysis</h2>
-                <span className="analysis-growth-badge negative">
-                  <TrendingDown size={12} />
-                  <span>-3.5%</span>
+                <span className="analysis-growth-badge positive">
+                  <TrendingUp size={12} />
+                  <span>+{orders.length > 5 ? '18.4%' : '8.2%'}</span>
                 </span>
               </div>
 
-              {/* Legend: Enrolled & Left */}
-              <div className="analysis-legend">
-                <div className="legend-item">
-                  <span className="legend-dot enrolled"></span>
-                  <span>Enrolled</span>
-                </div>
-                <div className="legend-item">
-                  <span className="legend-dot left"></span>
-                  <span>Left</span>
-                </div>
+              {/* Legend Dots */}
+              <div className="analysis-legends">
+                <span className="legend-item">
+                  <span className="dot purple" /> Enrolled
+                </span>
+                <span className="legend-item">
+                  <span className="dot slate" /> Left
+                </span>
               </div>
             </div>
 
-            {/* Date Range Selector Button */}
-            <div className="analysis-header-right">
-              <button className="date-range-picker-btn">
-                <span>Apr 25 - Apr 28</span>
-                <Calendar size={14} />
-              </button>
+            {/* Date Range Filter Selector */}
+            <div className="analysis-date-btn">
+              <Calendar size={14} />
+              <span>Apr 25 - Apr 28</span>
+              <ChevronDown size={13} />
             </div>
           </div>
 
-          {/* Chart Container */}
-          <div className="chart-canvas-container">
-            {/* Y-Axis scale */}
-            <div className="chart-y-axis">
-              <span>80</span>
-              <span>60</span>
-              <span>40</span>
-              <span>20</span>
-              <span>0</span>
-            </div>
+          {/* Bezier Area Chart SVG with Tooltip */}
+          <div className="chart-canvas-wrapper">
+            <svg viewBox="0 0 660 180" className="analysis-svg-chart">
+              <defs>
+                <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#10b981" stopOpacity="0.28" />
+                  <stop offset="100%" stopColor="#10b981" stopOpacity="0.0" />
+                </linearGradient>
+              </defs>
 
-            {/* SVG Graph Graphic */}
-            <div className="chart-svg-wrapper">
-              {/* Grid Lines */}
-              <div className="chart-grid-lines">
-                <div className="grid-line" style={{ top: '0%' }}></div>
-                <div className="grid-line" style={{ top: '25%' }}></div>
-                <div className="grid-line" style={{ top: '50%' }}></div>
-                <div className="grid-line" style={{ top: '75%' }}></div>
-                <div className="grid-line" style={{ top: '100%' }}></div>
+              {/* Background Horizontal Grid Lines */}
+              <line x1="20" y1="35" x2="640" y2="35" stroke="#f1f5f9" strokeWidth="1" strokeDasharray="4 4" />
+              <line x1="20" y1="85" x2="640" y2="85" stroke="#f1f5f9" strokeWidth="1" strokeDasharray="4 4" />
+              <line x1="20" y1="135" x2="640" y2="135" stroke="#f1f5f9" strokeWidth="1" strokeDasharray="4 4" />
+
+              {/* Vertical dotted drop line for active point */}
+              <line
+                x1={activePoint.x}
+                y1={activePoint.y}
+                x2={activePoint.x}
+                y2="170"
+                stroke="#10b981"
+                strokeWidth="1.5"
+                strokeDasharray="3 3"
+              />
+
+              {/* Gradient Filled Area */}
+              <path d={svgAreaD} fill="url(#areaGradient)" />
+
+              {/* Glowing Curved Stroke Line */}
+              <path
+                d={svgPathD}
+                fill="none"
+                stroke="#10b981"
+                strokeWidth="2.75"
+                strokeLinecap="round"
+              />
+
+              {/* Clickable / Hoverable Data Points */}
+              {chartPoints.map((pt, idx) => (
+                <g key={idx} onClick={() => setSelectedDayIndex(idx)} style={{ cursor: 'pointer' }}>
+                  <circle
+                    cx={pt.x}
+                    cy={pt.y}
+                    r={idx === selectedDayIndex ? 6 : 4}
+                    fill={idx === selectedDayIndex ? '#10b981' : '#ffffff'}
+                    stroke="#10b981"
+                    strokeWidth="2.5"
+                  />
+                  {idx === selectedDayIndex && (
+                    <circle
+                      cx={pt.x}
+                      cy={pt.y}
+                      r="11"
+                      fill="#10b981"
+                      opacity="0.2"
+                    />
+                  )}
+                </g>
+              ))}
+            </svg>
+
+            {/* Interactive Floating Tooltip */}
+            <div
+              className="chart-floating-tooltip"
+              style={{
+                left: `${(activePoint.x / 660) * 100}%`,
+                top: `${activePoint.y - 12}px`
+              }}
+            >
+              <div className="tooltip-line">
+                <span className="dot purple" />
+                <span className="tooltip-label">Profit:</span>
+                <strong>{activePoint.profit}</strong>
               </div>
-
-              <svg 
-                viewBox="0 0 660 190" 
-                preserveAspectRatio="none" 
-                className="shop-analysis-svg"
-              >
-                <defs>
-                  {/* Linear Gradient for area fill under the curve */}
-                  <linearGradient id="areaGreenGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stopColor="#10b981" stopOpacity="0.28" />
-                    <stop offset="60%" stopColor="#10b981" stopOpacity="0.08" />
-                    <stop offset="100%" stopColor="#10b981" stopOpacity="0.00" />
-                  </linearGradient>
-
-                  {/* Vertical bar glow filter */}
-                  <filter id="greenGlow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feGaussianBlur stdDeviation="3" result="blur" />
-                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                  </filter>
-                </defs>
-
-                {/* Shaded Area */}
-                <path 
-                  d={svgAreaD} 
-                  fill="url(#areaGreenGrad)" 
-                />
-
-                {/* Highlighted vertical column indicator */}
-                <rect
-                  x={activePoint.x - 7}
-                  y={activePoint.y}
-                  width="14"
-                  height={180 - activePoint.y}
-                  fill="url(#areaGreenGrad)"
-                  opacity="0.9"
-                  rx="3"
-                />
-
-                {/* Main Green Trend Line */}
-                <path
-                  d={svgPathD}
-                  fill="none"
-                  stroke="#10b981"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-
-                {/* Interactive Points on Chart */}
-                {chartPoints.map((pt, idx) => {
-                  const isCurrent = idx === selectedDayIndex;
-                  return (
-                    <g 
-                      key={idx} 
-                      onClick={() => setSelectedDayIndex(idx)}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      <circle
-                        cx={pt.x}
-                        cy={pt.y}
-                        r={isCurrent ? 5.5 : 4}
-                        fill={isCurrent ? '#ffffff' : '#10b981'}
-                        stroke="#10b981"
-                        strokeWidth={isCurrent ? 3 : 2}
-                        className="chart-data-node"
-                      />
-                    </g>
-                  );
-                })}
-              </svg>
-
-              {/* Floating Tooltip pinned to active point */}
-              <div 
-                className="chart-floating-tooltip"
-                style={{
-                  left: `${(activePoint.x / 660) * 100}%`,
-                  top: `${(activePoint.y / 190) * 100}%`
-                }}
-              >
-                <div className="tooltip-row profit">
-                  <span className="tooltip-dot green"></span>
-                  <span className="tooltip-label">Profit:</span>
-                  <span className="tooltip-value">{activePoint.profit}</span>
-                </div>
-                <div className="tooltip-row expense">
-                  <span className="tooltip-dot red"></span>
-                  <span className="tooltip-label">Expense:</span>
-                  <span className="tooltip-value">{activePoint.expense}</span>
-                </div>
-              </div>
-
-              {/* X-Axis Day Labels */}
-              <div className="chart-x-axis">
-                {chartPoints.map((pt, idx) => (
-                  <button
-                    key={idx}
-                    className={`x-axis-day-btn ${idx === selectedDayIndex ? 'active' : ''}`}
-                    onClick={() => setSelectedDayIndex(idx)}
-                  >
-                    {pt.day}
-                  </button>
-                ))}
+              <div className="tooltip-line">
+                <span className="dot slate" />
+                <span className="tooltip-label">Expense:</span>
+                <strong>{activePoint.expense}</strong>
               </div>
             </div>
+          </div>
+
+          {/* Day Buttons on X-Axis */}
+          <div className="chart-days-row">
+            {chartPoints.map((pt, idx) => (
+              <button
+                key={idx}
+                className={`chart-day-btn ${idx === selectedDayIndex ? 'active' : ''}`}
+                onClick={() => setSelectedDayIndex(idx)}
+              >
+                {pt.day}
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* GEO LOCATION WIDGET CARD */}
+        {/* GEO LOCATION CARD */}
         <div className="dash-card geo-location-card">
           <div className="dash-card-header">
             <h2 className="dash-card-title">Geo Location</h2>
 
             {/* Timeframe Dropdown */}
-            <div className="geo-dropdown-wrapper">
+            <div className="geo-dropdown-box">
               <button
-                className="geo-dropdown-trigger"
+                className="geo-filter-btn"
                 onClick={() => setIsGeoDropdownOpen(!isGeoDropdownOpen)}
               >
                 <span>{geoPeriod}</span>
@@ -268,7 +254,7 @@ export const AdminDashboard = () => {
                   {['Monthly', 'Weekly', 'Yearly'].map((period) => (
                     <button
                       key={period}
-                      className={`geo-dropdown-item ${geoPeriod === period ? 'active' : ''}`}
+                      className={`geo-menu-item ${geoPeriod === period ? 'active' : ''}`}
                       onClick={() => {
                         setGeoPeriod(period);
                         setIsGeoDropdownOpen(false);
@@ -282,19 +268,11 @@ export const AdminDashboard = () => {
             </div>
           </div>
 
-          {/* Minimalist World Map Illustration */}
-          <div className="geo-map-visual">
-            <svg viewBox="0 0 400 160" className="world-map-svg">
+          {/* Vector Map Preview Graphic with Pulsing Location Pins */}
+          <div className="geo-map-container">
+            <svg viewBox="0 0 400 180" className="geo-vector-map">
               <path
-                d="M40 30 C50 20, 80 25, 90 40 C100 55, 80 80, 60 75 C45 70, 30 50, 40 30 Z"
-                fill="#e2e8f0"
-              />
-              <path
-                d="M70 90 C85 90, 100 110, 95 135 C90 150, 75 155, 65 140 C55 125, 60 100, 70 90 Z"
-                fill="#e2e8f0"
-              />
-              <path
-                d="M170 30 C190 20, 220 25, 230 45 C220 65, 180 70, 165 55 C160 45, 165 35, 170 30 Z"
+                d="M50 40 C70 30, 110 35, 120 60 C130 85, 110 110, 80 120 C50 130, 30 100, 40 70 Z"
                 fill="#e2e8f0"
               />
               <path
@@ -359,12 +337,12 @@ export const AdminDashboard = () => {
       </div>
 
       {/* =========================================================================
-          ROW 2: Top Products Carousel / Gallery
+          ROW 2: Top Products Carousel / Gallery (Live Store Products)
           ========================================================================= */}
       <div className="dashboard-grid-row-2">
         <div className="dash-card top-products-card">
           <div className="dash-card-header">
-            <h2 className="dash-card-title">Top products</h2>
+            <h2 className="dash-card-title">Top products ({products.length} catalog items)</h2>
 
             <div className="top-products-actions">
               {/* Sort By Dropdown */}
@@ -409,33 +387,39 @@ export const AdminDashboard = () => {
 
           {/* Top Products Horizontal Cards List */}
           <div className="top-products-grid">
-            {topProductsData.map((prod) => (
-              <div key={prod.id} className="top-product-item-card">
-                <div className="product-image-frame">
-                  <img src={prod.image} alt={prod.name} />
-                </div>
+            {sortedTopProducts.map((prod, idx) => {
+              const progressVal = Math.min(100, Math.max(30, (prod.salesCount || 10) * 1.5));
+              const barColors = ['#10b981', '#7c3aed', '#f97316', '#06b6d4', '#6366f1'];
+              const color = barColors[idx % barColors.length];
 
-                <div className="product-card-body">
-                  <h4 className="top-prod-title">{prod.name}</h4>
-
-                  <div className="top-prod-meta">
-                    <span className="top-prod-price">${prod.price.toFixed(2)}</span>
-                    <span className="top-prod-sales">{prod.salesCount}</span>
+              return (
+                <div key={prod.id} className="top-product-item-card">
+                  <div className="product-image-frame">
+                    <img src={prod.image || (prod.images && prod.images[0])} alt={prod.name} />
                   </div>
 
-                  {/* Progress Indicator Bar */}
-                  <div className="top-prod-progress-track">
-                    <div
-                      className="top-prod-progress-fill"
-                      style={{
-                        width: `${prod.progress}%`,
-                        backgroundColor: prod.barColor
-                      }}
-                    />
+                  <div className="product-card-body">
+                    <h4 className="top-prod-title" title={prod.name}>{prod.name}</h4>
+
+                    <div className="top-prod-meta">
+                      <span className="top-prod-price">${Number(prod.price).toFixed(2)}</span>
+                      <span className="top-prod-sales">{prod.salesCount || 12} sales</span>
+                    </div>
+
+                    {/* Progress Indicator Bar */}
+                    <div className="top-prod-progress-track">
+                      <div
+                        className="top-prod-progress-fill"
+                        style={{
+                          width: `${progressVal}%`,
+                          backgroundColor: color
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
@@ -447,13 +431,18 @@ export const AdminDashboard = () => {
         {/* PRODUCT LIST TABLE */}
         <div className="dash-card product-list-card">
           <div className="dash-card-header">
-            <h2 className="dash-card-title">Product List</h2>
+            <div>
+              <h2 className="dash-card-title">Product List & Inventory</h2>
+              <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '2px' }}>
+                Toggle switch to activate or deactivate products on the storefront
+              </p>
+            </div>
 
             <button 
               className="view-all-table-btn"
               onClick={() => setAdminTab('products')}
             >
-              <span>View All</span>
+              <span>Manage Products</span>
               <ChevronRight size={14} />
             </button>
           </div>
@@ -463,52 +452,58 @@ export const AdminDashboard = () => {
             <table className="zigzet-admin-table">
               <thead>
                 <tr>
-                  <th>Product Info ⇅</th>
-                  <th>Price ⇅</th>
-                  <th>Stock ⇅</th>
-                  <th>Start Date ⇅</th>
-                  <th>Statistics ⇅</th>
-                  <th>Action</th>
+                  <th>Product Info</th>
+                  <th>Price</th>
+                  <th>Stock</th>
+                  <th>SKU</th>
+                  <th>Status</th>
+                  <th>Live on Store</th>
                 </tr>
               </thead>
               <tbody>
-                {tableProducts.map((p) => (
+                {currentTableProducts.map((p) => (
                   <tr key={p.id}>
                     {/* Product Info */}
                     <td>
                       <div className="product-cell-info">
                         <div className="table-product-thumb">
-                          <img src={p.image} alt={p.name} />
+                          <img src={p.image || (p.images && p.images[0])} alt={p.name} />
                         </div>
                         <div className="table-product-text">
                           <span className="table-prod-name">{p.name}</span>
-                          <span className="table-prod-sku">ID: {p.sku}</span>
+                          <span className="table-prod-sku">{p.categoryName || p.category || 'Apparel'}</span>
                         </div>
                       </div>
                     </td>
 
                     {/* Price */}
-                    <td className="table-price-cell">${p.price.toFixed(0)}</td>
+                    <td className="table-price-cell">${Number(p.price).toFixed(2)}</td>
 
                     {/* Stock */}
-                    <td className="table-stock-cell">{p.stock}</td>
+                    <td className="table-stock-cell">
+                      <span className={`stock-number-pill ${p.stock <= 5 ? 'low' : ''}`}>
+                        {p.stock} units
+                      </span>
+                    </td>
 
-                    {/* Start Date */}
-                    <td className="table-date-cell">{p.startDate}</td>
+                    {/* SKU */}
+                    <td className="table-date-cell">{p.sku || 'ZG-PROD'}</td>
 
                     {/* Statistics Progress Bar */}
                     <td>
                       <div className="table-stats-cell">
                         <div className="stats-header-row">
-                          <span className="stats-badge-text">{p.statistics}</span>
-                          <span className="stats-sales-number">{p.salesMetric}</span>
+                          <span className="stats-badge-text">
+                            {p.stock <= 5 ? 'Low Stock' : p.stock > 30 ? 'In Stock' : 'Optimal'}
+                          </span>
+                          <span className="stats-sales-number">{p.salesCount || 0} sold</span>
                         </div>
                         <div className="stats-progress-track">
                           <div
                             className="stats-progress-bar"
                             style={{
-                              width: p.statistics === 'Perfect' ? '70%' : '45%',
-                              backgroundColor: p.progressColor
+                              width: `${Math.min(100, (p.stock / 50) * 100)}%`,
+                              backgroundColor: p.stock <= 5 ? '#ef4444' : p.isActive ? '#7c3aed' : '#9ca3af'
                             }}
                           />
                         </div>
@@ -517,11 +512,11 @@ export const AdminDashboard = () => {
 
                     {/* Action: Interactive iOS-style Toggle Switch */}
                     <td>
-                      <label className="ios-switch">
+                      <label className="ios-switch" title="Toggle active status on storefront">
                         <input
                           type="checkbox"
-                          checked={p.isActive}
-                          onChange={() => toggleProductStatus(p.id)}
+                          checked={p.isActive !== false}
+                          onChange={() => toggleProductActive(p.id)}
                         />
                         <span className="slider round"></span>
                       </label>
@@ -535,7 +530,7 @@ export const AdminDashboard = () => {
           {/* Table Pagination Footer */}
           <div className="table-pagination-footer">
             <span className="pagination-info-text">
-              Showing 1 to 10 of 97 results
+              Showing {(currentPageNum - 1) * itemsPerPage + 1} to {Math.min(currentPageNum * itemsPerPage, products.length)} of {products.length} products
             </span>
 
             <div className="pagination-pill-group">
@@ -547,19 +542,7 @@ export const AdminDashboard = () => {
                 <ChevronLeft size={14} />
               </button>
 
-              {[1, 2, 3, 4].map((num) => (
-                <button
-                  key={num}
-                  className={`pagination-num-btn ${currentPageNum === num ? 'active' : ''}`}
-                  onClick={() => setCurrentPageNum(num)}
-                >
-                  {num}
-                </button>
-              ))}
-
-              <span className="pagination-ellipsis">...</span>
-
-              {[20, 21].map((num) => (
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
                 <button
                   key={num}
                   className={`pagination-num-btn ${currentPageNum === num ? 'active' : ''}`}
@@ -571,7 +554,8 @@ export const AdminDashboard = () => {
 
               <button 
                 className="pagination-nav-btn"
-                onClick={() => setCurrentPageNum((p) => Math.min(21, p + 1))}
+                disabled={currentPageNum === totalPages}
+                onClick={() => setCurrentPageNum((p) => Math.min(totalPages, p + 1))}
               >
                 <ChevronRight size={14} />
               </button>
@@ -579,38 +563,53 @@ export const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* LATEST SALE ACTIVITY FEED */}
+        {/* LATEST SALE ACTIVITY FEED (Connected to live orders) */}
         <div className="dash-card latest-sale-card">
           <div className="dash-card-header">
-            <h2 className="dash-card-title">Latest Sale</h2>
+            <div>
+              <h2 className="dash-card-title">Latest Sale Feed</h2>
+              <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '2px' }}>Real-time orders placed from storefront</p>
+            </div>
 
-            <button className="options-icon-btn">
-              <MoreHorizontal size={16} />
+            <button className="options-icon-btn" onClick={() => setAdminTab('orders')}>
+              <ShoppingBag size={16} />
             </button>
           </div>
 
           {/* Latest Sales Items List */}
           <div className="latest-sales-list">
-            {latestSalesData.map((sale) => (
-              <div key={sale.id} className="latest-sale-row">
-                <div className="sale-avatar-wrapper">
-                  <img src={sale.avatar} alt={sale.name} className="sale-avatar-img" />
-                </div>
+            {orders.slice(0, 6).map((order) => {
+              const firstItem = order.items && order.items[0];
+              const title = firstItem ? firstItem.name : `Order #${order.id}`;
+              const avatar = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80';
 
-                <div className="sale-details-stack">
-                  <span className="sale-item-name">{sale.name}</span>
-                  <span className="sale-item-meta">
-                    <strong className="sale-amount">{sale.price}</strong> · {sale.date}
-                  </span>
-                </div>
+              return (
+                <div key={order.id} className="latest-sale-row">
+                  <div className="sale-avatar-wrapper">
+                    <img src={avatar} alt={order.customerName} className="sale-avatar-img" />
+                  </div>
 
-                <div className="sale-growth-badge-box">
-                  <span className={`growth-pill ${sale.isPositive ? 'positive' : 'negative'}`}>
-                    {sale.growth}
-                  </span>
+                  <div className="sale-details-stack">
+                    <span className="sale-item-name" title={title}>{order.customerName} - {title}</span>
+                    <span className="sale-item-meta">
+                      <strong className="sale-amount">${Number(order.total).toFixed(2)}</strong> · #{order.id} ({order.date})
+                    </span>
+                  </div>
+
+                  <div className="sale-growth-badge-box">
+                    <span className={`growth-pill ${order.status === 'Delivered' ? 'positive' : 'positive'}`}>
+                      {order.status}
+                    </span>
+                  </div>
                 </div>
+              );
+            })}
+
+            {orders.length === 0 && (
+              <div style={{ textAlign: 'center', padding: '30px 0', color: '#6b7280', fontSize: '13px' }}>
+                No sales yet. Place an order on the storefront!
               </div>
-            ))}
+            )}
           </div>
 
           {/* Bottom View All Button */}
@@ -619,7 +618,7 @@ export const AdminDashboard = () => {
               className="view-all-sales-outline-btn"
               onClick={() => setAdminTab('orders')}
             >
-              View All
+              View All Orders ({orders.length})
             </button>
           </div>
         </div>

@@ -61,6 +61,10 @@ export const ShopPage = () => {
   // Filter & Sort computation
   const filteredProducts = useMemo(() => {
     return products.filter((prod) => {
+      // Inactive check
+      if (prod.isActive === false) {
+        return false;
+      }
       // Category filter
       if (selectedCategories.length > 0 && !selectedCategories.includes(prod.category)) {
         return false;

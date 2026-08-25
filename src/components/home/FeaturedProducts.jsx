@@ -6,9 +6,11 @@ import { useStore } from '../../context/StoreContext';
 export const FeaturedProducts = () => {
   const { products, activeCategory, setActiveCategory } = useStore();
 
+  const activeProducts = products.filter((p) => p.isActive !== false);
+
   const displayedProducts = activeCategory === 'all'
-    ? products
-    : products.filter((p) => p.category === activeCategory);
+    ? activeProducts
+    : activeProducts.filter((p) => p.category === activeCategory);
 
   return (
     <section className="featured-products-section" id="featured-products">

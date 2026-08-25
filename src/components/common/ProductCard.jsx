@@ -35,10 +35,12 @@ export const ProductCard = ({ product }) => {
         className="product-thumb-wrapper" 
         onClick={() => setQuickViewProduct(product)}
       >
-        {/* Sale Badge */}
-        {product.isSale && (
+        {/* Sale Badge & Out of Stock Badge */}
+        {product.stock !== undefined && product.stock <= 0 ? (
+          <span className="product-badge-sale" style={{ backgroundColor: '#ef4444', color: '#fff' }}>Out of Stock</span>
+        ) : product.isSale ? (
           <span className="product-badge-sale">Sale</span>
-        )}
+        ) : null}
 
         {/* Wishlist Button */}
         <button
@@ -103,11 +105,13 @@ export const ProductCard = ({ product }) => {
 
         {/* Add to Cart Button */}
         <button
-          className="add-to-cart-btn"
+          className={`add-to-cart-btn ${product.stock !== undefined && product.stock <= 0 ? 'disabled' : ''}`}
           onClick={() => addToCart(product, 1)}
+          disabled={product.stock !== undefined && product.stock <= 0}
+          style={product.stock !== undefined && product.stock <= 0 ? { opacity: 0.6, cursor: 'not-allowed' } : {}}
         >
           <ShoppingCart size={15} />
-          <span>Add to Cart</span>
+          <span>{product.stock !== undefined && product.stock <= 0 ? 'Out of Stock' : 'Add to Cart'}</span>
         </button>
       </div>
     </div>

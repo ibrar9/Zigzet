@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { X, Bell, ShoppingBag, AlertTriangle, Wallet, Check } from 'lucide-react';
-import { adminNotificationsList } from '../../data/adminMockData';
+import { useStore } from '../../context/StoreContext';
 
 export const AdminNotificationsDrawer = ({ isOpen, onClose }) => {
-  const [notifications, setNotifications] = useState(adminNotificationsList);
+  const { notifications, markAllNotificationsRead } = useStore();
 
   if (!isOpen) return null;
 
-  const markAllAsRead = () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, unread: false })));
-  };
+  const unreadCount = notifications.filter((n) => n.unread).length;
 
   const getIcon = (type) => {
     switch (type) {
@@ -32,17 +30,19 @@ export const AdminNotificationsDrawer = ({ isOpen, onClose }) => {
           <div className="drawer-title-group">
             <h3>Notifications Center</h3>
             <span className="drawer-badge purple">
-              {notifications.filter((n) => n.unread).length} new alerts
+              {unreadCount > 0 ? `${unreadCount} new alert${unreadCount > 1 ? 's' : ''}` : 'No new alerts'}
             </span>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <button className="mark-all-read-btn" onClick={markAllAsRead}>
-              <Check size={13} />
-              <span>Mark all read</span>
-            </button>
+            {unreadCount > 0 && (
+              <button className="mark-all-read-btn" onClick={markAllNotificationsRead}>
+                <Check size={13} />
+                <span>Mark all read</span>
+              </button>
+            )}
 
-            <button className="drawer-close-btn" onClick={onClose}>
+            <button className="drawer-close-btn" onClick={onClose} aria-label="Close Drawer">
               <X size={18} />
             </button>
           </div>
@@ -67,6 +67,13 @@ export const AdminNotificationsDrawer = ({ isOpen, onClose }) => {
               {n.unread && <span className="notif-unread-dot" />}
             </div>
           ))}
+
+          {notifications.length === 0 && (
+            <div style={{ textAlign: 'center', padding: '40px 16px', color: '#94a3b8' }}>
+              <Bell size={32} color="#cbd5e1" style={{ margin: '0 auto 12px auto' }} />
+              <p>No notifications at this time.</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -21,27 +21,43 @@ import {
 import { useStore } from '../../context/StoreContext';
 
 export const AdminSidebar = ({ isMobileOpen, setIsMobileOpen, onOpenInbox, onOpenNotifications }) => {
-  const { adminTab, setAdminTab, setViewMode, logoutAdmin } = useStore();
+  const { adminTab, setAdminTab, setViewMode, logoutAdmin, inboxMessages, notifications, orders } = useStore();
+
+  const unreadInboxCount = inboxMessages.filter((m) => m.unread).length;
+  const unreadNotifsCount = notifications.filter((n) => n.unread).length;
+  const pendingOrdersCount = orders.filter((o) => o.status === 'Pending' || o.status === 'Processing').length;
 
   const menuItems = [
     { id: 'dashboard', label: 'Dashboards', icon: <LayoutDashboard size={18} />, hasSub: true },
     { id: 'wallet', label: 'My Wallet', icon: <Wallet size={18} /> },
     { id: 'transactions', label: 'Transaction', icon: <ArrowLeftRight size={18} /> },
-    { id: 'orders', label: 'Order', icon: <ShoppingBag size={18} /> },
+    { 
+      id: 'orders', 
+      label: 'Order', 
+      icon: <ShoppingBag size={18} />,
+      badge: pendingOrdersCount > 0 ? pendingOrdersCount : null,
+      badgeColor: '#10b981'
+    },
     { id: 'customers', label: 'Customers', icon: <Users size={18} /> },
     { id: 'products', label: 'Products', icon: <Package size={18} /> },
     { 
       id: 'inbox', 
       label: 'Inbox', 
       icon: <MessageSquare size={18} />, 
-      badge: 3, 
+      badge: unreadInboxCount > 0 ? unreadInboxCount : null, 
       avatars: [
         'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80',
         'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&auto=format&fit=crop&q=80'
       ] 
     },
     { id: 'integrations', label: 'Integrations', icon: <Sliders size={18} /> },
-    { id: 'notifications', label: 'Notifications', icon: <Bell size={18} />, badge: 2, badgeColor: '#7c3aed' },
+    { 
+      id: 'notifications', 
+      label: 'Notifications', 
+      icon: <Bell size={18} />, 
+      badge: unreadNotifsCount > 0 ? unreadNotifsCount : null, 
+      badgeColor: '#7c3aed' 
+    },
     { id: 'user', label: 'User', icon: <UserCheck size={18} /> },
     { id: 'history', label: 'History', icon: <History size={18} /> }
   ];
@@ -151,7 +167,7 @@ export const AdminSidebar = ({ isMobileOpen, setIsMobileOpen, onOpenInbox, onOpe
                       </span>
                     )}
 
-                    {/* Chevron for items with sub/arrow */}
+                    {/* Chevron icon for items with sub or active */}
                     {item.hasSub && (
                       <ChevronRight size={14} className="nav-item-chevron" />
                     )}
@@ -161,7 +177,7 @@ export const AdminSidebar = ({ isMobileOpen, setIsMobileOpen, onOpenInbox, onOpe
             </nav>
           </div>
 
-          {/* Help Section */}
+          {/* Help & Settings Section */}
           <div className="admin-nav-group">
             <div className="admin-nav-heading">Help</div>
             <nav className="admin-nav-list">
@@ -179,30 +195,32 @@ export const AdminSidebar = ({ isMobileOpen, setIsMobileOpen, onOpenInbox, onOpe
                 );
               })}
 
+              {/* Quick Switch to Storefront */}
+              <button
+                className="admin-nav-item storefront-switch-btn"
+                onClick={() => {
+                  window.location.hash = '';
+                  setViewMode('store');
+                }}
+              >
+                <span className="nav-item-icon">
+                  <Store size={18} />
+                </span>
+                <span className="nav-item-label">Switch to Storefront</span>
+              </button>
+
               {/* Logout Button */}
               <button
-                className="admin-nav-item logout"
+                className="admin-nav-item logout-btn"
                 onClick={logoutAdmin}
               >
-                <span className="nav-item-icon"><LogOut size={18} /></span>
+                <span className="nav-item-icon">
+                  <LogOut size={18} />
+                </span>
                 <span className="nav-item-label">Logout</span>
               </button>
             </nav>
           </div>
-        </div>
-
-        {/* Bottom Storefront preview pill */}
-        <div className="admin-sidebar-footer">
-          <button
-            className="storefront-link-btn"
-            onClick={() => {
-              window.location.hash = '';
-              setViewMode('store');
-            }}
-          >
-            <Store size={15} />
-            <span>Switch to Storefront</span>
-          </button>
         </div>
       </aside>
     </>
