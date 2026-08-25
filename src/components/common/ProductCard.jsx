@@ -35,12 +35,22 @@ export const ProductCard = ({ product }) => {
     });
   };
 
+  // Extract size/volume from product name or property
+  const extractSize = (name, sizeProp) => {
+    if (sizeProp) return sizeProp;
+    if (!name) return null;
+    const match = name.match(/(\d+\s*ml\s*[×x]\s*\d+|\d+\s*g\s*[×x]\s*\d+|\d+\s*ml\s*\+\s*\d+\s*ml|\d+\s*[×x]\s*\d+\s*ml|\d+\s*Pads|\d+\s*EA|\d+\s*ea|\d+\s*ml|\d+\s*g)/i);
+    return match ? match[0] : null;
+  };
+
+  const productSize = extractSize(product.name, product.size);
+
   return (
     <div className="product-card">
       {/* Product Image Tile */}
       <div 
         className="product-thumb-wrapper" 
-        onClick={() => setQuickViewProduct({ ...product, activeImage, selectedColor })}
+        onClick={() => setQuickViewProduct({ ...product, activeImage, selectedColor, productSize })}
       >
         {/* Sale Badge & Out of Stock Badge */}
         {isOutOfStock ? (
@@ -48,6 +58,13 @@ export const ProductCard = ({ product }) => {
         ) : product.isSale ? (
           <span className="product-badge-sale">Sale</span>
         ) : null}
+
+        {/* Product Size Badge */}
+        {productSize && (
+          <span className="product-size-badge" title={`Size / Volume: ${productSize}`}>
+            {productSize}
+          </span>
+        )}
 
         {/* Wishlist Button */}
         <button
@@ -77,7 +94,7 @@ export const ProductCard = ({ product }) => {
           className="quick-view-overlay-btn"
           onClick={(e) => {
             e.stopPropagation();
-            setQuickViewProduct({ ...product, activeImage, selectedColor });
+            setQuickViewProduct({ ...product, activeImage, selectedColor, productSize });
           }}
         >
           Quick View
@@ -86,9 +103,12 @@ export const ProductCard = ({ product }) => {
 
       {/* Product Meta Details */}
       <div className="product-meta">
+        {product.brand && (
+          <span className="product-brand-tag">{product.brand}</span>
+        )}
         <h4 
           className="product-name"
-          onClick={() => setQuickViewProduct({ ...product, activeImage, selectedColor })}
+          onClick={() => setQuickViewProduct({ ...product, activeImage, selectedColor, productSize })}
           title={product.name}
         >
           {product.name}

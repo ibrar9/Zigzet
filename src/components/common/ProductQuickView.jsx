@@ -83,7 +83,19 @@ export const ProductQuickView = () => {
 
           {/* Product Info Column */}
           <div className="quick-view-info">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
+              {product.brand && (
+                <span style={{ fontSize: '11px', fontWeight: '800', color: '#7c3aed', backgroundColor: '#f5f3ff', padding: '3px 10px', borderRadius: '6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  {product.brand}
+                </span>
+              )}
+
+              {product.productSize && (
+                <span style={{ fontSize: '11.5px', fontWeight: '700', color: '#1e293b', backgroundColor: '#f1f5f9', padding: '3px 10px', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
+                  📦 Size: {product.productSize}
+                </span>
+              )}
+
               {isOutOfStock ? (
                 <span className="product-badge-sale" style={{ position: 'static', backgroundColor: '#ef4444', color: '#fff' }}>Out of Stock</span>
               ) : product.isSale ? (
