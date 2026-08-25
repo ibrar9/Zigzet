@@ -21,7 +21,7 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
     metaDescription: ''
   });
 
-  const [showSeoFields, setShowSeoFields] = useState(false);
+  const [showSeoFields, setShowSeoFields] = useState(true);
 
   const categoryOptions = categories.map((c) => ({
     value: c.id,
@@ -81,13 +81,21 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
       return;
     }
 
+    const trimmedName = formData.name.trim();
+    const finalMetaTitle = formData.metaTitle.trim() || `${trimmedName} - Buy Online | Zigzet`;
+    const finalMetaDesc = formData.metaDescription.trim() || formData.description.trim() || `Buy ${trimmedName} online at best price on Zigzet with fast USA shipping.`;
+
     onSave({
       ...formData,
-      name: formData.name.trim(),
+      name: trimmedName,
       price: parseFloat(formData.price) || 0,
       originalPrice: formData.originalPrice ? parseFloat(formData.originalPrice) : null,
       stock: parseInt(formData.stock) || 0,
-      image: formData.image || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80'
+      image: formData.image || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80',
+      metaTitle: finalMetaTitle,
+      metaDescription: finalMetaDesc,
+      sku: formData.sku.trim() || `ZG-${Date.now().toString().slice(-4)}`,
+      brand: formData.brand.trim() || 'Zigzet'
     });
     onClose();
   };

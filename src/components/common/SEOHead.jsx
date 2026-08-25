@@ -25,8 +25,12 @@ export const SEOHead = () => {
 
     // 1. Dynamic Product Specific Meta Override
     if (quickViewProduct) {
-      pageTitle = `${quickViewProduct.name} - Only $${Number(quickViewProduct.price).toFixed(2)} | Zigzet`;
-      pageDescription = quickViewProduct.description || `Buy ${quickViewProduct.name} online at best price on Zigzet. Free fast USA shipping & guaranteed authentic.`;
+      pageTitle = quickViewProduct.metaTitle 
+        ? quickViewProduct.metaTitle 
+        : `${quickViewProduct.name} - Only $${Number(quickViewProduct.price).toFixed(2)} | Zigzet`;
+      pageDescription = quickViewProduct.metaDescription 
+        ? quickViewProduct.metaDescription 
+        : (quickViewProduct.description || `Buy ${quickViewProduct.name} online at best price on Zigzet. Free fast USA shipping & guaranteed authentic.`);
       pageKeywords = `${quickViewProduct.name}, buy ${quickViewProduct.name}, ${quickViewProduct.categoryName || quickViewProduct.category}, online deals`;
       pageImage = quickViewProduct.image;
       pageUrl = `${baseUrl}/shop?product=${quickViewProduct.id}`;
@@ -163,9 +167,9 @@ export const SEOHead = () => {
       schemaGraph.push({
         "@type": "Product",
         "@id": `${baseUrl}/shop?product=${quickViewProduct.id}#product`,
-        "name": quickViewProduct.name,
+        "name": quickViewProduct.metaTitle || quickViewProduct.name,
         "image": quickViewProduct.images && quickViewProduct.images.length > 0 ? quickViewProduct.images : [quickViewProduct.image],
-        "description": quickViewProduct.description || `${quickViewProduct.name} available on Zigzet`,
+        "description": quickViewProduct.metaDescription || quickViewProduct.description || `${quickViewProduct.name} available on Zigzet`,
         "sku": quickViewProduct.sku || `ZG-${quickViewProduct.id}`,
         "mpn": quickViewProduct.id,
         "brand": {
