@@ -258,19 +258,6 @@ export const Header = () => {
             )}
           </button>
 
-          {/* Account Profile / Admin Button */}
-          <button 
-            className="action-icon-btn admin-portal-btn" 
-            onClick={() => {
-              window.location.hash = '#admin';
-              setViewMode('admin');
-            }}
-            aria-label="Admin Dashboard"
-            title="Admin Suite Portal"
-          >
-            <ShieldCheck size={20} color="#7c3aed" />
-          </button>
-
           {/* User Account Button */}
           <button 
             className="action-icon-btn user-account-btn" 
@@ -426,21 +413,6 @@ export const Header = () => {
                   </button>
                 ))}
               </div>
-            </div>
-
-            {/* Drawer Footer with Admin & Currency Switcher */}
-            <div className="mobile-drawer-footer">
-              <button 
-                className="mobile-admin-btn"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  window.location.hash = '#admin';
-                  setViewMode('admin');
-                }}
-              >
-                <ShieldCheck size={18} />
-                <span>Admin Dashboard Suite</span>
-              </button>
             </div>
           </div>
         </div>

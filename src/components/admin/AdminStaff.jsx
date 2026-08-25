@@ -40,7 +40,7 @@ export const AdminStaff = () => {
   const handleAdd = (e) => {
     e.preventDefault();
     if (!form.name.trim() || !form.email.trim()) {
-      alert('Please enter staff name and valid email.');
+      showToast('Required Fields', 'Please enter staff name and a valid work email.', 'info');
       return;
     }
 

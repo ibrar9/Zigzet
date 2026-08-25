@@ -4,8 +4,47 @@ import { useStore } from '../context/StoreContext';
 import { ProductCard } from '../components/common/ProductCard';
 
 export const DealsPage = () => {
-  const { products, showToast, coupons: adminCoupons } = useStore();
+  const { products, showToast, coupons: adminCoupons, campaign } = useStore();
   const [copiedCode, setCopiedCode] = useState(null);
+
+  // Live countdown timer
+  const [timeLeft, setTimeLeft] = useState({
+    hours: 14,
+    minutes: 38,
+    seconds: 22
+  });
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev.seconds > 0) {
+          return { ...prev, seconds: prev.seconds - 1 };
+        } else if (prev.minutes > 0) {
+          return { ...prev, minutes: 59, seconds: 59 };
+        } else if (prev.hours > 0) {
+          return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
+        } else {
+          return { hours: 23, minutes: 59, seconds: 59 };
+        }
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  // Filter products on sale or with discounted originalPrice
+  const saleProducts = products.filter(
+    (p) => p.isActive !== false && (p.isSale || (p.originalPrice && Number(p.originalPrice) > Number(p.price)))
+  );
+
+  const copyCoupon = (code) => {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(code);
+    }
+    setCopiedCode(code);
+    showToast('Promo Code Copied!', `"${code}" copied to clipboard. Paste at checkout.`);
+    setTimeout(() => setCopiedCode(null), 2500);
+  };
 
   // Dynamic active coupons from StoreContext
   const activeCouponsList = adminCoupons && adminCoupons.length > 0
@@ -39,11 +78,11 @@ export const DealsPage = () => {
           <div className="deals-hero-content">
             <div className="hero-offer-badge" style={{ backgroundColor: '#fee2e2', color: '#ef4444' }}>
               <Flame size={16} />
-              <span>Flash Sale Madness</span>
+              <span>{campaign?.name || 'Flash Sale Madness'}</span>
             </div>
 
             <h1 style={{ fontSize: '42px', fontWeight: '800', margin: '12px 0 16px 0', letterSpacing: '-0.02em' }}>
-              Up to 40% Off Top Brands
+              {campaign?.headline || 'Up to 40% Off Top Brands'}
             </h1>
             <p style={{ fontSize: '16px', color: '#4b5563', maxWidth: '520px', margin: '0 auto 28px auto' }}>
               Grab unbeatable prices on high-demand electronics, shoes, and home comfort. Deals expire when timer hits zero!
@@ -92,25 +131,25 @@ export const DealsPage = () => {
                     <span className="ticket-expiry">⏳ {expiryLabel}</span>
                   </div>
 
-                <div className="ticket-right">
-                  <button 
-                    className="ticket-copy-btn"
-                    onClick={() => copyCoupon(c.code)}
-                  >
-                    {copiedCode === c.code ? (
-                      <>
-                        <Check size={14} color="#10b981" />
-                        <span style={{ color: '#10b981' }}>Copied</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy size={14} />
-                        <span>{c.code}</span>
-                      </>
-                    )}
-                  </button>
+                  <div className="ticket-right">
+                    <button 
+                      className="ticket-copy-btn"
+                      onClick={() => copyCoupon(c.code)}
+                    >
+                      {copiedCode === c.code ? (
+                        <>
+                          <Check size={14} color="#10b981" />
+                          <span style={{ color: '#10b981' }}>Copied</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy size={14} />
+                          <span>{c.code}</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
                 </div>
-              </div>
               );
             })}
           </div>

@@ -25,8 +25,14 @@ export const UserLoyalty = ({ myOrders }) => {
   const totalPoints = Math.floor(totalSpent * pointsPerDollar);
   const cashValue = (totalPoints / redemptionRate).toFixed(2);
 
-  const currentTierIdx = [...TIERS].findLastIndex(t => totalSpent >= t.minSpend);
-  const currentTier = TIERS[Math.max(0, currentTierIdx)];
+  let currentTierIdx = 0;
+  for (let i = TIERS.length - 1; i >= 0; i--) {
+    if (totalSpent >= TIERS[i].minSpend) {
+      currentTierIdx = i;
+      break;
+    }
+  }
+  const currentTier = TIERS[currentTierIdx] || TIERS[0];
   const nextTier = TIERS[currentTierIdx + 1] || null;
   const progressPct = nextTier
     ? Math.min(100, ((totalSpent - currentTier.minSpend) / (nextTier.minSpend - currentTier.minSpend)) * 100)

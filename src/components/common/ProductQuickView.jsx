@@ -241,7 +241,7 @@ export const ProductQuickView = () => {
                   <button
                     className={`wishlist-btn ${isSaved ? 'active' : ''}`}
                     style={{ position: 'static', width: '44px', height: '44px', borderRadius: '10px' }}
-                    onClick={() => toggleWishlist(product.id)}
+                    onClick={() => toggleWishlist(product)}
                     aria-label="Wishlist"
                   >
                     <Heart size={18} fill={isSaved ? '#ef4444' : 'none'} color={isSaved ? '#ef4444' : '#111827'} />

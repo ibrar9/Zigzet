@@ -17,8 +17,7 @@ export const CheckoutModal = () => {
     applyCouponCode,
     removeCoupon,
     createOrder,
-    setViewMode,
-    setAdminTab
+    navigatePage
   } = useStore();
 
   const [step, setStep] = useState(1);
@@ -78,11 +77,9 @@ export const CheckoutModal = () => {
     setCompletedOrder(null);
   };
 
-  const handleViewInAdmin = () => {
+  const handleTrackOrder = () => {
     handleClose();
-    window.location.hash = '#admin';
-    setViewMode('admin');
-    setAdminTab('orders');
+    navigatePage('track');
   };
 
   return (
@@ -376,10 +373,10 @@ export const CheckoutModal = () => {
               </button>
               <button
                 className="hero-cta-btn"
-                onClick={handleViewInAdmin}
+                onClick={handleTrackOrder}
                 style={{ padding: '10px 24px', fontSize: '13.5px' }}
               >
-                View in Admin Orders →
+                Track My Order →
               </button>
             </div>
           </div>

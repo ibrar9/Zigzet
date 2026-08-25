@@ -14,11 +14,19 @@ export const WishlistDrawer = () => {
 
   if (!isWishlistOpen) return null;
 
-  const savedProducts = products.filter((p) => wishlist.includes(p.id));
+  const savedProducts = wishlist
+    .map((item) => {
+      if (typeof item === 'object' && item && item.id) {
+        const live = products.find((p) => p.id === item.id);
+        return live || item;
+      }
+      return products.find((p) => p.id === item) || null;
+    })
+    .filter(Boolean);
 
   const handleMoveToCart = (product) => {
     addToCart(product, 1);
-    toggleWishlist(product.id);
+    toggleWishlist(product);
   };
 
   return (
@@ -71,7 +79,7 @@ export const WishlistDrawer = () => {
                       <h4 className="cart-item-title">{product.name}</h4>
                       <button 
                         className="cart-item-trash"
-                        onClick={() => toggleWishlist(product.id)}
+                        onClick={() => toggleWishlist(product)}
                         aria-label="Remove from Wishlist"
                       >
                         <Trash2 size={15} />

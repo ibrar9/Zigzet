@@ -9,7 +9,7 @@ export const AnnouncementBar = () => {
     <div className="announcement-bar">
       <div className="container announcement-content">
         <div className="announcement-text">
-          <span>{(settings.announcement || '').replace(/[^\x20-\x7E]/g, '').trim()}</span>
+          <span>{(settings.announcement || 'Free Shipping on Orders Over $50 (USA & Worldwide)').trim()}</span>
         </div>
 
         <div className="announcement-controls">

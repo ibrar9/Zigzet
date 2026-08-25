@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { X, Save, Plus, Image as ImageIcon, Sparkles, Tag, DollarSign, Layers } from 'lucide-react';
 import { categories } from '../../data/categories';
 import { CustomDropdown } from '../common/CustomDropdown';
+import { useStore } from '../../context/StoreContext';
 
 export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
+  const { showToast } = useStore();
   const [formData, setFormData] = useState({
     name: '',
     category: 'electronics',
@@ -61,7 +63,7 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.name.trim() || !formData.price) {
-      alert('Please provide product name and valid price.');
+      showToast('Validation Error', 'Please provide product name and a valid price.', 'info');
       return;
     }
 

@@ -3,7 +3,13 @@ import { Heart, User, ShieldCheck } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
 export const Footer = () => {
-  const { setIsWishlistOpen, navigatePage, setViewMode } = useStore();
+  const { setIsWishlistOpen, navigatePage, currentUser, showToast } = useStore();
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    showToast('Subscribed Successfully!', 'Check your inbox for your 15% discount welcome code.');
+    e.target.reset();
+  };
 
   return (
     <footer className="main-footer">
@@ -24,30 +30,29 @@ export const Footer = () => {
 
           {/* Quick Links */}
           <div className="footer-col">
-            <h5>Quick Navigation</h5>
-            <span className="footer-nav-link" onClick={() => navigatePage('home')}>Home</span>
+            <h5>Explore Store</h5>
             <span className="footer-nav-link" onClick={() => navigatePage('shop')}>All Products</span>
+            <span className="footer-nav-link" onClick={() => navigatePage('deals')}>Deals & Offers</span>
             <span className="footer-nav-link" onClick={() => navigatePage('categories')}>Departments</span>
-            <span className="footer-nav-link" onClick={() => navigatePage('deals')}>Flash Deals</span>
-            <span className="footer-nav-link" onClick={() => navigatePage('track')}>Track Order</span>
+            <span className="footer-nav-link" onClick={() => navigatePage('track')}>Track Your Order</span>
           </div>
 
           {/* Customer Care */}
           <div className="footer-col">
-            <h5>Customer Support</h5>
-            <span className="footer-nav-link" onClick={() => navigatePage('contact')}>Help Center & FAQs</span>
+            <h5>Customer Care</h5>
             <span className="footer-nav-link" onClick={() => navigatePage('about')}>About Zigzet</span>
+            <span className="footer-nav-link" onClick={() => navigatePage('contact')}>24/7 Support</span>
             <span className="footer-nav-link" onClick={() => setIsWishlistOpen(true)}>Saved Wishlist</span>
-            <span className="footer-nav-link" onClick={() => navigatePage('contact')}>Contact Support</span>
+            <span className="footer-nav-link" onClick={() => navigatePage(currentUser ? 'user-dashboard' : 'user-login')}>My Profile</span>
           </div>
 
-          {/* Newsletter Signup */}
+          {/* Newsletter Box */}
           <div className="footer-col newsletter-col">
             <h5>Stay in the Loop</h5>
             <p style={{ fontSize: '12.5px', color: '#6b7280', marginBottom: '12px' }}>
               Subscribe to get special discount codes and early access to USA flash deals.
             </p>
-            <form onSubmit={(e) => { e.preventDefault(); alert('Thank you for subscribing! Check your email for a 15% discount coupon.'); }} style={{ display: 'flex', gap: '6px' }}>
+            <form onSubmit={handleSubscribe} style={{ display: 'flex', gap: '6px' }}>
               <input 
                 type="email" 
                 placeholder="Enter your email" 
@@ -98,18 +103,6 @@ export const Footer = () => {
             <User size={15} />
             <span>My Account</span>
           </span>
-          <span className="footer-divider">|</span>
-          <span 
-            className="footer-link" 
-            onClick={() => {
-              window.location.hash = '#admin';
-              setViewMode('admin');
-            }}
-            title="Open Store Administration Suite"
-          >
-            <ShieldCheck size={15} color="#7c3aed" />
-            <span style={{ color: '#7c3aed', fontWeight: '700' }}>Admin Portal</span>
-          </span>
         </div>
 
         {/* Footer Center */}
@@ -119,11 +112,11 @@ export const Footer = () => {
 
         {/* Footer Right */}
         <div className="footer-right">
-          <a href="#privacy" onClick={(e) => { e.preventDefault(); alert('Zigzet Privacy Policy: 100% secure personal data handling.'); }}>
+          <a href="#privacy" onClick={(e) => { e.preventDefault(); showToast('Privacy Policy', 'Your personal data is encrypted and 100% secure.', 'info'); }}>
             Privacy Policy
           </a>
           <span className="footer-divider">|</span>
-          <a href="#terms" onClick={(e) => { e.preventDefault(); alert('Zigzet Terms of Service: 30-day money-back guarantee.'); }}>
+          <a href="#terms" onClick={(e) => { e.preventDefault(); showToast('Terms of Service', '30-Day money back guarantee on all authentic purchases.', 'info'); }}>
             Terms of Service
           </a>
           <span className="footer-flag" title="United States">USA</span>

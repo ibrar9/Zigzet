@@ -566,18 +566,28 @@ export const StoreProvider = ({ children }) => {
   };
 
   // Wishlist Operations
-  const toggleWishlist = (product) => {
-    const exists = wishlist.some((item) => item.id === product.id);
+  const toggleWishlist = (productOrId) => {
+    if (!productOrId) return;
+    const targetId = typeof productOrId === 'object' ? productOrId.id : productOrId;
+    const targetProduct = typeof productOrId === 'object' && productOrId.name 
+      ? productOrId 
+      : products.find((p) => p.id === targetId) || { id: targetId, name: 'Item', price: 0 };
+
+    const exists = wishlist.some((item) => (typeof item === 'object' ? item.id : item) === targetId);
     if (exists) {
-      setWishlist((prev) => prev.filter((item) => item.id !== product.id));
-      showToast('Removed from Wishlist', `${product.name} removed from your saved items.`, 'info');
+      setWishlist((prev) => prev.filter((item) => (typeof item === 'object' ? item.id : item) !== targetId));
+      showToast('Removed from Wishlist', `${targetProduct.name} removed from your saved items.`, 'info');
     } else {
-      setWishlist((prev) => [...prev, product]);
-      showToast('Saved to Wishlist', `${product.name} added to your wishlist.`);
+      setWishlist((prev) => [...prev, targetProduct]);
+      showToast('Saved to Wishlist', `${targetProduct.name} added to your wishlist.`);
     }
   };
 
-  const isInWishlist = (productId) => wishlist.some((item) => item.id === productId);
+  const isInWishlist = (productId) => {
+    if (!productId) return false;
+    const targetId = typeof productId === 'object' ? productId.id : productId;
+    return wishlist.some((item) => (typeof item === 'object' ? item.id : item) === targetId);
+  };
 
   // Cart Computations
   const cartSubtotal = cart.reduce((acc, item) => acc + (Number(item.price) || 0) * item.quantity, 0);

@@ -3,7 +3,7 @@ import { Bell, X, Mail, CheckCircle2, ShieldCheck, Sparkles } from 'lucide-react
 import { useStore } from '../../context/StoreContext';
 
 export const NotifyModal = () => {
-  const { isNotifyOpen, notifyProduct, closeNotifyModal, requestRestockAlert } = useStore();
+  const { isNotifyOpen, notifyProduct, closeNotifyModal, requestRestockAlert, showToast } = useStore();
   const [email, setEmail] = useState('');
 
   if (!isNotifyOpen || !notifyProduct) return null;
@@ -11,7 +11,7 @@ export const NotifyModal = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!email || !email.includes('@')) {
-      alert('Please enter a valid email address.');
+      showToast('Invalid Email', 'Please enter a valid email address.', 'info');
       return;
     }
 

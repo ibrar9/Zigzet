@@ -69,7 +69,7 @@ export const AdminCoupons = () => {
   const handleCreate = (e) => {
     e.preventDefault();
     if (!form.code.trim()) {
-      alert('Please enter a valid coupon promo code.');
+      showToast('Invalid Promo Code', 'Please enter a valid coupon promo code.', 'info');
       return;
     }
 

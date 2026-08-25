@@ -54,7 +54,7 @@ export const ProductCard = ({ product }) => {
           className={`wishlist-btn ${isSaved ? 'active' : ''}`}
           onClick={(e) => {
             e.stopPropagation();
-            toggleWishlist(product.id);
+            toggleWishlist(product);
           }}
           aria-label="Toggle Wishlist"
         >
