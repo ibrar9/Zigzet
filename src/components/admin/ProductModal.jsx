@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { X, Save, Plus } from 'lucide-react';
+import { X, Save, Plus, Image as ImageIcon, Sparkles, Tag, DollarSign, Layers } from 'lucide-react';
 import { categories } from '../../data/categories';
+import { CustomDropdown } from '../common/CustomDropdown';
 
 export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
   const [formData, setFormData] = useState({
@@ -14,15 +15,21 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
     description: ''
   });
 
+  const categoryOptions = categories.map((c) => ({
+    value: c.id,
+    label: c.name,
+    dot: c.id === 'electronics' ? '#3b82f6' : c.id === 'fashion' ? '#ec4899' : c.id === 'beauty' ? '#8b5cf6' : '#10b981'
+  }));
+
   useEffect(() => {
     if (editingProduct) {
       setFormData({
         name: editingProduct.name || '',
         category: editingProduct.category || 'electronics',
         categoryName: editingProduct.categoryName || 'Electronics',
-        price: editingProduct.price || '',
-        originalPrice: editingProduct.originalPrice || '',
-        stock: editingProduct.stock || 20,
+        price: editingProduct.price !== undefined ? editingProduct.price.toString() : '',
+        originalPrice: editingProduct.originalPrice ? editingProduct.originalPrice.toString() : '',
+        stock: editingProduct.stock !== undefined ? editingProduct.stock : 20,
         image: editingProduct.image || '',
         description: editingProduct.description || ''
       });
@@ -42,8 +49,7 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
 
   if (!isOpen) return null;
 
-  const handleCategoryChange = (e) => {
-    const catId = e.target.value;
+  const handleCategorySelect = (catId) => {
     const catObj = categories.find((c) => c.id === catId);
     setFormData({
       ...formData,
@@ -54,13 +60,17 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.price) {
-      alert('Please provide at least product name and price.');
+    if (!formData.name.trim() || !formData.price) {
+      alert('Please provide product name and valid price.');
       return;
     }
 
     onSave({
       ...formData,
+      name: formData.name.trim(),
+      price: parseFloat(formData.price) || 0,
+      originalPrice: formData.originalPrice ? parseFloat(formData.originalPrice) : null,
+      stock: parseInt(formData.stock) || 0,
       image: formData.image || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80'
     });
     onClose();
@@ -70,53 +80,62 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
     <div className="modal-overlay open" onClick={onClose}>
       <div 
         className="modal-box" 
-        style={{ maxWidth: '600px', padding: '32px' }}
+        style={{ maxWidth: '640px', padding: '32px' }}
         onClick={(e) => e.stopPropagation()}
       >
-        <button className="modal-close-icon" onClick={onClose}>
+        <button className="modal-close-icon" onClick={onClose} aria-label="Close">
           <X size={18} />
         </button>
 
-        <h3 style={{ fontSize: '20px', fontWeight: '800', marginBottom: '20px' }}>
-          {editingProduct ? 'Edit Product' : 'Add New Product'}
-        </h3>
+        <div style={{ marginBottom: '20px', paddingBottom: '14px', borderBottom: '1px solid #e2e8f0' }}>
+          <span style={{ fontSize: '12px', color: '#7c3aed', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            {editingProduct ? 'Inventory Update' : 'New Catalog Item'}
+          </span>
+          <h3 style={{ fontSize: '22px', fontWeight: '800', marginTop: '2px', color: '#0f172a' }}>
+            {editingProduct ? `Edit "${editingProduct.name}"` : 'Create New Product'}
+          </h3>
+        </div>
 
         <form onSubmit={handleSubmit}>
           <div className="checkout-form-grid">
+            {/* Product Name */}
             <div className="form-group full-width">
               <label>Product Name *</label>
               <input
                 type="text"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                placeholder="e.g. Wireless Pro Earbuds"
+                placeholder="e.g. Premium Noise-Cancelling Headphones"
                 required
               />
             </div>
 
+            {/* Category Custom Dropdown */}
             <div className="form-group">
               <label>Category *</label>
-              <select value={formData.category} onChange={handleCategoryChange}>
-                {categories.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.name}
-                  </option>
-                ))}
-              </select>
+              <CustomDropdown
+                options={categoryOptions}
+                value={formData.category}
+                onChange={handleCategorySelect}
+                width="100%"
+              />
             </div>
 
+            {/* Stock Quantity */}
             <div className="form-group">
-              <label>Stock Quantity</label>
+              <label>Initial Stock Units *</label>
               <input
                 type="number"
                 value={formData.stock}
                 onChange={(e) => setFormData({ ...formData, stock: parseInt(e.target.value) || 0 })}
                 min="0"
+                required
               />
             </div>
 
+            {/* Price ($) */}
             <div className="form-group">
-              <label>Price ($) *</label>
+              <label>Selling Price ($) *</label>
               <input
                 type="number"
                 step="0.01"
@@ -127,8 +146,9 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
               />
             </div>
 
+            {/* Original Price ($) */}
             <div className="form-group">
-              <label>Original Price ($) (Optional for Sale badge)</label>
+              <label>Original Price ($) (For Sale badge)</label>
               <input
                 type="number"
                 step="0.01"
@@ -138,32 +158,45 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
               />
             </div>
 
+            {/* Image URL & Live Preview */}
             <div className="form-group full-width">
-              <label>Image URL</label>
-              <input
-                type="url"
-                value={formData.image}
-                onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                placeholder="https://images.unsplash.com/..."
-              />
+              <label>Product Image URL *</label>
+              <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                <input
+                  type="url"
+                  value={formData.image}
+                  onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                  placeholder="https://images.unsplash.com/photo-..."
+                  style={{ flex: 1 }}
+                  required
+                />
+                <div style={{ width: '46px', height: '46px', borderRadius: '8px', border: '1px solid #e2e8f0', overflow: 'hidden', flexShrink: 0, background: '#f8fafc', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  {formData.image ? (
+                    <img src={formData.image} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ) : (
+                    <ImageIcon size={18} color="#94a3b8" />
+                  )}
+                </div>
+              </div>
             </div>
 
+            {/* Description */}
             <div className="form-group full-width">
-              <label>Description</label>
+              <label>Description & Features</label>
               <textarea
                 rows="3"
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Detailed description of features and quality..."
+                placeholder="Key specifications, materials, and benefits..."
               />
             </div>
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '24px' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '24px', paddingTop: '16px', borderTop: '1px solid #e2e8f0' }}>
             <button
               type="button"
               onClick={onClose}
-              style={{ padding: '10px 20px', borderRadius: '9999px', fontWeight: '600', color: '#6b7280', fontSize: '13.5px' }}
+              style={{ padding: '10px 20px', borderRadius: '10px', background: '#f1f5f9', color: '#475569', fontWeight: '600', fontSize: '13.5px' }}
             >
               Cancel
             </button>
@@ -171,7 +204,7 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
             <button
               type="submit"
               className="hero-cta-btn"
-              style={{ padding: '10px 24px', fontSize: '13.5px' }}
+              style={{ padding: '10px 28px', fontSize: '13.5px' }}
             >
               <Save size={15} />
               <span>{editingProduct ? 'Save Changes' : 'Create Product'}</span>

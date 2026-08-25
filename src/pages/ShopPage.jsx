@@ -14,6 +14,7 @@ import {
 import { useStore } from '../context/StoreContext';
 import { categories } from '../data/categories';
 import { ProductCard } from '../components/common/ProductCard';
+import { CustomDropdown } from '../components/common/CustomDropdown';
 
 export const ShopPage = () => {
   const { 
@@ -239,28 +240,19 @@ export const ShopPage = () => {
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
                 {/* Sort Dropdown */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px' }}>
-                  <span style={{ color: '#6b7280' }}>Sort by:</span>
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    style={{
-                      padding: '6px 12px',
-                      borderRadius: '8px',
-                      border: '1px solid #e5e7eb',
-                      fontSize: '13px',
-                      fontWeight: '600',
-                      backgroundColor: '#ffffff',
-                      outline: 'none'
-                    }}
-                  >
-                    <option value="featured">Featured Deals</option>
-                    <option value="price-asc">Price: Low to High</option>
-                    <option value="price-desc">Price: High to Low</option>
-                    <option value="rating">Highest Rated</option>
-                    <option value="name">Product Name (A-Z)</option>
-                  </select>
-                </div>
+                <CustomDropdown
+                  options={[
+                    { value: 'featured', label: 'Featured Deals' },
+                    { value: 'price-asc', label: 'Price: Low to High' },
+                    { value: 'price-desc', label: 'Price: High to Low' },
+                    { value: 'rating', label: 'Highest Rated' },
+                    { value: 'name', label: 'Product Name (A-Z)' }
+                  ]}
+                  value={sortBy}
+                  onChange={(val) => setSortBy(val)}
+                  minWidth="180px"
+                  align="right"
+                />
 
                 {/* View Mode Switcher */}
                 <div className="layout-switchers">

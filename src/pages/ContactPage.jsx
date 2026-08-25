@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Clock, Send, ChevronDown, MessageSquare, CheckCircle2 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
+import { CustomDropdown } from '../components/common/CustomDropdown';
 
 export const ContactPage = () => {
   const { submitContactMessage } = useStore();
@@ -106,16 +107,18 @@ export const ContactPage = () => {
 
                 <div className="form-group full-width">
                   <label>Inquiry Topic</label>
-                  <select
+                  <CustomDropdown
+                    options={[
+                      { value: 'General Inquiry', label: 'General Inquiry', dot: '#7c3aed' },
+                      { value: 'Order Tracking & Status', label: 'Order Tracking & Status', dot: '#3b82f6' },
+                      { value: 'Returns & Refunds', label: 'Returns & Refunds', dot: '#f59e0b' },
+                      { value: 'Product Specifications', label: 'Product Specifications', dot: '#10b981' },
+                      { value: 'Wholesale & Bulk Orders', label: 'Wholesale & Bulk Orders', dot: '#ec4899' }
+                    ]}
                     value={form.subject}
-                    onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                  >
-                    <option value="General Inquiry">General Inquiry</option>
-                    <option value="Order Tracking & Status">Order Tracking & Status</option>
-                    <option value="Returns & Refunds">Returns & Refunds</option>
-                    <option value="Product Specifications">Product Specifications</option>
-                    <option value="Wholesale & Bulk Orders">Wholesale & Bulk Orders</option>
-                  </select>
+                    onChange={(val) => setForm({ ...form, subject: val })}
+                    width="100%"
+                  />
                 </div>
 
                 <div className="form-group full-width">
