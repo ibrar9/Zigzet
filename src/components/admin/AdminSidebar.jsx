@@ -16,65 +16,100 @@ import {
   LogOut,
   ChevronRight,
   Store,
-  X
+  X,
+  Tag,
+  BarChart3,
+  ShoppingCart,
+  Zap,
+  Star,
+  Truck,
+  Award,
+  Palette,
+  FileText,
+  ShieldCheck
 } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
 export const AdminSidebar = ({ isMobileOpen, setIsMobileOpen, onOpenInbox, onOpenNotifications }) => {
-  const { adminTab, setAdminTab, setViewMode, logoutAdmin, inboxMessages, notifications, orders } = useStore();
+  const { 
+    adminTab, 
+    setAdminTab, 
+    setViewMode, 
+    logoutAdmin, 
+    inboxMessages, 
+    notifications, 
+    orders, 
+    abandonedCarts, 
+    reviews, 
+    coupons 
+  } = useStore();
 
   const unreadInboxCount = inboxMessages.filter((m) => m.unread).length;
   const unreadNotifsCount = notifications.filter((n) => n.unread).length;
   const pendingOrdersCount = orders.filter((o) => o.status === 'Pending' || o.status === 'Processing').length;
+  const pendingReviewsCount = reviews.filter((r) => r.status === 'Pending').length;
+  const abandonedCount = abandonedCarts.filter((c) => c.recoveryStatus === 'Pending').length;
 
-  const menuItems = [
-    { id: 'dashboard', label: 'Dashboards', icon: <LayoutDashboard size={18} />, hasSub: true },
-    { id: 'wallet', label: 'My Wallet', icon: <Wallet size={18} /> },
-    { id: 'transactions', label: 'Transaction', icon: <ArrowLeftRight size={18} /> },
-    { 
-      id: 'orders', 
-      label: 'Order', 
-      icon: <ShoppingBag size={18} />,
-      badge: pendingOrdersCount > 0 ? pendingOrdersCount : null,
-      badgeColor: '#10b981'
+  const sections = [
+    {
+      title: 'CORE & INTELLIGENCE',
+      items: [
+        { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboard size={17} /> },
+        { id: 'analytics', label: 'Analytics & Profits', icon: <BarChart3 size={17} /> },
+        { id: 'wallet', label: 'My Wallet', icon: <Wallet size={17} /> }
+      ]
     },
-    { id: 'customers', label: 'Customers', icon: <Users size={18} /> },
-    { id: 'products', label: 'Products', icon: <Package size={18} /> },
-    { 
-      id: 'inbox', 
-      label: 'Inbox', 
-      icon: <MessageSquare size={18} />, 
-      badge: unreadInboxCount > 0 ? unreadInboxCount : null, 
-      avatars: [
-        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80',
-        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&auto=format&fit=crop&q=80'
-      ] 
+    {
+      title: 'SALES & COMMERCE',
+      items: [
+        { 
+          id: 'orders', 
+          label: 'Orders', 
+          icon: <ShoppingBag size={17} />,
+          badge: pendingOrdersCount > 0 ? pendingOrdersCount : null,
+          badgeColor: '#10b981'
+        },
+        { id: 'products', label: 'Products & Stock', icon: <Package size={17} /> },
+        { id: 'coupons', label: 'Discount Coupons', icon: <Tag size={17} /> },
+        { id: 'campaigns', label: 'Flash Sale Timer', icon: <Zap size={17} /> },
+        { 
+          id: 'abandoned-carts', 
+          label: 'Abandoned Carts', 
+          icon: <ShoppingCart size={17} />,
+          badge: abandonedCount > 0 ? abandonedCount : null,
+          badgeColor: '#ea580c'
+        }
+      ]
     },
-    { id: 'integrations', label: 'Integrations', icon: <Sliders size={18} /> },
-    { 
-      id: 'notifications', 
-      label: 'Notifications', 
-      icon: <Bell size={18} />, 
-      badge: unreadNotifsCount > 0 ? unreadNotifsCount : null, 
-      badgeColor: '#7c3aed' 
+    {
+      title: 'OPERATIONS & FULFILLMENT',
+      items: [
+        { id: 'customers', label: 'Customers CRM', icon: <Users size={17} /> },
+        { id: 'shipments', label: 'Shipping & Labels', icon: <Truck size={17} /> },
+        { 
+          id: 'reviews', 
+          label: 'Reviews Moderation', 
+          icon: <Star size={17} />,
+          badge: pendingReviewsCount > 0 ? pendingReviewsCount : null,
+          badgeColor: '#f59e0b'
+        },
+        { id: 'loyalty', label: 'Loyalty & Rewards', icon: <Award size={17} /> },
+        { id: 'invoices', label: 'Tax Invoices & QR', icon: <FileText size={17} /> }
+      ]
     },
-    { id: 'user', label: 'User', icon: <UserCheck size={18} /> },
-    { id: 'history', label: 'History', icon: <History size={18} /> }
-  ];
-
-  const helpItems = [
-    { id: 'support', label: 'Support', icon: <Headphones size={18} /> },
-    { id: 'settings', label: 'Setting', icon: <Settings size={18} /> }
+    {
+      title: 'STORE MANAGEMENT',
+      items: [
+        { id: 'customizer', label: 'Visual Hero CMS', icon: <Palette size={17} /> },
+        { id: 'staff', label: 'Staff & Roles', icon: <ShieldCheck size={17} /> },
+        { id: 'integrations', label: 'Integrations', icon: <Sliders size={17} /> },
+        { id: 'settings', label: 'Store Settings', icon: <Settings size={17} /> }
+      ]
+    }
   ];
 
   const handleSelectTab = (tabId) => {
-    if (tabId === 'inbox' && onOpenInbox) {
-      onOpenInbox();
-    } else if (tabId === 'notifications' && onOpenNotifications) {
-      onOpenNotifications();
-    } else {
-      setAdminTab(tabId);
-    }
+    setAdminTab(tabId);
     if (setIsMobileOpen) {
       setIsMobileOpen(false);
     }
@@ -118,109 +153,127 @@ export const AdminSidebar = ({ isMobileOpen, setIsMobileOpen, onOpenInbox, onOpe
             </div>
             <div className="admin-brand-name">
               <span className="brand-main">Zigzet</span>
-              <span className="brand-dot">.</span>
+              <span className="brand-badge">ADMIN</span>
             </div>
           </div>
 
           <button 
-            className="mobile-close-btn"
+            className="sidebar-close-btn"
             onClick={() => setIsMobileOpen(false)}
-            aria-label="Close menu"
+            aria-label="Close sidebar"
           >
             <X size={18} />
           </button>
         </div>
 
-        {/* Sidebar Nav Items */}
-        <div className="admin-sidebar-content">
-          {/* Menu Section */}
-          <div className="admin-nav-group">
-            <div className="admin-nav-heading">Menu</div>
-            <nav className="admin-nav-list">
-              {menuItems.map((item) => {
-                const isActive = adminTab === item.id;
-                return (
-                  <button
-                    key={item.id}
-                    className={`admin-nav-item ${isActive ? 'active' : ''}`}
-                    onClick={() => handleSelectTab(item.id)}
-                  >
-                    <span className="nav-item-icon">{item.icon}</span>
-                    <span className="nav-item-label">{item.label}</span>
+        {/* Navigation Section Container */}
+        <div className="admin-sidebar-menu-scrollable" style={{ padding: '16px 12px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          {sections.map((sec, sIdx) => (
+            <div key={sIdx}>
+              <div style={{ fontSize: '10.5px', fontWeight: '800', color: '#94a3b8', letterSpacing: '0.06em', padding: '0 12px 6px 12px' }}>
+                {sec.title}
+              </div>
 
-                    {/* Stacked customer avatars for Inbox */}
-                    {item.avatars && (
-                      <div className="nav-avatar-stack">
-                        {item.avatars.map((av, idx) => (
-                          <img key={idx} src={av} alt="user" className="stack-avatar" />
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Numeric Badge */}
-                    {item.badge && (
-                      <span 
-                        className="nav-item-badge" 
-                        style={{ backgroundColor: item.badgeColor || '#7c3aed' }}
+              <ul className="admin-menu-list" style={{ display: 'flex', flexDirection: 'column', gap: '2px', listStyle: 'none' }}>
+                {sec.items.map((item) => {
+                  const isActive = adminTab === item.id;
+                  return (
+                    <li key={item.id}>
+                      <button
+                        className={`admin-menu-item ${isActive ? 'active' : ''}`}
+                        onClick={() => handleSelectTab(item.id)}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          width: '100%',
+                          padding: '9px 12px',
+                          borderRadius: '10px',
+                          fontSize: '13px',
+                          fontWeight: isActive ? '700' : '500',
+                          color: isActive ? '#7c3aed' : '#475569',
+                          background: isActive ? '#f5f3ff' : 'transparent',
+                          transition: 'all 0.15s ease'
+                        }}
                       >
-                        {item.badge}
-                      </span>
-                    )}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <span style={{ color: isActive ? '#7c3aed' : '#64748b', display: 'flex', alignItems: 'center' }}>
+                            {item.icon}
+                          </span>
+                          <span>{item.label}</span>
+                        </div>
 
-                    {/* Chevron icon for items with sub or active */}
-                    {item.hasSub && (
-                      <ChevronRight size={14} className="nav-item-chevron" />
-                    )}
-                  </button>
-                );
-              })}
-            </nav>
-          </div>
+                        {item.badge && (
+                          <span
+                            style={{
+                              background: item.badgeColor || '#7c3aed',
+                              color: '#ffffff',
+                              fontSize: '10.5px',
+                              fontWeight: '800',
+                              padding: '2px 6px',
+                              borderRadius: '9999px'
+                            }}
+                          >
+                            {item.badge}
+                          </span>
+                        )}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
+        </div>
 
-          {/* Help & Settings Section */}
-          <div className="admin-nav-group">
-            <div className="admin-nav-heading">Help</div>
-            <nav className="admin-nav-list">
-              {helpItems.map((item) => {
-                const isActive = adminTab === item.id;
-                return (
-                  <button
-                    key={item.id}
-                    className={`admin-nav-item ${isActive ? 'active' : ''}`}
-                    onClick={() => handleSelectTab(item.id)}
-                  >
-                    <span className="nav-item-icon">{item.icon}</span>
-                    <span className="nav-item-label">{item.label}</span>
-                  </button>
-                );
-              })}
+        {/* Bottom User / Storefront Switcher */}
+        <div className="admin-sidebar-footer" style={{ borderTop: '1px solid #e2e8f0', padding: '16px 14px' }}>
+          <button
+            className="storefront-switch-btn"
+            onClick={() => {
+              window.location.hash = '';
+              setViewMode('store');
+            }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              width: '100%',
+              padding: '9px 14px',
+              borderRadius: '10px',
+              background: '#f8fafc',
+              border: '1px solid #e2e8f0',
+              fontSize: '12.5px',
+              fontWeight: '700',
+              color: '#334155',
+              marginBottom: '10px'
+            }}
+          >
+            <Store size={15} color="#7c3aed" />
+            <span>View Customer Store</span>
+          </button>
 
-              {/* Quick Switch to Storefront */}
-              <button
-                className="admin-nav-item storefront-switch-btn"
-                onClick={() => {
-                  window.location.hash = '';
-                  setViewMode('store');
-                }}
-              >
-                <span className="nav-item-icon">
-                  <Store size={18} />
-                </span>
-                <span className="nav-item-label">Switch to Storefront</span>
-              </button>
-
-              {/* Logout Button */}
-              <button
-                className="admin-nav-item logout-btn"
-                onClick={logoutAdmin}
-              >
-                <span className="nav-item-icon">
-                  <LogOut size={18} />
-                </span>
-                <span className="nav-item-label">Logout</span>
-              </button>
-            </nav>
-          </div>
+          <button
+            className="admin-logout-btn"
+            onClick={logoutAdmin}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px',
+              width: '100%',
+              padding: '8px 14px',
+              borderRadius: '10px',
+              color: '#ef4444',
+              fontSize: '12.5px',
+              fontWeight: '600',
+              background: 'transparent'
+            }}
+          >
+            <LogOut size={14} />
+            <span>Log Out</span>
+          </button>
         </div>
       </aside>
     </>

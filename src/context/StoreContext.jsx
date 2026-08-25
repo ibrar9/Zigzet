@@ -1,6 +1,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { initialProducts } from '../data/initialProducts';
 import { initialOrders } from '../data/initialOrders';
+import { initialCoupons } from '../data/initialCoupons';
+import { initialReviews } from '../data/initialReviews';
+import { initialStaff } from '../data/initialStaff';
+import { initialAbandonedCarts } from '../data/initialAbandonedCarts';
 import { 
   adminCustomersData, 
   adminInboxMessages, 
@@ -28,7 +32,14 @@ const STORAGE_KEYS = {
   INBOX: 'zigzet_inbox_v2',
   NOTIFICATIONS: 'zigzet_notifications_v2',
   TRANSACTIONS: 'zigzet_transactions_v2',
-  ADMIN_AUTH: 'zigzet_admin_auth_v2'
+  ADMIN_AUTH: 'zigzet_admin_auth_v2',
+  COUPONS: 'zigzet_coupons_v2',
+  REVIEWS: 'zigzet_reviews_v2',
+  STAFF: 'zigzet_staff_v2',
+  ABANDONED: 'zigzet_abandoned_v2',
+  CMS: 'zigzet_cms_v2',
+  CAMPAIGNS: 'zigzet_campaigns_v2',
+  LOYALTY: 'zigzet_loyalty_v2'
 };
 
 const defaultSettings = {
@@ -42,9 +53,46 @@ const defaultSettings = {
   adminPassword: 'admin123'
 };
 
+const defaultCms = {
+  heroBadge: 'LATEST ARRIVALS 2026',
+  heroTitle: 'Shop Smarter. Live Better.',
+  heroSubtitle: 'Discover curated electronics, trending modern apparel, and functional home essentials with guaranteed fast USA delivery and 30-day returns.',
+  heroImage: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80',
+  ctaText: 'Explore Catalog',
+  ctaLink: 'shop',
+  bannerHeadline: 'Fast & Reliable USA Shipping',
+  bannerSubtext: 'Get your favorite products delivered quickly across the United States.'
+};
+
+const defaultCampaign = {
+  id: 'camp-1',
+  name: 'Labor Day Mega Flash Sale',
+  headline: 'Limited-Time Weekend Clearance: Up to 35% Off Everything',
+  discountPercent: 20,
+  isActive: true,
+  endsAt: '2026-09-10T23:59:59',
+  applicableCategories: 'all'
+};
+
+const defaultLoyalty = {
+  pointsPerDollar: 10,
+  redemptionRate: 100, // 100 points = $1.00
+  customerPoints: {
+    'cust-1': 1420,
+    'cust-2': 3200,
+    'cust-3': 850
+  },
+  tiers: [
+    { name: 'Bronze Explorer', minSpend: 0, perks: 'Standard 1x Points' },
+    { name: 'Silver Member', minSpend: 500, perks: '1.25x Points + Free Express Delivery' },
+    { name: 'Gold VIP', minSpend: 1500, perks: '1.5x Points + Priority 24/7 Support' },
+    { name: 'Platinum Elite', minSpend: 3000, perks: '2x Points + Birthday Gift + Early Access' }
+  ]
+};
+
 export const StoreProvider = ({ children }) => {
   // Navigation & Page State
-  const [currentPage, setCurrentPage] = useState('home'); // 'home' | 'shop' | 'categories' | 'deals' | 'track' | 'about' | 'contact'
+  const [currentPage, setCurrentPage] = useState('home');
 
   // Admin Authentication State
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(() => {
@@ -55,7 +103,7 @@ export const StoreProvider = ({ children }) => {
     }
   });
 
-  // 1. Products state (with active toggle & sales metric)
+  // 1. Products state
   const [products, setProducts] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.PRODUCTS) || localStorage.getItem('shopnest_products_v1');
@@ -99,7 +147,7 @@ export const StoreProvider = ({ children }) => {
     }
   });
 
-  // 4. Inbox Messages state
+  // 4. Inbox Messages
   const [inboxMessages, setInboxMessages] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.INBOX);
@@ -109,7 +157,7 @@ export const StoreProvider = ({ children }) => {
     }
   });
 
-  // 5. Notifications state
+  // 5. Notifications
   const [notifications, setNotifications] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.NOTIFICATIONS);
@@ -119,7 +167,7 @@ export const StoreProvider = ({ children }) => {
     }
   });
 
-  // 6. Wallet Transactions state
+  // 6. Wallet Transactions
   const [walletTransactions, setWalletTransactions] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.TRANSACTIONS);
@@ -129,7 +177,80 @@ export const StoreProvider = ({ children }) => {
     }
   });
 
-  // 7. Cart state
+  // 7. Coupons state
+  const [coupons, setCoupons] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.COUPONS);
+      return saved ? JSON.parse(saved) : initialCoupons;
+    } catch {
+      return initialCoupons;
+    }
+  });
+
+  // 8. Reviews state
+  const [reviews, setReviews] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.REVIEWS);
+      return saved ? JSON.parse(saved) : initialReviews;
+    } catch {
+      return initialReviews;
+    }
+  });
+
+  // 9. Staff Members state
+  const [staffMembers, setStaffMembers] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.STAFF);
+      return saved ? JSON.parse(saved) : initialStaff;
+    } catch {
+      return initialStaff;
+    }
+  });
+
+  // 10. Abandoned Carts state
+  const [abandonedCarts, setAbandonedCarts] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.ABANDONED);
+      return saved ? JSON.parse(saved) : initialAbandonedCarts;
+    } catch {
+      return initialAbandonedCarts;
+    }
+  });
+
+  // 11. CMS Visual Content
+  const [cmsContent, setCmsContent] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.CMS);
+      return saved ? JSON.parse(saved) : defaultCms;
+    } catch {
+      return defaultCms;
+    }
+  });
+
+  // 12. Flash Sale Campaign
+  const [campaign, setCampaign] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.CAMPAIGNS);
+      return saved ? JSON.parse(saved) : defaultCampaign;
+    } catch {
+      return defaultCampaign;
+    }
+  });
+
+  // 13. Loyalty Program
+  const [loyaltyProgram, setLoyaltyProgram] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.LOYALTY);
+      return saved ? JSON.parse(saved) : defaultLoyalty;
+    } catch {
+      return defaultLoyalty;
+    }
+  });
+
+  // 14. Active Applied Coupon in Checkout
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+
+  // Cart & Wishlist
   const [cart, setCart] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.CART) || localStorage.getItem('shopnest_cart_v1');
@@ -139,7 +260,6 @@ export const StoreProvider = ({ children }) => {
     }
   });
 
-  // 8. Wishlist state
   const [wishlist, setWishlist] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.WISHLIST) || localStorage.getItem('shopnest_wishlist_v1');
@@ -149,7 +269,7 @@ export const StoreProvider = ({ children }) => {
     }
   });
 
-  // 9. Store Settings
+  // Settings
   const [settings, setSettings] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.SETTINGS) || localStorage.getItem('shopnest_settings_v1');
@@ -159,15 +279,9 @@ export const StoreProvider = ({ children }) => {
     }
   });
 
-  // UI state
-  const [viewMode, setViewMode] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return window.location.hash === '#admin' || window.location.pathname === '/admin' ? 'admin' : 'store';
-    }
-    return 'store';
-  });
-
-  const [adminTab, setAdminTab] = useState('dashboard'); // 'dashboard' | 'products' | 'orders' | 'customers' | 'wallet' | 'transactions' | 'settings' | 'integrations' | 'user' | 'history'
+  // UI Navigation states
+  const [viewMode, setViewMode] = useState(() => (window.location.hash === '#admin' ? 'admin' : 'store'));
+  const [adminTab, setAdminTab] = useState('dashboard');
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -177,65 +291,67 @@ export const StoreProvider = ({ children }) => {
   const [quickViewProduct, setQuickViewProduct] = useState(null);
   const [toasts, setToasts] = useState([]);
 
-  // Listen to URL hash changes for #admin route
+  // Persistence Effects
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products)); }, [products]);
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(orders)); }, [orders]);
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.CUSTOMERS, JSON.stringify(customers)); }, [customers]);
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.INBOX, JSON.stringify(inboxMessages)); }, [inboxMessages]);
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.NOTIFICATIONS, JSON.stringify(notifications)); }, [notifications]);
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.TRANSACTIONS, JSON.stringify(walletTransactions)); }, [walletTransactions]);
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.COUPONS, JSON.stringify(coupons)); }, [coupons]);
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(reviews)); }, [reviews]);
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.STAFF, JSON.stringify(staffMembers)); }, [staffMembers]);
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.ABANDONED, JSON.stringify(abandonedCarts)); }, [abandonedCarts]);
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.CMS, JSON.stringify(cmsContent)); }, [cmsContent]);
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.CAMPAIGNS, JSON.stringify(campaign)); }, [campaign]);
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.LOYALTY, JSON.stringify(loyaltyProgram)); }, [loyaltyProgram]);
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.CART, JSON.stringify(cart)); }, [cart]);
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.WISHLIST, JSON.stringify(wishlist)); }, [wishlist]);
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings)); }, [settings]);
+
   useEffect(() => {
     const handleHashChange = () => {
       if (window.location.hash === '#admin') {
         setViewMode('admin');
+      } else {
+        setViewMode('store');
       }
     };
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  // Sync to LocalStorage
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
-  }, [products]);
+  // Toast System
+  const showToast = (title, message, type = 'success') => {
+    const id = Date.now() + Math.random();
+    setToasts((prev) => [...prev, { id, title, message, type }]);
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== id));
+    }, 3800);
+  };
 
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(orders));
-  }, [orders]);
+  const removeToast = (id) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  };
 
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.CUSTOMERS, JSON.stringify(customers));
-  }, [customers]);
+  // Navigation
+  const navigatePage = (pageName, category = null) => {
+    setCurrentPage(pageName);
+    if (category) {
+      setActiveCategory(category);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.INBOX, JSON.stringify(inboxMessages));
-  }, [inboxMessages]);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.NOTIFICATIONS, JSON.stringify(notifications));
-  }, [notifications]);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.TRANSACTIONS, JSON.stringify(walletTransactions));
-  }, [walletTransactions]);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.CART, JSON.stringify(cart));
-  }, [cart]);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.WISHLIST, JSON.stringify(wishlist));
-  }, [wishlist]);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
-  }, [settings]);
-
-  // Admin Auth functions
-  const loginAdmin = (inputUser, inputPass) => {
-    const validUser = settings.adminUsername || 'admin';
-    const validPass = settings.adminPassword || 'admin123';
-
-    if (inputUser.trim() === validUser && inputPass === validPass) {
+  // Authentication
+  const loginAdmin = (username, password) => {
+    if (
+      username.trim() === settings.adminUsername &&
+      password.trim() === settings.adminPassword
+    ) {
       setIsAdminAuthenticated(true);
-      try {
-        sessionStorage.setItem(STORAGE_KEYS.ADMIN_AUTH, 'true');
-      } catch {}
-      showToast('Admin Logged In', 'Welcome back, Administrator!');
+      sessionStorage.setItem(STORAGE_KEYS.ADMIN_AUTH, 'true');
+      showToast('Admin Logged In', 'Welcome back, Alexandre Mercer (Store Administrator)');
       return true;
     }
     return false;
@@ -243,61 +359,22 @@ export const StoreProvider = ({ children }) => {
 
   const logoutAdmin = () => {
     setIsAdminAuthenticated(false);
-    try {
-      sessionStorage.removeItem(STORAGE_KEYS.ADMIN_AUTH);
-    } catch {}
-    window.location.hash = '';
-    setViewMode('store');
-    showToast('Logged Out', 'Admin session terminated safely.', 'info');
+    sessionStorage.removeItem(STORAGE_KEYS.ADMIN_AUTH);
+    showToast('Logged Out', 'Signed out from admin session.');
   };
 
-  // Navigate helper with smooth scroll
-  const navigatePage = (pageName, categoryFilter = null) => {
-    setCurrentPage(pageName);
-    setViewMode('store');
-    if (categoryFilter !== null) {
-      setActiveCategory(categoryFilter);
-    }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  // Toast helper
-  const showToast = (title, message, type = 'success') => {
-    const id = Date.now() + Math.random().toString(36).substring(2, 9);
-    setToasts((prev) => [...prev, { id, title, message, type }]);
-    setTimeout(() => {
-      setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, 3500);
-  };
-
-  const removeToast = (id) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
-  };
-
-  // Cart operations
-  const addToCart = (product, quantity = 1, options = {}) => {
-    if (product.stock !== undefined && product.stock <= 0) {
-      showToast('Out of Stock', `${product.name} is currently out of stock.`, 'warning');
-      return;
-    }
-
-    setCart((prevCart) => {
-      const existingIndex = prevCart.findIndex((item) => item.id === product.id);
-      if (existingIndex > -1) {
-        const updated = [...prevCart];
-        const newQty = updated[existingIndex].quantity + quantity;
-        updated[existingIndex] = {
-          ...updated[existingIndex],
-          quantity: newQty,
-          ...options
-        };
-        return updated;
-      } else {
-        return [...prevCart, { ...product, quantity, ...options }];
+  // Cart Operations
+  const addToCart = (product, quantity = 1) => {
+    setCart((prev) => {
+      const existing = prev.find((item) => item.id === product.id);
+      if (existing) {
+        return prev.map((item) =>
+          item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
+        );
       }
+      return [...prev, { ...product, quantity }];
     });
-
-    showToast('Added to Cart', `${product.name} (x${quantity}) was added to your bag.`);
+    showToast('Added to Bag', `${product.name} (x${quantity}) added to your shopping bag.`);
   };
 
   const updateCartQuantity = (productId, quantity) => {
@@ -311,69 +388,67 @@ export const StoreProvider = ({ children }) => {
   };
 
   const removeFromCart = (productId) => {
-    const item = cart.find((i) => i.id === productId);
-    setCart((prev) => prev.filter((i) => i.id !== productId));
-    if (item) {
-      showToast('Removed from Cart', `${item.name} removed from your bag.`, 'info');
-    }
+    setCart((prev) => prev.filter((item) => item.id !== productId));
+    showToast('Item Removed', 'Product removed from shopping bag.', 'info');
   };
 
   const clearCart = () => {
     setCart([]);
+    setAppliedCoupon(null);
   };
 
-  // Wishlist operations
-  const toggleWishlist = (productId) => {
-    const isSaved = wishlist.includes(productId);
-    const product = products.find((p) => p.id === productId);
-    const name = product ? product.name : 'Item';
-
-    if (isSaved) {
-      setWishlist((prev) => prev.filter((id) => id !== productId));
-      showToast('Removed from Wishlist', `${name} was removed from your favorites.`, 'info');
+  // Wishlist Operations
+  const toggleWishlist = (product) => {
+    const exists = wishlist.some((item) => item.id === product.id);
+    if (exists) {
+      setWishlist((prev) => prev.filter((item) => item.id !== product.id));
+      showToast('Removed from Wishlist', `${product.name} removed from your saved items.`, 'info');
     } else {
-      setWishlist((prev) => [...prev, productId]);
-      showToast('Saved to Wishlist', `${name} was saved to your favorites!`, 'success');
+      setWishlist((prev) => [...prev, product]);
+      showToast('Saved to Wishlist', `${product.name} added to your wishlist.`);
     }
   };
 
-  const isInWishlist = (productId) => wishlist.includes(productId);
+  const isInWishlist = (productId) => wishlist.some((item) => item.id === productId);
 
-  // Cart calculations
-  const cartSubtotal = cart.reduce((sum, item) => sum + (Number(item.price) || 0) * (Number(item.quantity) || 1), 0);
-  const isFreeShipping = cartSubtotal >= settings.freeShippingThreshold;
-  const shippingFee = cartSubtotal === 0 ? 0 : isFreeShipping ? 0 : 5.99;
-  const estimatedTax = cartSubtotal * 0.08; // 8% sales tax
-  const cartTotal = cartSubtotal + shippingFee + estimatedTax;
-  const cartItemsCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+  // Cart Computations
+  const cartSubtotal = cart.reduce((acc, item) => acc + (Number(item.price) || 0) * item.quantity, 0);
+  const isFreeShipping = cartSubtotal >= (settings.freeShippingThreshold || 50);
+  const shippingFee = cartSubtotal > 0 && !isFreeShipping ? 9.99 : 0;
+  const estimatedTax = cartSubtotal * 0.08;
 
-  // ==========================================
-  // REAL-TIME CONNECTED ADMIN & STORE ACTIONS
-  // ==========================================
+  // Coupon discount calculation
+  let couponDiscountAmount = 0;
+  if (appliedCoupon) {
+    if (appliedCoupon.type === 'percentage') {
+      couponDiscountAmount = (cartSubtotal * appliedCoupon.value) / 100;
+      if (appliedCoupon.maxDiscount) {
+        couponDiscountAmount = Math.min(couponDiscountAmount, appliedCoupon.maxDiscount);
+      }
+    } else {
+      couponDiscountAmount = Math.min(cartSubtotal, appliedCoupon.value);
+    }
+  }
 
-  // 1. Add Product (Admin -> Storefront)
+  const cartTotal = Math.max(0, cartSubtotal - couponDiscountAmount + shippingFee + estimatedTax);
+  const cartItemsCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+
+  // 1. Products Management
   const addProduct = (newProductData) => {
-    const id = 'prod-' + Date.now();
     const newProduct = {
-      id,
+      ...newProductData,
+      id: 'prod-' + Date.now(),
+      sku: newProductData.sku || `ZG-${Math.floor(1000 + Math.random() * 9000)}`,
       rating: 5.0,
       reviewsCount: 0,
-      stock: parseInt(newProductData.stock) || 20,
       salesCount: 0,
       isActive: true,
-      images: [newProductData.image || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80'],
-      specs: {},
-      featured: false,
-      sku: 'ZG-' + Math.random().toString(36).substring(2, 7).toUpperCase(),
-      ...newProductData,
       price: parseFloat(newProductData.price) || 0,
       originalPrice: newProductData.originalPrice ? parseFloat(newProductData.originalPrice) : null,
       isSale: Boolean(newProductData.originalPrice && parseFloat(newProductData.originalPrice) > parseFloat(newProductData.price))
     };
 
     setProducts((prev) => [newProduct, ...prev]);
-
-    // Add alert notification
     setNotifications((prev) => [
       {
         id: 'notif-' + Date.now(),
@@ -385,94 +460,74 @@ export const StoreProvider = ({ children }) => {
       },
       ...prev
     ]);
-
-    showToast('Product Created', `${newProduct.name} is now live in store and inventory.`);
+    showToast('Product Created', `${newProduct.name} is now live in store.`);
     return newProduct;
   };
 
-  // 2. Update Product
   const updateProduct = (productId, updatedData) => {
     setProducts((prev) =>
-      prev.map((p) => {
-        if (p.id === productId) {
-          const price = updatedData.price !== undefined ? parseFloat(updatedData.price) : p.price;
-          const originalPrice = updatedData.originalPrice !== undefined
-            ? (updatedData.originalPrice ? parseFloat(updatedData.originalPrice) : null)
-            : p.originalPrice;
-          const isSale = Boolean(originalPrice && originalPrice > price);
-          return {
-            ...p,
-            ...updatedData,
-            price,
-            originalPrice,
-            isSale
-          };
-        }
-        return p;
-      })
+      prev.map((p) => (p.id === productId ? { ...p, ...updatedData } : p))
     );
-    showToast('Product Updated', 'Product changes saved successfully.');
+    showToast('Product Updated', 'Product details saved successfully.');
   };
 
-  // 3. Toggle Product Active Status (Admin Table Switch -> Storefront Visibility)
+  const deleteProduct = (productId) => {
+    setProducts((prev) => prev.filter((p) => p.id !== productId));
+    showToast('Product Deleted', 'Product removed from catalog.', 'info');
+  };
+
   const toggleProductActive = (productId) => {
     setProducts((prev) =>
       prev.map((p) => {
         if (p.id === productId) {
-          const newStatus = !p.isActive;
+          const nextActive = p.isActive !== false ? false : true;
           showToast(
-            newStatus ? 'Product Activated' : 'Product Deactivated',
-            `"${p.name}" is now ${newStatus ? 'visible' : 'hidden'} on the storefront.`,
-            newStatus ? 'success' : 'info'
+            nextActive ? 'Product Activated' : 'Product Deactivated',
+            `"${p.name}" is now ${nextActive ? 'visible on storefront' : 'hidden from customers'}.`,
+            'info'
           );
-          return { ...p, isActive: newStatus };
+          return { ...p, isActive: nextActive };
         }
         return p;
       })
     );
   };
 
-  // 4. Delete Product
-  const deleteProduct = (productId) => {
-    const prod = products.find((p) => p.id === productId);
-    setProducts((prev) => prev.filter((p) => p.id !== productId));
-    setCart((prev) => prev.filter((i) => i.id !== productId));
-    setWishlist((prev) => prev.filter((id) => id !== productId));
-    showToast('Product Deleted', `${prod ? prod.name : 'Product'} removed from store.`, 'info');
-  };
-
-  // 5. Create Order (Storefront Checkout -> Admin Orders, Inventory, CRM, Wallet & Notifications)
+  // 2. Orders & Checkout
   const createOrder = (orderData) => {
     const orderId = 'ORD-' + Math.floor(1000 + Math.random() * 9000);
-    const orderDate = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    const orderTotal = cartTotal;
-    const orderedItems = [...cart];
+    const orderTotal = orderData.total || cartTotal;
+    const orderedItems = orderData.items || [...cart];
 
     const newOrder = {
       id: orderId,
-      date: orderDate,
-      status: 'Processing',
-      items: orderedItems,
+      customerName: orderData.customerName || 'Demo Customer',
+      email: orderData.email || 'customer@example.com',
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
       total: orderTotal,
       subtotal: cartSubtotal,
-      shipping: shippingFee,
-      tax: estimatedTax,
-      customerName: orderData.customerName || 'Customer',
-      email: orderData.email || 'customer@example.com',
-      shippingAddress: orderData.shippingAddress || '742 Evergreen Terrace, Springfield, OR 97477',
-      paymentMethod: orderData.paymentMethod || 'Credit Card',
-      ...orderData
+      discount: couponDiscountAmount,
+      couponCode: appliedCoupon ? appliedCoupon.code : null,
+      status: 'Processing',
+      paymentMethod: orderData.paymentMethod || 'Credit Card (Visa)',
+      shippingAddress: orderData.shippingAddress || '742 Evergreen Terrace, Springfield, OR',
+      items: orderedItems.map((item) => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+        image: item.image
+      })),
+      trackingNumber: `ZG-FEDEX-${Math.floor(100000 + Math.random() * 900000)}`
     };
 
-    // A. Decrement product stock & increment salesCount
+    // Deduct stock
     setProducts((prevProducts) =>
       prevProducts.map((p) => {
         const matchingCartItem = orderedItems.find((item) => item.id === p.id);
         if (matchingCartItem) {
           const newStock = Math.max(0, (p.stock || 20) - matchingCartItem.quantity);
           const newSales = (p.salesCount || 0) + matchingCartItem.quantity;
-          
-          // Trigger Low Stock notification if <= 5
           if (newStock <= 5) {
             setNotifications((prevN) => [
               {
@@ -492,10 +547,9 @@ export const StoreProvider = ({ children }) => {
       })
     );
 
-    // B. Save Order
     setOrders((prev) => [newOrder, ...prev]);
 
-    // C. Update / Create Customer in CRM
+    // Update CRM Customers
     setCustomers((prevCusts) => {
       const emailMatch = prevCusts.findIndex(
         (c) => c.email.toLowerCase() === (orderData.email || '').toLowerCase()
@@ -528,7 +582,7 @@ export const StoreProvider = ({ children }) => {
       }
     });
 
-    // D. Add to Wallet Transaction Ledger
+    // Ledger
     setWalletTransactions((prevTxns) => [
       {
         id: 'TXN-' + Math.floor(1000 + Math.random() * 9000),
@@ -540,7 +594,6 @@ export const StoreProvider = ({ children }) => {
       ...prevTxns
     ]);
 
-    // E. Add New Order Notification to Admin
     setNotifications((prevNotifs) => [
       {
         id: 'notif-' + Date.now(),
@@ -553,52 +606,159 @@ export const StoreProvider = ({ children }) => {
       ...prevNotifs
     ]);
 
-    // F. Clear Cart & Close Modal
     clearCart();
     setIsCheckoutOpen(false);
     showToast('Order Placed Successfully!', `Order #${orderId} has been confirmed.`);
     return newOrder;
   };
 
-  // 6. Update Order Status (Admin -> TrackOrderPage live sync)
   const updateOrderStatus = (orderId, newStatus) => {
     setOrders((prev) =>
       prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o))
     );
-
-    setNotifications((prev) => [
-      {
-        id: 'notif-' + Date.now(),
-        title: 'Order Status Changed',
-        description: `Order #${orderId} updated to "${newStatus}".`,
-        time: 'Just now',
-        type: 'order',
-        unread: true
-      },
-      ...prev
-    ]);
-
-    showToast('Order Status Updated', `Order #${orderId} marked as ${newStatus}.`);
+    showToast('Status Updated', `Order #${orderId} status changed to ${newStatus}.`);
   };
 
-  // 7. Submit Contact Inquiry (Storefront Contact Page -> Admin Inbox & Notifications)
+  // 3. Coupons Module Methods
+  const addCoupon = (couponData) => {
+    const newCoupon = {
+      ...couponData,
+      id: 'coup-' + Date.now(),
+      code: couponData.code.trim().toUpperCase(),
+      usageCount: 0,
+      isActive: true
+    };
+    setCoupons((prev) => [newCoupon, ...prev]);
+    showToast('Coupon Created', `Promo code "${newCoupon.code}" is now active.`);
+    return newCoupon;
+  };
+
+  const deleteCoupon = (couponId) => {
+    setCoupons((prev) => prev.filter((c) => c.id !== couponId));
+    showToast('Coupon Removed', 'Discount coupon deleted.', 'info');
+  };
+
+  const toggleCouponActive = (couponId) => {
+    setCoupons((prev) =>
+      prev.map((c) => (c.id === couponId ? { ...c, isActive: !c.isActive } : c))
+    );
+  };
+
+  const applyCouponCode = (code) => {
+    const cleanCode = code.trim().toUpperCase();
+    const found = coupons.find((c) => c.code === cleanCode);
+
+    if (!found) {
+      showToast('Invalid Code', 'The promo code entered does not exist.', 'error');
+      return false;
+    }
+    if (!found.isActive) {
+      showToast('Code Inactive', 'This promo code is currently disabled.', 'error');
+      return false;
+    }
+    if (cartSubtotal < (found.minSpend || 0)) {
+      showToast('Minimum Not Met', `This coupon requires a minimum subtotal of $${found.minSpend}.`, 'error');
+      return false;
+    }
+
+    setAppliedCoupon(found);
+    showToast('Coupon Applied!', `You saved with promo code "${cleanCode}".`);
+    return true;
+  };
+
+  const removeCoupon = () => {
+    setAppliedCoupon(null);
+    showToast('Coupon Removed', 'Promo discount cleared.', 'info');
+  };
+
+  // 4. Abandoned Carts Methods
+  const sendCartRecoveryEmail = (cartId) => {
+    setAbandonedCarts((prev) =>
+      prev.map((c) => (c.id === cartId ? { ...c, recoveryStatus: 'Email Sent' } : c))
+    );
+    showToast('Recovery Email Sent!', 'Automated 10% discount recovery email delivered to customer.');
+  };
+
+  // 5. Reviews Moderation Methods
+  const moderateReview = (reviewId, status, adminReply = null) => {
+    setReviews((prev) =>
+      prev.map((r) => {
+        if (r.id === reviewId) {
+          return {
+            ...r,
+            status,
+            adminReply: adminReply !== null ? adminReply : r.adminReply
+          };
+        }
+        return r;
+      })
+    );
+    showToast('Review Moderated', `Review status marked as ${status}.`);
+  };
+
+  const addCustomerReview = (reviewData) => {
+    const newRev = {
+      ...reviewData,
+      id: 'rev-' + Date.now(),
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      status: 'Pending',
+      verifiedPurchase: true,
+      adminReply: null
+    };
+    setReviews((prev) => [newRev, ...prev]);
+    showToast('Review Submitted', 'Thank you! Your review is pending moderator approval.');
+  };
+
+  // 6. Staff Management Methods
+  const addStaffMember = (staffData) => {
+    const newStaff = {
+      ...staffData,
+      id: 'staff-' + Date.now(),
+      status: 'Active',
+      lastActive: 'Just created'
+    };
+    setStaffMembers((prev) => [...prev, newStaff]);
+    showToast('Staff Member Added', `${newStaff.name} has been added with ${newStaff.role} access.`);
+  };
+
+  const deleteStaffMember = (staffId) => {
+    setStaffMembers((prev) => prev.filter((s) => s.id !== staffId));
+    showToast('Staff Removed', 'Team member access revoked.', 'info');
+  };
+
+  // 7. CMS Customizer Methods
+  const updateCmsContent = (newCms) => {
+    setCmsContent((prev) => ({ ...prev, ...newCms }));
+    showToast('CMS Updated', 'Storefront homepage banners and headlines saved successfully.');
+  };
+
+  // 8. Flash Sale Campaign Methods
+  const updateCampaign = (newCampaign) => {
+    setCampaign((prev) => ({ ...prev, ...newCampaign }));
+    showToast('Campaign Updated', 'Flash sale timer and promotional settings updated.');
+  };
+
+  // 9. Loyalty Program Methods
+  const updateLoyaltyProgram = (newLoyalty) => {
+    setLoyaltyProgram((prev) => ({ ...prev, ...newLoyalty }));
+    showToast('Loyalty Settings Saved', 'VIP tiers and point rates updated.');
+  };
+
+  // Contact Inquiry
   const submitContactMessage = ({ name, email, subject, message }) => {
     const newMsg = {
       id: 'msg-' + Date.now(),
       sender: name,
       email: email,
-      subject: subject || 'Store Inquiry',
-      preview: message,
+      preview: message.length > 60 ? message.substring(0, 60) + '...' : message,
       time: 'Just now',
       unread: true,
-      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150&auto=format&fit=crop&q=80',
+      subject: subject || 'General Inquiry',
       messages: [
         { sender: name, text: message, time: 'Just now', isCustomer: true }
       ]
     };
-
     setInboxMessages((prev) => [newMsg, ...prev]);
-
     setNotifications((prev) => [
       {
         id: 'notif-' + Date.now(),
@@ -610,12 +770,10 @@ export const StoreProvider = ({ children }) => {
       },
       ...prev
     ]);
-
     showToast('Message Sent!', 'Our support team has received your message and will respond promptly.');
     return newMsg;
   };
 
-  // 8. Send Reply from Admin to Customer
   const sendInboxReply = (msgId, replyText) => {
     setInboxMessages((prev) =>
       prev.map((m) => {
@@ -638,13 +796,11 @@ export const StoreProvider = ({ children }) => {
     showToast('Reply Delivered', 'Message sent to customer email & live chat.');
   };
 
-  // 9. Mark all notifications as read
   const markAllNotificationsRead = () => {
     setNotifications((prev) => prev.map((n) => ({ ...n, unread: false })));
     showToast('Notifications Cleared', 'All alerts marked as read.', 'info');
   };
 
-  // 10. Request Instant Payout from Wallet
   const requestPayout = (amount = 5000) => {
     const payoutId = 'TXN-' + Math.floor(1000 + Math.random() * 9000);
     setWalletTransactions((prev) => [
@@ -657,7 +813,6 @@ export const StoreProvider = ({ children }) => {
       },
       ...prev
     ]);
-
     setNotifications((prev) => [
       {
         id: 'notif-' + Date.now(),
@@ -669,23 +824,28 @@ export const StoreProvider = ({ children }) => {
       },
       ...prev
     ]);
-
     showToast('Payout Requested!', `$${amount.toFixed(2)} instant payout has been initiated.`);
   };
 
-  // 11. Settings & Store Reset
   const updateSettings = (newSettings) => {
     setSettings((prev) => ({ ...prev, ...newSettings }));
     showToast('Settings Saved', 'Store configuration updated.');
   };
 
   const resetToDefaults = () => {
-    setProducts(initialProducts);
+    setProducts(initialProducts.map((p) => ({ ...p, isActive: true, salesCount: 40, stock: 25 })));
     setOrders(initialOrders);
     setCustomers(adminCustomersData);
     setInboxMessages(adminInboxMessages);
     setNotifications(adminNotificationsList);
     setWalletTransactions(walletOverview.recentTransactions);
+    setCoupons(initialCoupons);
+    setReviews(initialReviews);
+    setStaffMembers(initialStaff);
+    setAbandonedCarts(initialAbandonedCarts);
+    setCmsContent(defaultCms);
+    setCampaign(defaultCampaign);
+    setLoyaltyProgram(defaultLoyalty);
     setCart([]);
     setWishlist([]);
     setSettings(defaultSettings);
@@ -708,6 +868,14 @@ export const StoreProvider = ({ children }) => {
         inboxMessages,
         notifications,
         walletTransactions,
+        coupons,
+        reviews,
+        staffMembers,
+        abandonedCarts,
+        cmsContent,
+        campaign,
+        loyaltyProgram,
+        appliedCoupon,
         cart,
         wishlist,
         settings,
@@ -742,6 +910,7 @@ export const StoreProvider = ({ children }) => {
         isFreeShipping,
         shippingFee,
         estimatedTax,
+        couponDiscountAmount,
         cartTotal,
         cartItemsCount,
         addProduct,
@@ -750,6 +919,19 @@ export const StoreProvider = ({ children }) => {
         toggleProductActive,
         createOrder,
         updateOrderStatus,
+        addCoupon,
+        deleteCoupon,
+        toggleCouponActive,
+        applyCouponCode,
+        removeCoupon,
+        sendCartRecoveryEmail,
+        moderateReview,
+        addCustomerReview,
+        addStaffMember,
+        deleteStaffMember,
+        updateCmsContent,
+        updateCampaign,
+        updateLoyaltyProgram,
         submitContactMessage,
         sendInboxReply,
         markAllNotificationsRead,

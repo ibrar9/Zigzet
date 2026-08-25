@@ -9,6 +9,16 @@ import { AdminOrders } from './AdminOrders';
 import { AdminCustomers } from './AdminCustomers';
 import { AdminWallet } from './AdminWallet';
 import { AdminSettings } from './AdminSettings';
+import { AdminCoupons } from './AdminCoupons';
+import { AdminAnalytics } from './AdminAnalytics';
+import { AdminAbandonedCarts } from './AdminAbandonedCarts';
+import { AdminCampaigns } from './AdminCampaigns';
+import { AdminReviews } from './AdminReviews';
+import { AdminShipments } from './AdminShipments';
+import { AdminLoyalty } from './AdminLoyalty';
+import { AdminCustomizer } from './AdminCustomizer';
+import { AdminInvoices } from './AdminInvoices';
+import { AdminStaff } from './AdminStaff';
 import { AdminInboxDrawer } from './AdminInboxDrawer';
 import { AdminNotificationsDrawer } from './AdminNotificationsDrawer';
 import { 
@@ -63,9 +73,19 @@ export const AdminPanel = () => {
         {/* Dynamic Tab Views */}
         <main className="zigzet-admin-content-container">
           {adminTab === 'dashboard' && <AdminDashboard />}
+          {adminTab === 'analytics' && <AdminAnalytics />}
           {adminTab === 'products' && <AdminProducts />}
           {adminTab === 'orders' && <AdminOrders />}
+          {adminTab === 'coupons' && <AdminCoupons />}
+          {adminTab === 'campaigns' && <AdminCampaigns />}
+          {adminTab === 'abandoned-carts' && <AdminAbandonedCarts />}
           {adminTab === 'customers' && <AdminCustomers onOpenInbox={() => setIsInboxOpen(true)} />}
+          {adminTab === 'shipments' && <AdminShipments />}
+          {adminTab === 'reviews' && <AdminReviews />}
+          {adminTab === 'loyalty' && <AdminLoyalty />}
+          {adminTab === 'invoices' && <AdminInvoices />}
+          {adminTab === 'customizer' && <AdminCustomizer />}
+          {adminTab === 'staff' && <AdminStaff />}
           {adminTab === 'wallet' && <AdminWallet />}
           {adminTab === 'transactions' && <AdminWallet isTransactionsOnly={true} />}
           {adminTab === 'settings' && <AdminSettings />}
@@ -108,110 +128,16 @@ export const AdminPanel = () => {
               </div>
             </div>
           )}
-
-          {/* User Roles & Permissions Tab View */}
-          {adminTab === 'user' && (
-            <div className="admin-page-container">
-              <div className="admin-page-header">
-                <div>
-                  <h2 className="admin-section-title">User Permissions & Admin Roles</h2>
-                  <p className="admin-section-desc">Control team access levels and security settings</p>
-                </div>
-              </div>
-
-              <div className="dash-card" style={{ padding: '24px' }}>
-                <div className="user-roles-list">
-                  {[
-                    { name: 'Alex Johnson', role: 'Super Admin', email: 'alex@zigzet.com', access: 'Full Access (All Modules)', active: true },
-                    { name: 'Maria Gonzalez', role: 'Store Manager', email: 'maria@zigzet.com', access: 'Products, Orders, Customers', active: true },
-                    { name: 'Liam Chen', role: 'Support Agent', email: 'liam@zigzet.com', access: 'Inbox, Orders (Read-only)', active: true }
-                  ].map((usr, idx) => (
-                    <div key={idx} className="user-role-row">
-                      <div className="user-info-group">
-                        <div className="user-avatar-circle">{usr.name.charAt(0)}</div>
-                        <div>
-                          <div className="user-name">{usr.name}</div>
-                          <div className="user-email">{usr.email}</div>
-                        </div>
-                      </div>
-                      <div className="user-role-badge">{usr.role}</div>
-                      <div className="user-access-text">{usr.access}</div>
-                      <button className="user-manage-btn">Manage</button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* History / Audit Log Tab View */}
-          {adminTab === 'history' && (
-            <div className="admin-page-container">
-              <div className="admin-page-header">
-                <div>
-                  <h2 className="admin-section-title">Audit Log & System History</h2>
-                  <p className="admin-section-desc">Timeline of all administrative actions and inventory changes</p>
-                </div>
-              </div>
-
-              <div className="dash-card" style={{ padding: '24px' }}>
-                <div className="audit-timeline">
-                  {[
-                    { action: 'Product Price Updated', detail: 'Suit jacket pants price set to $400.99 by Alex Johnson', time: '15 mins ago' },
-                    { action: 'Order Status Changed', detail: 'Order #ORD-7812 marked as Shipped via DHL', time: '1 hour ago' },
-                    { action: 'Payout Initiated', detail: 'Weekly settlement of $5,200.00 requested to Bank Account', time: '3 hours ago' },
-                    { action: 'Inventory Stock Replenished', detail: 'Added +50 units to Spring Wardrobe collection', time: 'Yesterday' }
-                  ].map((item, idx) => (
-                    <div key={idx} className="timeline-item">
-                      <div className="timeline-dot" />
-                      <div className="timeline-content">
-                        <div className="timeline-action">{item.action}</div>
-                        <div className="timeline-detail">{item.detail}</div>
-                        <span className="timeline-time">{item.time}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Support Tab View */}
-          {adminTab === 'support' && (
-            <div className="admin-page-container">
-              <div className="admin-page-header">
-                <div>
-                  <h2 className="admin-section-title">Support & Help Desk</h2>
-                  <p className="admin-section-desc">Get fast 24/7 assistance or browse administrative guides</p>
-                </div>
-              </div>
-
-              <div className="support-cards-grid">
-                <div className="dash-card support-card">
-                  <Headphones size={28} className="support-icon purple" />
-                  <h3>Live Merchant Support</h3>
-                  <p>Chat directly with an ecommerce technical specialist for immediate resolution.</p>
-                  <button className="support-action-btn purple">Start Live Chat</button>
-                </div>
-
-                <div className="dash-card support-card">
-                  <Sparkles size={28} className="support-icon green" />
-                  <h3>Zigzet Knowledge Base</h3>
-                  <p>Comprehensive docs on payment gateways, shipping rules, and custom SEO setups.</p>
-                  <button className="support-action-btn outline">Explore Docs</button>
-                </div>
-              </div>
-            </div>
-          )}
         </main>
       </div>
 
-      {/* Global Admin Slide-over Drawers */}
+      {/* 3. Live Customer Chat Drawer */}
       <AdminInboxDrawer
         isOpen={isInboxOpen}
         onClose={() => setIsInboxOpen(false)}
       />
 
+      {/* 4. Store Notifications Drawer */}
       <AdminNotificationsDrawer
         isOpen={isNotificationsOpen}
         onClose={() => setIsNotificationsOpen(false)}

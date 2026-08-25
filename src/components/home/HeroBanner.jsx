@@ -4,15 +4,15 @@ import { useStore } from '../../context/StoreContext';
 
 export const HeroBanner = () => {
   const [activeSlide, setActiveSlide] = useState(0);
-  const { setActiveCategory } = useStore();
+  const { cmsContent, navigatePage } = useStore();
 
   const slides = [
     {
-      offer: 'Limited Time Offer',
-      titleLine1: 'Shop Smarter.',
-      titleLine2: 'Live Better.',
-      subtitle: 'Discover top-quality products with fast & reliable USA shipping.',
-      buttonText: 'Shop Now'
+      offer: cmsContent?.heroBadge || 'Limited Time Offer',
+      titleLine1: cmsContent?.heroTitle ? cmsContent.heroTitle.split('.')[0] + '.' : 'Shop Smarter.',
+      titleLine2: cmsContent?.heroTitle && cmsContent.heroTitle.split('.')[1] ? cmsContent.heroTitle.split('.')[1].trim() : 'Live Better.',
+      subtitle: cmsContent?.heroSubtitle || 'Discover top-quality products with fast & reliable USA shipping.',
+      buttonText: cmsContent?.ctaText || 'Shop Now'
     },
     {
       offer: 'Exclusive New Arrivals',
@@ -33,10 +33,7 @@ export const HeroBanner = () => {
   const currentSlide = slides[activeSlide];
 
   const handleShopNow = () => {
-    const productsElem = document.getElementById('featured-products');
-    if (productsElem) {
-      productsElem.scrollIntoView({ behavior: 'smooth' });
-    }
+    navigatePage(cmsContent?.ctaLink || 'shop');
   };
 
   return (

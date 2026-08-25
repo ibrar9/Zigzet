@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, CheckCircle, ShieldCheck, CreditCard, ArrowRight, Lock, Sparkles } from 'lucide-react';
+import { X, CheckCircle, ShieldCheck, CreditCard, ArrowRight, Lock, Sparkles, Tag, Check, ArrowLeft } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
 export const CheckoutModal = () => {
@@ -12,12 +12,17 @@ export const CheckoutModal = () => {
     shippingFee, 
     estimatedTax, 
     isFreeShipping,
+    couponDiscountAmount,
+    appliedCoupon,
+    applyCouponCode,
+    removeCoupon,
     createOrder,
     setViewMode,
     setAdminTab
   } = useStore();
 
   const [step, setStep] = useState(1);
+  const [couponInput, setCouponInput] = useState('');
   const [formData, setFormData] = useState({
     firstName: 'Sarah',
     lastName: 'Jenkins',
@@ -38,6 +43,15 @@ export const CheckoutModal = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleApplyCoupon = (e) => {
+    e.preventDefault();
+    if (!couponInput.trim()) return;
+    const success = applyCouponCode(couponInput);
+    if (success) {
+      setCouponInput('');
+    }
+  };
+
   const handlePlaceOrder = (e) => {
     e.preventDefault();
     const orderData = {
@@ -46,7 +60,11 @@ export const CheckoutModal = () => {
       shippingAddress: `${formData.address}, ${formData.city}, ${formData.state} ${formData.zip}`,
       paymentMethod: formData.paymentMethod === 'Credit Card' 
         ? 'Credit Card (Visa •••• 4242)' 
-        : formData.paymentMethod
+        : formData.paymentMethod,
+      total: cartTotal,
+      subtotal: cartSubtotal,
+      discount: couponDiscountAmount,
+      couponCode: appliedCoupon ? appliedCoupon.code : null
     };
 
     const newOrder = createOrder(orderData);
@@ -62,6 +80,7 @@ export const CheckoutModal = () => {
 
   const handleViewInAdmin = () => {
     handleClose();
+    window.location.hash = '#admin';
     setViewMode('admin');
     setAdminTab('orders');
   };
@@ -186,11 +205,11 @@ export const CheckoutModal = () => {
           </div>
         )}
 
-        {/* Step 2: Payment Method */}
+        {/* Step 2: Payment & Promo Code */}
         {step === 2 && (
           <div>
             <h3 style={{ fontSize: '20px', fontWeight: '800', marginBottom: '16px' }}>
-              Payment Method
+              Payment & Order Summary
             </h3>
 
             <div className="payment-methods-grid">
@@ -222,23 +241,81 @@ export const CheckoutModal = () => {
               </div>
             )}
 
+            {/* Promo Code Input Box */}
+            <div style={{ marginBottom: '18px' }}>
+              {appliedCoupon ? (
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#ecfdf5', border: '1px solid #a7f3d0', padding: '10px 14px', borderRadius: '10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Tag size={15} color="#10b981" />
+                    <span style={{ fontSize: '13px', fontWeight: '700', color: '#065f46' }}>
+                      Coupon Applied: <strong>{appliedCoupon.code}</strong> (-${couponDiscountAmount.toFixed(2)})
+                    </span>
+                  </div>
+                  <button
+                    onClick={removeCoupon}
+                    style={{ fontSize: '12px', color: '#ef4444', fontWeight: '700' }}
+                  >
+                    Remove
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleApplyCoupon} style={{ display: 'flex', gap: '8px' }}>
+                  <input
+                    type="text"
+                    placeholder="Enter Promo Code (e.g. ZIGZET25)..."
+                    value={couponInput}
+                    onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                    style={{
+                      flex: 1,
+                      padding: '9px 14px',
+                      borderRadius: '10px',
+                      border: '1.5px solid #e2e8f0',
+                      fontSize: '13px',
+                      fontWeight: '700',
+                      textTransform: 'uppercase',
+                      outline: 'none'
+                    }}
+                  />
+                  <button
+                    type="submit"
+                    style={{
+                      background: '#7c3aed',
+                      color: '#ffffff',
+                      padding: '9px 18px',
+                      borderRadius: '10px',
+                      fontSize: '13px',
+                      fontWeight: '700'
+                    }}
+                  >
+                    Apply
+                  </button>
+                </form>
+              )}
+            </div>
+
             {/* Order Summary Recap */}
             <div style={{ background: '#f8fafc', padding: '16px 20px', borderRadius: '12px', marginBottom: '20px', border: '1px solid #e2e8f0' }}>
               <div className="price-summary-row">
                 <span>Items Subtotal</span>
                 <span>${cartSubtotal.toFixed(2)}</span>
               </div>
+              {appliedCoupon && (
+                <div className="price-summary-row" style={{ color: '#10b981', fontWeight: '700' }}>
+                  <span>Promo Discount ({appliedCoupon.code})</span>
+                  <span>-${couponDiscountAmount.toFixed(2)}</span>
+                </div>
+              )}
               <div className="price-summary-row">
                 <span>USA Shipping</span>
                 <span>{isFreeShipping ? 'FREE' : `$${shippingFee.toFixed(2)}`}</span>
               </div>
               <div className="price-summary-row">
-                <span>Estimated Tax</span>
+                <span>Estimated Tax (8%)</span>
                 <span>${estimatedTax.toFixed(2)}</span>
               </div>
               <div className="price-summary-row total">
                 <span>Total Amount Due</span>
-                <span>${cartTotal.toFixed(2)}</span>
+                <span style={{ color: '#10b981' }}>${cartTotal.toFixed(2)}</span>
               </div>
             </div>
 
@@ -249,9 +326,8 @@ export const CheckoutModal = () => {
               >
                 ← Back
               </button>
-
               <button 
-                className="checkout-btn"
+                className="checkout-btn" 
                 style={{ width: 'auto', padding: '12px 32px' }}
                 onClick={handlePlaceOrder}
               >
@@ -264,61 +340,46 @@ export const CheckoutModal = () => {
 
         {/* Step 3: Order Confirmation */}
         {step === 3 && completedOrder && (
-          <div style={{ textAlign: 'center', padding: '24px 0' }}>
-            <div style={{ width: '64px', height: '64px', backgroundColor: '#ecfdf5', borderRadius: '9999px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto', color: '#10b981' }}>
-              <CheckCircle size={38} />
+          <div style={{ textAlign: 'center', padding: '20px 0' }}>
+            <div style={{ width: '64px', height: '64px', borderRadius: '9999px', background: '#ecfdf5', color: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto' }}>
+              <CheckCircle size={36} />
             </div>
 
-            <h3 style={{ fontSize: '24px', fontWeight: '800', marginBottom: '6px' }}>
-              Order Placed Successfully!
+            <h3 style={{ fontSize: '24px', fontWeight: '900', color: '#0f172a', marginBottom: '8px' }}>
+              Order Confirmed!
             </h3>
-            <p style={{ color: '#6b7280', fontSize: '14px', marginBottom: '24px' }}>
-              Thank you for shopping with <strong>Zigzet</strong>. Your confirmation email is on the way.
+            <p style={{ fontSize: '14px', color: '#64748b', marginBottom: '20px' }}>
+              Thank you, <strong>{completedOrder.customerName}</strong>! Your order <strong>#{completedOrder.id}</strong> has been successfully placed.
             </p>
 
-            <div style={{ background: '#f9fafb', padding: '18px 24px', borderRadius: '16px', border: '1px solid #e5e7eb', textAlign: 'left', maxWidth: '480px', margin: '0 auto 28px auto' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '13px' }}>
-                <span style={{ color: '#6b7280' }}>Order ID:</span>
-                <span style={{ fontWeight: '700', color: '#111827' }}>#{completedOrder.id}</span>
+            <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '12px', maxWidth: '420px', margin: '0 auto 24px auto', textAlign: 'left', fontSize: '13px', border: '1px solid #e2e8f0' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+                <span>Order Total:</span>
+                <strong style={{ color: '#10b981' }}>${Number(completedOrder.total).toFixed(2)}</strong>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '13px' }}>
-                <span style={{ color: '#6b7280' }}>Customer:</span>
-                <span style={{ fontWeight: '600' }}>{completedOrder.customerName}</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+                <span>Tracking Number:</span>
+                <span style={{ fontFamily: 'monospace', color: '#7c3aed', fontWeight: '700' }}>{completedOrder.trackingNumber}</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '13px' }}>
-                <span style={{ color: '#6b7280' }}>Payment:</span>
-                <span style={{ fontWeight: '600' }}>{completedOrder.paymentMethod}</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', fontWeight: '800', borderTop: '1px solid #e5e7eb', paddingTop: '8px', marginTop: '8px' }}>
-                <span>Total Paid:</span>
-                <span style={{ color: '#10b981' }}>${Number(completedOrder.total).toFixed(2)}</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span>Status:</span>
+                <span className="status-pill completed">{completedOrder.status}</span>
               </div>
             </div>
 
             <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-              <button 
-                className="hero-cta-btn"
+              <button
                 onClick={handleClose}
+                style={{ padding: '10px 22px', borderRadius: '10px', background: '#f1f5f9', color: '#475569', fontWeight: '700', fontSize: '13.5px' }}
               >
                 Continue Shopping
               </button>
-
-              <button 
+              <button
+                className="hero-cta-btn"
                 onClick={handleViewInAdmin}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  backgroundColor: '#2563eb',
-                  color: '#fff',
-                  padding: '12px 20px',
-                  borderRadius: '9999px',
-                  fontWeight: '600',
-                  fontSize: '13.5px'
-                }}
+                style={{ padding: '10px 24px', fontSize: '13.5px' }}
               >
-                <Sparkles size={15} />
-                <span>View Order in Admin Panel</span>
+                View in Admin Orders →
               </button>
             </div>
           </div>
