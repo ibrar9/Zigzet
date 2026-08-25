@@ -8,25 +8,25 @@ export const HeroBanner = () => {
 
   const slides = [
     {
-      offer: cmsContent?.heroBadge || 'Limited Time Offer',
-      titleLine1: cmsContent?.heroTitle ? cmsContent.heroTitle.split('.')[0] + '.' : 'Shop Smarter.',
-      titleLine2: cmsContent?.heroTitle && cmsContent.heroTitle.split('.')[1] ? cmsContent.heroTitle.split('.')[1].trim() : 'Live Better.',
-      subtitle: cmsContent?.heroSubtitle || 'Discover top-quality products with fast & reliable USA shipping.',
-      buttonText: cmsContent?.ctaText || 'Shop Now'
+      offer: cmsContent?.heroBadge || '✨ Authentic K-Beauty & Skincare',
+      titleLine1: cmsContent?.heroTitle ? cmsContent.heroTitle.split('.')[0] + '.' : 'Flawless Skin.',
+      titleLine2: cmsContent?.heroTitle && cmsContent.heroTitle.split('.')[1] ? cmsContent.heroTitle.split('.')[1].trim() : 'Pure K-Beauty.',
+      subtitle: cmsContent?.heroSubtitle || 'Discover premium Korean skincare, advanced SPF50 sunscreens, and Triple PDRN barrier repair formulas.',
+      buttonText: cmsContent?.ctaText || 'Shop Collection'
     },
     {
-      offer: 'Exclusive New Arrivals',
-      titleLine1: 'Next-Gen Gear.',
-      titleLine2: 'Elevate Life.',
-      subtitle: 'Premium gadgets, trendy apparel, and modern home essentials.',
-      buttonText: 'Explore Collection'
+      offer: '🔥 Exclusive Limited Bundles',
+      titleLine1: 'Save Up to 45%',
+      titleLine2: 'On Value Sets.',
+      subtitle: 'Luxury day & night cream duos, soothing cooling masks, and iconic cleansing balms.',
+      buttonText: 'Explore Sets'
     },
     {
-      offer: 'Season Super Sale',
-      titleLine1: 'Up to 40% Off',
-      titleLine2: 'Top Brands.',
-      subtitle: 'Hassle-free 30-day returns and encrypted safe checkout.',
-      buttonText: 'Claim Deals'
+      offer: '🌿 Clean & Dermatologist Tested',
+      titleLine1: 'Gentle Actives.',
+      titleLine2: 'Real Results.',
+      subtitle: 'Formulated with Niacinamide, Hyaluronic Acid, Vitamin C, and calming Cica.',
+      buttonText: 'Shop Best Sellers'
     }
   ];
 
@@ -78,25 +78,28 @@ export const HeroBanner = () => {
           {/* Right Column: Hero Visual Collage */}
           <div className="hero-visual-collage">
             <div className="hero-composite-wrapper">
-              {/* White Wireless Headphones */}
+              {/* Product 1: Cooling Skincare Set */}
               <img
-                src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=600&auto=format&fit=crop&q=80"
-                alt="Premium Wireless Headphones"
+                src="https://cdn.shopify.com/s/files/1/0926/4742/4370/files/D4.png?v=1787424641"
+                alt="Cell Fusion C Cooling Set"
                 className="hero-floating-item hero-headphones"
+                style={{ objectFit: 'contain', background: 'transparent' }}
               />
 
-              {/* Apple Watch / Smartwatch */}
+              {/* Product 2: SkinStandard Matcha NAD+ */}
               <img
-                src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&auto=format&fit=crop&q=80"
-                alt="Smart Watch Series 9"
+                src="https://cdn.shopify.com/s/files/1/0926/4742/4370/files/SkinStandardMatchaActiveNAD_LiftingCream_55g.png?v=1787080369"
+                alt="Matcha Active NAD+ Cream"
                 className="hero-floating-item hero-watch"
+                style={{ objectFit: 'contain', background: 'transparent' }}
               />
 
-              {/* White Athletic Running Sneaker */}
+              {/* Product 3: Advanced Clear Sunscreen */}
               <img
-                src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600&auto=format&fit=crop&q=80"
-                alt="Modern Athletic Sneakers"
+                src="https://cdn.shopify.com/s/files/1/0926/4742/4370/files/AdvancedClearSunscreen100SPF50PA_50ml.png?v=1786558607"
+                alt="Advanced Clear Sunscreen SPF50"
                 className="hero-floating-item hero-sneaker"
+                style={{ objectFit: 'contain', background: 'transparent' }}
               />
             </div>
           </div>

@@ -111,26 +111,26 @@ export const Header = () => {
                       All Products Catalog
                     </span>
                     <span className="mega-link" onClick={() => { navigatePage('deals'); setShopDropdownOpen(false); }}>
-                      Flash Sale Deals
+                      Flash Sale Deals & Sets
                     </span>
-                    <span className="mega-link" onClick={() => { navigatePage('shop', 'electronics'); setShopDropdownOpen(false); }}>
-                      Tech & Gadgets
+                    <span className="mega-link" onClick={() => { navigatePage('shop', 'sunscreen'); setShopDropdownOpen(false); }}>
+                      Sun Care & SPF
                     </span>
-                    <span className="mega-link" onClick={() => { navigatePage('shop', 'fashion'); setShopDropdownOpen(false); }}>
-                      Modern Fashion
+                    <span className="mega-link" onClick={() => { navigatePage('shop', 'cleansers'); setShopDropdownOpen(false); }}>
+                      Cleansers & Balms
                     </span>
                   </div>
 
                   <div className="mega-col">
-                    <h5 className="mega-col-title">Departments</h5>
-                    <span className="mega-link" onClick={() => { navigatePage('shop', 'home-living'); setShopDropdownOpen(false); }}>
-                      Home & Living
+                    <h5 className="mega-col-title">Skincare Routine</h5>
+                    <span className="mega-link" onClick={() => { navigatePage('shop', 'serums'); setShopDropdownOpen(false); }}>
+                      Serums & Ampoules
                     </span>
-                    <span className="mega-link" onClick={() => { navigatePage('shop', 'beauty'); setShopDropdownOpen(false); }}>
-                      Beauty & Wellness
+                    <span className="mega-link" onClick={() => { navigatePage('shop', 'moisturizers'); setShopDropdownOpen(false); }}>
+                      Creams & Moisturizers
                     </span>
-                    <span className="mega-link" onClick={() => { navigatePage('shop', 'sports'); setShopDropdownOpen(false); }}>
-                      Sports & Fitness
+                    <span className="mega-link" onClick={() => { navigatePage('shop', 'masks'); setShopDropdownOpen(false); }}>
+                      Cooling Masks & Pads
                     </span>
                     <span className="mega-link" onClick={() => { navigatePage('categories'); setShopDropdownOpen(false); }}>
                       View All Categories →
@@ -139,14 +139,14 @@ export const Header = () => {
 
                   <div className="mega-col promo-col">
                     <div className="mega-promo-card">
-                      <span className="mega-promo-badge">HOT DEAL</span>
-                      <h4>Up to 40% Off Noise Cancelling</h4>
-                      <p>Experience studio acoustics with fast USA shipping.</p>
+                      <span className="mega-promo-badge">BEST DEAL</span>
+                      <h4>Up to 45% Off K-Beauty Sets</h4>
+                      <p>Experience authentic Korean skincare with fast delivery.</p>
                       <button 
-                        onClick={() => { navigatePage('deals'); setShopDropdownOpen(false); }}
                         className="mega-promo-btn"
+                        onClick={() => { navigatePage('deals'); setShopDropdownOpen(false); }}
                       >
-                        Claim Offer →
+                        Shop Bundles
                       </button>
                     </div>
                   </div>

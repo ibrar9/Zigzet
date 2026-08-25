@@ -23,7 +23,7 @@ export const useStore = () => {
 };
 
 const STORAGE_KEYS = {
-  PRODUCTS: 'zigzet_products_v2',
+  PRODUCTS: 'zigzet_products_v3',
   ORDERS: 'zigzet_orders_v2',
   CART: 'zigzet_cart_v2',
   WISHLIST: 'zigzet_wishlist_v2',

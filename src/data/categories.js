@@ -1,66 +1,66 @@
 export const categories = [
   {
-    id: 'electronics',
-    name: 'Electronics',
-    icon: 'Laptop',
-    image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=300&auto=format&fit=crop&q=80',
-    itemCount: '124 items',
+    id: 'sunscreen',
+    name: 'Sun Care & SPF',
+    icon: 'Sun',
+    image: 'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/AdvancedClearSunscreen100SPF50PA_50ml.png?v=1786558607',
+    itemCount: '12 products',
     popular: true
   },
   {
-    id: 'fashion',
-    name: 'Fashion',
-    icon: 'Shirt',
-    image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=300&auto=format&fit=crop&q=80',
-    itemCount: '280 items',
-    popular: true
-  },
-  {
-    id: 'home-living',
-    name: 'Home & Living',
-    icon: 'Armchair',
-    image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=300&auto=format&fit=crop&q=80',
-    itemCount: '195 items',
-    popular: true
-  },
-  {
-    id: 'beauty',
-    name: 'Beauty',
+    id: 'cleansers',
+    name: 'Cleansers & Balms',
     icon: 'Sparkles',
-    image: 'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=300&auto=format&fit=crop&q=80',
-    itemCount: '142 items',
+    image: 'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/BANILACOCleanItZeroCleansingBalmOriginal7ml.png?v=1786687846',
+    itemCount: '9 products',
     popular: true
   },
   {
-    id: 'sports',
-    name: 'Sports',
-    icon: 'Dumbbell',
-    image: 'https://images.unsplash.com/photo-1519861531473-9200262188bf?w=300&auto=format&fit=crop&q=80',
-    itemCount: '88 items',
+    id: 'serums',
+    name: 'Serums & Ampoules',
+    icon: 'Droplets',
+    image: 'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/SkinStandard2_MicroHyaluronicAcidAdd-OnSerum.png?v=1787081716',
+    itemCount: '8 products',
+    popular: true
+  },
+  {
+    id: 'moisturizers',
+    name: 'Creams & Moisturizers',
+    icon: 'Shield',
+    image: 'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/SkinStandardMatchaActiveNAD_LiftingCream_55g.png?v=1787080369',
+    itemCount: '6 products',
+    popular: true
+  },
+  {
+    id: 'skincare-sets',
+    name: 'Value Deals & Sets',
+    icon: 'Gift',
+    image: 'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/D4.png?v=1787424641',
+    itemCount: '8 sets',
+    popular: true
+  },
+  {
+    id: 'masks',
+    name: 'Masks & Peels',
+    icon: 'Smile',
+    image: 'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/D5.png?v=1787425094',
+    itemCount: '7 products',
     popular: false
   },
   {
-    id: 'toys',
-    name: 'Toys',
-    icon: 'Gamepad2',
-    image: 'https://images.unsplash.com/photo-1558060370-d644479cb6f7?w=300&auto=format&fit=crop&q=80',
-    itemCount: '64 items',
+    id: 'makeup',
+    name: 'Makeup & Setting Sprays',
+    icon: 'Palette',
+    image: 'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/D2.png?v=1787423152',
+    itemCount: '4 products',
     popular: false
   },
   {
-    id: 'automotive',
-    name: 'Automotive',
-    icon: 'Car',
-    image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=300&auto=format&fit=crop&q=80',
-    itemCount: '52 items',
-    popular: false
-  },
-  {
-    id: 'books',
-    name: 'Books',
-    icon: 'BookOpen',
-    image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=300&auto=format&fit=crop&q=80',
-    itemCount: '110 items',
+    id: 'oral-care',
+    name: 'Premium Oral Care',
+    icon: 'CheckCircle',
+    image: 'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/ToothnoteAquaMintPremiumToothpaste.png?v=1787252985',
+    itemCount: '2 products',
     popular: false
   }
 ];
