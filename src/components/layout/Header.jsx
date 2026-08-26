@@ -42,6 +42,8 @@ export const Header = () => {
   const [shopDropdownOpen, setShopDropdownOpen] = useState(false);
   const [catDropdownOpen, setCatDropdownOpen] = useState(false);
   const [brandDropdownOpen, setBrandDropdownOpen] = useState(false);
+  const [mobileBrandsOpen, setMobileBrandsOpen] = useState(false);
+  const [mobileCategoriesOpen, setMobileCategoriesOpen] = useState(false);
 
   // Extract unique active brands dynamically
   const uniqueBrands = useMemo(() => {
@@ -423,23 +425,107 @@ export const Header = () => {
                   <span className="mobile-deals-pill">HOT</span>
                 </button>
 
-                <button 
-                  className={`mobile-drawer-nav-item ${currentPage === 'categories' ? 'active' : ''}`}
-                  onClick={() => { navigatePage('categories'); setMobileMenuOpen(false); }}
-                >
-                  <Grid size={18} />
-                  <span>Categories & Departments</span>
-                  <ChevronRight size={15} className="drawer-nav-arrow" />
-                </button>
+                {/* Categories Accordion */}
+                <div className="mobile-drawer-accordion-wrap">
+                  <button 
+                    className={`mobile-drawer-nav-item ${currentPage === 'categories' ? 'active' : ''}`}
+                    onClick={() => setMobileCategoriesOpen(!mobileCategoriesOpen)}
+                    style={{ justifyContent: 'space-between' }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <Grid size={18} />
+                      <span>Categories</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span className="mobile-count-pill">{categories.length}</span>
+                      <ChevronDown 
+                        size={15} 
+                        style={{ 
+                          transition: 'transform 0.2s ease', 
+                          transform: mobileCategoriesOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                          color: '#94a3b8' 
+                        }} 
+                      />
+                    </div>
+                  </button>
 
-                <button 
-                  className={`mobile-drawer-nav-item ${currentPage === 'brands' ? 'active' : ''}`}
-                  onClick={() => { navigatePage('brands'); setMobileMenuOpen(false); }}
-                >
-                  <Award size={18} color="#7c3aed" />
-                  <span>Official Brands Directory</span>
-                  <ChevronRight size={15} className="drawer-nav-arrow" />
-                </button>
+                  {mobileCategoriesOpen && (
+                    <div className="mobile-drawer-sublist">
+                      <div 
+                        className="mobile-drawer-subitem view-all"
+                        onClick={() => { navigatePage('categories'); setMobileMenuOpen(false); }}
+                      >
+                        <span>📁 All Categories Overview</span>
+                        <ChevronRight size={13} />
+                      </div>
+                      {categories.map((cat) => (
+                        <div
+                          key={cat.id}
+                          className="mobile-drawer-subitem"
+                          onClick={() => {
+                            navigatePage('shop', cat.id);
+                            setMobileMenuOpen(false);
+                          }}
+                        >
+                          <span className="subitem-name">{cat.name}</span>
+                          <span className="subitem-count">{cat.itemCount}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Brands Accordion */}
+                <div className="mobile-drawer-accordion-wrap">
+                  <button 
+                    className={`mobile-drawer-nav-item ${currentPage === 'brands' ? 'active' : ''}`}
+                    onClick={() => setMobileBrandsOpen(!mobileBrandsOpen)}
+                    style={{ justifyContent: 'space-between' }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <Award size={18} color="#7c3aed" />
+                      <span style={{ fontWeight: '700', color: '#7c3aed' }}>Official Brands</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span className="mobile-count-pill" style={{ background: '#7c3aed', color: '#fff', borderColor: '#7c3aed' }}>
+                        {uniqueBrands.length}
+                      </span>
+                      <ChevronDown 
+                        size={15} 
+                        style={{ 
+                          transition: 'transform 0.2s ease', 
+                          transform: mobileBrandsOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                          color: '#7c3aed' 
+                        }} 
+                      />
+                    </div>
+                  </button>
+
+                  {mobileBrandsOpen && (
+                    <div className="mobile-drawer-sublist">
+                      <div 
+                        className="mobile-drawer-subitem view-all"
+                        onClick={() => { navigatePage('brands'); setMobileMenuOpen(false); }}
+                      >
+                        <span>✨ View Brand Directory</span>
+                        <ChevronRight size={13} />
+                      </div>
+                      {uniqueBrands.map((b) => (
+                        <div
+                          key={b.name}
+                          className="mobile-drawer-subitem"
+                          onClick={() => {
+                            navigatePage('shop', 'all', b.name);
+                            setMobileMenuOpen(false);
+                          }}
+                        >
+                          <span className="subitem-name">{b.name}</span>
+                          <span className="subitem-count">{b.count}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
 
                 <button 
                   className={`mobile-drawer-nav-item ${currentPage === 'track' ? 'active' : ''}`}
@@ -469,10 +555,49 @@ export const Header = () => {
                 </button>
               </div>
 
-              {/* Categories Section */}
-              <div className="mobile-nav-section-title" style={{ marginTop: '18px' }}>Popular Categories</div>
+              {/* Brands Quick Section */}
+              {uniqueBrands.length > 0 && (
+                <>
+                  <div className="mobile-nav-section-title" style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span>Official Brands</span>
+                    <span 
+                      onClick={() => { navigatePage('brands'); setMobileMenuOpen(false); }}
+                      style={{ fontSize: '11px', color: '#7c3aed', fontWeight: '700', cursor: 'pointer' }}
+                    >
+                      All ({uniqueBrands.length}) →
+                    </span>
+                  </div>
+                  <div className="mobile-brand-chips">
+                    {uniqueBrands.map((b) => (
+                      <button
+                        key={b.name}
+                        className="mobile-brand-chip"
+                        onClick={() => {
+                          navigatePage('shop', 'all', b.name);
+                          setMobileMenuOpen(false);
+                        }}
+                      >
+                        <Award size={12} color="#7c3aed" />
+                        <span>{b.name}</span>
+                        <span className="brand-chip-qty">{b.count}</span>
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {/* Categories Quick Section */}
+              <div className="mobile-nav-section-title" style={{ marginTop: '18px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span>Popular Categories</span>
+                <span 
+                  onClick={() => { navigatePage('categories'); setMobileMenuOpen(false); }}
+                  style={{ fontSize: '11px', color: '#7c3aed', fontWeight: '700', cursor: 'pointer' }}
+                >
+                  All ({categories.length}) →
+                </span>
+              </div>
               <div className="mobile-category-chips">
-                {categories.slice(0, 6).map((cat) => (
+                {categories.slice(0, 8).map((cat) => (
                   <button
                     key={cat.id}
                     className="mobile-cat-chip"

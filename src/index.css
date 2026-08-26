@@ -611,6 +611,72 @@ img {
   border-radius: 999px;
 }
 
+.mobile-count-pill {
+  font-size: 11px;
+  font-weight: 700;
+  color: #7c3aed;
+  background: #f5f3ff;
+  border: 1px solid #ddd6fe;
+  padding: 1px 7px;
+  border-radius: 999px;
+}
+
+.mobile-drawer-accordion-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-drawer-sublist {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 4px 0 6px 16px;
+  padding-left: 12px;
+  border-left: 2px solid #ede9fe;
+  animation: fadeIn 0.2s ease;
+}
+
+.mobile-drawer-subitem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.mobile-drawer-subitem:hover, .mobile-drawer-subitem:active {
+  background: #f8fafc;
+  color: #7c3aed;
+}
+
+.mobile-drawer-subitem.view-all {
+  font-weight: 700;
+  color: #7c3aed;
+  background: #faf5ff;
+  margin-bottom: 2px;
+}
+
+.subitem-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subitem-count {
+  font-size: 11px;
+  font-weight: 700;
+  color: #7c3aed;
+  background: #f5f3ff;
+  padding: 1px 6px;
+  border-radius: 6px;
+  margin-left: 8px;
+}
+
 .mobile-category-chips {
   display: flex;
   flex-wrap: wrap;
@@ -634,6 +700,45 @@ img {
   background: #f5f3ff;
   border-color: #ddd6fe;
   color: #7c3aed;
+}
+
+.mobile-brand-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.mobile-brand-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1.5px solid #ede9fe;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1e1b4b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 3px rgba(124, 58, 237, 0.05);
+}
+
+.mobile-brand-chip:hover, .mobile-brand-chip:active {
+  background: #f5f3ff;
+  border-color: #7c3aed;
+  color: #7c3aed;
+  transform: translateY(-1px);
+}
+
+.brand-chip-qty {
+  font-size: 10px;
+  font-weight: 800;
+  color: #7c3aed;
+  background: #ede9fe;
+  padding: 1px 6px;
+  border-radius: 999px;
 }
 
 .mobile-drawer-footer {
