@@ -12,6 +12,14 @@ import {
   adminNotificationsList, 
   walletOverview 
 } from '../data/adminMockData';
+import {
+  initialUserAddresses,
+  initialUserReturns,
+  initialUserNotifications,
+  initialUserTickets,
+  initialSavedCards,
+  initialUserWallet
+} from '../data/initialUserData';
 
 const StoreContext = createContext();
 
@@ -44,6 +52,12 @@ const STORAGE_KEYS = {
   RESTOCK: 'zigzet_restock_alerts_v2',
   USER_AUTH: 'zigzet_user_auth_v2',
   USER_ACCOUNTS: 'zigzet_user_accounts_v2',
+  USER_ADDRESSES: 'zigzet_user_addresses_v1',
+  USER_RETURNS: 'zigzet_user_returns_v1',
+  USER_NOTIFICATIONS: 'zigzet_user_notifications_v1',
+  USER_TICKETS: 'zigzet_user_tickets_v1',
+  USER_SAVED_CARDS: 'zigzet_user_saved_cards_v1',
+  USER_WALLET: 'zigzet_user_wallet_v1',
   SEO: 'zigzet_seo_v2',
   INTEGRATIONS: 'zigzet_integrations_v2'
 };
@@ -218,11 +232,71 @@ export const StoreProvider = ({ children }) => {
         address: '742 Evergreen Terrace',
         city: 'Springfield',
         zip: '97477',
-        joinedAt: 'Aug 2026'
+        joinedAt: 'Aug 2026',
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'
       }];
       return saved ? JSON.parse(saved) : defaults;
     } catch {
       return [];
+    }
+  });
+
+  // User Addresses
+  const [userAddresses, setUserAddresses] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.USER_ADDRESSES);
+      return saved ? JSON.parse(saved) : initialUserAddresses;
+    } catch {
+      return initialUserAddresses;
+    }
+  });
+
+  // User Returns
+  const [userReturns, setUserReturns] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.USER_RETURNS);
+      return saved ? JSON.parse(saved) : initialUserReturns;
+    } catch {
+      return initialUserReturns;
+    }
+  });
+
+  // User Notifications
+  const [userNotifications, setUserNotifications] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.USER_NOTIFICATIONS);
+      return saved ? JSON.parse(saved) : initialUserNotifications;
+    } catch {
+      return initialUserNotifications;
+    }
+  });
+
+  // User Support Tickets
+  const [userTickets, setUserTickets] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.USER_TICKETS);
+      return saved ? JSON.parse(saved) : initialUserTickets;
+    } catch {
+      return initialUserTickets;
+    }
+  });
+
+  // User Saved Cards & Wallet
+  const [savedCards, setSavedCards] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.USER_SAVED_CARDS);
+      return saved ? JSON.parse(saved) : initialSavedCards;
+    } catch {
+      return initialSavedCards;
+    }
+  });
+
+  const [userWallet, setUserWallet] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.USER_WALLET);
+      return saved ? JSON.parse(saved) : initialUserWallet;
+    } catch {
+      return initialUserWallet;
     }
   });
 
@@ -489,6 +563,12 @@ export const StoreProvider = ({ children }) => {
   useEffect(() => { localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings)); }, [settings]);
   useEffect(() => { localStorage.setItem(STORAGE_KEYS.SEO, JSON.stringify(seoSettings)); }, [seoSettings]);
   useEffect(() => { localStorage.setItem(STORAGE_KEYS.INTEGRATIONS, JSON.stringify(integrations)); }, [integrations]);
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.USER_ADDRESSES, JSON.stringify(userAddresses)); }, [userAddresses]);
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.USER_RETURNS, JSON.stringify(userReturns)); }, [userReturns]);
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.USER_NOTIFICATIONS, JSON.stringify(userNotifications)); }, [userNotifications]);
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.USER_TICKETS, JSON.stringify(userTickets)); }, [userTickets]);
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.USER_SAVED_CARDS, JSON.stringify(savedCards)); }, [savedCards]);
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.USER_WALLET, JSON.stringify(userWallet)); }, [userWallet]);
 
   useEffect(() => {
     const handleRouteChange = () => {
@@ -652,6 +732,7 @@ export const StoreProvider = ({ children }) => {
           name: updated.name || c.name,
           email: updated.email || c.email,
           phone: updated.phone || c.phone,
+          avatar: updated.avatar || c.avatar,
           location: updated.city ? `${updated.city}, US` : (updated.address || c.location),
           address: updated.address || c.address
         };
@@ -660,6 +741,290 @@ export const StoreProvider = ({ children }) => {
     }));
 
     showToast('Profile Updated', 'Your profile information has been saved.');
+  };
+
+  // --- User Address Operations ---
+  const addUserAddress = (addrData) => {
+    const newAddr = {
+      ...addrData,
+      id: 'addr-' + Date.now(),
+      isDefault: addrData.isDefault || userAddresses.length === 0
+    };
+    setUserAddresses(prev => {
+      let list = prev;
+      if (newAddr.isDefault) {
+        list = list.map(a => ({ ...a, isDefault: false }));
+      }
+      return [newAddr, ...list];
+    });
+    showToast('Address Added', 'New delivery address saved successfully.');
+    return newAddr;
+  };
+
+  const updateUserAddress = (id, updatedData) => {
+    setUserAddresses(prev => {
+      return prev.map(a => {
+        if (a.id === id) {
+          return { ...a, ...updatedData };
+        }
+        if (updatedData.isDefault) {
+          return { ...a, isDefault: false };
+        }
+        return a;
+      });
+    });
+    showToast('Address Updated', 'Address details updated successfully.');
+  };
+
+  const deleteUserAddress = (id) => {
+    setUserAddresses(prev => prev.filter(a => a.id !== id));
+    showToast('Address Deleted', 'Delivery address removed.', 'info');
+  };
+
+  const setDefaultAddress = (id) => {
+    setUserAddresses(prev => prev.map(a => ({
+      ...a,
+      isDefault: a.id === id
+    })));
+    showToast('Default Updated', 'Primary shipping address set.');
+  };
+
+  // --- User Returns & Refunds Operations ---
+  const createReturnRequest = ({ orderId, product, reason, resolution, notes }) => {
+    const returnId = 'RET-' + Math.floor(1000 + Math.random() * 9000);
+    const newReturn = {
+      id: returnId,
+      orderId,
+      product,
+      reason,
+      resolution: resolution || 'Replacement Product',
+      status: 'Requested',
+      trackingNumber: `ZG-RET-${Math.floor(10000 + Math.random() * 90000)}`,
+      requestedAt: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      notes: notes || 'Return request received. Verification in progress.'
+    };
+    setUserReturns(prev => [newReturn, ...prev]);
+
+    addUserNotification({
+      title: 'Return Request Submitted 📦',
+      message: `Return request #${returnId} for ${product.name} has been initiated.`,
+      type: 'order',
+      actionTab: 'returns'
+    });
+
+    showToast('Return Requested', `Return #${returnId} created. We will arrange pickup.`);
+    return newReturn;
+  };
+
+  const cancelReturnRequest = (returnId) => {
+    setUserReturns(prev => prev.filter(r => r.id !== returnId));
+    showToast('Return Cancelled', `Return #${returnId} has been cancelled.`, 'info');
+  };
+
+  // --- User Notifications Operations ---
+  const addUserNotification = ({ title, message, type = 'order', actionTab = 'overview' }) => {
+    const newNotif = {
+      id: 'unotif-' + Date.now() + Math.random(),
+      title,
+      message,
+      time: 'Just now',
+      type,
+      unread: true,
+      actionTab
+    };
+    setUserNotifications(prev => [newNotif, ...prev]);
+  };
+
+  const markUserNotificationRead = (id) => {
+    setUserNotifications(prev => prev.map(n => n.id === id ? { ...n, unread: false } : n));
+  };
+
+  const markAllUserNotificationsRead = () => {
+    setUserNotifications(prev => prev.map(n => ({ ...n, unread: false })));
+    showToast('All Read', 'All notifications marked as read.', 'info');
+  };
+
+  const deleteUserNotification = (id) => {
+    setUserNotifications(prev => prev.filter(n => n.id !== id));
+  };
+
+  const clearAllUserNotifications = () => {
+    setUserNotifications([]);
+    showToast('Cleared', 'All notifications have been removed.', 'info');
+  };
+
+  // --- In-Dashboard User Support Tickets ---
+  const createUserTicket = ({ subject, category, orderId, priority = 'Normal', message }) => {
+    const ticketId = 'TCK-' + Math.floor(1000 + Math.random() * 9000);
+    const newTicket = {
+      id: ticketId,
+      subject,
+      category: category || 'General Inquiry',
+      orderId: orderId || 'General Inquiry',
+      priority,
+      status: 'Open',
+      createdAt: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      messages: [
+        {
+          id: 'tmsg-' + Date.now(),
+          sender: currentUser?.name || 'Customer',
+          isStaff: false,
+          time: 'Just now',
+          text: message
+        }
+      ]
+    };
+    setUserTickets(prev => [newTicket, ...prev]);
+
+    // Also sync to store admin inbox
+    submitContactMessage({
+      name: currentUser?.name || 'Customer',
+      email: currentUser?.email || 'customer@zigzet.com',
+      subject: `[${ticketId}] ${subject}`,
+      message
+    });
+
+    addUserNotification({
+      title: 'Support Ticket Created 💬',
+      message: `Ticket #${ticketId} opened. An agent will respond shortly.`,
+      type: 'support',
+      actionTab: 'help'
+    });
+
+    showToast('Ticket Created!', `Support ticket #${ticketId} opened.`);
+    return newTicket;
+  };
+
+  const replyUserTicket = (ticketId, text) => {
+    setUserTickets(prev => prev.map(t => {
+      if (t.id === ticketId) {
+        return {
+          ...t,
+          status: 'In Progress',
+          messages: [
+            ...t.messages,
+            {
+              id: 'tmsg-' + Date.now(),
+              sender: currentUser?.name || 'Customer',
+              isStaff: false,
+              time: 'Just now',
+              text
+            }
+          ]
+        };
+      }
+      return t;
+    }));
+    showToast('Reply Sent', 'Your response has been sent to customer support.');
+  };
+
+  const closeUserTicket = (ticketId) => {
+    setUserTickets(prev => prev.map(t => t.id === ticketId ? { ...t, status: 'Resolved' } : t));
+    showToast('Ticket Resolved', `Ticket #${ticketId} marked as resolved.`, 'info');
+  };
+
+  // --- Saved Cards & Wallet Operations ---
+  const addSavedCard = (cardData) => {
+    const newCard = {
+      ...cardData,
+      id: 'card-' + Date.now(),
+      isDefault: cardData.isDefault || savedCards.length === 0
+    };
+    setSavedCards(prev => {
+      let list = prev;
+      if (newCard.isDefault) {
+        list = list.map(c => ({ ...c, isDefault: false }));
+      }
+      return [newCard, ...list];
+    });
+    showToast('Card Saved', 'Payment card added securely.');
+    return newCard;
+  };
+
+  const removeSavedCard = (id) => {
+    setSavedCards(prev => prev.filter(c => c.id !== id));
+    showToast('Card Removed', 'Payment method removed.', 'info');
+  };
+
+  const setDefaultCard = (id) => {
+    setSavedCards(prev => prev.map(c => ({ ...c, isDefault: c.id === id })));
+    showToast('Default Card Set', 'Primary payment card updated.');
+  };
+
+  const redeemGiftCard = (code) => {
+    const clean = code.trim().toUpperCase();
+    if (clean === 'WELCOME100' || clean === 'ZIGZET50' || clean === 'GIFT25' || clean === 'VIP100') {
+      const amount = clean === 'WELCOME100' || clean === 'VIP100' ? 100 : clean === 'ZIGZET50' ? 50 : 25;
+      setUserWallet(prev => ({
+        ...prev,
+        balance: prev.balance + amount,
+        history: [
+          {
+            id: 'wtx-' + Date.now(),
+            type: 'Credit',
+            desc: `Gift Voucher Redeemed (${clean})`,
+            amount: `+AED ${amount.toFixed(2)}`,
+            date: 'Just now',
+            status: 'Credited'
+          },
+          ...prev.history
+        ]
+      }));
+      addUserNotification({
+        title: 'Wallet Balance Added 🎁',
+        message: `AED ${amount.toFixed(2)} credited from voucher ${clean}.`,
+        type: 'promo',
+        actionTab: 'payment'
+      });
+      showToast('Voucher Redeemed!', `AED ${amount.toFixed(2)} added to your Zigzet Wallet.`);
+      return true;
+    } else {
+      showToast('Invalid Voucher', 'Code not recognized or expired.', 'error');
+      return false;
+    }
+  };
+
+  const addWalletFunds = (amount) => {
+    const addAmt = parseFloat(amount) || 0;
+    if (addAmt <= 0) return;
+    setUserWallet(prev => ({
+      ...prev,
+      balance: prev.balance + addAmt,
+      history: [
+        {
+          id: 'wtx-' + Date.now(),
+          type: 'Top-up',
+          desc: `Instant Wallet Top-up (Online Payment)`,
+          amount: `+AED ${addAmt.toFixed(2)}`,
+          date: 'Just now',
+          status: 'Credited'
+        },
+        ...prev.history
+      ]
+    }));
+    showToast('Funds Added', `AED ${addAmt.toFixed(2)} added to your Zigzet Wallet.`);
+  };
+
+  // --- 1-Click Buy Again Reorder ---
+  const reorderItems = (orderItems) => {
+    if (!orderItems || orderItems.length === 0) return;
+    orderItems.forEach(item => {
+      addToCart({
+        id: item.id || 'prod-' + Math.random(),
+        name: item.name,
+        price: item.price,
+        image: item.image,
+        category: item.category || 'Skincare'
+      }, item.quantity || 1);
+    });
+    setIsCartOpen(true);
+    showToast('Order Items Added', `${orderItems.length} item(s) added to your shopping bag!`);
+  };
+
+  // --- Customer Review Deletion / Editing ---
+  const deleteCustomerReview = (reviewId) => {
+    setReviews(prev => prev.filter(r => r.id !== reviewId));
+    showToast('Review Deleted', 'Your review has been removed.', 'info');
   };
 
   // Cart Operations
@@ -1368,7 +1733,34 @@ export const StoreProvider = ({ children }) => {
         toggleIntegration,
         testIntegrationConnection,
         sendTestWebhook,
-        resetToDefaults
+        resetToDefaults,
+        userAddresses,
+        addUserAddress,
+        updateUserAddress,
+        deleteUserAddress,
+        setDefaultAddress,
+        userReturns,
+        createReturnRequest,
+        cancelReturnRequest,
+        userNotifications,
+        addUserNotification,
+        markUserNotificationRead,
+        markAllUserNotificationsRead,
+        deleteUserNotification,
+        clearAllUserNotifications,
+        userTickets,
+        createUserTicket,
+        replyUserTicket,
+        closeUserTicket,
+        savedCards,
+        addSavedCard,
+        removeSavedCard,
+        setDefaultCard,
+        userWallet,
+        redeemGiftCard,
+        addWalletFunds,
+        reorderItems,
+        deleteCustomerReview
       }}
     >
       {children}

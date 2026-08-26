@@ -1,7 +1,8 @@
 import React from 'react';
 import {
   Package, Truck, Heart, Tag, ChevronRight,
-  ArrowRight, ShoppingBag, CheckCircle2, Clock, MoreVertical, MapPin
+  ArrowRight, ShoppingBag, CheckCircle2, Clock, MoreVertical, MapPin,
+  RotateCcw, CreditCard, MessageSquare, Headphones
 } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
@@ -48,12 +49,22 @@ const STAT_CARDS = (orders, inProgress, wishlistLen, couponsLen) => [
 ];
 
 export const UserOverview = ({ setActiveTab, myOrders, inProgress }) => {
-  const { wishlist, coupons, navigatePage, currentUser, products, settings } = useStore();
+  const { wishlist, coupons, navigatePage, currentUser, products, settings, userAddresses, reorderItems } = useStore();
 
   const firstName = currentUser?.name?.split(' ')[0] || 'there';
   const recentOrders = myOrders.slice(0, 3);
   const stats = STAT_CARDS(myOrders.length, inProgress, wishlist.length, coupons?.length || 3);
   const recommendedProducts = (products || []).filter(p => p.isActive !== false).slice(0, 3);
+
+  const defaultAddress = (userAddresses || []).find(a => a.isDefault) || userAddresses?.[0] || {
+    name: currentUser?.name || 'Sarah Jenkins',
+    street: currentUser?.address || '742 Evergreen Terrace',
+    city: currentUser?.city || 'Springfield',
+    zip: currentUser?.zip || '97477',
+    country: 'United States',
+    phone: currentUser?.phone || '+1 (555) 123-4567',
+    type: 'Home'
+  };
 
   return (
     <div className="ud2-overview">
@@ -61,7 +72,7 @@ export const UserOverview = ({ setActiveTab, myOrders, inProgress }) => {
       <div className="ud2-greeting">
         <div>
           <h2>Hi, {firstName}! 👋</h2>
-          <p>Welcome back. Manage your orders and account from here.</p>
+          <p>Welcome back. Manage your orders, returns, saved addresses and loyalty perks.</p>
         </div>
       </div>
 
@@ -126,7 +137,7 @@ export const UserOverview = ({ setActiveTab, myOrders, inProgress }) => {
                           </div>
                         </td>
                         <td>
-                          <p className="ud2-order-price">AED {(order.total || 0).toFixed(2)}</p>
+                          <p className="ud2-order-price">{settings?.currency || 'AED'} {(order.total || 0).toFixed(2)}</p>
                           <p className="ud2-order-items-count">{order.items?.length || 1} Item</p>
                         </td>
                         <td>
@@ -144,15 +155,25 @@ export const UserOverview = ({ setActiveTab, myOrders, inProgress }) => {
                           <div className="ud2-order-actions">
                             <button
                               className="ud2-btn-track"
-                              onClick={() => navigatePage('track')}
+                              onClick={() => {
+                                if (order.status === 'Delivered') {
+                                  reorderItems(order.items);
+                                } else {
+                                  navigatePage('track');
+                                }
+                              }}
                             >
-                              {order.status === 'Delivered' ? 'Buy Again' : 'Track Order'}
+                              {order.status === 'Delivered' ? '🔁 Buy Again' : 'Track Order'}
                             </button>
-                            <button className="ud2-btn-details">View Details</button>
+                            <button className="ud2-btn-details" onClick={() => setActiveTab('orders')}>
+                              View Details
+                            </button>
                           </div>
                         </td>
                         <td>
-                          <button className="ud2-more-btn"><MoreVertical size={16} /></button>
+                          <button className="ud2-more-btn" onClick={() => setActiveTab('orders')}>
+                            <MoreVertical size={16} />
+                          </button>
                         </td>
                       </tr>
                     );
@@ -205,9 +226,11 @@ export const UserOverview = ({ setActiveTab, myOrders, inProgress }) => {
             <h3>Quick Actions</h3>
             {[
               { label: 'Track an Order', icon: Truck, tab: 'orders' },
-              { label: 'Return an Item', icon: Package, tab: 'returns' },
-              { label: 'Manage Address', icon: MapPin, tab: 'addresses' },
-              { label: 'Payment Methods', icon: Tag, tab: 'payment' },
+              { label: 'Return / Exchange Item', icon: RotateCcw, tab: 'returns' },
+              { label: 'Manage Address Book', icon: MapPin, tab: 'addresses' },
+              { label: 'Payment & Wallet', icon: CreditCard, tab: 'payment' },
+              { label: 'Product Reviews', icon: MessageSquare, tab: 'reviews' },
+              { label: 'Help & Live Tickets', icon: Headphones, tab: 'help' },
             ].map(a => {
               const Icon = a.icon;
               return (
@@ -231,18 +254,18 @@ export const UserOverview = ({ setActiveTab, myOrders, inProgress }) => {
               <div className="ud2-address-icon"><MapPin size={16} /></div>
               <div>
                 <div className="ud2-address-header">
-                  <span className="ud2-address-type">Home</span>
+                  <span className="ud2-address-type">{defaultAddress.type || 'Home'}</span>
                   <span className="ud2-address-default">Default</span>
                 </div>
-                <p className="ud2-address-name">{currentUser?.name || 'Customer'}</p>
+                <p className="ud2-address-name">{defaultAddress.name}</p>
                 <p className="ud2-address-text">
-                  {currentUser?.address || '742 Evergreen Terrace'}<br />
-                  {currentUser?.city || 'Springfield'}, {currentUser?.zip || '97477'}<br />
-                  United States<br />
-                  {currentUser?.phone || '+1 (555) 123-4567'}
+                  {defaultAddress.street}<br />
+                  {defaultAddress.city}, {defaultAddress.state || ''} {defaultAddress.zip}<br />
+                  {defaultAddress.country || 'United States'}<br />
+                  {defaultAddress.phone}
                 </p>
                 <button className="ud2-manage-addr" onClick={() => setActiveTab('addresses')}>
-                  Manage Addresses →
+                  Manage Addresses ({userAddresses?.length || 1}) →
                 </button>
               </div>
             </div>
