@@ -50,6 +50,7 @@ export const AdminSidebar = ({ isMobileOpen, setIsMobileOpen, onOpenInbox, onOpe
   const pendingOrdersCount = orders.filter((o) => o.status === 'Pending' || o.status === 'Processing').length;
   const pendingReviewsCount = reviews.filter((r) => r.status === 'Pending').length;
   const abandonedCount = abandonedCarts.filter((c) => c.recoveryStatus === 'Pending').length;
+  const connectedCount = Object.values(integrations || {}).filter((i) => i.status === 'Connected').length;
 
   const sections = [
     {
@@ -104,7 +105,13 @@ export const AdminSidebar = ({ isMobileOpen, setIsMobileOpen, onOpenInbox, onOpe
         { id: 'seo', label: 'SEO & Search Engine', icon: <Globe size={17} /> },
         { id: 'customizer', label: 'Visual Hero CMS', icon: <Palette size={17} /> },
         { id: 'staff', label: 'Staff & Roles', icon: <ShieldCheck size={17} /> },
-        { id: 'integrations', label: 'Integrations', icon: <Sliders size={17} /> },
+        { 
+          id: 'integrations', 
+          label: 'Integrations & Apps', 
+          icon: <Sliders size={17} />,
+          badge: connectedCount > 0 ? `${connectedCount} live` : null,
+          badgeColor: '#6366f1'
+        },
         { id: 'settings', label: 'Store Settings', icon: <Settings size={17} /> }
       ]
     }

@@ -5,6 +5,7 @@ import { initialCoupons } from '../data/initialCoupons';
 import { initialReviews } from '../data/initialReviews';
 import { initialStaff } from '../data/initialStaff';
 import { initialAbandonedCarts } from '../data/initialAbandonedCarts';
+import { initialIntegrations } from '../data/initialIntegrations';
 import { 
   adminCustomersData, 
   adminInboxMessages, 
@@ -43,7 +44,8 @@ const STORAGE_KEYS = {
   RESTOCK: 'zigzet_restock_alerts_v2',
   USER_AUTH: 'zigzet_user_auth_v2',
   USER_ACCOUNTS: 'zigzet_user_accounts_v2',
-  SEO: 'zigzet_seo_v2'
+  SEO: 'zigzet_seo_v2',
+  INTEGRATIONS: 'zigzet_integrations_v2'
 };
 
 const defaultSeo = {
@@ -378,6 +380,16 @@ export const StoreProvider = ({ children }) => {
     }
   });
 
+  // Integrations state (Payment gateways, Couriers, Pixels, Webhooks, WhatsApp)
+  const [integrations, setIntegrations] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.INTEGRATIONS);
+      return saved ? { ...initialIntegrations, ...JSON.parse(saved) } : initialIntegrations;
+    } catch {
+      return initialIntegrations;
+    }
+  });
+
   // Settings
   const [settings, setSettings] = useState(() => {
     try {
@@ -424,6 +436,7 @@ export const StoreProvider = ({ children }) => {
   useEffect(() => { localStorage.setItem(STORAGE_KEYS.WISHLIST, JSON.stringify(wishlist)); }, [wishlist]);
   useEffect(() => { localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings)); }, [settings]);
   useEffect(() => { localStorage.setItem(STORAGE_KEYS.SEO, JSON.stringify(seoSettings)); }, [seoSettings]);
+  useEffect(() => { localStorage.setItem(STORAGE_KEYS.INTEGRATIONS, JSON.stringify(integrations)); }, [integrations]);
 
   useEffect(() => {
     const handleRouteChange = () => {
@@ -1102,6 +1115,73 @@ export const StoreProvider = ({ children }) => {
     closeNotifyModal();
   };
 
+  const updateIntegration = (id, newConfig) => {
+    setIntegrations((prev) => {
+      const now = new Date();
+      const timeStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+      const existing = prev[id] || {};
+      const updated = {
+        ...existing,
+        ...newConfig,
+        lastSynced: timeStr
+      };
+      return {
+        ...prev,
+        [id]: updated
+      };
+    });
+    showToast('Integration Updated', `${newConfig.name || id} configuration has been saved.`);
+  };
+
+  const toggleIntegration = (id) => {
+    setIntegrations((prev) => {
+      const target = prev[id];
+      if (!target) return prev;
+      const isNowConnected = target.status !== 'Connected';
+      const updated = {
+        ...target,
+        status: isNowConnected ? 'Connected' : 'Ready to connect'
+      };
+      showToast(
+        isNowConnected ? `${target.name} Connected` : `${target.name} Disconnected`,
+        isNowConnected ? 'Channel is live and handling store traffic.' : 'Channel connection disabled.',
+        isNowConnected ? 'success' : 'info'
+      );
+      return {
+        ...prev,
+        [id]: updated
+      };
+    });
+  };
+
+  const testIntegrationConnection = async (id) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          success: true,
+          status: 200,
+          latency: Math.floor(Math.random() * 45 + 45),
+          message: 'All API endpoints healthy and responding with 200 OK.'
+        });
+      }, 750);
+    });
+  };
+
+  const sendTestWebhook = async (endpointUrl, eventName = 'order.created') => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          success: true,
+          status: 200,
+          event: eventName,
+          timestamp: new Date().toISOString(),
+          payloadId: 'evt_' + Math.random().toString(36).substring(2, 10),
+          responseBody: { received: true, processedInMs: 38 }
+        });
+      }, 600);
+    });
+  };
+
   const resetToDefaults = () => {
     setProducts(initialProducts.map((p) => ({ ...p, isActive: true, salesCount: 40, stock: 25 })));
     setOrders(initialOrders);
@@ -1120,6 +1200,7 @@ export const StoreProvider = ({ children }) => {
     setCart([]);
     setWishlist([]);
     setSettings(defaultSettings);
+    setIntegrations(initialIntegrations);
     localStorage.clear();
     showToast('Store Reset', 'Reset all store data to initial demo state.', 'info');
   };
@@ -1224,6 +1305,11 @@ export const StoreProvider = ({ children }) => {
         updateSettings,
         seoSettings,
         updateSeoSettings,
+        integrations,
+        updateIntegration,
+        toggleIntegration,
+        testIntegrationConnection,
+        sendTestWebhook,
         resetToDefaults
       }}
     >

@@ -1,0 +1,132 @@
+export const initialIntegrations = {
+  stripe: {
+    id: 'stripe',
+    name: 'Stripe Payments',
+    category: 'payment',
+    desc: 'Accept credit cards, Apple Pay, Google Pay',
+    iconColor: '#6366f1',
+    bgColor: '#eef2ff',
+    status: 'Connected',
+    mode: 'live', // 'test' | 'live'
+    publishableKey: 'pk_live_51Mzk0294JzKLP9482ZgW',
+    secretKey: 'sk_live_51Mzk0294JzKLP948299Xy',
+    webhookSecret: 'whsec_9b8192847a9821ef9024',
+    currencies: ['AED', 'USD', 'EUR', 'GBP', 'SAR'],
+    defaultCurrency: 'AED',
+    methods: {
+      creditCard: true,
+      applePay: true,
+      googlePay: true,
+      klarna: false
+    },
+    statementDescriptor: 'ZIGZET STORE',
+    lastSynced: '2026-08-26 10:14'
+  },
+  paypal: {
+    id: 'paypal',
+    name: 'PayPal Checkout',
+    category: 'payment',
+    desc: 'Express multi-currency checkout gateway',
+    iconColor: '#0284c7',
+    bgColor: '#e0f2fe',
+    status: 'Connected',
+    mode: 'live', // 'sandbox' | 'live'
+    clientId: 'sb_client_id_883018247910482_live',
+    clientSecret: 'sb_secret_994820194820931_live',
+    enablePayLater: true,
+    buttonStyle: 'gold', // 'gold' | 'blue' | 'black'
+    lastSynced: '2026-08-26 09:30'
+  },
+  shipping: {
+    id: 'shipping',
+    name: 'DHL Express & FedEx',
+    category: 'shipping',
+    desc: 'Real-time parcel tracking and shipping rates',
+    iconColor: '#f59e0b',
+    bgColor: '#fef3c7',
+    status: 'Connected',
+    couriers: ['DHL Express', 'FedEx', 'Aramex'],
+    activeCourier: 'DHL Express',
+    accountNumber: 'DHL-UAE-948201',
+    apiKey: 'dhl_live_key_994820194821',
+    pickupHub: 'Dubai Logistics City, Hub 4, UAE',
+    autoGenerateWaybill: true,
+    sendEmailTracking: true,
+    lastSynced: '2026-08-26 08:45'
+  },
+  marketing: {
+    id: 'marketing',
+    name: 'Mailchimp & Klaviyo',
+    category: 'marketing',
+    desc: 'Automated email marketing and abandoned carts',
+    iconColor: '#ec4899',
+    bgColor: '#fdf2f8',
+    status: 'Ready to connect',
+    activeProvider: 'Klaviyo', // 'Klaviyo' | 'Mailchimp'
+    apiKey: '',
+    listId: '',
+    autoSubscribeCheckout: true,
+    abandonedCartSequence: true,
+    abandonedCartDelayHours: 2,
+    welcomeDiscountCode: 'WELCOME10',
+    lastSynced: null
+  },
+  analytics: {
+    id: 'analytics',
+    name: 'Google Analytics 4',
+    category: 'analytics',
+    desc: 'Track visitor traffic and ecommerce conversion',
+    iconColor: '#10b981',
+    bgColor: '#ecfdf5',
+    status: 'Connected',
+    measurementId: 'G-ZIGZET2026',
+    enhancedEcommerce: true,
+    googleAdsId: 'AW-98401928',
+    trackSearchQueries: true,
+    lastSynced: '2026-08-26 10:00'
+  },
+  pixels: {
+    id: 'pixels',
+    name: 'Facebook & TikTok Pixel',
+    category: 'marketing',
+    desc: 'Social ad retargeting and conversion tags',
+    iconColor: '#8b5cf6',
+    bgColor: '#f5f3ff',
+    status: 'Ready to connect',
+    metaPixelId: '',
+    metaCapiToken: '',
+    tiktokPixelId: '',
+    trackInitiateCheckout: true,
+    trackPurchases: true,
+    lastSynced: null
+  },
+  whatsapp: {
+    id: 'whatsapp',
+    name: 'WhatsApp Business Cloud API',
+    category: 'communication',
+    desc: 'Instant WhatsApp order confirmations and courier tracking links',
+    iconColor: '#22c55e',
+    bgColor: '#f0fdf4',
+    status: 'Connected',
+    phoneNumberId: '109823489201948',
+    accessToken: 'EAAG9zkLP...8wX91',
+    businessPhoneNumber: '+971 50 123 4567',
+    sendOrderPlaced: true,
+    sendShippingUpdate: true,
+    lastSynced: '2026-08-26 10:20'
+  },
+  webhooks: {
+    id: 'webhooks',
+    name: 'Custom Webhooks & REST API',
+    category: 'developer',
+    desc: 'Connect custom ERP, Zapier, Make.com, or mobile applications',
+    iconColor: '#06b6d4',
+    bgColor: '#ecfeff',
+    status: 'Connected',
+    endpointUrl: 'https://api.zigzet.com/v1/webhooks/orders',
+    secretToken: 'whsec_zigzet_live_893019482',
+    events: ['order.created', 'order.paid', 'shipment.updated', 'product.low_stock'],
+    retryAttempts: 3,
+    lastSynced: '2026-08-26 10:25'
+  }
+};

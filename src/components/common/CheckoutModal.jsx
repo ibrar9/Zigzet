@@ -17,7 +17,8 @@ export const CheckoutModal = () => {
     applyCouponCode,
     removeCoupon,
     createOrder,
-    navigatePage
+    navigatePage,
+    integrations
   } = useStore();
 
   const [step, setStep] = useState(1);
@@ -216,16 +217,27 @@ export const CheckoutModal = () => {
                   className={`payment-card-opt ${formData.paymentMethod === m ? 'selected' : ''}`}
                   onClick={() => setFormData({ ...formData, paymentMethod: m })}
                 >
-                  {m}
+                  <span>{m}</span>
+                  {m === 'Credit Card' && integrations?.stripe?.status === 'Connected' && (
+                    <span style={{ fontSize: '10px', color: '#6366f1', fontWeight: '700', marginLeft: '4px' }}>• Stripe</span>
+                  )}
+                  {m === 'PayPal' && integrations?.paypal?.status === 'Connected' && (
+                    <span style={{ fontSize: '10px', color: '#0284c7', fontWeight: '700', marginLeft: '4px' }}>• Express</span>
+                  )}
                 </div>
               ))}
             </div>
 
             {formData.paymentMethod === 'Credit Card' && (
-              <div className="checkout-form-grid" style={{ backgroundColor: '#f9fafb', padding: '16px', borderRadius: '12px', marginBottom: '20px' }}>
+              <div className="checkout-form-grid" style={{ backgroundColor: '#f9fafb', padding: '16px', borderRadius: '12px', marginBottom: '20px', border: '1px solid #e2e8f0' }}>
                 <div className="form-group full-width">
-                  <label>Card Number</label>
-                  <input type="text" defaultValue="4242 •••• •••• 4242" readOnly />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <label>Card Number</label>
+                    <span style={{ fontSize: '11px', color: '#6366f1', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <Lock size={11} /> 256-bit SSL Encrypted
+                    </span>
+                  </div>
+                  <input type="text" defaultValue="4242 •••• •••• 4242" readOnly style={{ fontFamily: 'monospace', fontWeight: '600' }} />
                 </div>
                 <div className="form-group">
                   <label>Expiry Date</label>
@@ -234,6 +246,16 @@ export const CheckoutModal = () => {
                 <div className="form-group">
                   <label>CVC / CVV</label>
                   <input type="text" defaultValue="888" readOnly />
+                </div>
+              </div>
+            )}
+
+            {/* WhatsApp live order tracking updates banner if integrated */}
+            {integrations?.whatsapp?.status === 'Connected' && (
+              <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '10px 14px', borderRadius: '10px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ fontSize: '16px' }}>📱</span>
+                <div style={{ flex: 1, fontSize: '12.5px', color: '#166534' }}>
+                  <strong>WhatsApp Order Alerts:</strong> Automated tracking links will be sent to your phone number on dispatch.
                 </div>
               </div>
             )}
