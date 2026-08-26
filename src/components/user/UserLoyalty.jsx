@@ -17,9 +17,9 @@ const HISTORY = [
 ];
 
 export const UserLoyalty = ({ myOrders }) => {
-  const { loyaltyProgram, navigatePage } = useStore();
+  const { loyaltyProgram, navigatePage, settings } = useStore();
 
-  const totalSpent = myOrders.reduce((acc, o) => acc + (o.total || 0), 0);
+  const totalSpent = myOrders.reduce((acc, o) => acc + (Number(o.total) || 0), 0);
   const pointsPerDollar = loyaltyProgram?.pointsPerDollar || 10;
   const redemptionRate = loyaltyProgram?.redemptionRate || 100;
   const totalPoints = Math.floor(totalSpent * pointsPerDollar);
@@ -52,7 +52,7 @@ export const UserLoyalty = ({ myOrders }) => {
         <div className="ud2-loyalty-pts-wrap">
           <p className="ud2-lh-label">Total Points</p>
           <p className="ud2-lh-pts" style={{ color: currentTier.color }}>{totalPoints.toLocaleString()}</p>
-          <p className="ud2-lh-cash"><Gift size={14} /> Redeemable value: <strong>${cashValue}</strong></p>
+          <p className="ud2-lh-cash"><Gift size={14} /> Redeemable value: <strong>{settings?.currency || 'AED'} {cashValue}</strong></p>
         </div>
         <div className="ud2-loyalty-tier-wrap">
           <span className="ud2-lh-tier" style={{ color: currentTier.color, background: currentTier.bg }}>
@@ -66,7 +66,7 @@ export const UserLoyalty = ({ myOrders }) => {
         <div className="ud2-section-card">
           <div className="ud2-loyalty-prog-header">
             <span>Progress to <strong style={{ color: nextTier.color }}>{nextTier.name}</strong></span>
-            <span>${(nextTier.minSpend - totalSpent).toFixed(2)} more needed</span>
+            <span>{settings?.currency || 'AED'} {(nextTier.minSpend - totalSpent).toFixed(2)} more needed</span>
           </div>
           <div className="ud2-prog-bar">
             <div className="ud2-prog-fill" style={{ width: `${progressPct}%`, background: nextTier.color }} />
@@ -92,7 +92,7 @@ export const UserLoyalty = ({ myOrders }) => {
                     {tier.name}
                     {isActive && <span className="ud2-tier2-curr">Current</span>}
                   </p>
-                  <p className="ud2-tier2-thresh">Min. ${tier.minSpend.toLocaleString()} spend</p>
+                  <p className="ud2-tier2-thresh">Min. {settings?.currency || 'AED'} {tier.minSpend.toLocaleString()} spend</p>
                 </div>
               </div>
               <ul className="ud2-tier2-perks">

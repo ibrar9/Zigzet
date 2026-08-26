@@ -3,7 +3,7 @@ import { Heart, ShoppingBag, Trash2, Star, ArrowRight } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
 export const UserWishlist = () => {
-  const { wishlist, toggleWishlist, addToCart, navigatePage } = useStore();
+  const { wishlist, toggleWishlist, addToCart, navigatePage, settings } = useStore();
 
   if (wishlist.length === 0) {
     return (
@@ -53,9 +53,9 @@ export const UserWishlist = () => {
                   <span className="ud2-wish-rev">({product.reviewsCount || 0})</span>
                 </div>
                 <div className="ud2-wish-price">
-                  <span className="ud2-wish-cur">AED {product.price?.toFixed(2)}</span>
+                  <span className="ud2-wish-cur">{settings?.currency || 'AED'} {Number(product.price).toFixed(2)}</span>
                   {product.originalPrice && (
-                    <span className="ud2-wish-orig">AED {product.originalPrice?.toFixed(2)}</span>
+                    <span className="ud2-wish-orig">{settings?.currency || 'AED'} {Number(product.originalPrice).toFixed(2)}</span>
                   )}
                 </div>
                 <button className="ud2-wish-add" onClick={() => addToCart(product)}>
