@@ -257,24 +257,6 @@ export const UserLoginPage = () => {
           </button>
         </p>
       </div>
-
-      {/* ── Bottom Trust Bar ── */}
-      <div className="nlogin-trust-bar">
-        {[
-          { icon: '🛡️', title: 'Secure', sub: 'Safe & Protected' },
-          { icon: '🚚', title: 'Fast Delivery', sub: 'Quick & Reliable' },
-          { icon: '⭐', title: 'Best Quality', sub: 'Premium Products' },
-          { icon: '🎧', title: '24/7 Support', sub: "We're here to help" },
-        ].map(t => (
-          <div className="nlogin-trust-item" key={t.title}>
-            <span className="nlogin-trust-icon">{t.icon}</span>
-            <div>
-              <p className="nlogin-trust-title">{t.title}</p>
-              <p className="nlogin-trust-sub">{t.sub}</p>
-            </div>
-          </div>
-        ))}
-      </div>
     </div>
   );
 };
