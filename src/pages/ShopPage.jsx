@@ -7,10 +7,12 @@ import {
   RotateCcw, 
   Star, 
   Check, 
-  Search,
-  Tag,
-  Sparkles,
-  X
+  Search, 
+  Tag, 
+  Sparkles, 
+  X,
+  Award,
+  ShieldCheck
 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { categories } from '../data/categories';
@@ -23,12 +25,17 @@ export const ShopPage = () => {
     products, 
     activeCategory, 
     setActiveCategory, 
+    activeBrand,
+    setActiveBrand,
     searchQuery, 
     setSearchQuery 
   } = useStore();
 
   const [selectedCategories, setSelectedCategories] = useState(
     activeCategory !== 'all' ? [activeCategory] : []
+  );
+  const [selectedBrands, setSelectedBrands] = useState(
+    activeBrand !== 'all' ? [activeBrand] : []
   );
   const [priceRange, setPriceRange] = useState(500);
   const [minRating, setMinRating] = useState(0);
@@ -39,12 +46,26 @@ export const ShopPage = () => {
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [isFiltering, setIsFiltering] = useState(false);
 
+  // Extract all available brands dynamically with product count
+  const allBrands = useMemo(() => {
+    const brandMap = new Map();
+    products.forEach((p) => {
+      if (p.brand && p.brand.trim() && p.isActive !== false) {
+        const b = p.brand.trim();
+        brandMap.set(b, (brandMap.get(b) || 0) + 1);
+      }
+    });
+    return Array.from(brandMap.entries())
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count);
+  }, [products]);
+
   // Trigger smooth skeleton shimmer when filters change
   useEffect(() => {
     setIsFiltering(true);
     const timer = setTimeout(() => setIsFiltering(false), 220);
     return () => clearTimeout(timer);
-  }, [selectedCategories, priceRange, minRating, onlyInStock, onlySale, sortBy, searchQuery]);
+  }, [selectedCategories, selectedBrands, priceRange, minRating, onlyInStock, onlySale, sortBy, searchQuery]);
 
   // Sync activeCategory from store if changed externally
   useEffect(() => {
@@ -52,6 +73,15 @@ export const ShopPage = () => {
       setSelectedCategories([activeCategory]);
     }
   }, [activeCategory]);
+
+  // Sync activeBrand from store if changed externally
+  useEffect(() => {
+    if (activeBrand !== 'all') {
+      setSelectedBrands([activeBrand]);
+    } else {
+      setSelectedBrands([]);
+    }
+  }, [activeBrand]);
 
   // Lock body scroll when mobile filter is open
   useEffect(() => {
@@ -78,9 +108,24 @@ export const ShopPage = () => {
     }
   };
 
+  // Handle brand checkbox
+  const toggleBrand = (brandName) => {
+    if (selectedBrands.includes(brandName)) {
+      const next = selectedBrands.filter((b) => b !== brandName);
+      setSelectedBrands(next);
+      setActiveBrand(next.length === 1 ? next[0] : 'all');
+    } else {
+      const next = [...selectedBrands, brandName];
+      setSelectedBrands(next);
+      setActiveBrand(next.length === 1 ? next[0] : 'all');
+    }
+  };
+
   const handleResetFilters = () => {
     setSelectedCategories([]);
     setActiveCategory('all');
+    setSelectedBrands([]);
+    setActiveBrand('all');
     setPriceRange(500);
     setMinRating(0);
     setOnlyInStock(false);
@@ -90,6 +135,7 @@ export const ShopPage = () => {
 
   // Active filter count
   const activeFilterCount = (selectedCategories.length > 0 ? selectedCategories.length : 0) +
+    (selectedBrands.length > 0 ? selectedBrands.length : 0) +
     (priceRange < 500 ? 1 : 0) +
     (minRating > 0 ? 1 : 0) +
     (onlyInStock ? 1 : 0) +
@@ -105,6 +151,10 @@ export const ShopPage = () => {
       }
       // Category filter
       if (selectedCategories.length > 0 && !selectedCategories.includes(prod.category)) {
+        return false;
+      }
+      // Brand filter
+      if (selectedBrands.length > 0 && (!prod.brand || !selectedBrands.includes(prod.brand.trim()))) {
         return false;
       }
       // Price filter
@@ -127,7 +177,8 @@ export const ShopPage = () => {
       if (searchQuery.trim() !== '') {
         const q = searchQuery.toLowerCase();
         const matches = prod.name.toLowerCase().includes(q) ||
-          prod.categoryName.toLowerCase().includes(q) ||
+          prod.categoryName?.toLowerCase().includes(q) ||
+          (prod.brand && prod.brand.toLowerCase().includes(q)) ||
           (prod.description && prod.description.toLowerCase().includes(q));
         if (!matches) return false;
       }
@@ -139,22 +190,47 @@ export const ShopPage = () => {
       if (sortBy === 'name') return a.name.localeCompare(b.name);
       return 0; // featured default
     });
-  }, [products, selectedCategories, priceRange, minRating, onlyInStock, onlySale, searchQuery, sortBy]);
+  }, [products, selectedCategories, selectedBrands, priceRange, minRating, onlyInStock, onlySale, searchQuery, sortBy]);
+
+  // Page header title computation
+  const bannerHeadline = useMemo(() => {
+    if (selectedBrands.length === 1 && selectedCategories.length === 0) {
+      return `${selectedBrands[0]} Collection`;
+    }
+    if (selectedCategories.length === 1 && selectedBrands.length === 0) {
+      const cObj = categories.find(c => c.id === selectedCategories[0]);
+      return cObj?.name || 'Category Catalog';
+    }
+    if (selectedBrands.length > 0 && selectedCategories.length > 0) {
+      return 'Filtered Products';
+    }
+    return 'All Products Catalog';
+  }, [selectedBrands, selectedCategories]);
 
   return (
     <div className="shop-page-wrapper">
       {/* Header Banner */}
       <div className="shop-header-banner">
         <div className="container">
-          <div style={{ maxWidth: '600px' }}>
-            <span style={{ fontSize: '12.5px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#6b7280' }}>
-              Explore Everything
+          <div style={{ maxWidth: '640px' }}>
+            <span style={{ fontSize: '12.5px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#6b7280', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              {selectedBrands.length === 1 ? (
+                <>
+                  <ShieldCheck size={14} color="#7c3aed" />
+                  <span>Official Brand Store • 100% Authentic</span>
+                </>
+              ) : (
+                <span>Explore Everything</span>
+              )}
             </span>
-            <h1 style={{ fontSize: '36px', fontWeight: '800', marginTop: '4px', marginBottom: '8px' }}>
-              All Products Catalog
+            <h1 style={{ fontSize: '36px', fontWeight: '800', marginTop: '4px', marginBottom: '8px', color: '#0f172a' }}>
+              {bannerHeadline}
             </h1>
-            <p style={{ color: '#4b5563', fontSize: '14.5px' }}>
-              Browse our complete USA collection of electronics, fashion, home essentials, beauty, and more.
+            <p style={{ color: '#4b5563', fontSize: '14.5px', lineHeight: '1.5' }}>
+              {selectedBrands.length === 1 
+                ? `Discover genuine ${selectedBrands[0]} skincare products with verified batch codes and express delivery.`
+                : 'Browse our complete collection of authentic Korean skincare, sunscreens, serums, and value sets.'
+              }
             </p>
           </div>
         </div>
@@ -162,48 +238,92 @@ export const ShopPage = () => {
 
       <div className="container" style={{ padding: '24px 20px 60px 20px' }}>
         <div className="shop-main-layout">
-          {/* Mobile backdrop */}
-          {mobileFilterOpen && (
-            <div 
-              className="shop-sidebar-backdrop" 
-              onClick={() => setMobileFilterOpen(false)}
-            />
-          )}
-
-          {/* Left Sidebar Filters (Desktop Sticky Sidebar / Mobile Off-Canvas Drawer) */}
+          {/* Left Column: Sidebar Filters */}
           <aside className={`shop-sidebar ${mobileFilterOpen ? 'mobile-open' : ''}`}>
-            <div className="sidebar-header">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '800', fontSize: '16px' }}>
+            {/* Mobile Sidebar Header */}
+            <div className="sidebar-mobile-header">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <SlidersHorizontal size={18} />
-                <span>Filters</span>
+                <h3 style={{ fontSize: '16px', fontWeight: '800', margin: 0 }}>Filter Products</h3>
+              </div>
+              <button 
+                className="sidebar-close-btn" 
+                onClick={() => setMobileFilterOpen(false)}
+                aria-label="Close filters"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Sticky Reset Filter Header */}
+            <div className="filter-header">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Filter size={16} />
+                <span style={{ fontWeight: '700', fontSize: '14px' }}>Filters</span>
                 {activeFilterCount > 0 && (
-                  <span className="sidebar-active-count">({activeFilterCount})</span>
+                  <span className="active-filter-badge">{activeFilterCount}</span>
                 )}
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                {activeFilterCount > 0 && (
-                  <button 
-                    onClick={handleResetFilters}
-                    className="sidebar-reset-btn"
-                  >
-                    <RotateCcw size={12} />
-                    <span>Reset</span>
-                  </button>
-                )}
-                <button 
-                  className="sidebar-close-btn"
-                  onClick={() => setMobileFilterOpen(false)}
-                  aria-label="Close Filters"
-                >
-                  <X size={18} />
+              {activeFilterCount > 0 && (
+                <button className="reset-filter-btn" onClick={handleResetFilters}>
+                  <RotateCcw size={12} />
+                  <span>Reset</span>
                 </button>
-              </div>
+              )}
             </div>
 
             <div className="sidebar-body-scroll">
+              {/* Brand Filter */}
+              <div className="filter-group">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                  <h4 className="filter-title" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Award size={15} color="#7c3aed" />
+                    <span>Brands</span>
+                  </h4>
+                  {selectedBrands.length > 0 && (
+                    <button 
+                      onClick={() => { setSelectedBrands([]); setActiveBrand('all'); }} 
+                      style={{ border: 'none', background: 'transparent', fontSize: '11px', color: '#7c3aed', fontWeight: '700', cursor: 'pointer' }}
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
+
+                <div className="filter-checkbox-list" style={{ maxHeight: '180px', overflowY: 'auto' }}>
+                  {allBrands.map((b) => (
+                    <label key={b.name} className="checkbox-item">
+                      <input
+                        type="checkbox"
+                        checked={selectedBrands.includes(b.name)}
+                        onChange={() => toggleBrand(b.name)}
+                      />
+                      <span className="checkbox-custom" />
+                      <span className="label-text" style={{ flex: 1, fontWeight: selectedBrands.includes(b.name) ? '700' : '400' }}>
+                        {b.name}
+                      </span>
+                      <span style={{ fontSize: '11px', color: '#94a3b8', marginLeft: 'auto' }}>
+                        {b.count}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
               {/* Category Filter */}
               <div className="filter-group">
-                <h4 className="filter-title">Categories</h4>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                  <h4 className="filter-title" style={{ margin: 0 }}>Categories</h4>
+                  {selectedCategories.length > 0 && (
+                    <button 
+                      onClick={() => { setSelectedCategories([]); setActiveCategory('all'); }} 
+                      style={{ border: 'none', background: 'transparent', fontSize: '11px', color: '#7c3aed', fontWeight: '700', cursor: 'pointer' }}
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
+
                 <div className="filter-checkbox-list">
                   {categories.map((cat) => (
                     <label key={cat.id} className="checkbox-item">
@@ -284,19 +404,16 @@ export const ShopPage = () => {
                       onChange={(e) => setOnlySale(e.target.checked)}
                     />
                     <span className="checkbox-custom" />
-                    <span className="label-text">On Sale / Discounted</span>
+                    <span className="label-text">On Sale Deals Only</span>
                   </label>
                 </div>
               </div>
             </div>
 
-            {/* Mobile Footer with Apply button */}
+            {/* Mobile Footer Apply Bar */}
             <div className="sidebar-mobile-footer">
-              <button 
-                className="sidebar-mobile-reset-btn"
-                onClick={handleResetFilters}
-              >
-                Clear All
+              <button className="sidebar-mobile-reset-btn" onClick={handleResetFilters}>
+                Reset
               </button>
               <button 
                 className="sidebar-mobile-apply-btn"
@@ -368,6 +485,19 @@ export const ShopPage = () => {
             {activeFilterCount > 0 && (
               <div className="active-filters-chips-bar">
                 <span className="active-filters-label">Active:</span>
+
+                {/* Brand Chips */}
+                {selectedBrands.map((bName) => (
+                  <span key={bName} className="filter-chip" style={{ background: '#f5f3ff', color: '#7c3aed', borderColor: '#c4b5fd' }}>
+                    <Award size={11} />
+                    <span>Brand: {bName}</span>
+                    <button onClick={() => toggleBrand(bName)} aria-label="Remove brand filter">
+                      <X size={11} />
+                    </button>
+                  </span>
+                ))}
+
+                {/* Category Chips */}
                 {selectedCategories.map((catId) => {
                   const catObj = categories.find((c) => c.id === catId);
                   return (
@@ -379,6 +509,7 @@ export const ShopPage = () => {
                     </span>
                   );
                 })}
+
                 {priceRange < 500 && (
                   <span className="filter-chip">
                     Under AED {priceRange}
@@ -432,7 +563,7 @@ export const ShopPage = () => {
               <div className="empty-catalog-state">
                 <Search size={48} color="#9ca3af" />
                 <h3>No products match your criteria</h3>
-                <p>Try resetting filters or adjusting your price and category options.</p>
+                <p>Try resetting filters or adjusting your brand and category options.</p>
                 <button className="hero-cta-btn" onClick={handleResetFilters} style={{ marginTop: '16px' }}>
                   Reset Filters
                 </button>

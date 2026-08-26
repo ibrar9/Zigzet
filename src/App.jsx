@@ -16,6 +16,7 @@ import { ShippingCallout } from './components/home/ShippingCallout';
 // Lazy-Loaded Sub Pages (Code-split for maximum performance)
 const ShopPage = lazy(() => import('./pages/ShopPage').then((m) => ({ default: m.ShopPage })));
 const CategoriesPage = lazy(() => import('./pages/CategoriesPage').then((m) => ({ default: m.CategoriesPage })));
+const BrandsPage = lazy(() => import('./pages/BrandsPage').then((m) => ({ default: m.BrandsPage })));
 const DealsPage = lazy(() => import('./pages/DealsPage').then((m) => ({ default: m.DealsPage })));
 const TrackOrderPage = lazy(() => import('./pages/TrackOrderPage').then((m) => ({ default: m.TrackOrderPage })));
 const AboutPage = lazy(() => import('./pages/AboutPage').then((m) => ({ default: m.AboutPage })));
@@ -94,6 +95,7 @@ function App() {
         <Suspense fallback={<PageLoader />}>
           {currentPage === 'shop' && <ShopPage />}
           {currentPage === 'categories' && <CategoriesPage />}
+          {currentPage === 'brands' && <BrandsPage />}
           {currentPage === 'deals' && <DealsPage />}
           {currentPage === 'track' && <TrackOrderPage />}
           {currentPage === 'track-order' && <TrackOrderPage />}

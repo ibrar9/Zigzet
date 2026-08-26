@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { 
   ShoppingBag, 
   Search, 
@@ -11,6 +11,7 @@ import {
   Flame,
   Home,
   Grid,
+  Award,
   Truck,
   Sparkles,
   MessageCircle,
@@ -22,6 +23,7 @@ import { categories } from '../../data/categories';
 
 export const Header = () => {
   const { 
+    products,
     cartItemsCount, 
     wishlist, 
     setIsCartOpen, 
@@ -39,6 +41,21 @@ export const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [shopDropdownOpen, setShopDropdownOpen] = useState(false);
   const [catDropdownOpen, setCatDropdownOpen] = useState(false);
+  const [brandDropdownOpen, setBrandDropdownOpen] = useState(false);
+
+  // Extract unique active brands dynamically
+  const uniqueBrands = useMemo(() => {
+    const brandMap = new Map();
+    products.forEach((p) => {
+      if (p.brand && p.brand.trim() && p.isActive !== false) {
+        const bName = p.brand.trim();
+        brandMap.set(bName, (brandMap.get(bName) || 0) + 1);
+      }
+    });
+    return Array.from(brandMap.entries())
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count);
+  }, [products]);
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
@@ -190,6 +207,52 @@ export const Header = () => {
                   onClick={() => { navigatePage('categories'); setCatDropdownOpen(false); }}
                 >
                   <strong>Explore All Departments →</strong>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Brands Dropdown */}
+          <div 
+            className={`nav-item dropdown-trigger ${currentPage === 'brands' ? 'active' : ''}`}
+            onMouseEnter={() => setBrandDropdownOpen(true)}
+            onMouseLeave={() => setBrandDropdownOpen(false)}
+            onClick={() => navigatePage('brands')}
+          >
+            <span>Brands</span>
+            <ChevronDown size={14} />
+
+            {brandDropdownOpen && (
+              <div 
+                className="simple-dropdown-menu" 
+                onClick={(e) => e.stopPropagation()}
+                onMouseEnter={() => setBrandDropdownOpen(true)}
+                onMouseLeave={() => setBrandDropdownOpen(false)}
+                style={{ minWidth: '240px' }}
+              >
+                <div style={{ padding: '8px 14px 6px 14px', borderBottom: '1px solid #f1f5f9', fontSize: '11px', fontWeight: '800', color: '#7c3aed', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Official Brands
+                </div>
+                {uniqueBrands.map((b) => (
+                  <div
+                    key={b.name}
+                    className="simple-dropdown-item"
+                    onClick={() => {
+                      navigatePage('shop', 'all', b.name);
+                      setBrandDropdownOpen(false);
+                    }}
+                  >
+                    <span style={{ fontWeight: '600' }}>{b.name}</span>
+                    <span style={{ fontSize: '11px', color: '#7c3aed', background: '#f5f3ff', padding: '1px 6px', borderRadius: '8px', fontWeight: '700' }}>
+                      {b.count}
+                    </span>
+                  </div>
+                ))}
+                <div 
+                  className="simple-dropdown-item footer-item"
+                  onClick={() => { navigatePage('brands'); setBrandDropdownOpen(false); }}
+                >
+                  <strong>All Brands Directory →</strong>
                 </div>
               </div>
             )}
@@ -366,6 +429,15 @@ export const Header = () => {
                 >
                   <Grid size={18} />
                   <span>Categories & Departments</span>
+                  <ChevronRight size={15} className="drawer-nav-arrow" />
+                </button>
+
+                <button 
+                  className={`mobile-drawer-nav-item ${currentPage === 'brands' ? 'active' : ''}`}
+                  onClick={() => { navigatePage('brands'); setMobileMenuOpen(false); }}
+                >
+                  <Award size={18} color="#7c3aed" />
+                  <span>Official Brands Directory</span>
                   <ChevronRight size={15} className="drawer-nav-arrow" />
                 </button>
 

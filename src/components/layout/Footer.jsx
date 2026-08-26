@@ -32,6 +32,7 @@ export const Footer = () => {
           <div className="footer-col">
             <h5>Explore Store</h5>
             <span className="footer-nav-link" onClick={() => navigatePage('shop')}>All Products</span>
+            <span className="footer-nav-link" onClick={() => navigatePage('brands')}>Official Brands</span>
             <span className="footer-nav-link" onClick={() => navigatePage('deals')}>Deals & Offers</span>
             <span className="footer-nav-link" onClick={() => navigatePage('categories')}>Departments</span>
             <span className="footer-nav-link" onClick={() => navigatePage('track')}>Track Your Order</span>

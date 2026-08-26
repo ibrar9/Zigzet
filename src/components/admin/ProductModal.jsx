@@ -21,14 +21,25 @@ import { CustomDropdown } from '../common/CustomDropdown';
 import { useStore } from '../../context/StoreContext';
 
 export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
-  const { showToast } = useStore();
+  const { products, showToast } = useStore();
   const primaryFileInputRef = useRef(null);
   const galleryFileInputRef = useRef(null);
 
+  // Extract unique brands list for instant autocomplete
+  const uniqueBrandList = React.useMemo(() => {
+    const bSet = new Set(['Cell Fusion C', 'BANILA CO', 'Secret Key', 'SkinStandard', "SO'NATURAL", 'Toothnote']);
+    if (products) {
+      products.forEach((p) => {
+        if (p.brand && p.brand.trim()) bSet.add(p.brand.trim());
+      });
+    }
+    return Array.from(bSet).sort();
+  }, [products]);
+
   const [formData, setFormData] = useState({
     name: '',
-    category: 'electronics',
-    categoryName: 'Electronics',
+    category: 'sunscreen',
+    categoryName: 'Sun Care & SPF',
     price: '',
     originalPrice: '',
     stock: 25,
@@ -36,7 +47,7 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
     images: [],
     description: '',
     sku: '',
-    brand: 'Zigzet',
+    brand: 'Cell Fusion C',
     metaTitle: '',
     metaDescription: ''
   });
@@ -316,6 +327,27 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
                 onChange={handleCategorySelect}
                 width="100%"
               />
+            </div>
+
+            {/* Brand Name with Autocomplete */}
+            <div className="form-group">
+              <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span>Brand Name *</span>
+                <span style={{ fontSize: '11px', color: '#7c3aed', fontWeight: '700' }}>Select or type new</span>
+              </label>
+              <input
+                type="text"
+                list="product-brand-datalist"
+                value={formData.brand}
+                onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
+                placeholder="e.g. Cell Fusion C, BANILA CO..."
+                required
+              />
+              <datalist id="product-brand-datalist">
+                {uniqueBrandList.map((b) => (
+                  <option key={b} value={b} />
+                ))}
+              </datalist>
             </div>
 
             {/* Stock Quantity */}

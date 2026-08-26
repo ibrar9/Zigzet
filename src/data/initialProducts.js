@@ -20,9 +20,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/AdvancedClearSunscreen100SPF50PA_50ml.png?v=1786558607'
     ],
-    description: 'Cell Fusion C Advanced Clear Sunscreen 100 provides SPF50 PA++++ protection for everyday facial sun care. The convenient 50ml format fits easily into a regular morning skincare routine.',
+    description: 'Cell Fusion C Advanced Clear Sunscreen 100 is a dermatologically formulated, non-greasy sunscreen specially crafted for acne-prone, sensitive, and oily skin. Delivering maximum SPF50+ PA++++ broad-spectrum UV protection, it features natural AHA & BHA (Wintergreen Extract) to gently exfoliate dead cells, clear clogged pores, and regulate excess sebum. Infused with soothing Centella Asiatica and Tea Tree oil, it calms redness, blemishes, and irritation while leaving a lightweight, soft-matte finish with zero white cast and no greasy residue.',
     metaTitle: 'Advanced Clear Sunscreen 100 SPF50 PA++++ (50ml) | Cell Fusion C',
-    metaDescription: 'Protect and soothe skin with Cell Fusion C Advanced Clear Sunscreen 100 SPF50 PA++++. Lightweight Korean sun care with fast USA delivery.'
+    metaDescription: 'Protect acne-prone skin with Cell Fusion C Advanced Clear Sunscreen 100 SPF50+ PA++++. Pore-clearing, oil-controlling Korean sun care with Centella & BHA.'
   },
   {
     id: 'prod-2',
@@ -45,9 +45,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/AquaticaCoolingSunscreenSPF50PA_35mlx2.png?v=1786555630'
     ],
-    description: 'Cell Fusion C Aquatica Cooling Sunscreen is a convenient two-piece sunscreen set providing SPF50 PA++++ protection. The pack contains two 35ml products for practical daily sun care.',
+    description: 'The Cell Fusion C Aquatica Cooling Sunscreen Twin Pack (2 × 35ml) delivers an instant cooling sensation and deep moisture surge to overheated, sun-exposed skin. Infused with 65% hydrating essence, Mentha Aquatica extract, and Triple Hyaluronic Acid, this ultra-refreshing watery sunscreen cools skin temperature on contact while providing powerful SPF50+ PA++++ defense. It absorbs like a lightweight moisture serum, leaving skin intensely hydrated, dewy, and calm with zero stickiness.',
     metaTitle: 'Aquatica Cooling Sunscreen SPF50 PA++++ (Twin Pack) | Cell Fusion C',
-    metaDescription: 'Shop Cell Fusion C Aquatica Cooling Sunscreen SPF50 PA++++ Twin Pack (35ml x 2). Refreshing cooling hydration.'
+    metaDescription: 'Shop Cell Fusion C Aquatica Cooling Sunscreen SPF50 PA++++ Twin Pack (35ml x 2). Refreshing cooling hydration with Triple Hyaluronic Acid.'
   },
   {
     id: 'prod-3',
@@ -70,9 +70,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/AquaticaSunscreen100SPF50_PA_50ml.png?v=1786555318'
     ],
-    description: 'Cell Fusion C Aquatica Sunscreen 100 is a daily facial sunscreen offering SPF50+ PA++++ protection. Its convenient 50ml format is designed for easy incorporation into everyday Korean skincare routines.',
+    description: 'Cell Fusion C Aquatica Sunscreen 100 SPF50+ PA++++ (50ml) is a deeply hydrating daily facial sunscreen that drenches dry, tight, or sensitized skin with refreshing moisture. Formulated with low-molecular Hyaluronic Acid, Glacier Water, and soothing Allantoin, it forms a lightweight protective moisture barrier that shields against harmful UVA/UVB rays and environmental stress. The fast-absorbing fluid texture melts effortlessly into the skin, creating the perfect smooth, glass-skin canvas under makeup.',
     metaTitle: 'Aquatica Sunscreen 100 SPF50+ PA++++ 50ml | Cell Fusion C',
-    metaDescription: 'Daily moisturizing sun care with Aquatica Sunscreen 100 SPF50+ PA++++ by Cell Fusion C.'
+    metaDescription: 'Daily moisturizing sun care with Aquatica Sunscreen 100 SPF50+ PA++++ by Cell Fusion C. Infused with Glacier Water & Hyaluronic Acid.'
   },
   {
     id: 'prod-4',
@@ -94,9 +94,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/BANILACOCleanItZeroCleansingBalmOriginal7ml.png?v=1786687846'
     ],
-    description: 'BANILA CO Clean It Zero Cleansing Balm Original – 7ml is a convenient mini-size cleansing balm designed to remove makeup, sunscreen and daily impurities from the skin. The balm melts smoothly during application.',
+    description: 'The travel-ready BANILA CO Clean It Zero Cleansing Balm Original (7ml Mini) is the world\'s most beloved Korean sherbet cleanser. Engineered with patented Zero Balance Technology, Hot Springs Water, Vitamin C, and Acerola extract, this luxurious balm transforms from a silky sorbet into a smooth oil upon skin contact. It effortlessly melts away stubborn waterproof mascara, long-wear foundation, and sunscreen without tugging or stripping your skin\'s natural moisture barrier.',
     metaTitle: 'BANILA CO Clean It Zero Cleansing Balm Original 7ml Mini',
-    metaDescription: 'Travel-size iconic melting cleansing balm by BANILA CO for effortless makeup and sunscreen removal.'
+    metaDescription: 'Travel-size iconic melting cleansing balm by BANILA CO for effortless makeup and sunscreen removal with Zero Balance Technology.'
   },
   {
     id: 'prod-5',
@@ -118,9 +118,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/BanilaCoCleanItZeroSpecialKit.png?v=1786907899'
     ],
-    description: 'BANILA CO Clean It Zero Special Kit brings together four mini versions (Original, Revitalizing, Purifying, Nourishing) in one convenient 4-piece travel kit.',
+    description: 'The Banila Co Clean It Zero Special Kit includes four deluxe 7ml travel minis covering the entire iconic cleansing collection: Original (All Skin Types & Hydration), Revitalizing (Antioxidant Grape Seed & Resveratrol), Purifying (Calming 7 Natural Herbs for Sensitive Skin), and Nourishing (Ginseng Berry & Royal Jelly for Dry Skin). Each formula gently dissolves heavy makeup, SPF, and deep impurities while targeting specific skincare concerns, leaving skin pure, silky-soft, and refreshed.',
     metaTitle: 'Banila Co Clean It Zero Special Kit (4 Mini Cleansing Balms)',
-    metaDescription: 'Experience 4 iconic BANILA CO cleansing balms in one deluxe travel set. Total 28ml.'
+    metaDescription: 'Experience 4 iconic BANILA CO cleansing balms in one deluxe travel set (Original, Revitalizing, Purifying, Nourishing - 4 x 7ml).'
   },
   {
     id: 'prod-6',
@@ -143,9 +143,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/AdvancedClearSunscreen100SPF50PA_35ml.png?v=1786558744'
     ],
-    description: 'Twin-pack version of Cell Fusion C Advanced Clear Sunscreen 100 offering SPF50 PA++++ sun protection. Includes two convenient 35ml products.',
+    description: 'Enjoy double the pore-clearing protection with the Cell Fusion C Advanced Clear Sunscreen Twin Pack (2 × 35ml). Tailored for blemish-prone, oily, and sensitive complexions, this hypoallergenic SPF50+ PA++++ sun cream combines gentle exfoliating Wintergreen BHA and calming Tea Tree & Centella extracts. It balances excess oil, smooths rough texture, and prevents breakout flare-ups caused by UV exposure, all while delivering a breathable, velvety matte finish.',
     metaTitle: 'Advanced Clear Sunscreen SPF50 PA++++ (35ml x 2) | Cell Fusion C',
-    metaDescription: 'Dual pack 35ml x 2 Cell Fusion C Advanced Clear Sunscreen SPF50 PA++++.'
+    metaDescription: 'Dual pack 35ml x 2 Cell Fusion C Advanced Clear Sunscreen SPF50 PA++++. BHA & Centella formula for shine-free skin.'
   },
   {
     id: 'prod-7',
@@ -168,9 +168,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/CellFusionCAiryFitBlurSunStickSPF50_PA_20g.png?v=1786559899'
     ],
-    description: 'Cell Fusion C Airy Fit Blur Sun Stick combines SPF50+ PA++++ sun protection with a convenient 20g solid-stick format for easy everyday blur-effect application.',
+    description: 'The Cell Fusion C Airy Fit Blur Sun Stick SPF50+ PA++++ (20g) provides portable, touch-free sun protection with an instant blurring filter effect. Packed with sebum-absorbing micro-powders and botanical soothing extracts, it glides seamlessly over bare skin or on top of makeup to erase the look of enlarged pores, control midday shine, and create a soft-focus matte finish without caking or white residue. Pocket-sized and travel-friendly for easy reapplication anywhere.',
     metaTitle: 'Airy Fit Blur Sun Stick SPF50+ PA++++ 20g | Cell Fusion C',
-    metaDescription: 'Pore blurring and high UV protection in a portable sun stick format.'
+    metaDescription: 'Pore blurring and high UV protection in a portable sun stick format. Soft-focus matte finish over makeup.'
   },
   {
     id: 'prod-8',
@@ -193,9 +193,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/AquaticaStickSunscreen100SPF50PA_19g.png?v=1786559452'
     ],
-    description: 'Cell Fusion C Aquatica Stick Sunscreen 100 is a portable SPF50 PA++++ sun stick. Its compact 19g format provides a convenient way to apply and reapply sunscreen throughout the day.',
+    description: 'Cell Fusion C Aquatica Stick Sunscreen 100 SPF50+ PA++++ (19g) is a refreshing moisture-burst sun stick engineered for convenient, hands-free sun protection on the go. Packed with cooling glacier water, Hyaluronic Acid, and soothing botanical extracts, it glides across the skin like a cool splash of water, immediately relieving heat-stressed skin while defending against UVA/UVB rays. Leaves zero stickiness, no grease, and an invisible dewy finish.',
     metaTitle: 'Aquatica Stick Sunscreen 100 SPF50 PA++++ 19g | Cell Fusion C',
-    metaDescription: 'Hydrating on-the-go sun protection stick with SPF50 PA++++.'
+    metaDescription: 'Hydrating on-the-go sun protection stick with SPF50 PA++++. Water-burst formula with Hyaluronic Acid and glacier water.'
   },
   {
     id: 'prod-9',
@@ -218,9 +218,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/CellFusionCAquaticaSunSpray_100ml.png?v=1786560076'
     ],
-    description: 'Cell Fusion C Aquatica Sun Spray is a convenient 100ml spray-format sun-care product designed for quick and easy application and all-day reapplication.',
+    description: 'Cell Fusion C Aquatica Sun Spray (100ml) provides an ultra-fine, transparent micro-mist that delivers instant cooling relief and full broad-spectrum UV protection without disturbing makeup. Formulated with cooling botanical waters and moisture-binding humectants, this non-aerosol spray evenly covers face and body with a weightless veil that soothes sun-heated skin and prevents photo-aging. Perfect for beach days, workouts, and quick midday touch-ups.',
     metaTitle: 'Cell Fusion C Aquatica Sun Spray 100ml',
-    metaDescription: 'Ultra-fine hydrating sun spray mist by Cell Fusion C.'
+    metaDescription: 'Ultra-fine hydrating sun spray mist by Cell Fusion C. Clear broad-spectrum UV defense that can be sprayed over makeup.'
   },
   {
     id: 'prod-10',
@@ -242,9 +242,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/D4.png?v=1787424641'
     ],
-    description: 'Complete 3-piece cooling skincare routine: Cooling Gel Cream, Cooling Peptide Ampoule, and Cooling Pads (70 Pads). Perfect for soothing and hydrating heated skin.',
+    description: 'The Cell Fusion C Cooling Care Special Set is the ultimate 3-step soothing ritual for inflamed, flushed, or sun-stressed skin. This power trio contains POST Alpha Cooling Gel Cream (50ml), POST Alpha Cooling Peptide Ampoule (30ml), and POST Alpha Cica Cooling Toner Pads (70 Pads). Working synergistically, they instantly lower skin temperature, soothe redness and irritation, replenish lost moisture, and fortify the fragile lipid barrier for calm, resilient skin.',
     metaTitle: 'Cell Fusion C Cooling Care Special Set | 3-Piece Bundle',
-    metaDescription: 'Save big on Cell Fusion C Cooling Care Special Set with Gel Cream, Peptide Ampoule and 70 Pads.'
+    metaDescription: 'Save big on Cell Fusion C Cooling Care Special Set with Gel Cream, Peptide Ampoule and 70 Cica Pads. Instant heat and redness relief.'
   },
   {
     id: 'prod-11',
@@ -266,9 +266,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/D5.png?v=1787425094'
     ],
-    description: 'Special 4-piece mask bundle featuring Peptide Gel Mask, First Cooling Mask, Cica Cooling Mask, and Cica Cooling Protein Gel Mask.',
+    description: 'Treat your skin to an intensive medical-grade cooling therapy with the Cell Fusion C Cooling Gel Mask Special Set (4-Mask Bundle). Featuring the Cooling Peptide Gel Mask, First Cooling Mask, Cica Cooling Mask, and Cica Cooling Protein Gel Mask, this curated bundle rapidly lowers skin heat, floods dehydrated cells with active peptides, and speeds up cellular recovery. Ideal for weekly home spa treatments, post-procedure healing, or after sun exposure.',
     metaTitle: 'Cell Fusion C Cooling Gel Mask Special Set | 4-Piece Bundle',
-    metaDescription: 'Targeted cooling and soothing sheet and gel masks by Cell Fusion C.'
+    metaDescription: 'Targeted cooling and soothing sheet and hydrogel masks by Cell Fusion C with peptides, cica, and glacial hydration.'
   },
   {
     id: 'prod-12',
@@ -291,9 +291,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/DarkSpotToningSunscreenSPF50PA_35mlx2.png?v=1786559165'
     ],
-    description: 'A twin pack of Cell Fusion C Dark Spot Toning Sunscreen offering SPF50 PA++++ protection. Includes two 35ml products for convenient daily use.',
+    description: 'The Cell Fusion C Dark Spot Toning Sunscreen Twin Pack (2 × 35ml) offers double the brightening and protective power. Infused with Niacinamide, Vitamin C derivative, and natural pink Calamine, this tone-up sunscreen corrects dullness, fades hyperpigmentation, and protects against UVA/UVB damage with SPF50+ PA++++. Its silky, lightweight lotion formula provides an instant radiant, natural rosy glow that doubles as an illuminating makeup primer.',
     metaTitle: 'Dark Spot Toning Sunscreen SPF50 PA++++ (35ml x 2) | Cell Fusion C',
-    metaDescription: 'Brightening dark spot toning sunscreen duo pack by Cell Fusion C.'
+    metaDescription: 'Brightening dark spot toning sunscreen duo pack by Cell Fusion C with Niacinamide and Calamine for an instant rosy glow.'
   },
   {
     id: 'prod-13',
@@ -316,9 +316,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/CellFusionCDarkSpotToningSunscreenSPF50PA_50ml.png?v=1786559094'
     ],
-    description: 'Cell Fusion C Dark Spot Toning Sunscreen combines SPF50 PA++++ sun protection with complexion toning benefits in a 50ml format.',
+    description: 'Cell Fusion C Dark Spot Toning Sunscreen SPF50+ PA++++ (50ml) is an advanced dual-action tone-up sun lotion that protects and clarifies simultaneously. Featuring 1% Niacinamide, Vitamin C, and soothing pink Calamine, it actively reduces the appearance of sun spots, acne marks, and uneven pigmentation while blocking harmful UV radiation. Delivers a natural peachy luminosity that revives tired, dull skin with zero sticky after-feel.',
     metaTitle: 'Dark Spot Toning Sunscreen SPF50 PA++++ 50ml | Cell Fusion C',
-    metaDescription: 'Daily brightening tone-up sunscreen for even complexion.'
+    metaDescription: 'Daily brightening tone-up sunscreen for even complexion. Formulated with Niacinamide, Vitamin C, and pink Calamine.'
   },
   {
     id: 'prod-14',
@@ -340,9 +340,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/DualAfterCareSet.png?v=1786908641'
     ],
-    description: 'Specialized two-step skincare set with TA Repair Cream (20ml) and Derma BB Cream SPF50+ PA++++ (20ml) for sensitive, post-treatment skin barrier recovery.',
+    description: 'The Cell Fusion C Expert Dual After Care Set (20ml + 20ml) is a clinical post-treatment recovery system designed for sensitized, irritated skin following laser treatments, chemical peels, or microneedling. Combining the TA Repair Cream (formulated with Tranexamic Acid and Ceramides to accelerate barrier recovery) and the Derma BB Cream SPF50+ PA++++ (to soothe redness and provide flawless, breathable coverage), this duo ensures rapid healing and total skin protection.',
     metaTitle: 'Cell Fusion C Expert Dual After Care Set (20ml + 20ml)',
-    metaDescription: 'Post-treatment recovery duo with TA Repair Cream and Derma BB Cream SPF50+.'
+    metaDescription: 'Post-treatment recovery duo with TA Repair Cream and Derma BB Cream SPF50+ for sensitive barrier recovery and seamless coverage.'
   },
   {
     id: 'prod-15',
@@ -365,9 +365,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/CellFusionCLaserUVSunscreenSPF50PA_50ml.png?v=1786554740'
     ],
-    description: 'Cell Fusion C Laser UV Sunscreen SPF50 PA++++ is a daily facial sunscreen designed to provide high-level UV protection for sensitized skin.',
+    description: 'The iconic holy-grail Cell Fusion C Laser UV Sunscreen SPF50+ PA++++ (50ml) is Korea\'s award-winning dermatological sunscreen specially developed for ultra-sensitive, post-laser, and damaged skin. Formulated with Zinc Oxide, Hydrolyzed Collagen, Coenzyme Q10, and Ceramide NP, it creates a hypoallergenic protective shield that repairs the moisture barrier while defending against photo-aging. Leaves a silky, velvet finish that adheres seamlessly without heaviness.',
     metaTitle: 'Cell Fusion C Laser UV Sunscreen SPF50 PA++++ 50ml',
-    metaDescription: 'Award-winning gentle laser UV sunscreen for sensitive and post-laser skin.'
+    metaDescription: 'Award-winning gentle laser UV sunscreen for sensitive and post-laser skin with Collagen, Ceramides, and Zinc Oxide.'
   },
   {
     id: 'prod-16',
@@ -390,9 +390,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/PostAlphaCoolingPeptideAmpoule_30ml.png?v=1786562834'
     ],
-    description: 'Concentrated 30ml facial skincare ampoule featuring POST Alpha cooling peptide formulation for revitalized and deeply hydrated skin.',
+    description: 'Cell Fusion C POST Alpha Cooling Peptide Ampoule (30ml) is an intensive skin-firming and temperature-reducing concentrate. Infused with a multi-peptide complex, Glacier Water, and Guaiazulene, it provides immediate cryogenic cooling to calm facial flushing, reduce irritation, and stimulate collagen synthesis. Restores bouncy elasticity, smooths fine dehydration lines, and deeply revitalizes tired, heat-damaged complexions.',
     metaTitle: 'Cell Fusion C Post Alpha Cooling Peptide Ampoule 30ml',
-    metaDescription: 'Hydrating cooling ampoule with peptide complex by Cell Fusion C.'
+    metaDescription: 'Hydrating cooling ampoule with peptide complex and glacier water by Cell Fusion C for soothing and firming care.'
   },
   {
     id: 'prod-17',
@@ -415,9 +415,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/CellFusionCPOST_CicaCoolingMask_27gx5ea.png?v=1786560493'
     ],
-    description: 'Soothing Cica cooling mask pack (5 sheets) designed to instantly calm irritated skin and lower skin temperature.',
+    description: 'The Cell Fusion C POST α Cica Cooling Mask Pack (5 Sheets × 27g) delivers an emergency cooling and soothing treatment for reactive, stressed skin. Soaked in a potent essence of 4 Centella Asiatica compounds (Madecassoside, Asiaticoside, Madecassic Acid, Asiatic Acid) and cooling plant extracts, these ultra-soft microfiber sheets hug the facial contours to quickly relieve irritation, reduce redness, and restore skin equilibrium in 15 minutes.',
     metaTitle: 'Cell Fusion C POST α Cica Cooling Mask (5 Sheets)',
-    metaDescription: 'Intensive Cica cooling sheet masks for stressed skin.'
+    metaDescription: 'Intensive Cica cooling sheet masks for stressed skin with 4 Centella compounds and glacial soothing essence.'
   },
   {
     id: 'prod-18',
@@ -440,9 +440,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/CellFusionCPost_CicaCoolingProteinGelMask_35gx5ea.png?v=1786561051'
     ],
-    description: 'Five-piece hydrogel mask set combining cooling protein and soothing Cica for deeply nourished barrier care.',
+    description: 'Cell Fusion C POST α Cica Cooling Protein Gel Mask (5 Sheets × 35g) is a premium hydrogel mask infused with structural protein peptides and high-purity Cica essence. The cooling hydrogel texture tightly adheres to the skin, gradually melting nutrients deep into the dermal layers to tighten pores, relieve facial puffiness, and reinforce weakened skin barriers. Leaves the skin visibly firmer, calmer, and radiantly replenished.',
     metaTitle: 'Post α Cica Cooling Protein Gel Mask (5 Sheets) | Cell Fusion C',
-    metaDescription: 'Hydrogel protein cooling masks by Cell Fusion C.'
+    metaDescription: 'Hydrogel protein cooling masks by Cell Fusion C. Melts peptides and Centella into skin for barrier recovery and cooling relief.'
   },
   {
     id: 'prod-19',
@@ -465,9 +465,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/Post_CoolingPeptideGelMask_35gx5.png?v=1786560767'
     ],
-    description: 'Five-piece cooling peptide gel mask set for refreshing, plump and hydrated facial care.',
+    description: 'The Cell Fusion C POST α Cooling Peptide Gel Mask (5-Pack × 35g) is an intensive anti-aging and cooling hydrogel mask that locks in potent peptide hydration. Designed to instantly drop skin surface temperature by up to 5°C, it helps smooth fine lines, improve sagging skin, and calm redness caused by heat or environmental stressors. Leaves the face looking visibly sculpted, plumped, and luminous.',
     metaTitle: 'Post α Cooling Peptide Gel Mask (5 Sheets) | Cell Fusion C',
-    metaDescription: 'Peptide gel mask set for cooling skin hydration.'
+    metaDescription: 'Peptide hydrogel mask set for cooling skin hydration and elasticity by Cell Fusion C.'
   },
   {
     id: 'prod-20',
@@ -490,9 +490,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/CellFusionCPOST_CoolingSkinBoosterSerum_150ml.png?v=1786563016'
     ],
-    description: 'Generous 150ml facial skincare booster serum from the POST α cooling range for balanced hydration.',
+    description: 'Cell Fusion C POST α Cooling Skin Booster Serum (Jumbo 150ml) is a refreshing, watery first-step essence that instantly primes and quenches dehydrated skin. Formulated with cooling thermal waters, Panthenol, and Hyaluronic Acid, it calms facial heat, balances skin pH after cleansing, and dramatically enhances the absorption of all subsequent skincare products. Leaves skin soft, hydrated, and perfectly prepped.',
     metaTitle: 'POST α Cooling Skin Booster Serum 150ml | Cell Fusion C',
-    metaDescription: '150ml daily facial skin booster serum.'
+    metaDescription: '150ml daily facial skin booster serum. Balances pH, lowers heat, and primes skin for enhanced hydration absorption.'
   },
   {
     id: 'prod-21',
@@ -515,9 +515,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/CellFusionCPOST_FirstCoolingMask_27gx5ea.png?v=1786560275'
     ],
-    description: 'Five-piece facial mask set designed to deliver an instant temperature reduction and refreshing comfort.',
+    description: 'Cell Fusion C POST α First Cooling Mask (5 Sheets × 27g) is the ultimate first-aid relief sheet mask for sunburned, laser-treated, or heavily irritated skin. Utilizing a non-menthol, skin-friendly cooling complex and botanical soothing agents, it delivers instant temperature relief without triggering stinging or sensitivity. Quickly calms angry inflammation and locks in essential hydration.',
     metaTitle: 'POST α First Cooling Mask (5 Sheets) | Cell Fusion C',
-    metaDescription: 'Instant cooling facial sheet masks.'
+    metaDescription: 'Instant cooling facial sheet masks. Non-menthol soothing formula designed for sunburned, laser-treated, and sensitive skin.'
   },
   {
     id: 'prod-22',
@@ -540,9 +540,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/SkinBlemishBalmIntensiveSignatureBeige_30ml.png?v=1786563442'
     ],
-    description: 'Natural-finish blemish balm with skincare ingredients in Signature Beige for smooth, radiant complexion coverage.',
+    description: 'The legendary Cell Fusion C Skin Blemish Balm Intensive in Signature Beige (30ml) is Korea\'s dermatologist-approved BB cream that heals while it conceals. Formulated with Ceramide NP, Peptides, and Centella Asiatica, it blends seamlessly into skin to cover redness, acne marks, and uneven tone with a natural, breathable satin finish. Non-comedogenic and hypoallergenic, it calms sensitive skin and repairs the moisture barrier all day.',
     metaTitle: 'Cell Fusion C Skin Blemish Balm Intensive Signature Beige 30ml',
-    metaDescription: 'Complexion perfecting BB balm for sensitive skin.'
+    metaDescription: 'Complexion perfecting BB balm for sensitive skin. Provides natural coverage with Ceramides, Peptides, and Centella.'
   },
   {
     id: 'prod-23',
@@ -565,9 +565,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/CellFusionCWaterFitCoolingSunStickSPF50_PA_20g.png?v=1786559615'
     ],
-    description: 'Water-drop hydration cooling sun stick with SPF50+ PA++++ for effortless touch-ups without greasy residue.',
+    description: 'Cell Fusion C Water Fit Cooling Sun Stick SPF50+ PA++++ (20g) features innovative water-burst encapsulation technology that releases droplets of cooling hydration upon contact with skin. Infused with soothing Aloe Vera, glacier water, and moisture humectants, this handy portable sun stick glides on effortlessly without leaving any sticky residue or chalky cast. Perfect for quick, mess-free reapplication during sports or travel.',
     metaTitle: 'Water Fit Cooling Sun Stick SPF50+ PA++++ | Cell Fusion C',
-    metaDescription: 'Hydrating water-burst cooling sun stick.'
+    metaDescription: 'Hydrating water-burst cooling sun stick with SPF50+ PA++++. Leaves no stickiness or white cast.'
   },
   {
     id: 'prod-24',
@@ -589,9 +589,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/CleanitZeroCalmingCleansingBalm.png?v=1786789395'
     ],
-    description: 'Soothing Cica-infused cleansing balm for irritated and sensitive skin.',
+    description: 'BANILA CO Clean It Zero Calming Cleansing Balm (100ml) is a soothing, hypoallergenic sherbet cleanser formulated specifically for sensitive, reactive, and redness-prone skin. Enriched with Centella Asiatica (Cica), Tea Tree extract, and Madecassoside, it effortlessly melts away heavy makeup, sunscreen, and daily pollution while soothing irritation and reinforcing the skin\'s moisture barrier without tight or dry after-feel.',
     metaTitle: 'Clean it Zero Calming Cleansing Balm 100ml | BANILA CO',
-    metaDescription: 'Gentle calming makeup remover balm.'
+    metaDescription: 'Gentle calming makeup remover balm with Centella Asiatica and Madecassoside for reactive and sensitive skin.'
   },
   {
     id: 'prod-25',
@@ -613,9 +613,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/CleanitZeroCleansingBalmBrightening.png?v=1786789559'
     ],
-    description: 'Mandarin-C brightening cleansing balm to cleanse and illuminate dull skin.',
+    description: 'BANILA CO Clean It Zero Cleansing Balm Brightening (100ml) transforms your daily cleansing routine into a radiant facial experience. Formulated with Mandarin-C (Citrus Unshiu Peel Extract) and Vitamin C derivative, this luscious sherbet balm gently dissolves stubborn waterproof makeup and deep pore impurities while exfoliating dull surface cells to reveal a luminous, glowing, and refreshed complexion.',
     metaTitle: 'Clean it Zero Brightening Cleansing Balm 100ml | BANILA CO',
-    metaDescription: 'Vitamin C infused cleansing balm.'
+    metaDescription: 'Vitamin C infused cleansing balm by BANILA CO with Mandarin-C to melt makeup and illuminate dull skin.'
   },
   {
     id: 'prod-26',
@@ -637,9 +637,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/CleanItZeroCleansingBalmNourishing.png?v=1786789454'
     ],
-    description: 'Ginseng and Royal Jelly enriched melting balm for dry skin.',
+    description: 'BANILA CO Clean It Zero Cleansing Balm Nourishing (100ml) is an ultra-luxurious, deeply moisturizing balm specially crafted for dry, parched, and mature skin. Enriched with high-grade Ginseng Berry extract and Royal Jelly, it effortlessly dissolves the heaviest waterproof makeup and grime while saturating the skin with rich nutrients and antioxidants, leaving your face feeling supple, velvet-soft, and intensely hydrated.',
     metaTitle: 'Clean It Zero Nourishing Cleansing Balm 100ml | BANILA CO',
-    metaDescription: 'Deeply nourishing cleansing balm.'
+    metaDescription: 'Deeply nourishing cleansing balm with Ginseng Berry and Royal Jelly by BANILA CO for dry skin.'
   },
   {
     id: 'prod-27',
@@ -661,9 +661,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/CleanItZeroCleansingBalmPoreClarifying.png?v=1786789342'
     ],
-    description: 'Tri-Peel Acid AHA/BHA/LHA clarifying cleansing balm for congested pores and blackheads.',
+    description: 'BANILA CO Clean It Zero Cleansing Balm Pore Clarifying (100ml) is the ultimate deep-cleansing solution for congested pores, blackheads, and oily skin. Powered by the Tri-Peel Acid blend (AHA, BHA, LHA) and clarifying Tea Tree Oil, it melts stubborn waterproof makeup and clears sebum buildup from deep within pores without causing dryness or irritation. Leaves skin wonderfully clear, refined, and smooth.',
     metaTitle: 'Clean It Zero Pore Clarifying Cleansing Balm 100ml | BANILA CO',
-    metaDescription: 'Pore clearing AHA BHA LHA cleansing balm.'
+    metaDescription: 'Pore clearing AHA BHA LHA cleansing balm with Tea Tree Oil. Removes blackheads and excess sebum.'
   },
   {
     id: 'prod-28',
@@ -685,9 +685,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/CleanItZeroCleansingBalmRevitalizing.png?v=1786789510'
     ],
-    description: 'Resveratrol and grape seed oil antioxidant cleansing balm for refreshed skin.',
+    description: 'BANILA CO Clean It Zero Cleansing Balm Revitalizing (100ml) is an antioxidant-rich sherbet cleanser formulated to protect, firm, and rejuvenate tired, aging skin. Infused with potent Resveratrol, Grape Seed Oil, and Olive Oil, it melts away daily makeup, SPF, and environmental pollutants while delivering free-radical defense to improve skin elasticity and restore a vibrant, youthful glow.',
     metaTitle: 'Clean It Zero Revitalizing Cleansing Balm 100ml | BANILA CO',
-    metaDescription: 'Antioxidant rich cleansing balm.'
+    metaDescription: 'Antioxidant rich cleansing balm with Resveratrol and Grape Seed Oil for rejuvenated skin by BANILA CO.'
   },
   {
     id: 'prod-29',
@@ -709,9 +709,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/de4.png?v=1787599676'
     ],
-    description: 'Secret Key Lemon Sparkling Peeling Gel and Hydrating Toner duo set for glass skin.',
+    description: 'The Secret Key Lemon Sparkling Skincare Duo Set combines the famous Lemon Sparkling Peeling Gel and Refreshing Hydrating Toner for an unbeatable glass-skin glow. Harnessing the effervescent power of Carbonated Sparkling Water, Vitamin C-rich Lemon Extract, and mild AHA, this 2-step routine gently sweeps away dead skin cells, clears congested pores, and hydrates deeply for a sparkling, clear, and illuminated complexion.',
     metaTitle: 'Secret Key Lemon Sparkling Skincare Duo Set | Limited Offer',
-    metaDescription: 'Brightening Lemon Sparkling set with Vitamin C and AHA.'
+    metaDescription: 'Brightening Lemon Sparkling set with Vitamin C and AHA. Smooths skin texture and reveals glowing glass skin.'
   },
   {
     id: 'prod-30',
@@ -733,9 +733,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/de5.png?v=1787600064'
     ],
-    description: 'Complete pore care set with Lemon Sparkling Cleansing Foam and Exfoliating Toner Pads.',
+    description: 'The Secret Key Pore Refining Daily Cleansing Set is a complete 2-piece pore-purifying regimen featuring the Lemon Sparkling Cleansing Foam and Exfoliating Toner Pads. Enriched with sparkling carbonated water, Vitamin C, and Betaine Salicylate (BHA), this duo creates a micro-bubble lather to dissolve stubborn blackheads and sebum, followed by textured toner pads that refine pores and rebalance skin pH for a smooth, matte finish.',
     metaTitle: 'Secret Key Pore Refining Daily Cleansing Set | Special Deal',
-    metaDescription: 'Deep pore cleansing and exfoliating foam duo.'
+    metaDescription: 'Deep pore cleansing foam and exfoliating toner pads duo by Secret Key. Purifies blackheads and tightens pores.'
   },
   {
     id: 'prod-31',
@@ -757,9 +757,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/de3.png?v=1787599596'
     ],
-    description: '3-Piece full routine: Cleansing Foam (120ml), Peel Shot Ampoule (80ml), and Toner Pads (70 Pads).',
+    description: 'The Secret Key Lemon Brightening Mega Trio Set delivers the ultimate 3-step radiance routine for glowing, glass skin. This deluxe bundle includes: Lemon Sparkling Cleansing Foam (120ml) for micro-bubble purification, Lemon Sparkling Peel Shot Ampoule (80ml) for 4-acid exfoliation, and Lemon Sparkling Toner Pads (70 Pads) for texture refinement. Together, they fade dark spots, smooth rough skin, and reveal unmatched luminosity.',
     metaTitle: 'Secret Key Lemon Brightening Mega Trio Set',
-    metaDescription: 'Complete 3-step Vitamin C and AHA BHA brightening routine.'
+    metaDescription: 'Complete 3-step Vitamin C and AHA BHA brightening routine with Cleansing Foam 120ml, Peel Shot 80ml, and 70 Toner Pads.'
   },
   {
     id: 'prod-32',
@@ -781,9 +781,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/d4d.jpg?v=1787600806'
     ],
-    description: 'Exclusive 5-piece Master Glow bundle with cleansers, peeling ampoule, hydrating toner pads, and creams.',
+    description: 'Indulge in the ultimate Korean glass-skin ritual with the Luxury K-Beauty Complete Glow Care Master Bundle (5-Piece Set). This comprehensive collection contains a full-size deep-pore Cleanser, gentle Peeling Treatment, Glow Toner Pads, Radiant Peel Shot Ampoule, and Nourishing Hydration Cream. Formulated with synergistic Vitamin C, sparkling carbonated minerals, and botanical antioxidants, this master bundle smooths, firms, and brightens dull skin.',
     metaTitle: 'Luxury K-Beauty Complete Glow Care Master Bundle',
-    metaDescription: 'Save 35% on complete glow skincare bundle.'
+    metaDescription: 'Save 35% on complete glow skincare bundle. 5-Piece luxury Korean glass-skin ritual with Vitamin C, AHA/BHA, and botanical creams.'
   },
   {
     id: 'prod-33',
@@ -805,9 +805,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/D6.png?v=1787425612'
     ],
-    description: 'Special 4-tube set of DermaCare Solution BB Blemish Balm (20ml x 4) for natural complexion and barrier care.',
+    description: 'The Cell Fusion C BB Skin Blemish Balm Intensive Special Set contains four 20ml tubes of Korea\'s premier medical-grade BB cream. Formulated with Ceramide NP, regenerative Peptides, and SPF protection, this dermatological blemish balm provides breathable, natural-looking coverage for redness, blemishes, and post-procedure discoloration while actively restoring skin barrier strength. Perfect for home vanity, travel, and daily makeup bag essentials.',
     metaTitle: 'Cell Fusion C BB Skin Blemish Balm Intensive 4-Piece Set',
-    metaDescription: '4 x 20ml DermaCare Solution BB balm set.'
+    metaDescription: '4 x 20ml DermaCare Solution BB balm set. Natural healing coverage with Ceramides and Peptides for sensitive skin.'
   },
   {
     id: 'prod-34',
@@ -830,9 +830,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/Laser_UV_Sunscreen_SPF50_PA_35ml_2.png?v=1786555131'
     ],
-    description: 'A convenient twin pack of Cell Fusion C Laser UV Sunscreen providing SPF50 PA++++ sun protection (35ml x 2).',
+    description: 'The Cell Fusion C Laser UV Sunscreen Twin Pack (2 × 35ml) offers the ultimate dermatologist-prescribed sun defense in a convenient portable duo. Packed with Zinc Oxide, Hydrolyzed Collagen, and Coenzyme Q10, this gentle physical-chemical hybrid sunscreen protects hypersensitive and post-treatment skin against intense UV rays while repairing the damaged epidermal barrier. Melts softly onto skin with zero irritation and a smooth, velvety finish.',
     metaTitle: 'Cell Fusion C Laser UV Sunscreen SPF50 PA++++ (35ml x 2)',
-    metaDescription: 'Twin pack Laser UV Sunscreen for sensitive skin.'
+    metaDescription: 'Twin pack Laser UV Sunscreen for sensitive skin with Collagen, CoQ10, and Ceramides. Hypoallergenic SPF50+ PA++++.'
   },
   {
     id: 'prod-35',
@@ -855,9 +855,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/POST_CicaCoolingPad_70ea.png?v=1786561697'
     ],
-    description: 'Cell Fusion C POST α Cica Cooling Pad contains 70 ready-to-use soothing facial pads with calming Cica.',
+    description: 'Cell Fusion C POST α Cica Cooling Pads (70 Pre-Soaked Pads) provide dual-action exfoliation and instant cooling relief. Infused with Centella Asiatica, Madecassoside, and cryogenic glacial essence, each pad features an embossed side to gently wipe away dead skin and impurities, and a smooth side that doubles as a quick 5-minute spot sheet mask to calm facial flushing, heated redness, and inflamed breakouts.',
     metaTitle: 'POST α Cica Cooling Pad (70 Pads) | Cell Fusion C',
-    metaDescription: '70 pre-soaked cooling facial soothing pads.'
+    metaDescription: '70 pre-soaked cooling facial soothing pads with Centella Asiatica. Dual-sided for gentle exfoliation and calming spot masks.'
   },
   {
     id: 'prod-36',
@@ -880,9 +880,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/POST_CoolingGelCream_50ml.png?v=1786563285'
     ],
-    description: 'Cell Fusion C POST α Cooling Gel Cream is a 50ml lightweight moisturizer that lowers skin temperature and delivers long-lasting moisture.',
+    description: 'Cell Fusion C POST α Cooling Gel Cream (50ml) is an ultra-refreshing, oil-free moisturizer clinically proven to instantly lower skin temperature upon contact. Formulated with pure Glacier Water, Ectoin, and multi-molecular Hyaluronic Acid, it delivers deep, continuous hydration without clogging pores or feeling greasy. Soothes sun irritation, calms redness, and strengthens the skin\'s moisture barrier for a plump, revitalized glow.',
     metaTitle: 'POST α Cooling Gel Cream 50ml | Cell Fusion C',
-    metaDescription: 'Lightweight soothing cooling gel cream moisturizer.'
+    metaDescription: 'Lightweight soothing cooling gel cream moisturizer with Glacier Water, Ectoin, and Hyaluronic Acid for all-day hydration.'
   },
   {
     id: 'prod-37',
@@ -904,9 +904,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/SecretKeyLemonSparklingCleansingFoam.png?v=1787598304'
     ],
-    description: 'Deep pore foaming cleanser with Vitamin C, AHA, and BHA for sparkling clean and brighter skin.',
+    description: 'Secret Key Lemon Sparkling Cleansing Foam (120ml) is a revitalizing facial cleanser that whips into a rich micro-bubble lather to deeply purify pores. Infused with sparkling carbonated water, Vitamin C-packed Lemon Fruit Extract, and gentle AHA/BHA, it dissolves waterproof makeup residue, lifts excess sebum, and clears dead skin cells, leaving your face feeling remarkably clean, refreshed, and visibly luminous.',
     metaTitle: 'Secret Key Lemon Sparkling Cleansing Foam 120ml',
-    metaDescription: 'Vitamin C + AHA BHA pore cleansing foam.'
+    metaDescription: 'Vitamin C + AHA BHA pore cleansing foam with sparkling carbonated water for bright, clear, and fresh skin.'
   },
   {
     id: 'prod-38',
@@ -928,9 +928,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/SecretKeyLemonSparklingPeelShotAmpoule.png?v=1787597644'
     ],
-    description: '4-Acid exfoliating ampoule (AHA, BHA, LHA, PHA) with lemon extract for gentle peel and glowing skin.',
+    description: 'Secret Key Lemon Sparkling Peel Shot Ampoule (80ml) is an intensive skin-resurfacing serum formulated with a 4-Acid Complex (AHA, BHA, PHA, LHA) and real Lemon Water. It gently breaks down stubborn dead skin cells, refines rough texture, dissolves blackheads, and fades post-acne dark spots without physical scrubbing. Restores a silky-smooth, crystal-clear glass skin texture with daily use.',
     metaTitle: 'Secret Key Lemon Sparkling Peel Shot Ampoule 80ml',
-    metaDescription: 'AHA BHA LHA PHA exfoliating skin renewal ampoule.'
+    metaDescription: 'AHA BHA LHA PHA exfoliating skin renewal ampoule with real Lemon Water by Secret Key for smooth, glowing skin.'
   },
   {
     id: 'prod-39',
@@ -952,9 +952,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/SecretKeyLemonSparklingTonerPad.png?v=1787598069'
     ],
-    description: '70 pre-soaked exfoliating toner pads with Vitamin C, AHA, and BHA to smooth and refine pores.',
+    description: 'Secret Key Lemon Sparkling Toner Pads (70 Pre-Soaked Pads) offer daily brightening and gentle exfoliation in one easy swipe. Infused with carbonated sparkling water, Vitamin C, and Betaine Salicylate, the dual-sided cotton pads sweep away residual makeup, unclog pores, and infuse the skin with energizing hydration, revealing a smoothed, illuminated, and refined skin texture ready for serums.',
     metaTitle: 'Secret Key Lemon Sparkling Toner Pad (70 Pads)',
-    metaDescription: 'Daily Vitamin C and AHA BHA exfoliating pads.'
+    metaDescription: 'Daily Vitamin C and AHA BHA exfoliating pads with carbonated sparkling water. Refines pores and revives radiance.'
   },
   {
     id: 'prod-40',
@@ -976,9 +976,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/SkinStandard2_MicroHyaluronicAcidAdd-OnSerum.png?v=1787081716'
     ],
-    description: 'Concentrated hydrating serum with 2% micro/ultra-low molecular hyaluronic acid for multi-depth skin moisture.',
+    description: 'SkinStandard 2% Micro Hyaluronic Acid Add-On Serum (30ml) is an ultra-concentrated hydration booster formulated with ultra-low molecular weight hyaluronic acid. Unlike standard hyaluronic acid that sits on the surface, these micro-molecules penetrate deeply into the dermis to replenish moisture reserves, plump fine lines, and strengthen elasticity from within. Can be used alone or mixed into any moisturizer or foundation for a dewy radiance.',
     metaTitle: 'SkinStandard 2% Micro Hyaluronic Acid Add-On Serum 30ml',
-    metaDescription: 'Intensive deep hydration serum with 2% micro hyaluronic acid.'
+    metaDescription: 'Intensive deep hydration serum with 2% micro hyaluronic acid. Dermal moisture absorption for plump, youthful skin.'
   },
   {
     id: 'prod-41',
@@ -1000,9 +1000,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/SkinStandard30_NiacinamideAdd-OnSerum_30ml.png?v=1787080882'
     ],
-    description: 'High-potency 30% Niacinamide add-on serum designed for oil-moisture balance and brightening uneven tone.',
+    description: 'SkinStandard 30% Niacinamide Add-On Serum (30ml) is an exceptionally potent, clinical-grade booster serum delivering maximum brightening and pore-refining efficacy. Powered by high-purity 30% Niacinamide (Vitamin B3) and Zinc PCA, it rapidly fades stubborn hyperpigmentation, acne scars, and sun spots while regulating excess sebum production and tightening enlarged pores for an impeccably smooth, flawless complexion.',
     metaTitle: 'SkinStandard 30% Niacinamide Add-On Serum 30ml',
-    metaDescription: 'High-concentration 30% Niacinamide facial serum for clear skin.'
+    metaDescription: 'High-concentration 30% Niacinamide facial serum for clear skin. Minimizes pores, fades dark spots, and regulates sebum.'
   },
   {
     id: 'prod-42',
@@ -1024,9 +1024,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/SkinStandard.png?v=1787080055'
     ],
-    description: 'Soothing and revitalizing facial cream formulated with Triple PDRN, Guaiazulene and Bisabolol to fortify skin barrier.',
+    description: 'SkinStandard Chamo Triple PDRN Repair Cream (55g) is a medical-grade barrier recovery cream formulated with Triple PDRN (Salmon DNA), calming Blue Guaiazulene, and soothing Chamomile Bisabolol. Engineered to accelerate cellular regeneration and repair compromised skin barriers, it soothes irritated, post-treatment, or sensitized skin while infusing deep moisture and restoring plump, youthful resilience.',
     metaTitle: 'SkinStandard Chamo Triple PDRN Repair Cream 55g',
-    metaDescription: 'Triple PDRN and Guaiazulene barrier repair cream.'
+    metaDescription: 'Triple PDRN and Guaiazulene barrier repair cream by SkinStandard. Cellular regeneration and calming care for compromised skin.'
   },
   {
     id: 'prod-43',
@@ -1048,9 +1048,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/D7.png?v=1787426278'
     ],
-    description: 'Complementary day & night luxury cream duo: Matcha Active NAD+ Day Cream and Chamo Triple PDRN Night Repair Cream (55g each).',
+    description: 'The SkinStandard Lift & Repair Cream Duo (2 × 55g) provides a complete 24-hour luxury anti-aging and barrier restoration system. Featuring the Matcha Active NAD+ Day Cream to provide powerful antioxidant protection, firm facial contours, and boost cellular longevity, paired with the Chamo Triple PDRN Night Repair Cream to deeply regenerate damaged skin and restore the moisture barrier while you sleep.',
     metaTitle: 'SkinStandard Lift & Repair Cream Duo (Matcha + Chamo 55g x 2)',
-    metaDescription: 'Day & Night luxury NAD+ and Triple PDRN cream set.'
+    metaDescription: 'Day & Night luxury NAD+ and Triple PDRN cream set by SkinStandard for total facial firming and barrier regeneration.'
   },
   {
     id: 'prod-44',
@@ -1072,9 +1072,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/SkinStandardMatchaActiveNAD_LiftingCream_55g.png?v=1787080369'
     ],
-    description: 'Anti-aging lifting cream formulated with NMN, NR, Niacinamide and EGCG matcha antioxidant care for firmer skin.',
+    description: 'SkinStandard Matcha Active NAD+ Lifting Cream (55g) is a breakthrough cellular longevity and firming moisturizer. Infused with NAD+ precursor complex (NMN, NR, Niacinamide) and antioxidant-rich Ceremonial Matcha EGCG, this velvety cream energizes cellular metabolism, visibly lifts sagging contours, tightens fine lines, and shields against oxidative stress for a youthful, sculpted, and radiant complexion.',
     metaTitle: 'SkinStandard Matcha Active NAD+ Lifting Cream 55g',
-    metaDescription: 'NMN and NAD+ lifting antioxidant facial cream.'
+    metaDescription: 'NMN and NAD+ lifting antioxidant facial cream by SkinStandard with Ceremonial Matcha EGCG for sculpted, firmer skin.'
   },
   {
     id: 'prod-45',
@@ -1096,9 +1096,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/d8.png?v=1787426962'
     ],
-    description: 'Two complementary 30ml serums: Niacinamide Brightening Serum and Hyaluronic Acid Deep Hydration Serum.',
+    description: 'The SkinStandard Ni + Hy Add-On Serum Duo (2 × 30ml) is the ultimate synergistic powerhouse for luminous, glass skin. It combines the 30% Niacinamide Brightening Serum (to fade dark spots, regulate sebum, and tighten pores) with the 2% Micro Hyaluronic Acid Serum (to infuse multi-depth dermal hydration and plump fine lines). Mix them together or layer sequentially for transformative radiance.',
     metaTitle: 'SkinStandard Ni + Hy Add-On Serum Duo (30ml x 2)',
-    metaDescription: 'Niacinamide and Hyaluronic acid serum bundle.'
+    metaDescription: 'Niacinamide 30% and Micro Hyaluronic Acid 2% serum bundle by SkinStandard for pore refining and deep hydration.'
   },
   {
     id: 'prod-46',
@@ -1120,9 +1120,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/D2.png?v=1787423152'
     ],
-    description: 'Complete 3-piece setting mist set: Real Matte FIXX, All Day Blur FIXX, and All Day Tight FIXX (75ml each).',
+    description: 'The SO NATURAL All Day Make Up Setting FIXX Special Set (3 × 75ml) features the complete wardrobe of Korea\'s award-winning setting sprays: All Day Tight FIXX (Classic 24-hour weightless lock), Real Matte FIXX (Sebum-absorbing ultra-matte finish), and All Day Blur FIXX (Pore-smoothing satin airbrush finish). Featuring fine micro-nozzle mist technology, these mists prevent makeup creasing, melting, and mask transfer all day long.',
     metaTitle: 'SO NATURAL All Day Make Up Setting FIXX 3-Piece Set',
-    metaDescription: '3-Piece Korean makeup setting spray set.'
+    metaDescription: '3-Piece Korean makeup setting spray set (Tight FIXX, Real Matte FIXX, Blur FIXX - 3 x 75ml) by SO NATURAL.'
   },
   {
     id: 'prod-47',
@@ -1144,9 +1144,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/d3.png?v=1787423622'
     ],
-    description: 'Award-winning makeup setting spray duo (120ml x 2) for 24-hour ultra-fine mist hold and transfer prevention.',
+    description: 'The SO NATURAL All Day Tight Make Up Setting FIXX Twin Pack (2 × 120ml) delivers Korea\'s #1 celebrated makeup setting mist in a jumbo value set. Powered by a continuous, ultra-fine aerosol-like micro-mist and infused with soothing Centella Asiatica and Hyaluronic Acid, it locks foundation, eyeshadow, and powder in place for 24 hours without feeling tight or sticky. Completely prevents transfer, sweat breakdown, and makeup creasing.',
     metaTitle: 'SO NATURAL All Day Tight Setting FIXX Duo (120ml x 2)',
-    metaDescription: '24-Hour makeup setting spray twin pack.'
+    metaDescription: '24-Hour makeup setting spray twin pack (120ml x 2) by SO NATURAL. Ultra-fine micro-mist locks makeup in place all day.'
   },
   {
     id: 'prod-48',
@@ -1168,9 +1168,9 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/ToothnoteAquaMintPremiumToothpaste.png?v=1787252985'
     ],
-    description: 'Premium daily oral-care toothpaste formulated with fluoride, xylitol, and niacinamide for fresh breath and enamel protection.',
+    description: 'Toothnote Aqua Mint Premium Toothpaste (130g) is a luxury Korean oral care formula designed to deliver comprehensive dental care and long-lasting fresh breath. Formulated with natural botanical extracts, dental-grade Fluoride to strengthen enamel and prevent cavities, Xylitol to neutralize plaque bacteria, and gentle Niacinamide to brighten teeth, this refreshing mint paste provides an elevated, spa-like brushing experience.',
     metaTitle: 'Toothnote Aqua Mint Premium Toothpaste 130g',
-    metaDescription: 'Korean luxury aqua mint fluoride toothpaste.'
+    metaDescription: 'Korean luxury aqua mint fluoride toothpaste by Toothnote with Xylitol and Niacinamide for cavity defense and fresh breath.'
   },
   {
     id: 'prod-49',
@@ -1192,8 +1192,8 @@ export const initialProducts = [
     images: [
       'https://cdn.shopify.com/s/files/1/0926/4742/4370/files/TravelSizedCleanItZeroPoreClarifyingBalm25ml.png?v=1786789728'
     ],
-    description: 'Travel-size 25ml pore clarifying cleansing balm with Tri-Peel Acid complex.',
+    description: 'BANILA CO Travel Sized Clean It Zero Pore Clarifying Balm (25ml) is the perfect portable size for deep pore cleansing wherever you go. Formulated with the Tri-Peel Acid complex (AHA, BHA, LHA) and purifying Tea Tree Oil, this sherbet balm melts away stubborn waterproof makeup, sunscreen, and excess sebum from inside pores, preventing travel breakouts and leaving skin smooth, fresh, and matte.',
     metaTitle: 'BANILA CO Travel Sized Clean It Zero Pore Clarifying Balm 25ml',
-    metaDescription: 'Portable 25ml pore clarifying balm.'
+    metaDescription: 'Portable 25ml pore clarifying cleansing balm by BANILA CO with AHA, BHA, LHA and Tea Tree Oil.'
   }
 ];

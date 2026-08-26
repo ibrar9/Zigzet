@@ -24,7 +24,7 @@ export const useStore = () => {
 };
 
 const STORAGE_KEYS = {
-  PRODUCTS: 'zigzet_products_v3',
+  PRODUCTS: 'zigzet_products_v4',
   ORDERS: 'zigzet_orders_v2',
   CART: 'zigzet_cart_v2',
   WISHLIST: 'zigzet_wishlist_v2',
@@ -110,14 +110,47 @@ const defaultSettings = {
 };
 
 const defaultCms = {
-  heroBadge: 'LATEST ARRIVALS 2026',
+  heroBadge: '✨ LATEST ARRIVALS 2026',
   heroTitle: 'Shop Smarter. Live Better.',
-  heroSubtitle: 'Discover curated electronics, trending modern apparel, and functional home essentials with guaranteed fast USA delivery and 30-day returns.',
-  heroImage: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80',
+  heroSubtitle: 'Discover curated Korean skincare, advanced SPF50 sunscreens, and Triple PDRN barrier repair formulas with fast UAE delivery.',
   ctaText: 'Explore Catalog',
   ctaLink: 'shop',
-  bannerHeadline: 'Fast & Reliable USA Shipping',
-  bannerSubtext: 'Get your favorite products delivered quickly across the United States.'
+  autoPlay: true,
+  autoPlayInterval: 5000,
+  heroSlides: [
+    {
+      id: 'slide-1',
+      badge: '🔥 LATEST ARRIVALS 2026',
+      title: 'Shop Smarter. Live Better.',
+      subtitle: 'Discover premium Korean skincare, advanced SPF50 sunscreens, and Triple PDRN barrier repair formulas with guaranteed fast delivery.',
+      image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1200&auto=format&fit=crop&q=80',
+      ctaText: 'Explore Catalog',
+      ctaLink: 'shop',
+      bgTheme: 'slate'
+    },
+    {
+      id: 'slide-2',
+      badge: '✨ EXCLUSIVE VALUE DEALS',
+      title: 'Save Up to 45% on Luxury Sets',
+      subtitle: 'Award-winning cleansing balms, cooling peptide ampoules, and complete daily glass skin routines at limited-time promotional prices.',
+      image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=1200&auto=format&fit=crop&q=80',
+      ctaText: 'Explore Deals',
+      ctaLink: 'deals',
+      bgTheme: 'rose'
+    },
+    {
+      id: 'slide-3',
+      badge: '🌿 100% AUTHENTIC FORMULAS',
+      title: 'Dermatologist Tested. Proven Results.',
+      subtitle: 'High-potency Niacinamide, Micro Hyaluronic Acid, Cica, and NAD+ lifting creams for radiant, healthy skin.',
+      image: 'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=1200&auto=format&fit=crop&q=80',
+      ctaText: 'Shop Best Sellers',
+      ctaLink: 'shop',
+      bgTheme: 'amber'
+    }
+  ],
+  bannerHeadline: 'Fast & Reliable UAE Express Delivery',
+  bannerSubtext: 'Get your authentic skincare orders delivered quickly with real-time tracking.'
 };
 
 const defaultCampaign = {
@@ -199,15 +232,23 @@ export const StoreProvider = ({ children }) => {
   // 1. Products state
   const [products, setProducts] = useState(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEYS.PRODUCTS) || localStorage.getItem('shopnest_products_v1');
+      const saved = localStorage.getItem(STORAGE_KEYS.PRODUCTS) || localStorage.getItem('zigzet_products_v3');
       if (saved) {
         const parsed = JSON.parse(saved);
-        return parsed.map((p) => ({
-          ...p,
-          isActive: p.isActive !== undefined ? p.isActive : true,
-          salesCount: p.salesCount || Math.floor(Math.random() * 150 + 20),
-          stock: p.stock !== undefined ? p.stock : 25
-        }));
+        const initialMap = new Map(initialProducts.map(p => [p.id, p]));
+        return parsed.map((p) => {
+          const base = initialMap.get(p.id);
+          return {
+            ...(base || {}),
+            ...p,
+            description: (base && base.description) ? base.description : (p.description || ''),
+            metaDescription: (base && base.metaDescription) ? base.metaDescription : (p.metaDescription || ''),
+            metaTitle: (base && base.metaTitle) ? base.metaTitle : (p.metaTitle || ''),
+            isActive: p.isActive !== undefined ? p.isActive : true,
+            salesCount: p.salesCount || Math.floor(Math.random() * 150 + 20),
+            stock: p.stock !== undefined ? p.stock : (base?.stock ?? 25)
+          };
+        });
       }
       return initialProducts.map((p) => ({
         ...p,
@@ -314,7 +355,15 @@ export const StoreProvider = ({ children }) => {
   const [cmsContent, setCmsContent] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.CMS);
-      return saved ? JSON.parse(saved) : defaultCms;
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return {
+          ...defaultCms,
+          ...parsed,
+          heroSlides: (parsed.heroSlides && parsed.heroSlides.length > 0) ? parsed.heroSlides : defaultCms.heroSlides
+        };
+      }
+      return defaultCms;
     } catch {
       return defaultCms;
     }
@@ -406,6 +455,7 @@ export const StoreProvider = ({ children }) => {
   const [viewMode, setViewMode] = useState(() => (window.location.hash === '#admin' ? 'admin' : 'store'));
   const [adminTab, setAdminTab] = useState('dashboard');
   const [activeCategory, setActiveCategory] = useState('all');
+  const [activeBrand, setActiveBrand] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
@@ -477,10 +527,13 @@ export const StoreProvider = ({ children }) => {
   };
 
   // Navigation
-  const navigatePage = (pageName, category = null) => {
+  const navigatePage = (pageName, category = null, brand = null) => {
     setCurrentPage(pageName);
     if (category) {
       setActiveCategory(category);
+    }
+    if (brand !== null && brand !== undefined) {
+      setActiveBrand(brand);
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -1241,6 +1294,8 @@ export const StoreProvider = ({ children }) => {
         setAdminTab,
         activeCategory,
         setActiveCategory,
+        activeBrand,
+        setActiveBrand,
         searchQuery,
         setSearchQuery,
         isCartOpen,
