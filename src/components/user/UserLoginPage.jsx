@@ -24,17 +24,25 @@ export const UserLoginPage = () => {
     const errs = validate();
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
     setLoading(true);
-    await new Promise(r => setTimeout(r, 700));
+    await new Promise(r => setTimeout(r, 600));
     const success = isSignup
       ? registerUser({ name: form.name, email: form.email, password: form.password })
       : loginUser(form.email, form.password);
     setLoading(false);
-    if (!success) setErrors({ general: isSignup ? 'Email already registered.' : 'Invalid email or password.' });
+    if (!success) {
+      setErrors({ general: isSignup ? 'Email already registered.' : 'Invalid email or password.' });
+    } else {
+      navigatePage('user-dashboard');
+    }
   };
 
   const demoLogin = () => {
     setLoading(true);
-    setTimeout(() => { loginUser('sarah.j@example.com', 'demo123'); setLoading(false); }, 500);
+    setTimeout(() => { 
+      const ok = loginUser('sarah.j@example.com', 'demo123'); 
+      setLoading(false);
+      if (ok) navigatePage('user-dashboard');
+    }, 400);
   };
 
   const set = (key, val) => { setForm(f => ({ ...f, [key]: val })); setErrors({}); };

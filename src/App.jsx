@@ -54,7 +54,7 @@ function App() {
   }
 
   // Full-screen user dashboard (logged in - lazy loaded)
-  if (currentPage === 'user-dashboard' && currentUser) {
+  if ((currentPage === 'user-dashboard' || currentPage === 'user' || currentPage === 'dashboard') && currentUser) {
     return (
       <Suspense fallback={<PageLoader />}>
         <SEOHead />
@@ -65,7 +65,7 @@ function App() {
   }
 
   // Full-screen user login (not logged in - lazy loaded)
-  if (currentPage === 'user-login' || (currentPage === 'user-dashboard' && !currentUser)) {
+  if (currentPage === 'user-login' || currentPage === 'login' || ((currentPage === 'user-dashboard' || currentPage === 'user' || currentPage === 'dashboard') && !currentUser)) {
     return (
       <Suspense fallback={<PageLoader />}>
         <SEOHead />

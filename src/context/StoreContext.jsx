@@ -647,6 +647,7 @@ export const StoreProvider = ({ children }) => {
       const { password: _pw, ...safeUser } = account;
       setCurrentUser(safeUser);
       sessionStorage.setItem(STORAGE_KEYS.USER_AUTH, JSON.stringify(safeUser));
+      setCurrentPage('user-dashboard');
       showToast('Welcome Back!', `Hello, ${safeUser.name}! You are now signed in.`);
       return true;
     }
@@ -665,7 +666,8 @@ export const StoreProvider = ({ children }) => {
       address: '',
       city: '',
       zip: '',
-      joinedAt: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+      joinedAt: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80'
     };
     setUserAccounts(prev => [...prev, newAccount]);
 
@@ -707,6 +709,7 @@ export const StoreProvider = ({ children }) => {
     const { password: _pw, ...safeUser } = newAccount;
     setCurrentUser(safeUser);
     sessionStorage.setItem(STORAGE_KEYS.USER_AUTH, JSON.stringify(safeUser));
+    setCurrentPage('user-dashboard');
     showToast('Account Created!', `Welcome to Zigzet, ${name}! 🎉`);
     return true;
   };
@@ -714,6 +717,7 @@ export const StoreProvider = ({ children }) => {
   const logoutUser = () => {
     setCurrentUser(null);
     sessionStorage.removeItem(STORAGE_KEYS.USER_AUTH);
+    setCurrentPage('home');
     showToast('Signed Out', 'You have been signed out successfully.', 'info');
   };
 
