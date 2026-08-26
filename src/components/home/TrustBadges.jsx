@@ -8,8 +8,8 @@ export const TrustBadges = () => {
   const badges = [
     {
       icon: <Truck size={28} strokeWidth={1.75} />,
-      title: 'Free USA Shipping',
-      description: `On Orders Over $${settings.freeShippingThreshold}`
+      title: 'Free Express Delivery',
+      description: `On Orders Over ${settings.currency || 'AED'} ${settings.freeShippingThreshold || 150}`
     },
     {
       icon: <ShieldCheck size={28} strokeWidth={1.75} />,

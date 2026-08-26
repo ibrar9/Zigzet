@@ -12,7 +12,8 @@ export const ProductQuickView = () => {
     isInWishlist,
     setIsCartOpen,
     setIsCheckoutOpen,
-    openNotifyModal
+    openNotifyModal,
+    settings
   } = useStore();
 
   const [quantity, setQuantity] = useState(1);
@@ -124,14 +125,14 @@ export const ProductQuickView = () => {
               </span>
             </div>
 
-            {/* Price (AED) */}
+            {/* Price (Dynamic Currency) */}
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginBottom: '16px' }}>
               <span style={{ fontSize: '26px', fontWeight: '900', color: '#0f172a' }}>
-                AED {Number(product.price).toFixed(2)}
+                {settings?.currency || 'AED'} {Number(product.price).toFixed(2)}
               </span>
               {product.originalPrice && (
                 <span style={{ fontSize: '16px', color: '#94a3b8', textDecoration: 'line-through' }}>
-                  AED {Number(product.originalPrice).toFixed(2)}
+                  {settings?.currency || 'AED'} {Number(product.originalPrice).toFixed(2)}
                 </span>
               )}
             </div>
@@ -148,7 +149,6 @@ export const ProductQuickView = () => {
                       key={idx}
                       onClick={() => {
                         setSelectedColor(c);
-                        setSelectedImgIdx(0);
                       }}
                       style={{
                         width: '32px',
@@ -173,7 +173,7 @@ export const ProductQuickView = () => {
                 <div style={{ fontSize: '12px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#475569', marginBottom: '8px' }}>
                   Size / Option: <strong style={{ color: '#0f172a' }}>{currentSize}</strong>
                 </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                   {product.sizes.map((s, idx) => (
                     <button
                       key={idx}
@@ -181,11 +181,11 @@ export const ProductQuickView = () => {
                       style={{
                         padding: '6px 14px',
                         borderRadius: '8px',
-                        fontSize: '12.5px',
-                        fontWeight: '700',
                         border: currentSize === s ? '2px solid #7c3aed' : '1px solid #e2e8f0',
-                        background: currentSize === s ? '#f5f3ff' : '#ffffff',
+                        backgroundColor: currentSize === s ? '#f5f3ff' : '#ffffff',
                         color: currentSize === s ? '#7c3aed' : '#334155',
+                        fontWeight: currentSize === s ? '800' : '600',
+                        fontSize: '13px',
                         cursor: 'pointer',
                         transition: 'all 0.15s ease'
                       }}
@@ -197,55 +197,79 @@ export const ProductQuickView = () => {
               </div>
             )}
 
-            <p className="quick-view-description">{product.description}</p>
-
-            {/* Action Buttons */}
-            {isOutOfStock ? (
-              <div style={{ marginTop: '16px' }}>
-                <button
-                  className="hero-cta-btn"
-                  onClick={handleNotifyMe}
-                  style={{ width: '100%', padding: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', backgroundColor: '#7c3aed' }}
-                >
-                  <Bell size={16} />
-                  <span>Notify Me When in Stock</span>
-                </button>
-              </div>
-            ) : (
-              <>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px', marginTop: '14px' }}>
-                  <div className="qty-control" style={{ padding: '2px' }}>
-                    <button className="qty-btn" onClick={() => setQuantity(Math.max(1, quantity - 1))}>-</button>
-                    <span className="qty-value">{quantity}</span>
-                    <button className="qty-btn" onClick={() => setQuantity(quantity + 1)}>+</button>
-                  </div>
-
+            {/* Quantity Selector & Actions */}
+            {!isOutOfStock && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '20px' }}>
+                <div className="quantity-selector">
                   <button 
-                    className="add-to-cart-btn" 
-                    style={{ flex: 1, margin: 0 }}
-                    onClick={handleAddToCart}
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    aria-label="Decrease quantity"
                   >
-                    <ShoppingCart size={16} />
-                    <span>Add to Bag</span>
+                    -
                   </button>
-
-                  <button
-                    className={`wishlist-btn ${isSaved ? 'active' : ''}`}
-                    style={{ position: 'static', width: '44px', height: '44px', borderRadius: '10px' }}
-                    onClick={() => toggleWishlist(product)}
-                    aria-label="Wishlist"
+                  <span>{quantity}</span>
+                  <button 
+                    onClick={() => setQuantity(quantity + 1)}
+                    aria-label="Increase quantity"
                   >
-                    <Heart size={18} fill={isSaved ? '#ef4444' : 'none'} color={isSaved ? '#ef4444' : '#111827'} />
+                    +
                   </button>
                 </div>
 
                 <button 
+                  className="quick-view-add-btn" 
+                  onClick={handleAddToCart}
+                  style={{ flex: 1 }}
+                >
+                  <ShoppingCart size={18} />
+                  <span>Add to Shopping Bag</span>
+                </button>
+
+                <button
+                  className={`quick-view-wish-btn ${isSaved ? 'active' : ''}`}
+                  onClick={() => toggleWishlist(product)}
+                  aria-label="Save to Wishlist"
+                  title={isSaved ? "Saved in wishlist" : "Add to wishlist"}
+                >
+                  <Heart size={20} fill={isSaved ? '#ef4444' : 'none'} color={isSaved ? '#ef4444' : '#475569'} />
+                </button>
+              </div>
+            )}
+
+            {/* If out of stock, show notify button */}
+            {isOutOfStock ? (
+              <button 
+                onClick={handleNotifyMe}
+                className="hero-cta-btn"
+                style={{
+                  width: '100%',
+                  padding: '14px',
+                  backgroundColor: '#0f172a',
+                  color: '#fff',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  marginTop: '8px'
+                }}
+              >
+                <Bell size={18} />
+                <span>Notify Me When Available in Stock</span>
+              </button>
+            ) : (
+              <>
+                {/* Instant 1-Click Buy Now */}
+                <button
                   onClick={handleBuyNow}
-                  className="hero-cta-btn"
+                  className="quick-view-buy-now-btn"
                   style={{
                     width: '100%',
-                    padding: '12px',
-                    fontSize: '13.5px',
+                    padding: '13px',
+                    backgroundColor: '#10b981',
+                    color: '#ffffff',
+                    fontWeight: '800',
+                    fontSize: '14px',
+                    borderRadius: '10px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -258,15 +282,17 @@ export const ProductQuickView = () => {
               </>
             )}
 
+            <p className="quick-view-description">{product.description}</p>
+
             {/* Trust highlights */}
             <div style={{ display: 'flex', gap: '16px', marginTop: '16px', paddingTop: '12px', borderTop: '1px solid #f1f5f9', fontSize: '12px', color: '#64748b' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                 <Truck size={14} color="#10b981" />
-                <span>Free USA Shipping</span>
+                <span>Free Express Delivery over {settings?.currency || 'AED'} {settings?.freeShippingThreshold || 150}</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                 <Shield size={14} color="#7c3aed" />
-                <span>2-Year Warranty</span>
+                <span>100% Authentic Guarantee</span>
               </div>
             </div>
           </div>

@@ -8,7 +8,8 @@ export const ProductCard = ({ product }) => {
     toggleWishlist, 
     isInWishlist, 
     setQuickViewProduct,
-    openNotifyModal 
+    openNotifyModal,
+    settings
   } = useStore();
 
   const [selectedColor, setSelectedColor] = useState(
@@ -139,11 +140,11 @@ export const ProductCard = ({ product }) => {
           <span className="rating-number">({product.rating})</span>
         </div>
 
-        {/* Price Row (AED) */}
+        {/* Price Row (Dynamic Currency) */}
         <div className="product-price-row">
-          <span className="current-price">AED {Number(product.price).toFixed(2)}</span>
+          <span className="current-price">{settings?.currency || 'AED'} {Number(product.price).toFixed(2)}</span>
           {product.originalPrice && (
-            <span className="original-price">AED {Number(product.originalPrice).toFixed(2)}</span>
+            <span className="original-price">{settings?.currency || 'AED'} {Number(product.originalPrice).toFixed(2)}</span>
           )}
         </div>
 

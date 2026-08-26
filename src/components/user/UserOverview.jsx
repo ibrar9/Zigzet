@@ -48,18 +48,12 @@ const STAT_CARDS = (orders, inProgress, wishlistLen, couponsLen) => [
 ];
 
 export const UserOverview = ({ setActiveTab, myOrders, inProgress }) => {
-  const { wishlist, coupons, navigatePage, currentUser } = useStore();
+  const { wishlist, coupons, navigatePage, currentUser, products, settings } = useStore();
 
   const firstName = currentUser?.name?.split(' ')[0] || 'there';
   const recentOrders = myOrders.slice(0, 3);
   const stats = STAT_CARDS(myOrders.length, inProgress, wishlist.length, coupons?.length || 3);
-
-  const RECOMMENDED = [
-    { name: 'Wireless Headphones', price: '$149.99', img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&auto=format&fit=crop&q=80' },
-    { name: 'Smart Watch Series 9', price: '$299.99', img: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&auto=format&fit=crop&q=80' },
-    { name: 'Running Sneakers', price: '$89.99', img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200&auto=format&fit=crop&q=80' },
-    { name: 'Laptop Backpack', price: '$49.99', img: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=200&auto=format&fit=crop&q=80' },
-  ];
+  const recommendedProducts = (products || []).filter(p => p.isActive !== false).slice(0, 3);
 
   return (
     <div className="ud2-overview">
@@ -185,18 +179,18 @@ export const UserOverview = ({ setActiveTab, myOrders, inProgress }) => {
             <div className="ud2-recommended">
               <h4>Recommended For You</h4>
               <div className="ud2-rec-grid">
-                {RECOMMENDED.map(p => (
+                {recommendedProducts.map(p => (
                   <button
-                    key={p.name}
+                    key={p.id}
                     className="ud2-rec-card"
                     onClick={() => navigatePage('shop')}
                   >
                     <div className="ud2-rec-img">
-                      <img src={p.img} alt={p.name} />
+                      <img src={p.image} alt={p.name} />
                       <span className="ud2-rec-heart">♡</span>
                     </div>
                     <p className="ud2-rec-name">{p.name}</p>
-                    <p className="ud2-rec-price">{p.price}</p>
+                    <p className="ud2-rec-price">{settings?.currency || 'AED'} {Number(p.price).toFixed(2)}</p>
                   </button>
                 ))}
               </div>

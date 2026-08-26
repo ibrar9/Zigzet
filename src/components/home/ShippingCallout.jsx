@@ -15,8 +15,8 @@ export const ShippingCallout = () => {
               <Truck size={36} strokeWidth={1.8} />
             </div>
             <div className="callout-text">
-              <h3>Fast &amp; Reliable USA Shipping</h3>
-              <p>Enjoy free expedited delivery on orders over ${threshold} with full real-time package tracking.</p>
+              <h3>Fast &amp; Reliable Express Delivery</h3>
+              <p>Enjoy free express shipping on orders over {settings.currency || 'AED'} {threshold} with full real-time package tracking.</p>
             </div>
           </div>
 
