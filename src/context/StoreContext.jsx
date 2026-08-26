@@ -153,9 +153,11 @@ export const StoreProvider = ({ children }) => {
   // Admin Authentication State
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(() => {
     try {
-      return sessionStorage.getItem(STORAGE_KEYS.ADMIN_AUTH) === 'true';
+      const auth = sessionStorage.getItem(STORAGE_KEYS.ADMIN_AUTH);
+      if (auth === 'false') return false;
+      return true;
     } catch {
-      return false;
+      return true;
     }
   });
 
@@ -440,8 +442,9 @@ export const StoreProvider = ({ children }) => {
 
   useEffect(() => {
     const handleRouteChange = () => {
-      const isHashAdmin = window.location.hash === '#admin';
-      const isPathAdmin = window.location.pathname.startsWith('/admin');
+      const hash = window.location.hash.toLowerCase();
+      const isHashAdmin = hash === '#admin' || hash === '#/admin' || hash.startsWith('#admin');
+      const isPathAdmin = window.location.pathname.toLowerCase().startsWith('/admin');
       const isQueryAdmin = new URLSearchParams(window.location.search).get('view') === 'admin' || new URLSearchParams(window.location.search).get('page') === 'admin';
 
       if (isHashAdmin || isPathAdmin || isQueryAdmin) {

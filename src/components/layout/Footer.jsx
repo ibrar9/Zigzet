@@ -3,7 +3,7 @@ import { Heart, User, ShieldCheck } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
 export const Footer = () => {
-  const { setIsWishlistOpen, navigatePage, currentUser, showToast } = useStore();
+  const { setIsWishlistOpen, navigatePage, currentUser, showToast, setViewMode } = useStore();
 
   const handleSubscribe = (e) => {
     e.preventDefault();
@@ -102,6 +102,16 @@ export const Footer = () => {
           >
             <User size={15} />
             <span>My Account</span>
+          </span>
+          <span className="footer-divider">|</span>
+          <span 
+            className="footer-link" 
+            onClick={() => { window.location.hash = '#admin'; setViewMode('admin'); }}
+            style={{ color: '#7c3aed', fontWeight: '700' }}
+            title="Open Admin Management Portal"
+          >
+            <ShieldCheck size={15} color="#7c3aed" />
+            <span>Admin Portal</span>
           </span>
         </div>
 

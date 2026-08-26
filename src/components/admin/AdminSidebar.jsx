@@ -42,7 +42,8 @@ export const AdminSidebar = ({ isMobileOpen, setIsMobileOpen, onOpenInbox, onOpe
     orders, 
     abandonedCarts, 
     reviews, 
-    coupons 
+    coupons,
+    integrations 
   } = useStore();
 
   const unreadInboxCount = inboxMessages.filter((m) => m.unread).length;
