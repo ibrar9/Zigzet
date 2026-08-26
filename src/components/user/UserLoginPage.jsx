@@ -36,15 +36,6 @@ export const UserLoginPage = () => {
     }
   };
 
-  const demoLogin = () => {
-    setLoading(true);
-    setTimeout(() => { 
-      const ok = loginUser('sarah.j@example.com', 'demo123'); 
-      setLoading(false);
-      if (ok) navigatePage('user-dashboard');
-    }, 400);
-  };
-
   const set = (key, val) => { setForm(f => ({ ...f, [key]: val })); setErrors({}); };
 
   return (
@@ -214,35 +205,8 @@ export const UserLoginPage = () => {
           </button>
         </form>
 
-        {/* Divider */}
-        <div className="nlogin-divider"><span>or continue with</span></div>
-
-        {/* Social Buttons */}
-        <div className="nlogin-socials">
-          <button className="nlogin-social-btn" onClick={demoLogin} title="Demo Login">
-            {/* Google G */}
-            <svg width="20" height="20" viewBox="0 0 48 48">
-              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-            </svg>
-          </button>
-          <button className="nlogin-social-btn" title="Apple">
-            {/* Apple */}
-            <svg width="20" height="20" viewBox="0 0 814 1000">
-              <path fill="#333" d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-43.4-150.3-104.2c-52.1-72.5-96.1-190.8-96.1-302.8 0-170.4 111.4-260.4 220.9-260.4 56.4 0 103.4 37.2 138.4 37.2 33.4 0 85.7-39.5 146.1-39.5 23.7 0 108.1 2 159.8 76.6zM506.6 32c30.4-36.5 52-87.5 52-138.5 0-8-.7-16.1-2.1-23.9C502.9-122.6 445-91.1 406.6-47.5c-28.4 33.4-51 84.4-51 135.4 0 9.2 1.5 18.2 2.1 21.1 3.2.5 8.5 1.1 13.8 1.1 49.5 0 107.7-30.4 135.1-78z"/>
-            </svg>
-          </button>
-          <button className="nlogin-social-btn" title="Facebook">
-            <svg width="20" height="20" viewBox="0 0 24 24">
-              <path fill="#1877F2" d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.971h-1.513c-1.491 0-1.956.93-1.956 1.886v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
-            </svg>
-          </button>
-        </div>
-
         {/* Switch mode */}
-        <p className="nlogin-switch">
+        <p className="nlogin-switch" style={{ marginTop: '20px' }}>
           {isSignup ? "Already have an account?" : "Don't have an account?"}
           {' '}
           <button
