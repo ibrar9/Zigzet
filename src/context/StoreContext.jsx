@@ -544,28 +544,20 @@ export const StoreProvider = ({ children }) => {
   const [isNotifyOpen, setIsNotifyOpen] = useState(false);
   const [notifyProduct, setNotifyProduct] = useState(null);
 
-  // Theme State ('light' | 'dark')
-  const [theme, setTheme] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEYS.THEME);
-      if (saved === 'dark' || saved === 'light') return saved;
-      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    } catch {
-      return 'light';
-    }
-  });
+  // Theme State locked to pure light mode
+  const [theme, setTheme] = useState('light');
 
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEYS.THEME, theme);
-      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.removeItem(STORAGE_KEYS.THEME);
+      document.documentElement.removeAttribute('data-theme');
     } catch (e) {
       console.error(e);
     }
-  }, [theme]);
+  }, []);
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+    // Kept as no-op for backward compatibility
   };
 
   const changeCurrency = (currCode) => {

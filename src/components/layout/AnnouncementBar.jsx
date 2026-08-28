@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ChevronDown, Check, Globe, DollarSign, Sun, Moon } from 'lucide-react';
+import { ChevronDown, Check, Globe, DollarSign } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
 export const AnnouncementBar = () => {
-  const { settings, changeCurrency, theme, toggleTheme } = useStore();
+  const { settings, changeCurrency } = useStore();
   const [currencyOpen, setCurrencyOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [selectedLang, setSelectedLang] = useState('English');
@@ -55,13 +55,14 @@ export const AnnouncementBar = () => {
               title="Select Currency"
               aria-expanded={currencyOpen}
             >
+              <DollarSign size={12} />
               <span>{settings.currency || 'AED'}</span>
               <ChevronDown size={12} className={`chevron-icon ${currencyOpen ? 'rotate' : ''}`} />
             </button>
 
             {currencyOpen && (
-              <div className="announcement-popover">
-                <div className="popover-title">Select Currency</div>
+              <div className="announcement-popover-menu">
+                <div className="popover-heading">Select Currency</div>
                 {currencies.map((c) => (
                   <button
                     key={c.code}
@@ -72,8 +73,7 @@ export const AnnouncementBar = () => {
                     }}
                   >
                     <span className="popover-flag">{c.flag}</span>
-                    <span className="popover-code">{c.code}</span>
-                    <span className="popover-name">{c.name}</span>
+                    <span className="popover-name">{c.name} ({c.code})</span>
                     {settings.currency === c.code && <Check size={13} className="popover-check" />}
                   </button>
                 ))}
@@ -91,13 +91,14 @@ export const AnnouncementBar = () => {
               title="Select Language"
               aria-expanded={langOpen}
             >
+              <Globe size={12} />
               <span>{selectedLang}</span>
               <ChevronDown size={12} className={`chevron-icon ${langOpen ? 'rotate' : ''}`} />
             </button>
 
             {langOpen && (
-              <div className="announcement-popover">
-                <div className="popover-title">Select Language</div>
+              <div className="announcement-popover-menu">
+                <div className="popover-heading">Language</div>
                 {languages.map((l) => (
                   <button
                     key={l.code}
@@ -115,19 +116,6 @@ export const AnnouncementBar = () => {
               </div>
             )}
           </div>
-
-          <span className="announcement-divider">|</span>
-
-          {/* Theme Quick Toggle */}
-          <button 
-            className="announcement-theme-btn"
-            onClick={toggleTheme}
-            title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-            aria-label="Toggle Theme"
-          >
-            {theme === 'dark' ? <Sun size={12} /> : <Moon size={12} />}
-            <span>{theme === 'dark' ? 'Light' : 'Dark'}</span>
-          </button>
         </div>
       </div>
     </div>

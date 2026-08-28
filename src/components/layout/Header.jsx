@@ -17,8 +17,6 @@ import {
   MessageCircle,
   ShieldCheck,
   ChevronRight,
-  Sun,
-  Moon,
   LogOut,
   Package,
   Gift,
@@ -43,9 +41,7 @@ export const Header = () => {
     setViewMode,
     settings,
     currentUser,
-    logoutUser,
-    theme,
-    toggleTheme
+    logoutUser
   } = useStore();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -355,16 +351,6 @@ export const Header = () => {
 
         {/* Header Actions */}
         <div className="header-actions">
-          {/* Theme Toggle Button */}
-          <button 
-            className="action-icon-btn theme-toggle-btn"
-            onClick={toggleTheme}
-            aria-label="Toggle Dark Mode"
-            title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-          >
-            {theme === 'dark' ? <Sun size={19} /> : <Moon size={19} />}
-          </button>
-
           {/* Wishlist Button */}
           <button 
             className="action-icon-btn" 
@@ -688,20 +674,6 @@ export const Header = () => {
                   <span>Help & Contact Support</span>
                   <ChevronRight size={15} className="drawer-nav-arrow" />
                 </button>
-              </div>
-
-              {/* Theme & Currency Controls inside drawer */}
-              <div className="mobile-drawer-footer-actions">
-                <div className="mobile-theme-row">
-                  <span>Appearance</span>
-                  <button 
-                    className="mobile-theme-toggle-btn"
-                    onClick={toggleTheme}
-                  >
-                    {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
-                    <span>{theme === 'dark' ? 'Dark Mode' : 'Light Mode'}</span>
-                  </button>
-                </div>
               </div>
             </div>
           </div>
