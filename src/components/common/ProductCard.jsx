@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heart, ShoppingCart, Star, Eye, Bell, Check, Sparkles } from 'lucide-react';
+import { Heart, ShoppingCart, Star, Eye, Bell, Check, Sparkles, Zap } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
 export const ProductCard = ({ product }) => {
