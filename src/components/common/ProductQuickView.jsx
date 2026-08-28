@@ -210,62 +210,65 @@ export const ProductQuickView = () => {
               </div>
             )}
 
-            {/* Quantity Selector & Actions */}
-            {!isOutOfStock && (
-              <div className="quick-view-actions-row">
-                <div className="quantity-selector">
-                  <button 
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    disabled={quantity <= 1}
-                    aria-label="Decrease quantity"
-                    style={{ opacity: quantity <= 1 ? 0.4 : 1, cursor: quantity <= 1 ? 'not-allowed' : 'pointer' }}
+            {/* Quantity Selector & Dual Actions */}
+            {!isOutOfStock ? (
+              <div className="quick-view-buy-actions-wrapper">
+                <div className="quick-view-qty-row">
+                  <div className="quantity-selector">
+                    <button 
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      disabled={quantity <= 1}
+                      aria-label="Decrease quantity"
+                      style={{ opacity: quantity <= 1 ? 0.4 : 1, cursor: quantity <= 1 ? 'not-allowed' : 'pointer' }}
+                    >
+                      -
+                    </button>
+                    <span>{quantity}</span>
+                    <button 
+                      onClick={() => setQuantity(quantity + 1)}
+                      aria-label="Increase quantity"
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  <button
+                    className={`quick-view-wish-btn ${isSaved ? 'active' : ''}`}
+                    onClick={() => toggleWishlist(product)}
+                    aria-label="Save to Wishlist"
+                    title={isSaved ? "Saved in wishlist" : "Add to wishlist"}
                   >
-                    -
-                  </button>
-                  <span>{quantity}</span>
-                  <button 
-                    onClick={() => setQuantity(quantity + 1)}
-                    aria-label="Increase quantity"
-                  >
-                    +
+                    <Heart size={20} fill={isSaved ? '#ef4444' : 'none'} color={isSaved ? '#ef4444' : 'currentColor'} />
                   </button>
                 </div>
 
-                <button 
-                  className="quick-view-add-btn" 
-                  onClick={handleAddToCart}
-                >
-                  <ShoppingCart size={18} />
-                  <span>Add to Shopping Bag</span>
-                </button>
+                <div className="quick-view-buttons-grid">
+                  <button 
+                    className="quick-view-add-btn" 
+                    onClick={handleAddToCart}
+                    title="Add to Shopping Bag"
+                  >
+                    <ShoppingCart size={17} />
+                    <span>Add to Bag</span>
+                  </button>
 
-                <button
-                  className={`quick-view-wish-btn ${isSaved ? 'active' : ''}`}
-                  onClick={() => toggleWishlist(product)}
-                  aria-label="Save to Wishlist"
-                  title={isSaved ? "Saved in wishlist" : "Add to wishlist"}
-                >
-                  <Heart size={20} fill={isSaved ? '#ef4444' : 'none'} color={isSaved ? '#ef4444' : 'currentColor'} />
-                </button>
+                  <button
+                    onClick={handleBuyNow}
+                    className="quick-view-buy-now-btn"
+                    title="Instant 1-Click Checkout"
+                  >
+                    <Zap size={17} />
+                    <span>⚡ Buy Now</span>
+                  </button>
+                </div>
               </div>
-            )}
-
-            {/* If out of stock, show notify button */}
-            {isOutOfStock ? (
+            ) : (
               <button 
                 onClick={handleNotifyMe}
                 className="hero-cta-btn notify-full-btn"
               >
                 <Bell size={18} />
                 <span>Notify Me When Available in Stock</span>
-              </button>
-            ) : (
-              <button
-                onClick={handleBuyNow}
-                className="quick-view-buy-now-btn"
-              >
-                <Zap size={16} />
-                <span>Instant 1-Click Buy Now</span>
               </button>
             )}
 

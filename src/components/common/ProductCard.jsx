@@ -8,7 +8,8 @@ export const ProductCard = ({ product }) => {
     toggleWishlist, 
     isInWishlist, 
     setQuickViewProduct, 
-    openNotifyModal, 
+    openNotifyModal,
+    setIsCheckoutOpen,
     settings 
   } = useStore();
 
@@ -62,6 +63,17 @@ export const ProductCard = ({ product }) => {
     }, 1);
     setIsAdded(true);
     setTimeout(() => setIsAdded(false), 1400);
+  };
+
+  const handleBuyNow = (e) => {
+    e.stopPropagation();
+    addToCart({ 
+      ...product, 
+      image: activeImage, 
+      selectedColor: selectedColor?.name,
+      productSize 
+    }, 1);
+    setIsCheckoutOpen(true);
   };
 
   return (
@@ -172,7 +184,7 @@ export const ProductCard = ({ product }) => {
           )}
         </div>
 
-        {/* Action Button: Add to Cart OR Notify When in Stock */}
+        {/* Action Button: Dual Actions (Add to Bag + Buy Now) OR Notify When in Stock */}
         {isOutOfStock ? (
           <button
             className="notify-stock-btn"
@@ -182,22 +194,33 @@ export const ProductCard = ({ product }) => {
             <span>Notify When Available</span>
           </button>
         ) : (
-          <button
-            className={`add-to-cart-btn ${isAdded ? 'added' : ''}`}
-            onClick={handleAddToCart}
-          >
-            {isAdded ? (
-              <>
-                <Check size={15} className="add-check-icon" />
-                <span>Added to Bag!</span>
-              </>
-            ) : (
-              <>
-                <ShoppingCart size={15} />
-                <span>Add to Bag</span>
-              </>
-            )}
-          </button>
+          <div className="product-card-actions-group" onClick={(e) => e.stopPropagation()}>
+            <button
+              className={`add-to-cart-btn ${isAdded ? 'added' : ''}`}
+              onClick={handleAddToCart}
+              title="Add to Shopping Bag"
+            >
+              {isAdded ? (
+                <>
+                  <Check size={14} className="add-check-icon" />
+                  <span>Added!</span>
+                </>
+              ) : (
+                <>
+                  <ShoppingCart size={14} />
+                  <span>Add to Bag</span>
+                </>
+              )}
+            </button>
+            <button
+              className="card-buy-now-btn"
+              onClick={handleBuyNow}
+              title="Instant 1-Click Checkout"
+            >
+              <Zap size={13} />
+              <span>Buy Now</span>
+            </button>
+          </div>
         )}
       </div>
     </div>
