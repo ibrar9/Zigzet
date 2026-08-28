@@ -43,7 +43,7 @@ export const AnnouncementBar = () => {
     <div className="announcement-bar">
       <div className="container announcement-content">
         <div className="announcement-text">
-          <span>{(settings.announcement || 'Free Express Delivery Across UAE on Orders Over 150 AED ✨').trim()}</span>
+          <span>{(settings.announcement || 'Free Express Delivery Across UAE on Orders Over 150 AED').replace(/✨|🔥|🎉/g, '').trim()}</span>
         </div>
 
         <div className="announcement-controls">

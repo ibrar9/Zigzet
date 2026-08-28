@@ -48,7 +48,7 @@ export const initialUserReturns = [
 export const initialUserNotifications = [
   {
     id: 'unotif-1',
-    title: 'Order Shipped! 🚚',
+    title: 'Order Shipped!',
     message: 'Your order #ORD-9842 is on its way via FedEx Express. Expected delivery in 2 business days.',
     time: '2 hours ago',
     type: 'order',
@@ -57,7 +57,7 @@ export const initialUserNotifications = [
   },
   {
     id: 'unotif-2',
-    title: 'Flash Sale Alert 🔥',
+    title: 'Flash Sale Alert',
     message: 'Exclusive 20% discount on Korean Glass Skin Serums for VIP members! Use code VIP20 at checkout.',
     time: 'Yesterday',
     type: 'promo',
@@ -66,7 +66,7 @@ export const initialUserNotifications = [
   },
   {
     id: 'unotif-3',
-    title: 'Support Ticket Update 💬',
+    title: 'Support Ticket Update',
     message: 'Agent Alexandre Mercer replied to your inquiry regarding delivery time.',
     time: '2 days ago',
     type: 'support',
@@ -75,7 +75,7 @@ export const initialUserNotifications = [
   },
   {
     id: 'unotif-4',
-    title: 'Points Credited ✨',
+    title: 'Points Credited',
     message: 'You earned 1,850 Zigzet loyalty points from your latest purchase.',
     time: '3 days ago',
     type: 'loyalty',

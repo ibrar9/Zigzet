@@ -117,7 +117,7 @@ export const UserOrders = ({ myOrders, setActiveTab }) => {
                       }}
                       title={order.status === 'Delivered' ? 'Add all items back to Cart' : 'Track live courier status'}
                     >
-                      {order.status === 'Delivered' ? '🔁 Buy Again' : 'Track Order'}
+                      {order.status === 'Delivered' ? 'Buy Again' : 'Track Order'}
                     </button>
                     <button 
                       className="ud2-btn-details" 

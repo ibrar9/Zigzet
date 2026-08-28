@@ -339,8 +339,8 @@ export const CheckoutModal = () => {
 
             {formData.paymentMethod.includes('Tabby') && (
               <div className="tabby-split-info">
-                <div className="tabby-header">
-                  <span style={{ fontSize: '18px' }}>✨</span>
+                <div className="tabby-header" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Sparkles size={16} color="#059669" />
                   <strong>Split in 4 interest-free payments of {curr} {(cartTotal / 4).toFixed(2)}</strong>
                 </div>
                 <p>No interest. No hidden fees. Instant approval at checkout with Emirates ID.</p>
@@ -348,8 +348,8 @@ export const CheckoutModal = () => {
             )}
 
             {/* WhatsApp live order tracking updates banner */}
-            <div className="checkout-whatsapp-banner">
-              <span style={{ fontSize: '16px' }}>📱</span>
+            <div className="checkout-whatsapp-banner" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <Smartphone size={16} color="#16a34a" />
               <div style={{ flex: 1, fontSize: '12.5px', color: '#166534' }}>
                 <strong>WhatsApp Delivery Alerts:</strong> Real-time courier live tracking links will be sent to <strong>{formData.phone}</strong>.
               </div>

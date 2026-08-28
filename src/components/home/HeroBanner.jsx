@@ -15,7 +15,7 @@ export const HeroBanner = () => {
   const fallbackSlides = [
     {
       id: 'slide-1',
-      badge: cmsContent?.heroBadge || '🔥 LATEST ARRIVALS 2026',
+      badge: cmsContent?.heroBadge || 'LATEST ARRIVALS 2026',
       titleLine1: 'Shop Smarter.',
       titleLine2: 'Live Better.',
       subtitle: cmsContent?.heroSubtitle || 'Premium Korean Skincare & Advanced Sun Protection for Healthy, Radiant Skin Every Day.',
@@ -37,7 +37,7 @@ export const HeroBanner = () => {
     },
     {
       id: 'slide-2',
-      badge: '✨ EXCLUSIVE VALUE DEALS',
+      badge: 'EXCLUSIVE VALUE DEALS',
       titleLine1: 'Save Up to 45%',
       titleLine2: 'On Luxury Sets.',
       subtitle: 'Award-winning cleansing balms, cooling peptide ampoules, and complete daily glass skin routines at promotional prices.',
@@ -59,7 +59,7 @@ export const HeroBanner = () => {
     },
     {
       id: 'slide-3',
-      badge: '🌿 100% AUTHENTIC FORMULAS',
+      badge: '100% AUTHENTIC FORMULAS',
       titleLine1: 'Radiant Glow.',
       titleLine2: 'Pure Ingredients.',
       subtitle: 'High-potency Niacinamide, Micro Hyaluronic Acid, Cica, and Collagen lifting creams for radiant, youthful skin.',

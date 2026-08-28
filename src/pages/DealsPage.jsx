@@ -149,7 +149,10 @@ export const DealsPage = () => {
                   <div className="ticket-left">
                     <span className="ticket-discount">{discountLabel}</span>
                     <span className="ticket-desc">{descLabel}</span>
-                    <span className="ticket-expiry">⏳ {expiryLabel}</span>
+                    <span className="ticket-expiry">
+                      <Clock size={12} style={{ display: 'inline', marginRight: '4px' }} />
+                      {expiryLabel}
+                    </span>
                   </div>
 
                   <div className="ticket-right">
@@ -192,12 +195,12 @@ export const DealsPage = () => {
           {/* Deals Quick Filter Pills */}
           <div className="deals-filter-pills-row">
             {[
-              { id: 'all', label: '🔥 All Deals' },
-              { id: 'big-discount', label: '⚡ 30%+ OFF' },
-              { id: 'under-100', label: `🏷️ Under ${curr} 100` },
-              { id: 'sunscreen', label: '☀️ Sun Care Deals' },
-              { id: 'cleansers', label: '🫧 Cleanser Specials' },
-              { id: 'serums', label: '💧 Serum Bundles' }
+              { id: 'all', label: 'All Deals' },
+              { id: 'big-discount', label: '30%+ OFF' },
+              { id: 'under-100', label: `Under ${curr} 100` },
+              { id: 'sunscreen', label: 'Sun Care Deals' },
+              { id: 'cleansers', label: 'Cleanser Specials' },
+              { id: 'serums', label: 'Serum Bundles' }
             ].map((pill) => (
               <button
                 key={pill.id}

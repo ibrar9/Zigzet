@@ -510,7 +510,9 @@ export const AdminIntegrations = () => {
                             cursor: 'pointer'
                           }}
                         >
-                          {mode === 'test' ? '🧪 Test Sandbox' : '⚡ Live Production'}
+                          <span className="ai-mode-pill">
+                            {mode === 'test' ? 'Test Sandbox' : 'Live Production'}
+                          </span>
                         </button>
                       ))}
                     </div>

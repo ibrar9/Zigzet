@@ -599,7 +599,7 @@ export const Header = () => {
                         className="mobile-drawer-subitem view-all"
                         onClick={() => { navigatePage('categories'); setMobileMenuOpen(false); }}
                       >
-                        <span>✨ Browse All Departments</span>
+                        <span>Browse All Departments</span>
                         <ChevronRight size={13} />
                       </div>
                       {categories.map((cat) => (
@@ -642,7 +642,7 @@ export const Header = () => {
                         className="mobile-drawer-subitem view-all"
                         onClick={() => { navigatePage('brands'); setMobileMenuOpen(false); }}
                       >
-                        <span>✨ View Brand Directory</span>
+                        <span>View Brand Directory</span>
                         <ChevronRight size={13} />
                       </div>
                       {uniqueBrands.map((b) => (

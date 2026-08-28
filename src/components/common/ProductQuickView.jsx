@@ -112,7 +112,7 @@ export const ProductQuickView = () => {
 
               {product.productSize && (
                 <span className="quick-view-size-tag">
-                  📦 Size: {product.productSize}
+                  Size: {product.productSize}
                 </span>
               )}
 
@@ -123,7 +123,7 @@ export const ProductQuickView = () => {
               ) : null}
 
               <span className={`quick-view-stock-pill ${isOutOfStock ? 'out' : isLowStock ? 'low' : 'in'}`}>
-                {isOutOfStock ? 'Sold Out' : isLowStock ? `⚡ Only ${product.stock} Left in Stock!` : `In Stock (${product.stock || 25} available)`}
+                {isOutOfStock ? 'Sold Out' : isLowStock ? `Only ${product.stock} Left in Stock!` : `In Stock (${product.stock || 25} available)`}
               </span>
             </div>
 
@@ -160,7 +160,10 @@ export const ProductQuickView = () => {
             {isLowStock && (
               <div className="quick-view-scarcity-bar">
                 <div className="scarcity-label">
-                  <span>⚡ High demand — selling fast!</span>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                    <Zap size={12} />
+                    High demand — selling fast!
+                  </span>
                   <strong>{product.stock} left</strong>
                 </div>
                 <div className="scarcity-track">
@@ -258,7 +261,7 @@ export const ProductQuickView = () => {
                     title="Instant 1-Click Checkout"
                   >
                     <Zap size={17} />
-                    <span>⚡ Buy Now</span>
+                    <span>Buy Now</span>
                   </button>
                 </div>
               </div>

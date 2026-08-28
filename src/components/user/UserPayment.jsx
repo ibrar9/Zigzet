@@ -105,7 +105,7 @@ export const UserPayment = () => {
                 {settings?.currency || 'AED'} {Number(userWallet?.balance || 0).toFixed(2)}
               </h3>
               <p style={{ fontSize: 12.5, color: '#e9d5ff' }}>
-                ✨ {settings?.currency || 'AED'} {Number(userWallet?.cashbackEarned || 45).toFixed(2)} total cashback earned
+                {settings?.currency || 'AED'} {Number(userWallet?.cashbackEarned || 45).toFixed(2)} total cashback earned
               </p>
             </div>
             <div style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(255,255,255,0.15)', display: 'grid', placeItems: 'center' }}>
@@ -162,7 +162,7 @@ export const UserPayment = () => {
             </form>
           </div>
           <p style={{ fontSize: 11.5, color: '#94a3b8', marginTop: 12 }}>
-            💡 Try demo codes: <strong>WELCOME100</strong> (+AED 100) or <strong>ZIGZET50</strong> (+AED 50)
+            Demo codes: <strong>WELCOME100</strong> (+AED 100) or <strong>ZIGZET50</strong> (+AED 50)
           </p>
         </div>
       </div>

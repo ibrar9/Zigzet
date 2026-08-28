@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Lock, Eye, EyeOff, ShoppingBag, User, ArrowRight } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ShoppingBag, User, ArrowRight, AlertCircle } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
 export const UserLoginPage = () => {
@@ -115,14 +115,17 @@ export const UserLoginPage = () => {
 
         {/* Heading */}
         <h2 className="nlogin-title">
-          {isSignup ? 'Create Account' : 'Welcome Back'} 👋
+          {isSignup ? 'Create Account' : 'Welcome Back'}
         </h2>
         <p className="nlogin-sub">
           {isSignup ? 'Join Zigzet and start shopping' : 'Login to access your account'}
         </p>
 
         {errors.general && (
-          <div className="nlogin-error">⚠️ {errors.general}</div>
+          <div className="nlogin-error" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <AlertCircle size={15} />
+            <span>{errors.general}</span>
+          </div>
         )}
 
         <form className="nlogin-form" onSubmit={handleSubmit}>

@@ -28,7 +28,7 @@ export const AdminCustomizer = () => {
     : [
         {
           id: 'slide-1',
-          badge: '🔥 LATEST ARRIVALS 2026',
+          badge: 'LATEST ARRIVALS 2026',
           title: 'Shop Smarter. Live Better.',
           subtitle: 'Discover premium Korean skincare, advanced SPF50 sunscreens, and Triple PDRN barrier repair formulas with guaranteed fast delivery.',
           image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1200&auto=format&fit=crop&q=80',
@@ -38,7 +38,7 @@ export const AdminCustomizer = () => {
         },
         {
           id: 'slide-2',
-          badge: '✨ EXCLUSIVE VALUE DEALS',
+          badge: 'EXCLUSIVE VALUE DEALS',
           title: 'Save Up to 45% on Luxury Sets',
           subtitle: 'Award-winning cleansing balms, cooling peptide ampoules, and complete daily glass skin routines at limited-time promotional prices.',
           image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=1200&auto=format&fit=crop&q=80',
@@ -48,7 +48,7 @@ export const AdminCustomizer = () => {
         },
         {
           id: 'slide-3',
-          badge: '🌿 100% AUTHENTIC FORMULAS',
+          badge: '100% AUTHENTIC FORMULAS',
           title: 'Dermatologist Tested. Proven Results.',
           subtitle: 'High-potency Niacinamide, Micro Hyaluronic Acid, Cica, and NAD+ lifting creams for radiant, healthy skin.',
           image: 'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=1200&auto=format&fit=crop&q=80',
@@ -120,7 +120,7 @@ export const AdminCustomizer = () => {
     const newSlideId = `slide-${Date.now()}`;
     const newSlide = {
       id: newSlideId,
-      badge: '✨ NEW CAMPAIGN 2026',
+      badge: 'NEW CAMPAIGN 2026',
       title: 'Experience Pure Radiance',
       subtitle: 'Discover breakthrough dermatological skincare formulated for flawless results.',
       image: curatedPresets[slides.length % curatedPresets.length].url,
@@ -402,7 +402,7 @@ export const AdminCustomizer = () => {
         {/* 1. PHOTO UPLOADER SECTION */}
         <div style={{ marginBottom: '28px', padding: '20px', background: '#f8fafc', border: '1px dashed #cbd5e1', borderRadius: '16px' }}>
           <label style={{ display: 'block', fontSize: '13.5px', fontWeight: '800', color: '#0f172a', marginBottom: '8px' }}>
-            📸 Slide Banner Photo (Upload from PC / URL)
+            Slide Banner Photo (Upload from PC / URL)
           </label>
           
           <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: '20px', alignItems: 'center' }}>
@@ -508,7 +508,7 @@ export const AdminCustomizer = () => {
                 type="text"
                 value={activeSlide.badge || ''}
                 onChange={(e) => handleUpdateActiveSlide('badge', e.target.value)}
-                placeholder="e.g. 🔥 LATEST ARRIVALS 2026"
+                placeholder="e.g. LATEST ARRIVALS 2026"
               />
             </div>
 

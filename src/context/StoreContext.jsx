@@ -114,7 +114,7 @@ const defaultSeo = {
 };
 
 const defaultSettings = {
-  announcement: 'Free Express Delivery Across UAE on Orders Over 150 AED ✨',
+  announcement: 'Free Express Delivery Across UAE on Orders Over 150 AED',
   freeShippingThreshold: 150,
   currency: 'AED',
   currencySymbol: 'AED ',
@@ -125,7 +125,7 @@ const defaultSettings = {
 };
 
 const defaultCms = {
-  heroBadge: '✨ LATEST ARRIVALS 2026',
+  heroBadge: 'LATEST ARRIVALS 2026',
   heroTitle: 'Shop Smarter. Live Better.',
   heroSubtitle: 'Discover curated Korean skincare, advanced SPF50 sunscreens, and Triple PDRN barrier repair formulas with fast UAE delivery.',
   ctaText: 'Explore Catalog',
@@ -135,7 +135,7 @@ const defaultCms = {
   heroSlides: [
     {
       id: 'slide-1',
-      badge: '🔥 LATEST ARRIVALS 2026',
+      badge: 'LATEST ARRIVALS 2026',
       title: 'Shop Smarter. Live Better.',
       subtitle: 'Discover premium Korean skincare, advanced SPF50 sunscreens, and Triple PDRN barrier repair formulas with guaranteed fast delivery.',
       image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1200&auto=format&fit=crop&q=80',
@@ -145,7 +145,7 @@ const defaultCms = {
     },
     {
       id: 'slide-2',
-      badge: '✨ EXCLUSIVE VALUE DEALS',
+      badge: 'EXCLUSIVE VALUE DEALS',
       title: 'Save Up to 45% on Luxury Sets',
       subtitle: 'Award-winning cleansing balms, cooling peptide ampoules, and complete daily glass skin routines at limited-time promotional prices.',
       image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=1200&auto=format&fit=crop&q=80',
@@ -155,7 +155,7 @@ const defaultCms = {
     },
     {
       id: 'slide-3',
-      badge: '🌿 100% AUTHENTIC FORMULAS',
+      badge: '100% AUTHENTIC FORMULAS',
       title: 'Dermatologist Tested. Proven Results.',
       subtitle: 'High-potency Niacinamide, Micro Hyaluronic Acid, Cica, and NAD+ lifting creams for radiant, healthy skin.',
       image: 'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=1200&auto=format&fit=crop&q=80',
@@ -743,7 +743,7 @@ export const StoreProvider = ({ children }) => {
     setCurrentUser(safeUser);
     sessionStorage.setItem(STORAGE_KEYS.USER_AUTH, JSON.stringify(safeUser));
     setCurrentPage('user-dashboard');
-    showToast('Account Created!', `Welcome to Zigzet, ${name}! 🎉`);
+    showToast('Account Created!', `Welcome to Zigzet, ${name}!`);
     return true;
   };
 
@@ -843,7 +843,7 @@ export const StoreProvider = ({ children }) => {
     setUserReturns(prev => [newReturn, ...prev]);
 
     addUserNotification({
-      title: 'Return Request Submitted 📦',
+      title: 'Return Request Submitted',
       message: `Return request #${returnId} for ${product.name} has been initiated.`,
       type: 'order',
       actionTab: 'returns'
@@ -922,7 +922,7 @@ export const StoreProvider = ({ children }) => {
     });
 
     addUserNotification({
-      title: 'Support Ticket Created 💬',
+      title: 'Support Ticket Created',
       message: `Ticket #${ticketId} opened. An agent will respond shortly.`,
       type: 'support',
       actionTab: 'help'
@@ -1008,7 +1008,7 @@ export const StoreProvider = ({ children }) => {
         ]
       }));
       addUserNotification({
-        title: 'Wallet Balance Added 🎁',
+        title: 'Wallet Balance Added',
         message: `AED ${amount.toFixed(2)} credited from voucher ${clean}.`,
         type: 'promo',
         actionTab: 'payment'

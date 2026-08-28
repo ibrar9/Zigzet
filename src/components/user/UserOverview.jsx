@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Package, Truck, Heart, Tag, ChevronRight,
   ArrowRight, ShoppingBag, CheckCircle2, Clock, MoreVertical, MapPin,
-  RotateCcw, CreditCard, MessageSquare, Headphones
+  RotateCcw, CreditCard, MessageSquare, Headphones, Gift, RotateCw
 } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
@@ -18,7 +18,8 @@ const STAT_CARDS = (orders, inProgress, wishlistLen, couponsLen) => [
     label: 'Total Orders',
     value: orders,
     sub: 'View all orders →',
-    icon: '🛍️',
+    icon: ShoppingBag,
+    iconColor: '#7c3aed',
     iconBg: '#ede9fe',
     tabId: 'orders'
   },
@@ -26,7 +27,8 @@ const STAT_CARDS = (orders, inProgress, wishlistLen, couponsLen) => [
     label: 'In Progress',
     value: inProgress,
     sub: 'Track your orders →',
-    icon: '🚚',
+    icon: Truck,
+    iconColor: '#d97706',
     iconBg: '#fef3c7',
     tabId: 'orders'
   },
@@ -34,7 +36,8 @@ const STAT_CARDS = (orders, inProgress, wishlistLen, couponsLen) => [
     label: 'Wishlist',
     value: wishlistLen,
     sub: 'See your wishlist →',
-    icon: '❤️',
+    icon: Heart,
+    iconColor: '#e11d48',
     iconBg: '#ffe4e6',
     tabId: 'wishlist'
   },
@@ -42,7 +45,8 @@ const STAT_CARDS = (orders, inProgress, wishlistLen, couponsLen) => [
     label: 'Coupons',
     value: couponsLen,
     sub: 'View coupons →',
-    icon: '🏷️',
+    icon: Tag,
+    iconColor: '#16a34a',
     iconBg: '#dcfce7',
     tabId: 'loyalty'
   },
@@ -71,29 +75,32 @@ export const UserOverview = ({ setActiveTab, myOrders, inProgress }) => {
       {/* Greeting */}
       <div className="ud2-greeting">
         <div>
-          <h2>Hi, {firstName}! 👋</h2>
+          <h2>Hi, {firstName}!</h2>
           <p>Welcome back. Manage your orders, returns, saved addresses and loyalty perks.</p>
         </div>
       </div>
 
       {/* Stat Cards */}
       <div className="ud2-stat-row">
-        {stats.map(s => (
-          <button
-            key={s.label}
-            className="ud2-stat-card"
-            onClick={() => setActiveTab(s.tabId)}
-          >
-            <div className="ud2-stat-icon" style={{ background: s.iconBg }}>
-              <span>{s.icon}</span>
-            </div>
-            <div className="ud2-stat-body">
-              <p className="ud2-stat-label">{s.label}</p>
-              <p className="ud2-stat-value">{s.value}</p>
-              <span className="ud2-stat-link">{s.sub}</span>
-            </div>
-          </button>
-        ))}
+        {stats.map(s => {
+          const IconComp = s.icon;
+          return (
+            <button
+              key={s.label}
+              className="ud2-stat-card"
+              onClick={() => setActiveTab(s.tabId)}
+            >
+              <div className="ud2-stat-icon-wrap" style={{ background: s.iconBg, color: s.iconColor, display: 'flex', alignItems: 'center', justifyContent: 'center', width: '42px', height: '42px', borderRadius: '12px' }}>
+                <IconComp size={20} />
+              </div>
+              <div className="ud2-stat-body">
+                <span className="ud2-stat-label">{s.label}</span>
+                <span className="ud2-stat-val">{s.value}</span>
+                <span className="ud2-stat-sub">{s.sub}</span>
+              </div>
+            </button>
+          );
+        })}
       </div>
 
       {/* Bottom 3-column layout */}
@@ -163,7 +170,7 @@ export const UserOverview = ({ setActiveTab, myOrders, inProgress }) => {
                                 }
                               }}
                             >
-                              {order.status === 'Delivered' ? '🔁 Buy Again' : 'Track Order'}
+                              {order.status === 'Delivered' ? 'Buy Again' : 'Track Order'}
                             </button>
                             <button className="ud2-btn-details" onClick={() => setActiveTab('orders')}>
                               View Details
@@ -193,7 +200,9 @@ export const UserOverview = ({ setActiveTab, myOrders, inProgress }) => {
                 <p>Use code <strong>WELCOME15</strong> and get 15% off on your next purchase.</p>
                 <button onClick={() => navigatePage('shop')}>Shop Now</button>
               </div>
-              <div className="ud2-promo-gift">🎁</div>
+              <div className="ud2-promo-gift" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Gift size={24} color="#7c3aed" />
+              </div>
             </div>
 
             {/* Recommended */}
@@ -208,7 +217,9 @@ export const UserOverview = ({ setActiveTab, myOrders, inProgress }) => {
                   >
                     <div className="ud2-rec-img">
                       <img src={p.image} alt={p.name} />
-                      <span className="ud2-rec-heart">♡</span>
+                      <span className="ud2-rec-heart">
+                        <Heart size={13} />
+                      </span>
                     </div>
                     <p className="ud2-rec-name">{p.name}</p>
                     <p className="ud2-rec-price">{settings?.currency || 'AED'} {Number(p.price).toFixed(2)}</p>
