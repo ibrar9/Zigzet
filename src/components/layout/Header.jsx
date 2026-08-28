@@ -41,7 +41,8 @@ export const Header = () => {
     setViewMode,
     settings,
     currentUser,
-    logoutUser
+    logoutUser,
+    changeCurrency
   } = useStore();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -351,6 +352,16 @@ export const Header = () => {
 
         {/* Header Actions */}
         <div className="header-actions">
+          {/* Mobile Quick Search Button */}
+          <button 
+            className="action-icon-btn mobile-search-btn"
+            onClick={() => setIsSearchOpen(true)}
+            aria-label="Search Catalog"
+            title="Search"
+          >
+            <Search size={20} />
+          </button>
+
           {/* Wishlist Button */}
           <button 
             className="action-icon-btn" 
@@ -364,7 +375,7 @@ export const Header = () => {
             )}
           </button>
 
-          {/* User Account Button with Dropdown Popover */}
+          {/* User Account Button with Dropdown Popover (Desktop / Tablet) */}
           <div className="user-account-wrapper" ref={userDropdownRef}>
             <button 
               className="action-icon-btn user-account-btn" 
@@ -450,13 +461,20 @@ export const Header = () => {
                   </>
                 ) : (
                   <div className="user-popover-guest">
-                    <h4>Welcome to {storeName}</h4>
-                    <p>Sign in to access your orders, saved addresses and exclusive member rewards.</p>
+                    <div className="guest-header">
+                      <div className="guest-icon">
+                        <User size={24} color="#7c3aed" />
+                      </div>
+                      <div>
+                        <strong>Welcome to Zigzet</strong>
+                        <p>Sign in to track orders, save wishlist &amp; earn points</p>
+                      </div>
+                    </div>
                     <button 
-                      className="user-popover-signin-btn"
+                      className="guest-login-btn"
                       onClick={() => { navigatePage('user-login'); closeAllDropdowns(); }}
                     >
-                      Sign In / Register
+                      Sign In or Register
                     </button>
                   </div>
                 )}
@@ -477,6 +495,15 @@ export const Header = () => {
         </div>
       </div>
 
+      {/* Mobile Sticky Quick Search Bar */}
+      <div className="mobile-search-strip">
+        <div className="mobile-search-capsule" onClick={() => setIsSearchOpen(true)}>
+          <Search size={15} className="mobile-search-icon" />
+          <span className="mobile-search-placeholder">Search Korean skincare, SPF50, serums...</span>
+          <span className="mobile-search-tag">Search</span>
+        </div>
+      </div>
+
       {/* =========================================================================
           Mobile Navigation Slide-over Drawer (Fixed overlay & native app drawer)
           ========================================================================= */}
@@ -485,7 +512,7 @@ export const Header = () => {
           <div className="mobile-menu-drawer" onClick={(e) => e.stopPropagation()}>
             {/* Drawer Header */}
             <div className="mobile-drawer-header">
-              <div className="brand-logo">
+              <div className="brand-logo" onClick={() => { navigatePage('home'); setMobileMenuOpen(false); }}>
                 <div className="brand-logo-icon">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                     <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#7c3aed" />
@@ -504,35 +531,40 @@ export const Header = () => {
               </button>
             </div>
 
-            {/* Quick Search Inside Drawer */}
-            <div className="mobile-drawer-search">
-              <form onSubmit={handleSearchSubmit} className="search-input-box" onClick={() => { setMobileMenuOpen(false); setIsSearchOpen(true); }}>
-                <Search size={16} color="var(--color-text-light, #9ca3af)" />
-                <input 
-                  type="text" 
-                  placeholder="Search products in Zigzet..." 
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  readOnly
-                />
-              </form>
-            </div>
-
-            {/* Mobile User Profile Bar */}
+            {/* Mobile User Profile Card */}
             <div className="mobile-drawer-user-card" onClick={() => { navigatePage(currentUser ? 'user-dashboard' : 'user-login'); setMobileMenuOpen(false); }}>
               <div className="mobile-user-avatar">
                 {currentUser?.name ? currentUser.name.charAt(0) : <User size={18} />}
               </div>
               <div className="mobile-user-details">
                 <strong>{currentUser ? currentUser.name : 'Sign In / Register'}</strong>
-                <span>{currentUser ? currentUser.email : 'Earn loyalty points on every order'}</span>
+                <span>{currentUser ? `${currentUser.email}` : 'Join to earn points & fast checkout'}</span>
               </div>
               <ChevronRight size={16} color="#9ca3af" />
             </div>
 
+            {/* Quick Category Chips Strip */}
+            <div className="mobile-drawer-chips-section">
+              <div className="mobile-chips-title">Popular Categories</div>
+              <div className="mobile-chips-row">
+                {categories.slice(0, 5).map(cat => (
+                  <button
+                    key={cat.id}
+                    className="mobile-chip-btn"
+                    onClick={() => {
+                      navigatePage('shop', cat.id);
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    <span>{cat.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {/* Drawer Scrollable Links */}
             <div className="mobile-drawer-body">
-              <div className="mobile-nav-section-title">Navigation</div>
+              <div className="mobile-nav-section-title">Store Menu</div>
               <div className="mobile-nav-links">
                 <button 
                   className={`mobile-drawer-nav-item ${currentPage === 'home' ? 'active' : ''}`}
@@ -598,7 +630,7 @@ export const Header = () => {
                           }}
                         >
                           <span className="subitem-name">{cat.name}</span>
-                          <span className="subitem-count">{cat.itemCount}</span>
+                          <span className="subitem-count">{cat.itemCount} items</span>
                         </div>
                       ))}
                     </div>
@@ -641,7 +673,7 @@ export const Header = () => {
                           }}
                         >
                           <span className="subitem-name">{b.name}</span>
-                          <span className="subitem-count">{b.count}</span>
+                          <span className="subitem-count">{b.count} items</span>
                         </div>
                       ))}
                     </div>
@@ -675,6 +707,42 @@ export const Header = () => {
                   <ChevronRight size={15} className="drawer-nav-arrow" />
                 </button>
               </div>
+
+              {/* Currency Picker Inside Drawer */}
+              <div className="mobile-drawer-currency-section">
+                <div className="mobile-currency-label">Currency</div>
+                <div className="mobile-currency-pills">
+                  {['AED', 'USD', 'SAR', 'EUR', 'GBP'].map(curr => (
+                    <button
+                      key={curr}
+                      className={`mobile-curr-pill ${(settings?.currency || 'AED') === curr ? 'active' : ''}`}
+                      onClick={() => changeCurrency(curr)}
+                    >
+                      {curr}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Drawer Footer Actions */}
+              {currentUser ? (
+                <button 
+                  className="mobile-drawer-logout-btn"
+                  onClick={() => { logoutUser(); setMobileMenuOpen(false); }}
+                >
+                  <LogOut size={16} />
+                  <span>Sign Out of Account</span>
+                </button>
+              ) : (
+                <div className="mobile-drawer-auth-actions">
+                  <button 
+                    className="mobile-auth-primary-btn"
+                    onClick={() => { navigatePage('user-login'); setMobileMenuOpen(false); }}
+                  >
+                    Sign In to Zigzet
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
