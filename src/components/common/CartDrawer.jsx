@@ -1,5 +1,5 @@
-import React from 'react';
-import { X, Trash2, Plus, Minus, ShoppingBag, ArrowRight, ShieldCheck } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, Trash2, Plus, Minus, ShoppingBag, ArrowRight, ShieldCheck, Sparkles, MessageSquare, Check } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
 export const CartDrawer = () => {
@@ -9,20 +9,33 @@ export const CartDrawer = () => {
     cart, 
     removeFromCart, 
     updateCartQuantity, 
-    cartSubtotal,
-    isFreeShipping,
-    shippingFee,
-    estimatedTax,
-    cartTotal,
-    settings,
-    setIsCheckoutOpen
+    cartSubtotal, 
+    isFreeShipping, 
+    shippingFee, 
+    estimatedTax, 
+    cartTotal, 
+    settings, 
+    setIsCheckoutOpen,
+    navigatePage,
+    products,
+    addToCart
   } = useStore();
+
+  const [orderNote, setOrderNote] = useState('');
+  const [noteOpen, setNoteOpen] = useState(false);
 
   if (!isCartOpen) return null;
 
-  const threshold = settings.freeShippingThreshold;
+  const curr = settings?.currency || 'AED';
+  const threshold = settings?.freeShippingThreshold || 150;
   const progressPercent = Math.min(100, (cartSubtotal / threshold) * 100);
   const remainingForFree = Math.max(0, threshold - cartSubtotal);
+
+  // Recommendations: products not in cart
+  const cartIds = new Set(cart.map((i) => i.id));
+  const crossSellProducts = products
+    .filter((p) => !cartIds.has(p.id) && p.isActive !== false && p.stock > 0)
+    .slice(0, 3);
 
   const handleCheckoutClick = () => {
     setIsCartOpen(false);
@@ -52,23 +65,23 @@ export const CartDrawer = () => {
           </button>
         </div>
 
-        {/* Free Shipping Meter (AED) */}
-        <div className="free-shipping-meter">
+        {/* Free Shipping Meter */}
+        <div className={`free-shipping-meter ${isFreeShipping ? 'unlocked' : ''}`}>
           <div className="meter-label">
             {isFreeShipping ? (
-              <span style={{ color: '#10b981', fontWeight: '700' }}>
-                🎉 You've unlocked FREE UAE Express Delivery!
+              <span className="unlocked-text">
+                <Sparkles size={14} /> You've unlocked FREE UAE Express Delivery!
               </span>
             ) : (
               <span>
-                Add <strong>AED {remainingForFree.toFixed(2)}</strong> more for <strong>FREE UAE Delivery</strong>
+                Add <strong>{curr} {remainingForFree.toFixed(2)}</strong> more for <strong>FREE Delivery</strong>
               </span>
             )}
-            <span>{Math.round(progressPercent)}%</span>
+            <span className="meter-percent">{Math.round(progressPercent)}%</span>
           </div>
           <div className="meter-track">
             <div 
-              className="meter-fill" 
+              className={`meter-fill ${isFreeShipping ? 'complete' : ''}`} 
               style={{ width: `${progressPercent}%` }}
             />
           </div>
@@ -78,7 +91,7 @@ export const CartDrawer = () => {
         <div className="drawer-body">
           {cart.length === 0 ? (
             <div className="drawer-empty-state">
-              <ShoppingBag size={48} strokeWidth={1} color="#9ca3af" />
+              <ShoppingBag size={48} strokeWidth={1} color="var(--color-text-light, #9ca3af)" />
               <h3>Your shopping bag is empty</h3>
               <p>Looks like you haven't added any K-Beauty favorites yet.</p>
               <button 
@@ -92,50 +105,108 @@ export const CartDrawer = () => {
               </button>
             </div>
           ) : (
-            <div className="cart-items-list">
-              {cart.map((item) => (
-                <div key={item.id} className="cart-item-card">
-                  <div className="cart-item-img-box">
-                    <img src={item.image} alt={item.name} />
-                  </div>
-
-                  <div className="cart-item-details">
-                    <div className="cart-item-header">
-                      <h4 className="cart-item-title">{item.name}</h4>
-                      <button 
-                        className="cart-item-trash"
-                        onClick={() => removeFromCart(item.id)}
-                        aria-label="Remove item"
-                      >
-                        <Trash2 size={15} />
-                      </button>
+            <>
+              <div className="cart-items-list">
+                {cart.map((item) => (
+                  <div key={item.id} className="cart-item-card">
+                    <div className="cart-item-img-box">
+                      <img src={item.image} alt={item.name} />
                     </div>
 
-                    <div className="cart-item-footer">
-                      <div className="qty-control">
+                    <div className="cart-item-details">
+                      <div className="cart-item-header">
+                        <h4 className="cart-item-title">{item.name}</h4>
                         <button 
-                          className="qty-btn"
-                          onClick={() => updateCartQuantity(item.id, item.quantity - 1)}
+                          className="cart-item-trash"
+                          onClick={() => removeFromCart(item.id)}
+                          aria-label="Remove item"
+                          title="Remove item"
                         >
-                          <Minus size={12} />
-                        </button>
-                        <span className="qty-value">{item.quantity}</span>
-                        <button 
-                          className="qty-btn"
-                          onClick={() => updateCartQuantity(item.id, item.quantity + 1)}
-                        >
-                          <Plus size={12} />
+                          <Trash2 size={15} />
                         </button>
                       </div>
 
-                      <span className="cart-item-price">
-                        AED {(item.price * item.quantity).toFixed(2)}
-                      </span>
+                      {item.selectedColor && (
+                        <span className="cart-item-variant">Color: {item.selectedColor}</span>
+                      )}
+
+                      <div className="cart-item-footer">
+                        <div className="qty-control">
+                          <button 
+                            className="qty-btn"
+                            onClick={() => updateCartQuantity(item.id, item.quantity - 1)}
+                            aria-label="Decrease"
+                          >
+                            <Minus size={12} />
+                          </button>
+                          <span className="qty-value">{item.quantity}</span>
+                          <button 
+                            className="qty-btn"
+                            onClick={() => updateCartQuantity(item.id, item.quantity + 1)}
+                            aria-label="Increase"
+                          >
+                            <Plus size={12} />
+                          </button>
+                        </div>
+
+                        <span className="cart-item-price">
+                          {curr} {(item.price * item.quantity).toFixed(2)}
+                        </span>
+                      </div>
                     </div>
                   </div>
+                ))}
+              </div>
+
+              {/* Cross-Sell Recommendations */}
+              {crossSellProducts.length > 0 && (
+                <div className="cart-cross-sell-section">
+                  <div className="cross-sell-title">
+                    <Sparkles size={13} color="#7c3aed" />
+                    <span>Pairs Well With Your Order</span>
+                  </div>
+                  <div className="cross-sell-list">
+                    {crossSellProducts.map((cp) => (
+                      <div key={cp.id} className="cross-sell-card">
+                        <img src={cp.image} alt={cp.name} className="cross-sell-img" />
+                        <div className="cross-sell-info">
+                          <span className="cross-sell-name">{cp.name}</span>
+                          <span className="cross-sell-price">{curr} {Number(cp.price).toFixed(2)}</span>
+                        </div>
+                        <button 
+                          className="cross-sell-add-btn"
+                          onClick={() => addToCart(cp, 1)}
+                          title="Add to Cart"
+                        >
+                          + Add
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              ))}
-            </div>
+              )}
+
+              {/* Order Notes Accordion */}
+              <div className="cart-order-note-box">
+                <button 
+                  className="cart-note-toggle"
+                  onClick={() => setNoteOpen(!noteOpen)}
+                >
+                  <MessageSquare size={14} />
+                  <span>{orderNote ? 'Edit Order Note' : 'Add Delivery Note or Gift Wrap'}</span>
+                </button>
+                {noteOpen && (
+                  <div className="cart-note-input-wrap">
+                    <textarea 
+                      placeholder="Special instructions for delivery (e.g. gate code, leave at door, gift note)..." 
+                      value={orderNote}
+                      onChange={(e) => setOrderNote(e.target.value)}
+                      rows={2}
+                    />
+                  </div>
+                )}
+              </div>
+            </>
           )}
         </div>
 
@@ -144,22 +215,22 @@ export const CartDrawer = () => {
           <div className="drawer-footer">
             <div className="price-summary-row">
               <span>Subtotal</span>
-              <span>AED {cartSubtotal.toFixed(2)}</span>
+              <span>{curr} {cartSubtotal.toFixed(2)}</span>
             </div>
 
             <div className="price-summary-row">
               <span>Estimated Shipping</span>
-              <span>{isFreeShipping ? 'FREE' : `AED ${shippingFee.toFixed(2)}`}</span>
+              <span>{isFreeShipping ? 'FREE' : `${curr} ${shippingFee.toFixed(2)}`}</span>
             </div>
 
             <div className="price-summary-row">
               <span>Estimated VAT (5%)</span>
-              <span>AED {estimatedTax.toFixed(2)}</span>
+              <span>{curr} {estimatedTax.toFixed(2)}</span>
             </div>
 
             <div className="price-summary-row total">
               <span>Total</span>
-              <span>AED {cartTotal.toFixed(2)}</span>
+              <span>{curr} {cartTotal.toFixed(2)}</span>
             </div>
 
             <button 
@@ -170,7 +241,7 @@ export const CartDrawer = () => {
               <ArrowRight size={16} />
             </button>
 
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', fontSize: '11.5px', color: '#6b7280', marginTop: '12px' }}>
+            <div className="checkout-trust-badge">
               <ShieldCheck size={14} color="#10b981" />
               <span>Safe & Secure 256-Bit SSL Encrypted Checkout</span>
             </div>

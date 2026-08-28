@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { Flame, Clock, Copy, Check, Tag, Zap, ArrowRight } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Flame, Clock, Copy, Check, Tag, Zap, ArrowRight, Sparkles, Filter } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { ProductCard } from '../components/common/ProductCard';
 
 export const DealsPage = () => {
-  const { products, showToast, coupons: adminCoupons, campaign } = useStore();
+  const { products, showToast, coupons: adminCoupons, campaign, settings } = useStore();
   const [copiedCode, setCopiedCode] = useState(null);
+  const [dealFilter, setDealFilter] = useState('all');
+
+  const curr = settings?.currency || 'AED';
 
   // Live countdown timer
   const [timeLeft, setTimeLeft] = useState({
@@ -33,9 +36,27 @@ export const DealsPage = () => {
   }, []);
 
   // Filter products on sale or with discounted originalPrice
-  const saleProducts = products.filter(
-    (p) => p.isActive !== false && (p.isSale || (p.originalPrice && Number(p.originalPrice) > Number(p.price)))
-  );
+  const allSaleProducts = useMemo(() => {
+    return products.filter(
+      (p) => p.isActive !== false && (p.isSale || (p.originalPrice && Number(p.originalPrice) > Number(p.price)))
+    );
+  }, [products]);
+
+  // Filtered by sub-pill
+  const displayedDeals = useMemo(() => {
+    return allSaleProducts.filter((p) => {
+      if (dealFilter === 'under-100') return Number(p.price) <= 100;
+      if (dealFilter === 'big-discount') {
+        if (!p.originalPrice) return false;
+        const discount = ((Number(p.originalPrice) - Number(p.price)) / Number(p.originalPrice)) * 100;
+        return discount >= 30;
+      }
+      if (dealFilter !== 'all') {
+        return p.category === dealFilter;
+      }
+      return true;
+    });
+  }, [allSaleProducts, dealFilter]);
 
   const copyCoupon = (code) => {
     if (navigator.clipboard) {
@@ -53,18 +74,18 @@ export const DealsPage = () => {
         {
           code: 'KBEAUTY20',
           discount: '20% OFF',
-          description: 'Applicable on all skincare sets and creams over 150 AED',
+          description: `Applicable on all skincare sets and creams over 150 ${curr}`,
           expires: 'Valid today'
         },
         {
           code: 'UAESHIP',
           discount: 'FREE UAE DELIVERY',
           description: 'Unlock 100% free express delivery across all Emirates',
-          expires: 'Orders over 150 AED'
+          expires: `Orders over 150 ${curr}`
         },
         {
           code: 'GLOW50',
-          discount: '50 AED OFF',
+          discount: `50 ${curr} OFF`,
           description: 'Exclusive discount on Luxury NAD+ and Triple PDRN sets',
           expires: 'Limited quantity'
         }
@@ -76,15 +97,15 @@ export const DealsPage = () => {
       <div className="deals-hero-banner">
         <div className="container">
           <div className="deals-hero-content">
-            <div className="hero-offer-badge" style={{ backgroundColor: '#fee2e2', color: '#ef4444' }}>
+            <div className="hero-offer-badge">
               <Flame size={16} />
               <span>{campaign?.name || 'K-Beauty Flash Deals'}</span>
             </div>
 
-            <h1 style={{ fontSize: '42px', fontWeight: '800', margin: '12px 0 16px 0', letterSpacing: '-0.02em' }}>
+            <h1 className="deals-hero-title">
               {campaign?.headline || 'Up to 45% Off Luxury Skincare Sets'}
             </h1>
-            <p style={{ fontSize: '16px', color: '#4b5563', maxWidth: '520px', margin: '0 auto 28px auto' }}>
+            <p className="deals-hero-sub">
               Grab authentic Korean skincare formulas, sun care sticks, and cleansing sets. Deals expire when timer hits zero!
             </p>
 
@@ -114,13 +135,13 @@ export const DealsPage = () => {
         <div style={{ marginBottom: '48px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px' }}>
             <Tag size={20} color="#ea580c" />
-            <h2 style={{ fontSize: '22px', fontWeight: '800' }}>Active Promo Vouchers</h2>
+            <h2 style={{ fontSize: '22px', fontWeight: '800', color: 'var(--color-text-primary, #0f172a)' }}>Active Promo Vouchers</h2>
           </div>
 
           <div className="coupons-grid">
             {activeCouponsList.map((c) => {
-              const discountLabel = c.discount || (c.type === 'percentage' ? `${c.value}% OFF` : `${c.value} AED OFF`);
-              const descLabel = c.description || (c.minSpend ? `On orders over ${c.minSpend} AED` : 'Applicable on storewide items');
+              const discountLabel = c.discount || (c.type === 'percentage' ? `${c.value}% OFF` : `${c.value} ${curr} OFF`);
+              const descLabel = c.description || (c.minSpend ? `On orders over ${c.minSpend} ${curr}` : 'Applicable on storewide items');
               const expiryLabel = c.expires || (c.expiryDate ? `Expires ${c.expiryDate}` : 'Valid today');
 
               return (
@@ -135,6 +156,7 @@ export const DealsPage = () => {
                     <button 
                       className="ticket-copy-btn"
                       onClick={() => copyCoupon(c.code)}
+                      title="Copy Coupon Code"
                     >
                       {copiedCode === c.code ? (
                         <>
@@ -155,23 +177,54 @@ export const DealsPage = () => {
           </div>
         </div>
 
-        {/* Discounted Products Grid */}
+        {/* Discounted Products Section with Quick Filters */}
         <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Zap size={22} color="#f59e0b" />
-              <h2 style={{ fontSize: '24px', fontWeight: '800' }}>Hot Deals on Sale</h2>
+              <h2 style={{ fontSize: '24px', fontWeight: '800', color: 'var(--color-text-primary, #0f172a)' }}>Hot Deals on Sale</h2>
             </div>
-            <span style={{ fontSize: '13px', color: '#6b7280' }}>
-              Showing {saleProducts.length} discounted items
+            <span style={{ fontSize: '13px', color: 'var(--color-text-muted, #6b7280)' }}>
+              Showing {displayedDeals.length} of {allSaleProducts.length} deals
             </span>
           </div>
 
-          <div className="products-grid">
-            {saleProducts.map((product) => (
+          {/* Deals Quick Filter Pills */}
+          <div className="deals-filter-pills-row">
+            {[
+              { id: 'all', label: '🔥 All Deals' },
+              { id: 'big-discount', label: '⚡ 30%+ OFF' },
+              { id: 'under-100', label: `🏷️ Under ${curr} 100` },
+              { id: 'sunscreen', label: '☀️ Sun Care Deals' },
+              { id: 'cleansers', label: '🫧 Cleanser Specials' },
+              { id: 'serums', label: '💧 Serum Bundles' }
+            ].map((pill) => (
+              <button
+                key={pill.id}
+                className={`deals-filter-pill ${dealFilter === pill.id ? 'active' : ''}`}
+                onClick={() => setDealFilter(pill.id)}
+              >
+                {pill.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="products-grid" style={{ marginTop: '24px' }}>
+            {displayedDeals.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
+
+          {displayedDeals.length === 0 && (
+            <div className="empty-catalog-state" style={{ marginTop: '24px' }}>
+              <Zap size={44} color="#9ca3af" />
+              <h3>No deals in this category</h3>
+              <p>Try switching to another filter or exploring all deals.</p>
+              <button className="hero-cta-btn" onClick={() => setDealFilter('all')} style={{ marginTop: '14px' }}>
+                View All Deals
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

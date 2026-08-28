@@ -188,6 +188,25 @@ export const UserDashboard = () => {
           </div>
         </header>
 
+        {/* Mobile Horizontal Tabs Pill Bar */}
+        <div className="ud2-mobile-pills-bar">
+          {navItems.map(item => {
+            const Icon = item.icon;
+            const isActive = activeTab === item.id;
+            return (
+              <button
+                key={item.id}
+                className={`ud2-mobile-pill ${isActive ? 'active' : ''}`}
+                onClick={() => setActiveTab(item.id)}
+              >
+                <Icon size={14} />
+                <span>{item.label}</span>
+                {item.badge ? <span className="ud2-pill-badge">{item.badge}</span> : null}
+              </button>
+            );
+          })}
+        </div>
+
         {/* Page content */}
         <div className="ud2-content">
           {renderContent()}

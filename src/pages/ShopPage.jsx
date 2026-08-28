@@ -12,7 +12,8 @@ import {
   Sparkles, 
   X,
   Award,
-  ShieldCheck
+  ShieldCheck,
+  ChevronDown
 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { categories } from '../data/categories';
@@ -28,7 +29,8 @@ export const ShopPage = () => {
     activeBrand,
     setActiveBrand,
     searchQuery, 
-    setSearchQuery 
+    setSearchQuery,
+    settings
   } = useStore();
 
   const [selectedCategories, setSelectedCategories] = useState(
@@ -37,6 +39,7 @@ export const ShopPage = () => {
   const [selectedBrands, setSelectedBrands] = useState(
     activeBrand !== 'all' ? [activeBrand] : []
   );
+  const [brandSearchTerm, setBrandSearchTerm] = useState('');
   const [priceRange, setPriceRange] = useState(500);
   const [minRating, setMinRating] = useState(0);
   const [onlyInStock, setOnlyInStock] = useState(false);
@@ -45,6 +48,9 @@ export const ShopPage = () => {
   const [viewLayout, setViewLayout] = useState('grid'); // 'grid' | 'list'
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [isFiltering, setIsFiltering] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(12);
+
+  const curr = settings?.currency || 'AED';
 
   // Extract all available brands dynamically with product count
   const allBrands = useMemo(() => {
@@ -60,10 +66,18 @@ export const ShopPage = () => {
       .sort((a, b) => b.count - a.count);
   }, [products]);
 
-  // Trigger smooth skeleton shimmer when filters change
+  // Filter brands by search term
+  const filteredBrandList = useMemo(() => {
+    if (!brandSearchTerm.trim()) return allBrands;
+    const q = brandSearchTerm.toLowerCase();
+    return allBrands.filter((b) => b.name.toLowerCase().includes(q));
+  }, [allBrands, brandSearchTerm]);
+
+  // Trigger smooth skeleton shimmer & reset pagination when filters change
   useEffect(() => {
     setIsFiltering(true);
-    const timer = setTimeout(() => setIsFiltering(false), 220);
+    setVisibleCount(12);
+    const timer = setTimeout(() => setIsFiltering(false), 200);
     return () => clearTimeout(timer);
   }, [selectedCategories, selectedBrands, priceRange, minRating, onlyInStock, onlySale, sortBy, searchQuery]);
 
@@ -126,11 +140,13 @@ export const ShopPage = () => {
     setActiveCategory('all');
     setSelectedBrands([]);
     setActiveBrand('all');
+    setBrandSearchTerm('');
     setPriceRange(500);
     setMinRating(0);
     setOnlyInStock(false);
     setOnlySale(false);
     setSearchQuery('');
+    setVisibleCount(12);
   };
 
   // Active filter count
@@ -170,7 +186,7 @@ export const ShopPage = () => {
         return false;
       }
       // Sale filter
-      if (onlySale && !prod.isSale) {
+      if (onlySale && !prod.isSale && !(prod.originalPrice && Number(prod.originalPrice) > Number(prod.price))) {
         return false;
       }
       // Search filter
@@ -192,6 +208,11 @@ export const ShopPage = () => {
     });
   }, [products, selectedCategories, selectedBrands, priceRange, minRating, onlyInStock, onlySale, searchQuery, sortBy]);
 
+  // Paginated slice
+  const displayedProducts = useMemo(() => {
+    return filteredProducts.slice(0, visibleCount);
+  }, [filteredProducts, visibleCount]);
+
   // Page header title computation
   const bannerHeadline = useMemo(() => {
     if (selectedBrands.length === 1 && selectedCategories.length === 0) {
@@ -202,7 +223,7 @@ export const ShopPage = () => {
       return cObj?.name || 'Category Catalog';
     }
     if (selectedBrands.length > 0 && selectedCategories.length > 0) {
-      return 'Filtered Products';
+      return 'Filtered Catalog';
     }
     return 'All Products Catalog';
   }, [selectedBrands, selectedCategories]);
@@ -213,23 +234,23 @@ export const ShopPage = () => {
       <div className="shop-header-banner">
         <div className="container">
           <div style={{ maxWidth: '640px' }}>
-            <span style={{ fontSize: '12.5px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#6b7280', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span className="shop-banner-tag">
               {selectedBrands.length === 1 ? (
                 <>
                   <ShieldCheck size={14} color="#7c3aed" />
                   <span>Official Brand Store • 100% Authentic</span>
                 </>
               ) : (
-                <span>Explore Everything</span>
+                <span>Curated K-Beauty & Skincare</span>
               )}
             </span>
-            <h1 style={{ fontSize: '36px', fontWeight: '800', marginTop: '4px', marginBottom: '8px', color: '#0f172a' }}>
+            <h1 className="shop-banner-title">
               {bannerHeadline}
             </h1>
-            <p style={{ color: '#4b5563', fontSize: '14.5px', lineHeight: '1.5' }}>
+            <p className="shop-banner-desc">
               {selectedBrands.length === 1 
-                ? `Discover genuine ${selectedBrands[0]} skincare products with verified batch codes and express delivery.`
-                : 'Browse our complete collection of authentic Korean skincare, sunscreens, serums, and value sets.'
+                ? `Discover genuine ${selectedBrands[0]} formulas with verified batch codes, authentic packaging, and express delivery.`
+                : 'Explore our complete collection of Korean sunscreen sticks, gentle foaming cleansers, barrier repair ampoules, and value sets.'
               }
             </p>
           </div>
@@ -273,7 +294,7 @@ export const ShopPage = () => {
             </div>
 
             <div className="sidebar-body-scroll">
-              {/* Brand Filter */}
+              {/* Brand Filter with Search */}
               <div className="filter-group">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                   <h4 className="filter-title" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -283,15 +304,33 @@ export const ShopPage = () => {
                   {selectedBrands.length > 0 && (
                     <button 
                       onClick={() => { setSelectedBrands([]); setActiveBrand('all'); }} 
-                      style={{ border: 'none', background: 'transparent', fontSize: '11px', color: '#7c3aed', fontWeight: '700', cursor: 'pointer' }}
+                      className="filter-clear-btn"
                     >
                       Clear
                     </button>
                   )}
                 </div>
 
+                {/* Brand Search Input */}
+                {allBrands.length > 5 && (
+                  <div className="sidebar-search-box">
+                    <Search size={13} color="var(--color-text-light, #9ca3af)" />
+                    <input 
+                      type="text" 
+                      placeholder="Search brands..." 
+                      value={brandSearchTerm}
+                      onChange={(e) => setBrandSearchTerm(e.target.value)}
+                    />
+                    {brandSearchTerm && (
+                      <button onClick={() => setBrandSearchTerm('')} style={{ border: 'none', background: 'none', padding: 0, cursor: 'pointer', color: '#9ca3af' }}>
+                        <X size={12} />
+                      </button>
+                    )}
+                  </div>
+                )}
+
                 <div className="filter-checkbox-list" style={{ maxHeight: '180px', overflowY: 'auto' }}>
-                  {allBrands.map((b) => (
+                  {filteredBrandList.map((b) => (
                     <label key={b.name} className="checkbox-item">
                       <input
                         type="checkbox"
@@ -302,11 +341,14 @@ export const ShopPage = () => {
                       <span className="label-text" style={{ flex: 1, fontWeight: selectedBrands.includes(b.name) ? '700' : '400' }}>
                         {b.name}
                       </span>
-                      <span style={{ fontSize: '11px', color: '#94a3b8', marginLeft: 'auto' }}>
+                      <span className="checkbox-count">
                         {b.count}
                       </span>
                     </label>
                   ))}
+                  {filteredBrandList.length === 0 && (
+                    <p style={{ fontSize: '12px', color: '#9ca3af', padding: '6px 0' }}>No matching brands</p>
+                  )}
                 </div>
               </div>
 
@@ -317,7 +359,7 @@ export const ShopPage = () => {
                   {selectedCategories.length > 0 && (
                     <button 
                       onClick={() => { setSelectedCategories([]); setActiveCategory('all'); }} 
-                      style={{ border: 'none', background: 'transparent', fontSize: '11px', color: '#7c3aed', fontWeight: '700', cursor: 'pointer' }}
+                      className="filter-clear-btn"
                     >
                       Clear
                     </button>
@@ -339,14 +381,34 @@ export const ShopPage = () => {
                 </div>
               </div>
 
-              {/* Price Slider (AED) */}
+              {/* Price Slider with Presets */}
               <div className="filter-group">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                   <h4 className="filter-title" style={{ margin: 0 }}>Max Price</h4>
-                  <span style={{ fontSize: '14px', fontWeight: '800', color: '#111827' }}>
-                    AED {priceRange}
+                  <span style={{ fontSize: '14px', fontWeight: '800', color: 'var(--color-text-primary, #111827)' }}>
+                    {curr} {priceRange}
                   </span>
                 </div>
+
+                {/* Quick Price Preset Buttons */}
+                <div className="price-presets-row">
+                  {[
+                    { label: 'All', val: 500 },
+                    { label: `< 50`, val: 50 },
+                    { label: `< 100`, val: 100 },
+                    { label: `< 200`, val: 200 }
+                  ].map((preset) => (
+                    <button
+                      key={preset.val}
+                      type="button"
+                      className={`price-preset-chip ${priceRange === preset.val ? 'active' : ''}`}
+                      onClick={() => setPriceRange(preset.val)}
+                    >
+                      {preset.label}
+                    </button>
+                  ))}
+                </div>
+
                 <input
                   type="range"
                   min="20"
@@ -354,12 +416,12 @@ export const ShopPage = () => {
                   step="10"
                   value={priceRange}
                   onChange={(e) => setPriceRange(Number(e.target.value))}
-                  style={{ width: '100%', accentColor: '#111827' }}
+                  className="shop-price-slider"
                 />
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#9ca3af', marginTop: '4px' }}>
-                  <span>AED 20</span>
-                  <span>AED 250</span>
-                  <span>AED 500+</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--color-text-muted, #9ca3af)', marginTop: '4px' }}>
+                  <span>{curr} 20</span>
+                  <span>{curr} 250</span>
+                  <span>{curr} 500+</span>
                 </div>
               </div>
 
@@ -375,7 +437,7 @@ export const ShopPage = () => {
                   ].map((r) => (
                     <label key={r.value} className="radio-item" onClick={() => setMinRating(r.value)}>
                       <span className={`radio-dot ${minRating === r.value ? 'selected' : ''}`} />
-                      <span style={{ fontSize: '13px', color: minRating === r.value ? '#111827' : '#4b5563', fontWeight: minRating === r.value ? '600' : '400' }}>
+                      <span style={{ fontSize: '13px', color: minRating === r.value ? 'var(--color-text-primary, #111827)' : 'var(--color-text-secondary, #4b5563)', fontWeight: minRating === r.value ? '600' : '400' }}>
                         {r.label}
                       </span>
                     </label>
@@ -441,8 +503,8 @@ export const ShopPage = () => {
                 )}
               </button>
 
-              <div className="shop-product-count" style={{ fontSize: '13.5px', color: '#6b7280' }}>
-                Showing <strong>{filteredProducts.length}</strong> of {products.length} products
+              <div className="shop-product-count" style={{ fontSize: '13.5px', color: 'var(--color-text-muted, #6b7280)' }}>
+                Showing <strong>{Math.min(visibleCount, filteredProducts.length)}</strong> of {filteredProducts.length} products
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -488,7 +550,7 @@ export const ShopPage = () => {
 
                 {/* Brand Chips */}
                 {selectedBrands.map((bName) => (
-                  <span key={bName} className="filter-chip" style={{ background: '#f5f3ff', color: '#7c3aed', borderColor: '#c4b5fd' }}>
+                  <span key={bName} className="filter-chip brand-chip">
                     <Award size={11} />
                     <span>Brand: {bName}</span>
                     <button onClick={() => toggleBrand(bName)} aria-label="Remove brand filter">
@@ -512,7 +574,7 @@ export const ShopPage = () => {
 
                 {priceRange < 500 && (
                   <span className="filter-chip">
-                    Under AED {priceRange}
+                    Under {curr} {priceRange}
                     <button onClick={() => setPriceRange(500)} aria-label="Remove price filter">
                       <X size={11} />
                     </button>
@@ -561,7 +623,7 @@ export const ShopPage = () => {
               <ProductGridSkeleton count={8} />
             ) : filteredProducts.length === 0 ? (
               <div className="empty-catalog-state">
-                <Search size={48} color="#9ca3af" />
+                <Search size={48} color="var(--color-text-light, #9ca3af)" />
                 <h3>No products match your criteria</h3>
                 <p>Try resetting filters or adjusting your brand and category options.</p>
                 <button className="hero-cta-btn" onClick={handleResetFilters} style={{ marginTop: '16px' }}>
@@ -569,11 +631,35 @@ export const ShopPage = () => {
                 </button>
               </div>
             ) : (
-              <div className={`products-grid ${viewLayout === 'list' ? 'products-list-layout' : ''}`}>
-                {filteredProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
+              <>
+                <div className={`products-grid ${viewLayout === 'list' ? 'products-list-layout' : ''}`}>
+                  {displayedProducts.map((product) => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
+                </div>
+
+                {/* Load More Pagination */}
+                {displayedProducts.length < filteredProducts.length && (
+                  <div className="catalog-load-more-box">
+                    <div className="load-more-progress-text">
+                      Showing <strong>{displayedProducts.length}</strong> of <strong>{filteredProducts.length}</strong> products
+                    </div>
+                    <div className="load-more-progress-bar">
+                      <div 
+                        className="load-more-progress-fill" 
+                        style={{ width: `${(displayedProducts.length / filteredProducts.length) * 100}%` }}
+                      />
+                    </div>
+                    <button
+                      className="load-more-btn"
+                      onClick={() => setVisibleCount((prev) => prev + 12)}
+                    >
+                      <span>Load More Products</span>
+                      <ChevronDown size={15} />
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </main>
         </div>

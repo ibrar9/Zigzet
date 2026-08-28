@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heart, ShoppingCart, Star, Eye, Bell } from 'lucide-react';
+import { Heart, ShoppingCart, Star, Eye, Bell, Check, Sparkles } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
 export const ProductCard = ({ product }) => {
@@ -7,23 +7,29 @@ export const ProductCard = ({ product }) => {
     addToCart, 
     toggleWishlist, 
     isInWishlist, 
-    setQuickViewProduct,
-    openNotifyModal,
-    settings
+    setQuickViewProduct, 
+    openNotifyModal, 
+    settings 
   } = useStore();
 
   const [selectedColor, setSelectedColor] = useState(
     product.colors && product.colors.length > 0 ? product.colors[0] : null
   );
+  const [isAdded, setIsAdded] = useState(false);
 
   const isSaved = isInWishlist(product.id);
   const activeImage = selectedColor ? selectedColor.image : product.image;
   const isOutOfStock = product.stock !== undefined && product.stock <= 0;
 
+  // Calculate discount percentage
+  const discountPercent = (product.originalPrice && Number(product.originalPrice) > Number(product.price))
+    ? Math.round(((Number(product.originalPrice) - Number(product.price)) / Number(product.originalPrice)) * 100)
+    : 0;
+
   // Render 5 stars based on rating
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, i) => {
-      const fillAmount = Math.max(0, Math.min(1, rating - i));
+      const fillAmount = Math.max(0, Math.min(1, (rating || 5) - i));
       return (
         <Star
           key={i}
@@ -46,6 +52,18 @@ export const ProductCard = ({ product }) => {
 
   const productSize = extractSize(product.name, product.size);
 
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+    addToCart({ 
+      ...product, 
+      image: activeImage, 
+      selectedColor: selectedColor?.name,
+      productSize 
+    }, 1);
+    setIsAdded(true);
+    setTimeout(() => setIsAdded(false), 1400);
+  };
+
   return (
     <div className="product-card">
       {/* Product Image Tile */}
@@ -53,19 +71,22 @@ export const ProductCard = ({ product }) => {
         className="product-thumb-wrapper" 
         onClick={() => setQuickViewProduct({ ...product, activeImage, selectedColor, productSize })}
       >
-        {/* Sale Badge & Out of Stock Badge */}
-        {isOutOfStock ? (
-          <span className="product-badge-sale" style={{ backgroundColor: '#ef4444', color: '#fff' }}>Out of Stock</span>
-        ) : product.isSale ? (
-          <span className="product-badge-sale">Sale</span>
-        ) : null}
+        {/* Dynamic Badges */}
+        <div className="product-badge-group">
+          {isOutOfStock ? (
+            <span className="product-badge-sale out-of-stock">Sold Out</span>
+          ) : discountPercent > 0 ? (
+            <span className="product-badge-sale discount-badge">-{discountPercent}%</span>
+          ) : product.isSale ? (
+            <span className="product-badge-sale">Sale</span>
+          ) : null}
 
-        {/* Product Size Badge */}
-        {productSize && (
-          <span className="product-size-badge" title={`Size / Volume: ${productSize}`}>
-            {productSize}
-          </span>
-        )}
+          {productSize && (
+            <span className="product-size-badge" title={`Size / Volume: ${productSize}`}>
+              {productSize}
+            </span>
+          )}
+        </div>
 
         {/* Wishlist Button */}
         <button
@@ -75,11 +96,12 @@ export const ProductCard = ({ product }) => {
             toggleWishlist(product);
           }}
           aria-label="Toggle Wishlist"
+          title={isSaved ? "Remove from Wishlist" : "Save to Wishlist"}
         >
           <Heart 
             size={16} 
             fill={isSaved ? '#ef4444' : 'none'} 
-            color={isSaved ? '#ef4444' : '#111827'} 
+            color={isSaved ? '#ef4444' : 'currentColor'} 
           />
         </button>
 
@@ -90,15 +112,17 @@ export const ProductCard = ({ product }) => {
           loading="lazy"
         />
 
-        {/* Quick View Button on Hover */}
+        {/* Quick View Button on Hover & Mobile */}
         <button 
           className="quick-view-overlay-btn"
           onClick={(e) => {
             e.stopPropagation();
             setQuickViewProduct({ ...product, activeImage, selectedColor, productSize });
           }}
+          title="Quick View"
         >
-          Quick View
+          <Eye size={14} />
+          <span>Quick View</span>
         </button>
       </div>
 
@@ -137,13 +161,13 @@ export const ProductCard = ({ product }) => {
           <div className="stars-row">
             {renderStars(product.rating || 5)}
           </div>
-          <span className="rating-number">({product.rating})</span>
+          <span className="rating-number">({product.rating || 5})</span>
         </div>
 
         {/* Price Row (Dynamic Currency) */}
         <div className="product-price-row">
           <span className="current-price">{settings?.currency || 'AED'} {Number(product.price).toFixed(2)}</span>
-          {product.originalPrice && (
+          {product.originalPrice && Number(product.originalPrice) > Number(product.price) && (
             <span className="original-price">{settings?.currency || 'AED'} {Number(product.originalPrice).toFixed(2)}</span>
           )}
         </div>
@@ -152,18 +176,27 @@ export const ProductCard = ({ product }) => {
         {isOutOfStock ? (
           <button
             className="notify-stock-btn"
-            onClick={() => openNotifyModal(product)}
+            onClick={(e) => { e.stopPropagation(); openNotifyModal(product); }}
           >
             <Bell size={14} />
             <span>Notify When Available</span>
           </button>
         ) : (
           <button
-            className="add-to-cart-btn"
-            onClick={() => addToCart({ ...product, image: activeImage, selectedColor: selectedColor?.name }, 1)}
+            className={`add-to-cart-btn ${isAdded ? 'added' : ''}`}
+            onClick={handleAddToCart}
           >
-            <ShoppingCart size={15} />
-            <span>Add to Cart</span>
+            {isAdded ? (
+              <>
+                <Check size={15} className="add-check-icon" />
+                <span>Added to Bag!</span>
+              </>
+            ) : (
+              <>
+                <ShoppingCart size={15} />
+                <span>Add to Bag</span>
+              </>
+            )}
           </button>
         )}
       </div>

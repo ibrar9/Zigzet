@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { 
   ShoppingBag, 
   Search, 
@@ -16,7 +16,14 @@ import {
   Sparkles,
   MessageCircle,
   ShieldCheck,
-  ChevronRight
+  ChevronRight,
+  Sun,
+  Moon,
+  LogOut,
+  Package,
+  Gift,
+  Settings,
+  ShieldAlert
 } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 import { categories } from '../../data/categories';
@@ -35,7 +42,10 @@ export const Header = () => {
     navigatePage,
     setViewMode,
     settings,
-    currentUser
+    currentUser,
+    logoutUser,
+    theme,
+    toggleTheme
   } = useStore();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -44,6 +54,32 @@ export const Header = () => {
   const [brandDropdownOpen, setBrandDropdownOpen] = useState(false);
   const [mobileBrandsOpen, setMobileBrandsOpen] = useState(false);
   const [mobileCategoriesOpen, setMobileCategoriesOpen] = useState(false);
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+
+  const userDropdownRef = useRef(null);
+
+  // Close user dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (userDropdownRef.current && !userDropdownRef.current.contains(e.target)) {
+        setUserDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Global Ctrl+K / Cmd+K search shortcut
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsSearchOpen(true);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [setIsSearchOpen]);
 
   // Extract unique active brands dynamically
   const uniqueBrands = useMemo(() => {
@@ -66,6 +102,13 @@ export const Header = () => {
     }
   };
 
+  const closeAllDropdowns = () => {
+    setShopDropdownOpen(false);
+    setCatDropdownOpen(false);
+    setBrandDropdownOpen(false);
+    setUserDropdownOpen(false);
+  };
+
   const storeName = settings?.storeName || 'Zigzet';
 
   return (
@@ -83,7 +126,7 @@ export const Header = () => {
         {/* Brand Logo */}
         <div 
           className="brand-logo" 
-          onClick={() => navigatePage('home')}
+          onClick={() => { navigatePage('home'); closeAllDropdowns(); }}
           style={{ cursor: 'pointer' }}
         >
           <div className="brand-logo-icon">
@@ -100,7 +143,7 @@ export const Header = () => {
         <nav className="nav-links">
           <span 
             className={`nav-item ${currentPage === 'home' ? 'active' : ''}`}
-            onClick={() => navigatePage('home')}
+            onClick={() => { navigatePage('home'); closeAllDropdowns(); }}
           >
             Home
           </span>
@@ -110,10 +153,10 @@ export const Header = () => {
             className={`nav-item dropdown-trigger ${currentPage === 'shop' ? 'active' : ''}`}
             onMouseEnter={() => setShopDropdownOpen(true)}
             onMouseLeave={() => setShopDropdownOpen(false)}
-            onClick={() => navigatePage('shop')}
+            onClick={() => { navigatePage('shop'); closeAllDropdowns(); }}
           >
             <span>Shop</span>
-            <ChevronDown size={14} />
+            <ChevronDown size={14} className={`nav-chevron ${shopDropdownOpen ? 'rotate' : ''}`} />
 
             {/* Dropdown Menu */}
             {shopDropdownOpen && (
@@ -126,32 +169,32 @@ export const Header = () => {
                 <div className="mega-menu-grid">
                   <div className="mega-col">
                     <h5 className="mega-col-title">Collections</h5>
-                    <span className="mega-link" onClick={() => { navigatePage('shop', 'all'); setShopDropdownOpen(false); }}>
+                    <span className="mega-link" onClick={() => { navigatePage('shop', 'all'); closeAllDropdowns(); }}>
                       All Products Catalog
                     </span>
-                    <span className="mega-link" onClick={() => { navigatePage('deals'); setShopDropdownOpen(false); }}>
+                    <span className="mega-link" onClick={() => { navigatePage('deals'); closeAllDropdowns(); }}>
                       Flash Sale Deals & Sets
                     </span>
-                    <span className="mega-link" onClick={() => { navigatePage('shop', 'sunscreen'); setShopDropdownOpen(false); }}>
+                    <span className="mega-link" onClick={() => { navigatePage('shop', 'sunscreen'); closeAllDropdowns(); }}>
                       Sun Care & SPF
                     </span>
-                    <span className="mega-link" onClick={() => { navigatePage('shop', 'cleansers'); setShopDropdownOpen(false); }}>
+                    <span className="mega-link" onClick={() => { navigatePage('shop', 'cleansers'); closeAllDropdowns(); }}>
                       Cleansers & Balms
                     </span>
                   </div>
 
                   <div className="mega-col">
                     <h5 className="mega-col-title">Skincare Routine</h5>
-                    <span className="mega-link" onClick={() => { navigatePage('shop', 'serums'); setShopDropdownOpen(false); }}>
+                    <span className="mega-link" onClick={() => { navigatePage('shop', 'serums'); closeAllDropdowns(); }}>
                       Serums & Ampoules
                     </span>
-                    <span className="mega-link" onClick={() => { navigatePage('shop', 'moisturizers'); setShopDropdownOpen(false); }}>
+                    <span className="mega-link" onClick={() => { navigatePage('shop', 'moisturizers'); closeAllDropdowns(); }}>
                       Creams & Moisturizers
                     </span>
-                    <span className="mega-link" onClick={() => { navigatePage('shop', 'masks'); setShopDropdownOpen(false); }}>
+                    <span className="mega-link" onClick={() => { navigatePage('shop', 'masks'); closeAllDropdowns(); }}>
                       Cooling Masks & Pads
                     </span>
-                    <span className="mega-link" onClick={() => { navigatePage('categories'); setShopDropdownOpen(false); }}>
+                    <span className="mega-link" onClick={() => { navigatePage('categories'); closeAllDropdowns(); }}>
                       View All Categories →
                     </span>
                   </div>
@@ -163,7 +206,7 @@ export const Header = () => {
                       <p>Experience authentic Korean skincare with fast delivery.</p>
                       <button 
                         className="mega-promo-btn"
-                        onClick={() => { navigatePage('deals'); setShopDropdownOpen(false); }}
+                        onClick={() => { navigatePage('deals'); closeAllDropdowns(); }}
                       >
                         Shop Bundles
                       </button>
@@ -179,10 +222,10 @@ export const Header = () => {
             className={`nav-item dropdown-trigger ${currentPage === 'categories' ? 'active' : ''}`}
             onMouseEnter={() => setCatDropdownOpen(true)}
             onMouseLeave={() => setCatDropdownOpen(false)}
-            onClick={() => navigatePage('categories')}
+            onClick={() => { navigatePage('categories'); closeAllDropdowns(); }}
           >
             <span>Categories</span>
-            <ChevronDown size={14} />
+            <ChevronDown size={14} className={`nav-chevron ${catDropdownOpen ? 'rotate' : ''}`} />
 
             {catDropdownOpen && (
               <div 
@@ -197,7 +240,7 @@ export const Header = () => {
                     className="simple-dropdown-item"
                     onClick={() => {
                       navigatePage('shop', cat.id);
-                      setCatDropdownOpen(false);
+                      closeAllDropdowns();
                     }}
                   >
                     <span>{cat.name}</span>
@@ -206,7 +249,7 @@ export const Header = () => {
                 ))}
                 <div 
                   className="simple-dropdown-item footer-item"
-                  onClick={() => { navigatePage('categories'); setCatDropdownOpen(false); }}
+                  onClick={() => { navigatePage('categories'); closeAllDropdowns(); }}
                 >
                   <strong>Explore All Departments →</strong>
                 </div>
@@ -219,10 +262,10 @@ export const Header = () => {
             className={`nav-item dropdown-trigger ${currentPage === 'brands' ? 'active' : ''}`}
             onMouseEnter={() => setBrandDropdownOpen(true)}
             onMouseLeave={() => setBrandDropdownOpen(false)}
-            onClick={() => navigatePage('brands')}
+            onClick={() => { navigatePage('brands'); closeAllDropdowns(); }}
           >
             <span>Brands</span>
-            <ChevronDown size={14} />
+            <ChevronDown size={14} className={`nav-chevron ${brandDropdownOpen ? 'rotate' : ''}`} />
 
             {brandDropdownOpen && (
               <div 
@@ -232,7 +275,7 @@ export const Header = () => {
                 onMouseLeave={() => setBrandDropdownOpen(false)}
                 style={{ minWidth: '240px' }}
               >
-                <div style={{ padding: '8px 14px 6px 14px', borderBottom: '1px solid #f1f5f9', fontSize: '11px', fontWeight: '800', color: '#7c3aed', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                <div style={{ padding: '8px 14px 6px 14px', borderBottom: '1px solid var(--color-border-light, #f1f5f9)', fontSize: '11px', fontWeight: '800', color: '#7c3aed', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   Official Brands
                 </div>
                 {uniqueBrands.map((b) => (
@@ -241,18 +284,18 @@ export const Header = () => {
                     className="simple-dropdown-item"
                     onClick={() => {
                       navigatePage('shop', 'all', b.name);
-                      setBrandDropdownOpen(false);
+                      closeAllDropdowns();
                     }}
                   >
                     <span style={{ fontWeight: '600' }}>{b.name}</span>
-                    <span style={{ fontSize: '11px', color: '#7c3aed', background: '#f5f3ff', padding: '1px 6px', borderRadius: '8px', fontWeight: '700' }}>
+                    <span style={{ fontSize: '11px', color: '#7c3aed', background: 'var(--color-surface-subtle, #f5f3ff)', padding: '1px 6px', borderRadius: '8px', fontWeight: '700' }}>
                       {b.count}
                     </span>
                   </div>
                 ))}
                 <div 
                   className="simple-dropdown-item footer-item"
-                  onClick={() => { navigatePage('brands'); setBrandDropdownOpen(false); }}
+                  onClick={() => { navigatePage('brands'); closeAllDropdowns(); }}
                 >
                   <strong>All Brands Directory →</strong>
                 </div>
@@ -263,7 +306,7 @@ export const Header = () => {
           {/* Flash Deals */}
           <span 
             className={`nav-item ${currentPage === 'deals' ? 'active' : ''}`}
-            onClick={() => navigatePage('deals')}
+            onClick={() => { navigatePage('deals'); closeAllDropdowns(); }}
             style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#ea580c' }}
           >
             <Flame size={14} />
@@ -273,7 +316,7 @@ export const Header = () => {
           {/* Track Order */}
           <span 
             className={`nav-item ${currentPage === 'track' ? 'active' : ''}`}
-            onClick={() => navigatePage('track')}
+            onClick={() => { navigatePage('track'); closeAllDropdowns(); }}
           >
             Track Order
           </span>
@@ -281,7 +324,7 @@ export const Header = () => {
           {/* About */}
           <span 
             className={`nav-item ${currentPage === 'about' ? 'active' : ''}`}
-            onClick={() => navigatePage('about')}
+            onClick={() => { navigatePage('about'); closeAllDropdowns(); }}
           >
             About
           </span>
@@ -289,7 +332,7 @@ export const Header = () => {
           {/* Contact */}
           <span 
             className={`nav-item ${currentPage === 'contact' ? 'active' : ''}`}
-            onClick={() => navigatePage('contact')}
+            onClick={() => { navigatePage('contact'); closeAllDropdowns(); }}
           >
             Contact
           </span>
@@ -298,18 +341,30 @@ export const Header = () => {
         {/* Search Bar */}
         <div className="header-search">
           <form onSubmit={handleSearchSubmit} className="search-input-box" onClick={() => setIsSearchOpen(true)}>
-            <Search size={16} color="#9ca3af" />
+            <Search size={16} color="var(--color-text-light, #9ca3af)" />
             <input 
               type="text" 
-              placeholder="Search for products..." 
+              placeholder="Search products, brands, ingredients..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              readOnly
             />
+            <kbd className="search-shortcut-badge">⌘K</kbd>
           </form>
         </div>
 
         {/* Header Actions */}
         <div className="header-actions">
+          {/* Theme Toggle Button */}
+          <button 
+            className="action-icon-btn theme-toggle-btn"
+            onClick={toggleTheme}
+            aria-label="Toggle Dark Mode"
+            title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          >
+            {theme === 'dark' ? <Sun size={19} /> : <Moon size={19} />}
+          </button>
+
           {/* Wishlist Button */}
           <button 
             className="action-icon-btn" 
@@ -323,27 +378,109 @@ export const Header = () => {
             )}
           </button>
 
-          {/* User Account Button */}
-          <button 
-            className="action-icon-btn user-account-btn" 
-            onClick={() => navigatePage(currentUser ? 'user-dashboard' : 'user-login')}
-            aria-label="My Account"
-            title={currentUser ? `${currentUser.name}'s Account` : 'Sign In'}
-            style={{ position: 'relative' }}
-          >
-            <User size={20} />
-            {currentUser && (
-              <span style={{
-                position: 'absolute', top: '-3px', right: '-3px',
-                width: '9px', height: '9px', borderRadius: '50%',
-                background: '#22c55e', border: '2px solid var(--bg-primary, #0f0f0f)'
-              }} />
+          {/* User Account Button with Dropdown Popover */}
+          <div className="user-account-wrapper" ref={userDropdownRef}>
+            <button 
+              className="action-icon-btn user-account-btn" 
+              onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+              aria-label="My Account"
+              title={currentUser ? `${currentUser.name}'s Account` : 'Sign In'}
+              style={{ position: 'relative' }}
+            >
+              {currentUser?.avatar ? (
+                <img 
+                  src={currentUser.avatar} 
+                  alt={currentUser.name} 
+                  style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'cover' }}
+                />
+              ) : (
+                <User size={20} />
+              )}
+              {currentUser && (
+                <span className="user-online-indicator" />
+              )}
+            </button>
+
+            {/* User Popover Menu */}
+            {userDropdownOpen && (
+              <div className="user-popover-menu">
+                {currentUser ? (
+                  <>
+                    <div className="user-popover-header">
+                      <div className="user-popover-avatar">
+                        {currentUser.name ? currentUser.name.charAt(0) : 'U'}
+                      </div>
+                      <div className="user-popover-info">
+                        <strong>{currentUser.name}</strong>
+                        <span>{currentUser.email}</span>
+                      </div>
+                    </div>
+
+                    <div className="user-popover-divider" />
+
+                    <div className="user-popover-links">
+                      <button 
+                        className="user-popover-item"
+                        onClick={() => { navigatePage('user-dashboard'); closeAllDropdowns(); }}
+                      >
+                        <User size={15} />
+                        <span>Account Overview</span>
+                      </button>
+
+                      <button 
+                        className="user-popover-item"
+                        onClick={() => { navigatePage('user-dashboard'); closeAllDropdowns(); }}
+                      >
+                        <Package size={15} />
+                        <span>My Orders</span>
+                      </button>
+
+                      <button 
+                        className="user-popover-item"
+                        onClick={() => { setIsWishlistOpen(true); closeAllDropdowns(); }}
+                      >
+                        <Heart size={15} />
+                        <span>Saved Wishlist ({wishlist.length})</span>
+                      </button>
+
+                      <button 
+                        className="user-popover-item"
+                        onClick={() => { navigatePage('user-dashboard'); closeAllDropdowns(); }}
+                      >
+                        <Gift size={15} />
+                        <span>Loyalty Points</span>
+                      </button>
+                    </div>
+
+                    <div className="user-popover-divider" />
+
+                    <button 
+                      className="user-popover-logout"
+                      onClick={() => { logoutUser(); closeAllDropdowns(); }}
+                    >
+                      <LogOut size={14} />
+                      <span>Sign Out</span>
+                    </button>
+                  </>
+                ) : (
+                  <div className="user-popover-guest">
+                    <h4>Welcome to {storeName}</h4>
+                    <p>Sign in to access your orders, saved addresses and exclusive member rewards.</p>
+                    <button 
+                      className="user-popover-signin-btn"
+                      onClick={() => { navigatePage('user-login'); closeAllDropdowns(); }}
+                    >
+                      Sign In / Register
+                    </button>
+                  </div>
+                )}
+              </div>
             )}
-          </button>
+          </div>
 
           {/* Shopping Cart Button */}
           <button 
-            className="action-icon-btn" 
+            className="action-icon-btn cart-btn" 
             onClick={() => setIsCartOpen(true)}
             aria-label="Shopping Cart"
             title="View Bag"
@@ -384,14 +521,27 @@ export const Header = () => {
             {/* Quick Search Inside Drawer */}
             <div className="mobile-drawer-search">
               <form onSubmit={handleSearchSubmit} className="search-input-box" onClick={() => { setMobileMenuOpen(false); setIsSearchOpen(true); }}>
-                <Search size={16} color="#9ca3af" />
+                <Search size={16} color="var(--color-text-light, #9ca3af)" />
                 <input 
                   type="text" 
                   placeholder="Search products in Zigzet..." 
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
+                  readOnly
                 />
               </form>
+            </div>
+
+            {/* Mobile User Profile Bar */}
+            <div className="mobile-drawer-user-card" onClick={() => { navigatePage(currentUser ? 'user-dashboard' : 'user-login'); setMobileMenuOpen(false); }}>
+              <div className="mobile-user-avatar">
+                {currentUser?.name ? currentUser.name.charAt(0) : <User size={18} />}
+              </div>
+              <div className="mobile-user-details">
+                <strong>{currentUser ? currentUser.name : 'Sign In / Register'}</strong>
+                <span>{currentUser ? currentUser.email : 'Earn loyalty points on every order'}</span>
+              </div>
+              <ChevronRight size={16} color="#9ca3af" />
             </div>
 
             {/* Drawer Scrollable Links */}
@@ -409,42 +559,36 @@ export const Header = () => {
 
                 <button 
                   className={`mobile-drawer-nav-item ${currentPage === 'shop' ? 'active' : ''}`}
-                  onClick={() => { navigatePage('shop', 'all'); setMobileMenuOpen(false); }}
+                  onClick={() => { navigatePage('shop'); setMobileMenuOpen(false); }}
                 >
                   <ShoppingBag size={18} />
-                  <span>All Products Catalog</span>
+                  <span>Shop All Products</span>
                   <ChevronRight size={15} className="drawer-nav-arrow" />
                 </button>
 
                 <button 
-                  className={`mobile-drawer-nav-item ${currentPage === 'deals' ? 'active' : ''}`}
+                  className={`mobile-drawer-nav-item deals-link ${currentPage === 'deals' ? 'active' : ''}`}
                   onClick={() => { navigatePage('deals'); setMobileMenuOpen(false); }}
                 >
                   <Flame size={18} color="#ea580c" />
-                  <span style={{ color: '#ea580c', fontWeight: '700' }}>Flash Deals & Offers</span>
-                  <span className="mobile-deals-pill">HOT</span>
+                  <span>Flash Sale Deals</span>
+                  <span className="mobile-deals-pill">Up to 45% OFF</span>
+                  <ChevronRight size={15} className="drawer-nav-arrow" />
                 </button>
 
                 {/* Categories Accordion */}
-                <div className="mobile-drawer-accordion-wrap">
+                <div className="mobile-drawer-group">
                   <button 
-                    className={`mobile-drawer-nav-item ${currentPage === 'categories' ? 'active' : ''}`}
+                    className={`mobile-drawer-nav-item has-sub ${currentPage === 'categories' ? 'active' : ''}`}
                     onClick={() => setMobileCategoriesOpen(!mobileCategoriesOpen)}
-                    style={{ justifyContent: 'space-between' }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <Grid size={18} />
-                      <span>Categories</span>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span className="mobile-count-pill">{categories.length}</span>
+                    <Grid size={18} />
+                    <span>Categories</span>
+                    <div className="mobile-drawer-group-right">
+                      <span className="drawer-badge">{categories.length}</span>
                       <ChevronDown 
                         size={15} 
-                        style={{ 
-                          transition: 'transform 0.2s ease', 
-                          transform: mobileCategoriesOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                          color: '#94a3b8' 
-                        }} 
+                        className={`drawer-chevron ${mobileCategoriesOpen ? 'rotate' : ''}`} 
                       />
                     </div>
                   </button>
@@ -455,7 +599,7 @@ export const Header = () => {
                         className="mobile-drawer-subitem view-all"
                         onClick={() => { navigatePage('categories'); setMobileMenuOpen(false); }}
                       >
-                        <span>📁 All Categories Overview</span>
+                        <span>✨ Browse All Departments</span>
                         <ChevronRight size={13} />
                       </div>
                       {categories.map((cat) => (
@@ -476,27 +620,18 @@ export const Header = () => {
                 </div>
 
                 {/* Brands Accordion */}
-                <div className="mobile-drawer-accordion-wrap">
+                <div className="mobile-drawer-group">
                   <button 
-                    className={`mobile-drawer-nav-item ${currentPage === 'brands' ? 'active' : ''}`}
+                    className={`mobile-drawer-nav-item has-sub ${currentPage === 'brands' ? 'active' : ''}`}
                     onClick={() => setMobileBrandsOpen(!mobileBrandsOpen)}
-                    style={{ justifyContent: 'space-between' }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <Award size={18} color="#7c3aed" />
-                      <span style={{ fontWeight: '700', color: '#7c3aed' }}>Official Brands</span>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span className="mobile-count-pill" style={{ background: '#7c3aed', color: '#fff', borderColor: '#7c3aed' }}>
-                        {uniqueBrands.length}
-                      </span>
+                    <Award size={18} />
+                    <span>Brands</span>
+                    <div className="mobile-drawer-group-right">
+                      <span className="drawer-badge">{uniqueBrands.length}</span>
                       <ChevronDown 
                         size={15} 
-                        style={{ 
-                          transition: 'transform 0.2s ease', 
-                          transform: mobileBrandsOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                          color: '#7c3aed' 
-                        }} 
+                        className={`drawer-chevron ${mobileBrandsOpen ? 'rotate' : ''}`} 
                       />
                     </div>
                   </button>
@@ -555,60 +690,18 @@ export const Header = () => {
                 </button>
               </div>
 
-              {/* Brands Quick Section */}
-              {uniqueBrands.length > 0 && (
-                <>
-                  <div className="mobile-nav-section-title" style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span>Official Brands</span>
-                    <span 
-                      onClick={() => { navigatePage('brands'); setMobileMenuOpen(false); }}
-                      style={{ fontSize: '11px', color: '#7c3aed', fontWeight: '700', cursor: 'pointer' }}
-                    >
-                      All ({uniqueBrands.length}) →
-                    </span>
-                  </div>
-                  <div className="mobile-brand-chips">
-                    {uniqueBrands.map((b) => (
-                      <button
-                        key={b.name}
-                        className="mobile-brand-chip"
-                        onClick={() => {
-                          navigatePage('shop', 'all', b.name);
-                          setMobileMenuOpen(false);
-                        }}
-                      >
-                        <Award size={12} color="#7c3aed" />
-                        <span>{b.name}</span>
-                        <span className="brand-chip-qty">{b.count}</span>
-                      </button>
-                    ))}
-                  </div>
-                </>
-              )}
-
-              {/* Categories Quick Section */}
-              <div className="mobile-nav-section-title" style={{ marginTop: '18px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span>Popular Categories</span>
-                <span 
-                  onClick={() => { navigatePage('categories'); setMobileMenuOpen(false); }}
-                  style={{ fontSize: '11px', color: '#7c3aed', fontWeight: '700', cursor: 'pointer' }}
-                >
-                  All ({categories.length}) →
-                </span>
-              </div>
-              <div className="mobile-category-chips">
-                {categories.slice(0, 8).map((cat) => (
-                  <button
-                    key={cat.id}
-                    className="mobile-cat-chip"
-                    onClick={() => {
-                      navigatePage('shop', cat.id);
-                      setMobileMenuOpen(false);
-                    }}
+              {/* Theme & Currency Controls inside drawer */}
+              <div className="mobile-drawer-footer-actions">
+                <div className="mobile-theme-row">
+                  <span>Appearance</span>
+                  <button 
+                    className="mobile-theme-toggle-btn"
+                    onClick={toggleTheme}
                   >
-                    <span>{cat.name}</span>
+                    {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
+                    <span>{theme === 'dark' ? 'Dark Mode' : 'Light Mode'}</span>
                   </button>
-                ))}
+                </div>
               </div>
             </div>
           </div>

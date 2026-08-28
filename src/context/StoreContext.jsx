@@ -59,7 +59,8 @@ const STORAGE_KEYS = {
   USER_SAVED_CARDS: 'zigzet_user_saved_cards_v1',
   USER_WALLET: 'zigzet_user_wallet_v1',
   SEO: 'zigzet_seo_v2',
-  INTEGRATIONS: 'zigzet_integrations_v2'
+  INTEGRATIONS: 'zigzet_integrations_v2',
+  THEME: 'zigzet_theme_v1'
 };
 
 const defaultSeo = {
@@ -542,6 +543,38 @@ export const StoreProvider = ({ children }) => {
   const [isAiChatOpen, setIsAiChatOpen] = useState(false);
   const [isNotifyOpen, setIsNotifyOpen] = useState(false);
   const [notifyProduct, setNotifyProduct] = useState(null);
+
+  // Theme State ('light' | 'dark')
+  const [theme, setTheme] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.THEME);
+      if (saved === 'dark' || saved === 'light') return saved;
+      return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    } catch {
+      return 'light';
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEYS.THEME, theme);
+      document.documentElement.setAttribute('data-theme', theme);
+    } catch (e) {
+      console.error(e);
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  };
+
+  const changeCurrency = (currCode) => {
+    setSettings((prev) => ({
+      ...prev,
+      currency: currCode,
+      currencySymbol: currCode === 'USD' ? '$' : currCode === 'EUR' ? '€' : currCode === 'GBP' ? '£' : `${currCode} `
+    }));
+  };
 
   // Persistence Effects
   useEffect(() => { localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products)); }, [products]);
@@ -1764,7 +1797,11 @@ export const StoreProvider = ({ children }) => {
         redeemGiftCard,
         addWalletFunds,
         reorderItems,
-        deleteCustomerReview
+        deleteCustomerReview,
+        theme,
+        setTheme,
+        toggleTheme,
+        changeCurrency
       }}
     >
       {children}

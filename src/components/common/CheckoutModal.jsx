@@ -1,5 +1,20 @@
 import React, { useState } from 'react';
-import { X, CheckCircle, ShieldCheck, CreditCard, ArrowRight, Lock, Sparkles, Tag, Check, ArrowLeft } from 'lucide-react';
+import { 
+  X, 
+  CheckCircle, 
+  ShieldCheck, 
+  CreditCard, 
+  ArrowRight, 
+  Lock, 
+  Sparkles, 
+  Tag, 
+  Check, 
+  ArrowLeft,
+  Printer,
+  Download,
+  Truck,
+  Smartphone
+} from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
 export const CheckoutModal = () => {
@@ -18,7 +33,9 @@ export const CheckoutModal = () => {
     removeCoupon,
     createOrder,
     navigatePage,
-    integrations
+    integrations,
+    settings,
+    showToast
   } = useStore();
 
   const [step, setStep] = useState(1);
@@ -27,17 +44,23 @@ export const CheckoutModal = () => {
     firstName: 'Sarah',
     lastName: 'Jenkins',
     email: 'sarah.j@example.com',
-    phone: '+1 (555) 234-5678',
-    address: '742 Evergreen Terrace',
-    city: 'Springfield',
-    state: 'OR',
-    zip: '97477',
-    paymentMethod: 'Credit Card'
+    phone: '+971 50 123 4567',
+    address: 'Downtown Dubai, Boulevard Plaza Tower 1',
+    city: 'Dubai',
+    state: 'Dubai',
+    zip: '00000',
+    paymentMethod: 'Credit Card',
+    cardNumber: '4242 •••• •••• 4242',
+    cardExpiry: '12/28',
+    cardCvc: '888',
+    cardHolder: 'Sarah Jenkins'
   });
 
   const [completedOrder, setCompletedOrder] = useState(null);
 
   if (!isCheckoutOpen) return null;
+
+  const curr = settings?.currency || 'AED';
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -59,12 +82,13 @@ export const CheckoutModal = () => {
       email: formData.email,
       shippingAddress: `${formData.address}, ${formData.city}, ${formData.state} ${formData.zip}`,
       paymentMethod: formData.paymentMethod === 'Credit Card' 
-        ? 'Credit Card (Visa •••• 4242)' 
+        ? `Credit Card (${formData.cardNumber.slice(-4) ? `•••• ${formData.cardNumber.slice(-4)}` : 'Visa'})` 
         : formData.paymentMethod,
       total: cartTotal,
       subtotal: cartSubtotal,
       discount: couponDiscountAmount,
-      couponCode: appliedCoupon ? appliedCoupon.code : null
+      couponCode: appliedCoupon ? appliedCoupon.code : null,
+      items: cart
     };
 
     const newOrder = createOrder(orderData);
@@ -83,6 +107,10 @@ export const CheckoutModal = () => {
     navigatePage('track');
   };
 
+  const handlePrintReceipt = () => {
+    window.print();
+  };
+
   return (
     <div className="modal-overlay open" onClick={handleClose}>
       <div className="modal-box checkout-modal-box" onClick={(e) => e.stopPropagation()}>
@@ -92,12 +120,12 @@ export const CheckoutModal = () => {
 
         {/* Step Indicator Header */}
         <div className="checkout-steps-nav">
-          <div className={`step-item ${step >= 1 ? 'active' : ''}`}>
-            <span className="step-number">1</span>
+          <div className={`step-item ${step >= 1 ? 'active' : ''} ${step > 1 ? 'done' : ''}`}>
+            <span className="step-number">{step > 1 ? '✓' : '1'}</span>
             <span>Shipping</span>
           </div>
-          <div className={`step-item ${step >= 2 ? 'active' : ''}`}>
-            <span className="step-number">2</span>
+          <div className={`step-item ${step >= 2 ? 'active' : ''} ${step > 2 ? 'done' : ''}`}>
+            <span className="step-number">{step > 2 ? '✓' : '2'}</span>
             <span>Payment</span>
           </div>
           <div className={`step-item ${step === 3 ? 'active' : ''}`}>
@@ -109,7 +137,7 @@ export const CheckoutModal = () => {
         {/* Step 1: Shipping Address Form */}
         {step === 1 && (
           <div>
-            <h3 style={{ fontSize: '20px', fontWeight: '800', marginBottom: '16px' }}>
+            <h3 style={{ fontSize: '20px', fontWeight: '800', marginBottom: '16px', color: 'var(--color-text-primary, #0f172a)' }}>
               Shipping Address
             </h3>
 
@@ -137,7 +165,7 @@ export const CheckoutModal = () => {
               </div>
 
               <div className="form-group full-width">
-                <label>Email Address</label>
+                <label>Email Address for Order Tracking</label>
                 <input 
                   type="email" 
                   name="email" 
@@ -148,7 +176,18 @@ export const CheckoutModal = () => {
               </div>
 
               <div className="form-group full-width">
-                <label>Street Address</label>
+                <label>Phone Number (for SMS & WhatsApp delivery updates)</label>
+                <input 
+                  type="tel" 
+                  name="phone" 
+                  value={formData.phone} 
+                  onChange={handleChange} 
+                  required 
+                />
+              </div>
+
+              <div className="form-group full-width">
+                <label>Street / Building / Apartment Address</label>
                 <input 
                   type="text" 
                   name="address" 
@@ -159,33 +198,28 @@ export const CheckoutModal = () => {
               </div>
 
               <div className="form-group">
-                <label>City</label>
-                <input 
-                  type="text" 
+                <label>Emirate / City</label>
+                <select 
                   name="city" 
                   value={formData.city} 
-                  onChange={handleChange} 
-                  required 
-                />
+                  onChange={handleChange}
+                  className="checkout-select"
+                >
+                  <option value="Dubai">Dubai</option>
+                  <option value="Abu Dhabi">Abu Dhabi</option>
+                  <option value="Sharjah">Sharjah</option>
+                  <option value="Ajman">Ajman</option>
+                  <option value="Ras Al Khaimah">Ras Al Khaimah</option>
+                  <option value="Fujairah">Fujairah</option>
+                  <option value="Umm Al Quwain">Umm Al Quwain</option>
+                </select>
               </div>
 
               <div className="form-group">
-                <label>State / ZIP</label>
-                <div style={{ display: 'flex', gap: '8px' }}>
-                  <input 
-                    type="text" 
-                    name="state" 
-                    value={formData.state} 
-                    onChange={handleChange} 
-                    style={{ width: '80px' }} 
-                  />
-                  <input 
-                    type="text" 
-                    name="zip" 
-                    value={formData.zip} 
-                    onChange={handleChange} 
-                    style={{ flex: 1 }} 
-                  />
+                <label>Delivery Option</label>
+                <div className="delivery-option-badge">
+                  <Truck size={15} color="#10b981" />
+                  <span>{isFreeShipping ? 'Free Express Delivery (1-2 Days)' : `Standard Delivery (${curr} ${shippingFee})`}</span>
                 </div>
               </div>
             </div>
@@ -206,73 +240,134 @@ export const CheckoutModal = () => {
         {/* Step 2: Payment & Promo Code */}
         {step === 2 && (
           <div>
-            <h3 style={{ fontSize: '20px', fontWeight: '800', marginBottom: '16px' }}>
+            <h3 style={{ fontSize: '20px', fontWeight: '800', marginBottom: '16px', color: 'var(--color-text-primary, #0f172a)' }}>
               Payment & Order Summary
             </h3>
 
             <div className="payment-methods-grid">
-              {['Credit Card', 'PayPal', 'Apple Pay', 'Cash on Delivery'].map((m) => (
+              {['Credit Card', 'Apple Pay', 'Tabby (4 Installments)', 'Cash on Delivery'].map((m) => (
                 <div 
                   key={m}
                   className={`payment-card-opt ${formData.paymentMethod === m ? 'selected' : ''}`}
                   onClick={() => setFormData({ ...formData, paymentMethod: m })}
                 >
                   <span>{m}</span>
-                  {m === 'Credit Card' && integrations?.stripe?.status === 'Connected' && (
-                    <span style={{ fontSize: '10px', color: '#6366f1', fontWeight: '700', marginLeft: '4px' }}>• Stripe</span>
+                  {m === 'Credit Card' && (
+                    <span style={{ fontSize: '10px', color: '#6366f1', fontWeight: '700', marginLeft: '4px' }}>• Visa / MC</span>
                   )}
-                  {m === 'PayPal' && integrations?.paypal?.status === 'Connected' && (
-                    <span style={{ fontSize: '10px', color: '#0284c7', fontWeight: '700', marginLeft: '4px' }}>• Express</span>
+                  {m.includes('Tabby') && (
+                    <span style={{ fontSize: '10px', color: '#10b981', fontWeight: '700', marginLeft: '4px' }}>• 0% Interest</span>
                   )}
                 </div>
               ))}
             </div>
 
             {formData.paymentMethod === 'Credit Card' && (
-              <div className="checkout-form-grid" style={{ backgroundColor: '#f9fafb', padding: '16px', borderRadius: '12px', marginBottom: '20px', border: '1px solid #e2e8f0' }}>
-                <div className="form-group full-width">
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <label>Card Number</label>
-                    <span style={{ fontSize: '11px', color: '#6366f1', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <Lock size={11} /> 256-bit SSL Encrypted
-                    </span>
+              <div className="checkout-card-preview-box">
+                {/* 3D Glassmorphic Card Mockup */}
+                <div className="glass-credit-card">
+                  <div className="card-chip-row">
+                    <div className="gold-chip" />
+                    <span className="card-network-label">VISA</span>
                   </div>
-                  <input type="text" defaultValue="4242 •••• •••• 4242" readOnly style={{ fontFamily: 'monospace', fontWeight: '600' }} />
+                  <div className="card-number-display">{formData.cardNumber || '•••• •••• •••• 4242'}</div>
+                  <div className="card-bottom-row">
+                    <div>
+                      <span className="card-lbl">CARDHOLDER</span>
+                      <span className="card-val">{formData.cardHolder || 'SARAH JENKINS'}</span>
+                    </div>
+                    <div>
+                      <span className="card-lbl">EXPIRES</span>
+                      <span className="card-val">{formData.cardExpiry || '12/28'}</span>
+                    </div>
+                  </div>
                 </div>
-                <div className="form-group">
-                  <label>Expiry Date</label>
-                  <input type="text" defaultValue="12/28" readOnly />
-                </div>
-                <div className="form-group">
-                  <label>CVC / CVV</label>
-                  <input type="text" defaultValue="888" readOnly />
+
+                <div className="checkout-form-grid" style={{ marginTop: '16px' }}>
+                  <div className="form-group full-width">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <label>Card Number</label>
+                      <span style={{ fontSize: '11px', color: '#6366f1', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <Lock size={11} /> 256-bit SSL Encrypted
+                      </span>
+                    </div>
+                    <input 
+                      type="text" 
+                      name="cardNumber"
+                      value={formData.cardNumber}
+                      onChange={handleChange}
+                      placeholder="4242 4242 4242 4242"
+                      style={{ fontFamily: 'monospace', fontWeight: '600' }} 
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Cardholder Name</label>
+                    <input 
+                      type="text" 
+                      name="cardHolder"
+                      value={formData.cardHolder}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <div style={{ flex: 1 }}>
+                        <label>Expiry Date</label>
+                        <input 
+                          type="text" 
+                          name="cardExpiry"
+                          value={formData.cardExpiry}
+                          onChange={handleChange}
+                          placeholder="MM/YY" 
+                        />
+                      </div>
+                      <div style={{ width: '80px' }}>
+                        <label>CVC / CVV</label>
+                        <input 
+                          type="text" 
+                          name="cardCvc"
+                          value={formData.cardCvc}
+                          onChange={handleChange}
+                          placeholder="888" 
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}
 
-            {/* WhatsApp live order tracking updates banner if integrated */}
-            {integrations?.whatsapp?.status === 'Connected' && (
-              <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', padding: '10px 14px', borderRadius: '10px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <span style={{ fontSize: '16px' }}>📱</span>
-                <div style={{ flex: 1, fontSize: '12.5px', color: '#166534' }}>
-                  <strong>WhatsApp Order Alerts:</strong> Automated tracking links will be sent to your phone number on dispatch.
+            {formData.paymentMethod.includes('Tabby') && (
+              <div className="tabby-split-info">
+                <div className="tabby-header">
+                  <span style={{ fontSize: '18px' }}>✨</span>
+                  <strong>Split in 4 interest-free payments of {curr} {(cartTotal / 4).toFixed(2)}</strong>
                 </div>
+                <p>No interest. No hidden fees. Instant approval at checkout with Emirates ID.</p>
               </div>
             )}
+
+            {/* WhatsApp live order tracking updates banner */}
+            <div className="checkout-whatsapp-banner">
+              <span style={{ fontSize: '16px' }}>📱</span>
+              <div style={{ flex: 1, fontSize: '12.5px', color: '#166534' }}>
+                <strong>WhatsApp Delivery Alerts:</strong> Real-time courier live tracking links will be sent to <strong>{formData.phone}</strong>.
+              </div>
+            </div>
 
             {/* Promo Code Input Box */}
             <div style={{ marginBottom: '18px' }}>
               {appliedCoupon ? (
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#ecfdf5', border: '1px solid #a7f3d0', padding: '10px 14px', borderRadius: '10px' }}>
+                <div className="applied-coupon-row">
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <Tag size={15} color="#10b981" />
                     <span style={{ fontSize: '13px', fontWeight: '700', color: '#065f46' }}>
-                      Coupon Applied: <strong>{appliedCoupon.code}</strong> (-AED {couponDiscountAmount.toFixed(2)})
+                      Coupon Applied: <strong>{appliedCoupon.code}</strong> (-{curr} {couponDiscountAmount.toFixed(2)})
                     </span>
                   </div>
                   <button
                     onClick={removeCoupon}
-                    style={{ fontSize: '12px', color: '#ef4444', fontWeight: '700' }}
+                    className="remove-coupon-btn"
                   >
                     Remove
                   </button>
@@ -281,30 +376,14 @@ export const CheckoutModal = () => {
                 <form onSubmit={handleApplyCoupon} style={{ display: 'flex', gap: '8px' }}>
                   <input
                     type="text"
-                    placeholder="Enter Promo Code (e.g. ZIGZET25)..."
+                    placeholder="Enter Promo Code (e.g. KBEAUTY20)..."
                     value={couponInput}
                     onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
-                    style={{
-                      flex: 1,
-                      padding: '9px 14px',
-                      borderRadius: '10px',
-                      border: '1.5px solid #e2e8f0',
-                      fontSize: '13px',
-                      fontWeight: '700',
-                      textTransform: 'uppercase',
-                      outline: 'none'
-                    }}
+                    className="coupon-input-field"
                   />
                   <button
                     type="submit"
-                    style={{
-                      background: '#7c3aed',
-                      color: '#ffffff',
-                      padding: '9px 18px',
-                      borderRadius: '10px',
-                      fontSize: '13px',
-                      fontWeight: '700'
-                    }}
+                    className="coupon-apply-btn"
                   >
                     Apply
                   </button>
@@ -312,36 +391,36 @@ export const CheckoutModal = () => {
               )}
             </div>
 
-            {/* Order Summary Recap (AED) */}
-            <div style={{ background: '#f8fafc', padding: '16px 20px', borderRadius: '12px', marginBottom: '20px', border: '1px solid #e2e8f0' }}>
+            {/* Order Summary Recap */}
+            <div className="checkout-summary-box">
               <div className="price-summary-row">
                 <span>Items Subtotal</span>
-                <span>AED {cartSubtotal.toFixed(2)}</span>
+                <span>{curr} {cartSubtotal.toFixed(2)}</span>
               </div>
               {appliedCoupon && (
                 <div className="price-summary-row" style={{ color: '#10b981', fontWeight: '700' }}>
                   <span>Promo Discount ({appliedCoupon.code})</span>
-                  <span>-AED {couponDiscountAmount.toFixed(2)}</span>
+                  <span>-{curr} {couponDiscountAmount.toFixed(2)}</span>
                 </div>
               )}
               <div className="price-summary-row">
                 <span>UAE Delivery</span>
-                <span>{isFreeShipping ? 'FREE' : `AED ${shippingFee.toFixed(2)}`}</span>
+                <span>{isFreeShipping ? 'FREE' : `${curr} ${shippingFee.toFixed(2)}`}</span>
               </div>
               <div className="price-summary-row">
                 <span>Estimated VAT (5%)</span>
-                <span>AED {estimatedTax.toFixed(2)}</span>
+                <span>{curr} {estimatedTax.toFixed(2)}</span>
               </div>
               <div className="price-summary-row total">
                 <span>Total Amount Due</span>
-                <span style={{ color: '#10b981' }}>AED {cartTotal.toFixed(2)}</span>
+                <span style={{ color: '#10b981' }}>{curr} {cartTotal.toFixed(2)}</span>
               </div>
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <button 
                 onClick={() => setStep(1)}
-                style={{ fontSize: '14px', fontWeight: '600', color: '#6b7280' }}
+                className="checkout-back-btn"
               >
                 ← Back
               </button>
@@ -351,7 +430,7 @@ export const CheckoutModal = () => {
                 onClick={handlePlaceOrder}
               >
                 <Lock size={15} />
-                <span>Place Order (AED {cartTotal.toFixed(2)})</span>
+                <span>Place Order ({curr} {cartTotal.toFixed(2)})</span>
               </button>
             </div>
           </div>
@@ -360,36 +439,48 @@ export const CheckoutModal = () => {
         {/* Step 3: Order Confirmation */}
         {step === 3 && completedOrder && (
           <div style={{ textAlign: 'center', padding: '20px 0' }}>
-            <div style={{ width: '64px', height: '64px', borderRadius: '9999px', background: '#ecfdf5', color: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto' }}>
-              <CheckCircle size={36} />
+            <div className="order-confirmed-icon-circle">
+              <CheckCircle size={38} />
             </div>
 
-            <h3 style={{ fontSize: '24px', fontWeight: '900', color: '#0f172a', marginBottom: '8px' }}>
+            <h3 style={{ fontSize: '24px', fontWeight: '900', color: 'var(--color-text-primary, #0f172a)', marginBottom: '8px' }}>
               Order Confirmed!
             </h3>
-            <p style={{ fontSize: '14px', color: '#64748b', marginBottom: '20px' }}>
-              Thank you, <strong>{completedOrder.customerName}</strong>! Your order <strong>#{completedOrder.id}</strong> has been successfully placed.
+            <p style={{ fontSize: '14px', color: 'var(--color-text-muted, #64748b)', marginBottom: '20px' }}>
+              Thank you, <strong>{completedOrder.customerName}</strong>! Your order <strong>#{completedOrder.id}</strong> has been received and is being prepared.
             </p>
 
-            <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '12px', maxWidth: '420px', margin: '0 auto 24px auto', textAlign: 'left', fontSize: '13px', border: '1px solid #e2e8f0' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+            <div className="order-confirmed-recap-card">
+              <div className="recap-row">
                 <span>Order Total:</span>
-                <strong style={{ color: '#10b981' }}>${Number(completedOrder.total).toFixed(2)}</strong>
+                <strong style={{ color: '#10b981' }}>{curr} {Number(completedOrder.total).toFixed(2)}</strong>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+              <div className="recap-row">
+                <span>Payment Method:</span>
+                <span>{completedOrder.paymentMethod}</span>
+              </div>
+              <div className="recap-row">
                 <span>Tracking Number:</span>
                 <span style={{ fontFamily: 'monospace', color: '#7c3aed', fontWeight: '700' }}>{completedOrder.trackingNumber}</span>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div className="recap-row">
                 <span>Status:</span>
                 <span className="status-pill completed">{completedOrder.status}</span>
               </div>
             </div>
 
-            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <button
+                onClick={handlePrintReceipt}
+                className="order-action-secondary-btn"
+                title="Print Order Receipt"
+              >
+                <Printer size={15} />
+                <span>Print Receipt</span>
+              </button>
               <button
                 onClick={handleClose}
-                style={{ padding: '10px 22px', borderRadius: '10px', background: '#f1f5f9', color: '#475569', fontWeight: '700', fontSize: '13.5px' }}
+                className="order-action-secondary-btn"
               >
                 Continue Shopping
               </button>
