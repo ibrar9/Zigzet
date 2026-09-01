@@ -127,13 +127,22 @@ export const Header = () => {
           onClick={() => { navigatePage('home'); closeAllDropdowns(); }}
           style={{ cursor: 'pointer' }}
         >
-          <div className="brand-logo-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#7c3aed" />
-              <path d="M2 17L12 22L22 17" stroke="#7c3aed" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M2 12L12 17L22 12" stroke="#9333ea" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
+          {settings?.logoUrl ? (
+            <img 
+              src={settings.logoUrl} 
+              alt={storeName} 
+              className="brand-custom-logo-img" 
+              style={{ maxHeight: '34px', maxWidth: '140px', objectFit: 'contain' }}
+            />
+          ) : (
+            <div className="brand-logo-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#7c3aed" />
+                <path d="M2 17L12 22L22 17" stroke="#7c3aed" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M2 12L12 17L22 12" stroke="#9333ea" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+          )}
           <span>{storeName}</span>
         </div>
 
@@ -515,13 +524,22 @@ export const Header = () => {
             {/* Drawer Header */}
             <div className="mobile-drawer-header">
               <div className="brand-logo" onClick={() => { navigatePage('home'); setMobileMenuOpen(false); }}>
-                <div className="brand-logo-icon">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#7c3aed" />
-                    <path d="M2 17L12 22L22 17" stroke="#7c3aed" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M2 12L12 17L22 12" stroke="#9333ea" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </div>
+                {settings?.logoUrl ? (
+                  <img 
+                    src={settings.logoUrl} 
+                    alt={storeName} 
+                    className="brand-custom-logo-img" 
+                    style={{ maxHeight: '30px', maxWidth: '120px', objectFit: 'contain' }}
+                  />
+                ) : (
+                  <div className="brand-logo-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                      <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#7c3aed" />
+                      <path d="M2 17L12 22L22 17" stroke="#7c3aed" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M2 12L12 17L22 12" stroke="#9333ea" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </div>
+                )}
                 <span>{storeName}</span>
               </div>
               <button 

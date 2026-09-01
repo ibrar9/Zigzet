@@ -55,7 +55,18 @@ export const SEOHead = () => {
     // 2. Set Document Title
     document.title = pageTitle;
 
-    // 3. Helper to update or create meta tags
+    // 3. Dynamic Website Favicon Update
+    if (settings?.faviconUrl) {
+      let faviconTag = document.querySelector("link[rel*='icon']");
+      if (!faviconTag) {
+        faviconTag = document.createElement('link');
+        faviconTag.rel = 'icon';
+        document.head.appendChild(faviconTag);
+      }
+      faviconTag.href = settings.faviconUrl;
+    }
+
+    // 4. Helper to update or create meta tags
     const setMetaTag = (attrName, attrValue, content) => {
       if (content === undefined || content === null) return;
       let element = document.querySelector(`meta[${attrName}="${attrValue}"]`);
