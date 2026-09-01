@@ -3,7 +3,8 @@ import { Heart, User, ShieldCheck } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
 export const Footer = () => {
-  const { setIsWishlistOpen, navigatePage, currentUser, showToast } = useStore();
+  const { setIsWishlistOpen, navigatePage, currentUser, showToast, settings } = useStore();
+  const storeName = settings?.storeName || 'Zigzet';
 
   const handleSubscribe = (e) => {
     e.preventDefault();
@@ -18,9 +19,9 @@ export const Footer = () => {
         <div className="footer-links-grid">
           {/* Brand Info */}
           <div className="footer-col brand-col">
-            <h4 style={{ fontSize: '18px', fontWeight: '800', marginBottom: '8px' }}>Zigzet</h4>
+            <h4 style={{ fontSize: '18px', fontWeight: '800', marginBottom: '8px' }}>{storeName}</h4>
             <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: '1.6', marginBottom: '14px' }}>
-              Your premium destination for curated electronics, modern apparel, and home living essentials with fast USA shipping.
+              Your premium destination for curated authentic beauty, modern skincare, and lifestyle essentials with fast delivery.
             </p>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#10b981', fontWeight: '600' }}>
               <ShieldCheck size={16} />
@@ -41,7 +42,7 @@ export const Footer = () => {
           {/* Customer Care */}
           <div className="footer-col">
             <h5>Customer Care</h5>
-            <span className="footer-nav-link" onClick={() => navigatePage('about')}>About Zigzet</span>
+            <span className="footer-nav-link" onClick={() => navigatePage('about')}>About {storeName}</span>
             <span className="footer-nav-link" onClick={() => navigatePage('contact')}>24/7 Support</span>
             <span className="footer-nav-link" onClick={() => setIsWishlistOpen(true)}>Saved Wishlist</span>
             <span className="footer-nav-link" onClick={() => navigatePage(currentUser ? 'user-dashboard' : 'user-login')}>My Profile</span>
@@ -51,7 +52,7 @@ export const Footer = () => {
           <div className="footer-col newsletter-col">
             <h5>Stay in the Loop</h5>
             <p style={{ fontSize: '12.5px', color: '#6b7280', marginBottom: '12px' }}>
-              Subscribe to get special discount codes and early access to USA flash deals.
+              Subscribe to get special discount codes and early access to VIP flash deals.
             </p>
             <form onSubmit={handleSubscribe} style={{ display: 'flex', gap: '6px' }}>
               <input 
@@ -108,7 +109,7 @@ export const Footer = () => {
 
         {/* Footer Center */}
         <div className="footer-center">
-          <span>Zigzet © 2026. All rights reserved.</span>
+          <span>{storeName} © 2026. All rights reserved.</span>
         </div>
 
         {/* Footer Right */}

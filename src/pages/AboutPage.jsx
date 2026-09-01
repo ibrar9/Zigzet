@@ -3,28 +3,29 @@ import { ShieldCheck, Truck, Headphones, HeartHandshake, CheckCircle2, ArrowRigh
 import { useStore } from '../context/StoreContext';
 
 export const AboutPage = () => {
-  const { navigatePage } = useStore();
+  const { navigatePage, settings } = useStore();
+  const storeName = settings?.storeName || 'Zigzet';
 
   const values = [
     {
       icon: <Truck size={30} color="#111827" strokeWidth={1.8} />,
-      title: 'Fast USA Fulfillment',
-      desc: 'With distribution centers strategically located in California, Texas, and Ohio, orders arrive in 2-3 business days.'
+      title: 'Fast UAE & Global Fulfillment',
+      desc: 'With distribution centers strategically located in Dubai and regional hubs, orders arrive in 1-2 business days.'
     },
     {
       icon: <ShieldCheck size={30} color="#111827" strokeWidth={1.8} />,
-      title: 'Verified Quality Guarantee',
-      desc: 'Every single product in our catalog undergoes rigorous quality inspection before being packaged.'
+      title: '100% Authentic Guarantee',
+      desc: 'Every single product in our catalog is batch-verified and sealed directly from official Korean manufacturers.'
     },
     {
       icon: <Headphones size={30} color="#111827" strokeWidth={1.8} />,
-      title: '24/7 Human Customer Care',
-      desc: 'No endless phone trees. Real support agents are ready to assist you via live chat, email, and toll-free phone.'
+      title: '24/7 VIP Customer Care',
+      desc: 'Real support specialists are ready to assist you via WhatsApp, live chat, email, and phone support.'
     },
     {
       icon: <HeartHandshake size={30} color="#111827" strokeWidth={1.8} />,
-      title: 'Hassle-Free 30-Day Returns',
-      desc: 'If you are not 100% in love with your purchase, return it easily with our prepaid shipping labels.'
+      title: 'Hassle-Free Returns',
+      desc: 'If you are not 100% satisfied with your sealed purchase, return it easily with prepaid pickup courier.'
     }
   ];
 
@@ -34,14 +35,14 @@ export const AboutPage = () => {
       <div className="shop-header-banner">
         <div className="container">
           <div style={{ maxWidth: '640px', margin: '0 auto', textAlign: 'center' }}>
-            <span style={{ fontSize: '12.5px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#6b7280' }}>
-              About Zigzet
+            <span style={{ fontSize: '12.5px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#7c3aed' }}>
+              About {storeName}
             </span>
             <h1 style={{ fontSize: '40px', fontWeight: '800', marginTop: '6px', marginBottom: '12px', letterSpacing: '-0.02em' }}>
-              Empowering Everyday Life with Premium Essentials
+              Empowering Radiant Skin with Authentic Korean Skincare
             </h1>
             <p style={{ color: '#4b5563', fontSize: '15.5px', lineHeight: '1.6' }}>
-              Founded with the simple belief that modern shopping should be dependable, beautifully designed, and lightning-fast.
+              Founded with the belief that premium beauty should be genuine, accessible, and delivered with express speed.
             </p>
           </div>
         </div>
