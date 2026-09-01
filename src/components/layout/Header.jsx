@@ -109,7 +109,8 @@ export const Header = () => {
   const storeName = settings?.storeName || 'Zigzet';
 
   return (
-    <header className="main-header">
+    <>
+      <header className="main-header">
       <div className="container header-container">
         {/* Mobile Menu Button */}
         <button 
@@ -503,11 +504,12 @@ export const Header = () => {
           <span className="mobile-search-tag">Search</span>
         </div>
       </div>
+    </header>
 
-      {/* =========================================================================
-          Mobile Navigation Slide-over Drawer (Fixed overlay & native app drawer)
-          ========================================================================= */}
-      {mobileMenuOpen && (
+    {/* =========================================================================
+        Mobile Navigation Slide-over Drawer (Fixed overlay & native app drawer)
+        ========================================================================= */}
+    {mobileMenuOpen && (
         <div className="mobile-menu-overlay" onClick={() => setMobileMenuOpen(false)}>
           <div className="mobile-menu-drawer" onClick={(e) => e.stopPropagation()}>
             {/* Drawer Header */}
@@ -747,6 +749,6 @@ export const Header = () => {
           </div>
         </div>
       )}
-    </header>
+    </>
   );
 };
