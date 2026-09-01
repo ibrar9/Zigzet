@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { X, Search, ShoppingCart, ArrowRight } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { X, Search, ShoppingCart, ArrowRight, Sparkles, Star, TrendingUp } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 import { categories } from '../../data/categories';
 
@@ -12,18 +12,38 @@ export const LiveSearchModal = () => {
     products, 
     setQuickViewProduct,
     addToCart,
-    setActiveCategory
+    settings,
+    showToast
   } = useStore();
 
   const [selectedCatFilter, setSelectedCatFilter] = useState('all');
+  const inputRef = useRef(null);
+
+  const curr = settings?.currency || 'AED';
+
+  // Auto focus input on modal open
+  useEffect(() => {
+    if (isSearchOpen) {
+      setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+        }
+      }, 100);
+    }
+  }, [isSearchOpen]);
 
   if (!isSearchOpen) return null;
 
+  const popularTags = ['Sunscreen', 'Serum', 'Cleanser', 'Centella', 'Moisturizer', 'Mask'];
+
   const filteredProducts = products.filter((prod) => {
-    const matchesQuery = searchQuery.trim() === '' || 
-      prod.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      prod.categoryName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (prod.description && prod.description.toLowerCase().includes(searchQuery.toLowerCase()));
+    if (prod.isActive === false) return false;
+    const query = searchQuery.trim().toLowerCase();
+    const matchesQuery = query === '' || 
+      prod.name.toLowerCase().includes(query) ||
+      (prod.categoryName && prod.categoryName.toLowerCase().includes(query)) ||
+      (prod.brand && prod.brand.toLowerCase().includes(query)) ||
+      (prod.description && prod.description.toLowerCase().includes(query));
 
     const matchesCategory = selectedCatFilter === 'all' || prod.category === selectedCatFilter;
 
@@ -35,134 +55,162 @@ export const LiveSearchModal = () => {
     setQuickViewProduct(prod);
   };
 
+  const handleQuickAdd = (e, prod) => {
+    e.stopPropagation();
+    addToCart(prod, 1);
+    showToast('Added to Bag', `${prod.name} has been added to your shopping bag.`);
+  };
+
+  const handleTagClick = (tag) => {
+    setSearchQuery(tag);
+    setSelectedCatFilter('all');
+  };
+
   return (
-    <div className="modal-overlay open" onClick={() => setIsSearchOpen(false)}>
+    <div className="modal-overlay live-search-overlay open" onClick={() => setIsSearchOpen(false)}>
       <div 
-        className="modal-box" 
-        style={{ maxWidth: '640px', padding: '24px' }}
+        className="modal-box live-search-modal-box" 
         onClick={(e) => e.stopPropagation()}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-          <div className="search-input-box" style={{ flex: 1, padding: '10px 16px' }}>
-            <Search size={18} color="#6b7280" />
+        {/* Search Header Bar */}
+        <div className="live-search-header">
+          <div className="live-search-input-wrap">
+            <Search size={19} className="live-search-input-icon" />
             <input 
+              ref={inputRef}
               type="text" 
-              placeholder="Search products by name, category, or feature..." 
+              className="live-search-input-field"
+              placeholder="Search Korean skincare, SPF50, serums..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              autoFocus
+              autoComplete="off"
             />
             {searchQuery && (
-              <button onClick={() => setSearchQuery('')} style={{ color: '#9ca3af' }}>
+              <button 
+                className="live-search-clear-btn"
+                onClick={() => setSearchQuery('')}
+                aria-label="Clear search"
+              >
                 <X size={16} />
               </button>
             )}
           </div>
           <button 
-            className="drawer-close-btn"
+            className="live-search-close-btn"
             onClick={() => setIsSearchOpen(false)}
+            aria-label="Close search modal"
           >
             <X size={20} />
           </button>
         </div>
 
-        {/* Category Filter Chips */}
-        <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '12px', marginBottom: '16px' }}>
-          <button
-            onClick={() => setSelectedCatFilter('all')}
-            style={{
-              padding: '5px 12px',
-              borderRadius: '9999px',
-              fontSize: '12px',
-              fontWeight: '600',
-              backgroundColor: selectedCatFilter === 'all' ? '#111827' : '#f3f4f6',
-              color: selectedCatFilter === 'all' ? '#ffffff' : '#4b5563',
-              whiteSpace: 'nowrap'
-            }}
-          >
-            All Items
-          </button>
-          {categories.map((c) => (
-            <button
-              key={c.id}
-              onClick={() => setSelectedCatFilter(c.id)}
-              style={{
-                padding: '5px 12px',
-                borderRadius: '9999px',
-                fontSize: '12px',
-                fontWeight: '600',
-                backgroundColor: selectedCatFilter === c.id ? '#111827' : '#f3f4f6',
-                color: selectedCatFilter === c.id ? '#ffffff' : '#4b5563',
-                whiteSpace: 'nowrap'
-              }}
-            >
-              {c.name}
-            </button>
-          ))}
+        {/* Popular Trending Tags Strip */}
+        <div className="live-search-tags-section">
+          <div className="live-search-tags-row">
+            <span className="live-search-tags-label">
+              <TrendingUp size={13} />
+              <span>Trending:</span>
+            </span>
+            {popularTags.map((tag) => (
+              <button
+                key={tag}
+                className={`live-search-tag-chip ${searchQuery.toLowerCase() === tag.toLowerCase() ? 'active' : ''}`}
+                onClick={() => handleTagClick(tag)}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Search Results List */}
-        <div style={{ maxHeight: '360px', overflowY: 'auto' }}>
+        {/* Category Filter Chips */}
+        <div className="live-search-cats-row">
+          <button
+            onClick={() => setSelectedCatFilter('all')}
+            className={`live-search-cat-pill ${selectedCatFilter === 'all' ? 'active' : ''}`}
+          >
+            All Items ({products.filter(p => p.isActive !== false).length})
+          </button>
+          {categories.map((c) => {
+            const count = products.filter(p => p.category === c.id && p.isActive !== false).length;
+            return (
+              <button
+                key={c.id}
+                onClick={() => setSelectedCatFilter(c.id)}
+                className={`live-search-cat-pill ${selectedCatFilter === c.id ? 'active' : ''}`}
+              >
+                {c.name} {count > 0 && <span className="cat-count-sub">({count})</span>}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Search Results / Products Area */}
+        <div className="live-search-results-list">
           {filteredProducts.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '32px 0', color: '#6b7280' }}>
-              <p>No products found for "{searchQuery}".</p>
+            <div className="live-search-empty-state">
+              <Search size={44} strokeWidth={1.5} color="var(--color-text-light, #94a3b8)" />
+              <h4>No products found</h4>
+              <p>We couldn't find any products matching "{searchQuery}". Try searching for sunscreens, serums, or cleansers.</p>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', justifyContent: 'center', marginTop: '12px' }}>
+                {popularTags.map(tag => (
+                  <button
+                    key={tag}
+                    className="live-search-tag-chip"
+                    onClick={() => handleTagClick(tag)}
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <div className="live-search-grid">
               {filteredProducts.map((prod) => (
                 <div
                   key={prod.id}
+                  className="live-search-card"
                   onClick={() => handleSelectProduct(prod)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: '10px 14px',
-                    borderRadius: '12px',
-                    backgroundColor: '#f9fafb',
-                    border: '1px solid #f3f4f6',
-                    cursor: 'pointer',
-                    transition: 'all 0.15s'
-                  }}
-                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#f3f4f6'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#f9fafb'; }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <div style={{ width: '44px', height: '44px', background: '#fff', borderRadius: '8px', padding: '4px', border: '1px solid #e5e7eb', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <img src={prod.image} alt={prod.name} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+                  <div className="live-search-card-img-wrap">
+                    <img src={prod.image} alt={prod.name} loading="lazy" />
+                  </div>
+
+                  <div className="live-search-card-info">
+                    <div className="live-search-card-meta">
+                      {prod.brand && (
+                        <span className="live-search-brand-badge">{prod.brand}</span>
+                      )}
+                      <span className="live-search-cat-label">{prod.categoryName || prod.category}</span>
                     </div>
-                    <div>
-                      <h4 style={{ fontSize: '13.5px', fontWeight: '700', color: '#111827', margin: 0 }}>
-                        {prod.name}
-                      </h4>
-                      <span style={{ fontSize: '12px', color: '#6b7280' }}>
-                        {prod.categoryName} • Rating {prod.rating}
-                      </span>
+
+                    <h4 className="live-search-card-title">{prod.name}</h4>
+
+                    <div className="live-search-card-rating">
+                      <Star size={12} fill="#f59e0b" color="#f59e0b" />
+                      <span>{prod.rating || '4.9'}</span>
+                      {prod.reviewsCount && (
+                        <span className="rating-count">({prod.reviewsCount})</span>
+                      )}
                     </div>
                   </div>
 
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <span style={{ fontSize: '14px', fontWeight: '800', color: '#111827' }}>
-                      ${Number(prod.price).toFixed(2)}
-                    </span>
+                  <div className="live-search-card-action">
+                    <div className="live-search-card-price">
+                      <span className="current-price">{curr} {Number(prod.price).toFixed(2)}</span>
+                      {prod.originalPrice && Number(prod.originalPrice) > Number(prod.price) && (
+                        <span className="orig-price">{curr} {Number(prod.originalPrice).toFixed(2)}</span>
+                      )}
+                    </div>
+
                     <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        addToCart(prod, 1);
-                      }}
-                      style={{
-                        width: '32px',
-                        height: '32px',
-                        borderRadius: '9999px',
-                        backgroundColor: '#111827',
-                        color: '#fff',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}
-                      title="Add to cart"
+                      className="live-search-add-btn"
+                      onClick={(e) => handleQuickAdd(e, prod)}
+                      title="Add to Bag"
+                      aria-label={`Add ${prod.name} to bag`}
                     >
-                      <ShoppingCart size={14} />
+                      <ShoppingCart size={15} />
+                      <span className="add-text">Add</span>
                     </button>
                   </div>
                 </div>
@@ -174,3 +222,4 @@ export const LiveSearchModal = () => {
     </div>
   );
 };
+

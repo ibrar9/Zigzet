@@ -38,10 +38,6 @@ import { StoreAiChat } from './components/common/StoreAiChat';
 import { Toast } from './components/common/Toast';
 import { PageLoader } from './components/common/Skeleton';
 import { SEOHead } from './components/common/SEOHead';
-import { LiveSalesToast } from './components/common/LiveSalesToast';
-import { ExitIntentModal } from './components/common/ExitIntentModal';
-import { PwaInstallBanner } from './components/common/PwaInstallBanner';
-import { ProductComparisonSlider } from './components/common/ProductComparisonSlider';
 
 function App() {
   const { viewMode, currentPage, currentUser } = useStore();
@@ -92,7 +88,6 @@ function App() {
             <CategorySection />
             <PromoBanners />
             <FeaturedProducts />
-            <ProductComparisonSlider />
             <ShippingCallout />
           </>
         )}
@@ -119,9 +114,6 @@ function App() {
       <CheckoutModal />
       <LiveSearchModal />
       <NotifyModal />
-      <LiveSalesToast />
-      <ExitIntentModal />
-      <PwaInstallBanner />
       <Toast />
     </div>
   );
