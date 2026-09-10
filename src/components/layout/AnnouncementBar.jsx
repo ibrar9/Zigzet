@@ -83,38 +83,12 @@ export const AnnouncementBar = () => {
 
           <span className="announcement-divider">|</span>
 
-          {/* Language Selector Dropdown */}
-          <div className="announcement-dropdown-wrapper" ref={langRef}>
-            <button 
-              className="announcement-dropdown" 
-              onClick={() => { setLangOpen(!langOpen); setCurrencyOpen(false); }}
-              title="Select Language"
-              aria-expanded={langOpen}
-            >
+          {/* Region / Language Badge */}
+          <div className="announcement-dropdown-wrapper">
+            <span className="announcement-dropdown" style={{ cursor: 'default' }} title="Shipping Region: United Arab Emirates">
               <Globe size={12} />
-              <span>{selectedLang}</span>
-              <ChevronDown size={12} className={`chevron-icon ${langOpen ? 'rotate' : ''}`} />
-            </button>
-
-            {langOpen && (
-              <div className="announcement-popover-menu">
-                <div className="popover-heading">Language</div>
-                {languages.map((l) => (
-                  <button
-                    key={l.code}
-                    className={`popover-item ${selectedLang === l.label ? 'active' : ''}`}
-                    onClick={() => {
-                      setSelectedLang(l.label);
-                      setLangOpen(false);
-                    }}
-                  >
-                    <span className="popover-flag">{l.flag}</span>
-                    <span className="popover-name">{l.label}</span>
-                    {selectedLang === l.label && <Check size={13} className="popover-check" />}
-                  </button>
-                ))}
-              </div>
-            )}
+              <span>English (UAE) 🇦🇪</span>
+            </span>
           </div>
         </div>
       </div>

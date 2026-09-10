@@ -50,6 +50,11 @@ export const CategorySection = () => {
                   <img src={cat.image} alt={cat.name} loading="lazy" />
                 </div>
                 <span className="category-name">{cat.name}</span>
+                {cat.itemCount && (
+                  <span className="category-count-sub" style={{ fontSize: '11px', color: 'var(--color-text-muted, #94a3b8)', marginTop: '2px' }}>
+                    {cat.itemCount}
+                  </span>
+                )}
               </div>
             );
           })}

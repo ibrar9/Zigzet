@@ -108,8 +108,8 @@ export const CartDrawer = () => {
             <>
               <div className="cart-items-list">
                 {cart.map((item) => (
-                  <div key={item.id} className="cart-item-card">
-                    <div className="cart-item-img-box">
+                  <div key={item.id} className="cart-item-row">
+                    <div className="cart-item-thumb">
                       <img src={item.image} alt={item.name} />
                     </div>
 
@@ -212,7 +212,7 @@ export const CartDrawer = () => {
 
         {/* Drawer Footer */}
         {cart.length > 0 && (
-          <div className="drawer-footer">
+          <div className="drawer-footer" style={{ paddingBottom: 'max(24px, env(safe-area-inset-bottom, 24px))' }}>
             <div className="price-summary-row">
               <span>Subtotal</span>
               <span>{curr} {cartSubtotal.toFixed(2)}</span>

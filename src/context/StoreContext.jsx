@@ -520,7 +520,20 @@ export const StoreProvider = ({ children }) => {
   const [settings, setSettings] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.SETTINGS) || localStorage.getItem('shopnest_settings_v1');
-      return saved ? { ...defaultSettings, ...JSON.parse(saved) } : defaultSettings;
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (!parsed.storeName || parsed.storeName === 'ShopNest') {
+          parsed.storeName = 'Zigzet';
+        }
+        if (!parsed.announcement || parsed.announcement.includes('USA') || parsed.announcement.includes('$50')) {
+          parsed.announcement = defaultSettings.announcement;
+        }
+        if (!parsed.freeShippingThreshold || Number(parsed.freeShippingThreshold) !== 150) {
+          parsed.freeShippingThreshold = 150;
+        }
+        return { ...defaultSettings, ...parsed };
+      }
+      return defaultSettings;
     } catch {
       return defaultSettings;
     }

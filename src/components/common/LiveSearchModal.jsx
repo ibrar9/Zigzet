@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { X, Search, ShoppingCart, ArrowRight, Sparkles, Star, TrendingUp } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 import { categories } from '../../data/categories';
@@ -32,23 +32,46 @@ export const LiveSearchModal = () => {
     }
   }, [isSearchOpen]);
 
-  if (!isSearchOpen) return null;
-
   const popularTags = ['Sunscreen', 'Serum', 'Cleanser', 'Centella', 'Moisturizer', 'Mask'];
 
-  const filteredProducts = products.filter((prod) => {
-    if (prod.isActive === false) return false;
+  const filteredProducts = useMemo(() => {
+    if (!products) return [];
     const query = searchQuery.trim().toLowerCase();
-    const matchesQuery = query === '' || 
-      prod.name.toLowerCase().includes(query) ||
-      (prod.categoryName && prod.categoryName.toLowerCase().includes(query)) ||
-      (prod.brand && prod.brand.toLowerCase().includes(query)) ||
-      (prod.description && prod.description.toLowerCase().includes(query));
 
-    const matchesCategory = selectedCatFilter === 'all' || prod.category === selectedCatFilter;
+    return products
+      .filter((prod) => {
+        if (prod.isActive === false) return false;
+        const matchesCategory = selectedCatFilter === 'all' || prod.category === selectedCatFilter;
+        if (!matchesCategory) return false;
+        if (!query) return true;
 
-    return matchesQuery && matchesCategory;
-  });
+        const nameLower = (prod.name || '').toLowerCase();
+        const catLower = (prod.categoryName || prod.category || '').toLowerCase();
+        const brandLower = (prod.brand || '').toLowerCase();
+        const descLower = (prod.description || '').toLowerCase();
+
+        return nameLower.includes(query) || catLower.includes(query) || brandLower.includes(query) || descLower.includes(query);
+      })
+      .map((prod) => {
+        if (!query) return { prod, score: 0 };
+        const nameLower = (prod.name || '').toLowerCase();
+        const catLower = (prod.categoryName || prod.category || '').toLowerCase();
+        const brandLower = (prod.brand || '').toLowerCase();
+        const descLower = (prod.description || '').toLowerCase();
+
+        let score = 0;
+        if (nameLower.startsWith(query)) score += 120;
+        else if (nameLower.includes(query)) score += 70;
+
+        if (catLower.includes(query)) score += 50;
+        if (brandLower.includes(query)) score += 35;
+        if (descLower.includes(query) && !nameLower.includes(query)) score += 5;
+
+        return { prod, score };
+      })
+      .sort((a, b) => b.score - a.score)
+      .map((item) => item.prod);
+  }, [products, searchQuery, selectedCatFilter]);
 
   const handleSelectProduct = (prod) => {
     setIsSearchOpen(false);
@@ -65,6 +88,8 @@ export const LiveSearchModal = () => {
     setSearchQuery(tag);
     setSelectedCatFilter('all');
   };
+
+  if (!isSearchOpen) return null;
 
   return (
     <div className="modal-overlay live-search-overlay open" onClick={() => setIsSearchOpen(false)}>

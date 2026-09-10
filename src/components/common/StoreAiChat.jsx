@@ -33,10 +33,11 @@ export const StoreAiChat = () => {
     quickViewProduct,
     isCheckoutOpen,
     isCartOpen,
-    isWishlistOpen
+    isWishlistOpen,
+    isSearchOpen
   } = useStore();
 
-  const isAnyModalOpen = Boolean(quickViewProduct || isCheckoutOpen || isCartOpen || isWishlistOpen);
+  const isAnyModalOpen = Boolean(quickViewProduct || isCheckoutOpen || isCartOpen || isWishlistOpen || isSearchOpen);
 
   const currency = settings?.currency || 'AED';
   const freeShipLimit = settings?.freeShippingThreshold || 150;

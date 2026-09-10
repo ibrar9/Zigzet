@@ -99,8 +99,8 @@ export const WishlistDrawer = () => {
 
               <div className="cart-items-list">
                 {savedProducts.map((product) => (
-                  <div className="cart-item-card" key={product.id}>
-                    <div className="cart-item-img-box">
+                  <div className="cart-item-row" key={product.id}>
+                    <div className="cart-item-thumb">
                       <img src={product.image} alt={product.name} />
                     </div>
 

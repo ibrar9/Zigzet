@@ -216,7 +216,7 @@ export const HeroBanner = () => {
               {activeSlide.badge && (
                 <div className="hero-lux-badge">
                   <Flame size={13} className="hero-lux-fire-icon" />
-                  <span>{activeSlide.badge}</span>
+                  <span>{activeSlide.badge.replace(/🔥|✨|🎉/g, '').trim()}</span>
                 </div>
               )}
 
@@ -299,13 +299,17 @@ export const HeroBanner = () => {
             </div>
 
             {/* Bottom-Right Floating Glassmorphic Badge */}
-            <div className="hero-lux-floating-card" onClick={handleCtaClick}>
+            <div className="hero-lux-floating-card" onClick={handleCtaClick} title="View trending deal">
               <div className="floating-card-tag">
                 <Sparkles size={12} />
                 <span>{trending.tag}</span>
               </div>
               <h3 className="floating-card-title">{trending.title}</h3>
               <p className="floating-card-sub">{trending.sub}</p>
+              <div className="floating-card-action" style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '11px', fontWeight: '700', color: '#ffffff', marginTop: '6px' }}>
+                <span>Explore Deal</span>
+                <ArrowRight size={12} />
+              </div>
             </div>
           </div>
         </div>

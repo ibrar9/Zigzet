@@ -14,15 +14,27 @@ export const MobileNavBar = () => {
     currentPage, 
     navigatePage, 
     cartItemsCount, 
+    isCartOpen,
     setIsCartOpen, 
     wishlist, 
+    isWishlistOpen,
     setIsWishlistOpen,
+    isCheckoutOpen,
+    quickViewProduct,
     viewMode,
     currentUser
   } = useStore();
 
-  // If in admin mode or full-screen dashboard/login mode, hide storefront bottom bar
-  if (viewMode === 'admin' || currentPage === 'user-dashboard' || currentPage === 'user-login') {
+  // If in admin mode or full-screen dashboard/login mode or when a drawer/modal is open, hide storefront bottom bar
+  if (
+    viewMode === 'admin' || 
+    currentPage === 'user-dashboard' || 
+    currentPage === 'user-login' ||
+    isCartOpen ||
+    isCheckoutOpen ||
+    isWishlistOpen ||
+    Boolean(quickViewProduct)
+  ) {
     return null;
   }
 

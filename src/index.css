@@ -1488,7 +1488,6 @@ img {
   .hero-lux-title {
     font-size: 16.5px;
   }
-}
 
   .hero-lux-feature-item {
     gap: 10px;
@@ -7916,7 +7915,7 @@ img {
      ========================================================================== */
   .store-ai-launcher-wrapper {
     position: fixed;
-    bottom: 72px;
+    bottom: 120px;
     right: 0;
     z-index: 990;
     pointer-events: none;

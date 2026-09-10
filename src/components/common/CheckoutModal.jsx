@@ -35,26 +35,28 @@ export const CheckoutModal = () => {
     navigatePage,
     integrations,
     settings,
+    currentUser,
     showToast
   } = useStore();
 
   const [step, setStep] = useState(1);
   const [couponInput, setCouponInput] = useState('');
-  const [formData, setFormData] = useState({
-    firstName: 'Sarah',
-    lastName: 'Jenkins',
-    email: 'sarah.j@example.com',
-    phone: '+971 50 123 4567',
-    address: 'Downtown Dubai, Boulevard Plaza Tower 1',
-    city: 'Dubai',
-    state: 'Dubai',
-    zip: '00000',
+  const [formErrors, setFormErrors] = useState({});
+  const [formData, setFormData] = useState(() => ({
+    firstName: currentUser?.name ? currentUser.name.split(' ')[0] : '',
+    lastName: currentUser?.name ? currentUser.name.split(' ').slice(1).join(' ') : '',
+    email: currentUser?.email || '',
+    phone: currentUser?.phone || '',
+    address: currentUser?.address || '',
+    city: currentUser?.city || 'Dubai',
+    state: currentUser?.state || 'Dubai',
+    zip: currentUser?.zip || '00000',
     paymentMethod: 'Credit Card',
-    cardNumber: '4242 •••• •••• 4242',
-    cardExpiry: '12/28',
-    cardCvc: '888',
-    cardHolder: 'Sarah Jenkins'
-  });
+    cardNumber: '',
+    cardExpiry: '',
+    cardCvc: '',
+    cardHolder: currentUser?.name || ''
+  }));
 
   const [completedOrder, setCompletedOrder] = useState(null);
 
@@ -64,6 +66,52 @@ export const CheckoutModal = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (formErrors[e.target.name]) {
+      setFormErrors({ ...formErrors, [e.target.name]: null });
+    }
+  };
+
+  const validateStep1 = () => {
+    const errs = {};
+    if (!formData.firstName.trim()) errs.firstName = 'First name is required';
+    if (!formData.lastName.trim()) errs.lastName = 'Last name is required';
+    if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
+      errs.email = 'Valid email is required';
+    }
+    if (!formData.phone.trim() || formData.phone.replace(/\D/g, '').length < 7) {
+      errs.phone = 'Valid phone number is required';
+    }
+    if (!formData.address.trim()) {
+      errs.address = 'Street address is required';
+    }
+    setFormErrors(errs);
+    if (Object.keys(errs).length > 0) {
+      showToast('Incomplete Address', 'Please fill in all required shipping fields.');
+      return false;
+    }
+    return true;
+  };
+
+  const validateStep2 = () => {
+    if (formData.paymentMethod === 'Credit Card') {
+      const errs = {};
+      const cleanNum = (formData.cardNumber || '').replace(/\s+/g, '');
+      if (!cleanNum || cleanNum.length < 12) {
+        errs.cardNumber = 'Valid 16-digit card number required';
+      }
+      if (!formData.cardExpiry.trim()) {
+        errs.cardExpiry = 'MM/YY required';
+      }
+      if (!formData.cardCvc.trim() || formData.cardCvc.trim().length < 3) {
+        errs.cardCvc = '3-digit CVC required';
+      }
+      if (Object.keys(errs).length > 0) {
+        setFormErrors(errs);
+        showToast('Card Details Missing', 'Please enter your payment card details.');
+        return false;
+      }
+    }
+    return true;
   };
 
   const handleApplyCoupon = (e) => {
@@ -75,12 +123,20 @@ export const CheckoutModal = () => {
     }
   };
 
+  const handleProceedToPayment = (e) => {
+    e.preventDefault();
+    if (validateStep1()) {
+      setStep(2);
+    }
+  };
+
   const handlePlaceOrder = (e) => {
     e.preventDefault();
+    if (!validateStep2()) return;
     const orderData = {
-      customerName: `${formData.firstName} ${formData.lastName}`,
+      customerName: `${formData.firstName} ${formData.lastName}`.trim(),
       email: formData.email,
-      shippingAddress: `${formData.address}, ${formData.city}, ${formData.state} ${formData.zip}`,
+      shippingAddress: `${formData.address}, ${formData.city}, ${formData.state} ${formData.zip}`.trim(),
       paymentMethod: formData.paymentMethod === 'Credit Card' 
         ? `Credit Card (${formData.cardNumber.slice(-4) ? `•••• ${formData.cardNumber.slice(-4)}` : 'Visa'})` 
         : formData.paymentMethod,
@@ -155,63 +211,73 @@ export const CheckoutModal = () => {
 
               <div className="checkout-form-grid">
                 <div className="form-group">
-                  <label>First Name</label>
+                  <label>First Name *</label>
                   <input 
                     type="text" 
                     name="firstName" 
                     value={formData.firstName} 
                     onChange={handleChange} 
-                    placeholder="First Name"
+                    placeholder="e.g. Sarah"
+                    style={{ borderColor: formErrors.firstName ? '#ef4444' : undefined }}
                     required 
                   />
+                  {formErrors.firstName && <span style={{ fontSize: '11px', color: '#ef4444', marginTop: '2px', display: 'block' }}>{formErrors.firstName}</span>}
                 </div>
 
                 <div className="form-group">
-                  <label>Last Name</label>
+                  <label>Last Name *</label>
                   <input 
                     type="text" 
                     name="lastName" 
                     value={formData.lastName} 
                     onChange={handleChange} 
-                    placeholder="Last Name"
+                    placeholder="e.g. Jenkins"
+                    style={{ borderColor: formErrors.lastName ? '#ef4444' : undefined }}
                     required 
                   />
+                  {formErrors.lastName && <span style={{ fontSize: '11px', color: '#ef4444', marginTop: '2px', display: 'block' }}>{formErrors.lastName}</span>}
                 </div>
 
                 <div className="form-group full-width">
-                  <label>Email Address (for Receipt &amp; Updates)</label>
+                  <label>Email Address (for Receipt &amp; Updates) *</label>
                   <input 
                     type="email" 
                     name="email" 
                     value={formData.email} 
                     onChange={handleChange} 
-                    placeholder="your.email@example.com"
+                    placeholder="e.g. your.email@example.com"
+                    style={{ borderColor: formErrors.email ? '#ef4444' : undefined }}
                     required 
                   />
+                  {formErrors.email && <span style={{ fontSize: '11px', color: '#ef4444', marginTop: '2px', display: 'block' }}>{formErrors.email}</span>}
                 </div>
 
                 <div className="form-group full-width">
-                  <label>Phone Number (for Courier SMS &amp; WhatsApp Alerts)</label>
+                  <label>Phone Number (for Courier SMS &amp; WhatsApp Alerts) *</label>
                   <input 
                     type="tel" 
                     name="phone" 
                     value={formData.phone} 
                     onChange={handleChange} 
-                    placeholder="+971 50 123 4567"
+                    placeholder="e.g. +971 50 123 4567"
+                    style={{ borderColor: formErrors.phone ? '#ef4444' : undefined }}
                     required 
                   />
+                  {formErrors.phone && <span style={{ fontSize: '11px', color: '#ef4444', marginTop: '2px', display: 'block' }}>{formErrors.phone}</span>}
                 </div>
 
                 <div className="form-group full-width">
-                  <label>Street Address / Apartment / Building</label>
+                  <label>Street Address / Apartment / Building *</label>
                   <input 
                     type="text" 
                     name="address" 
                     value={formData.address} 
                     onChange={handleChange} 
-                    placeholder="Street, Building, Flat No."
+                    placeholder="e.g. Villa 12, Street 4B, Al Barsha"
+                    style={{ borderColor: formErrors.address ? '#ef4444' : undefined }}
                     required 
                   />
+                  {formErrors.address && <span style={{ fontSize: '11px', color: '#ef4444', marginTop: '2px', display: 'block' }}>{formErrors.address}</span>}
                 </div>
 
                 <div className="form-group">
@@ -234,8 +300,8 @@ export const CheckoutModal = () => {
 
                 <div className="form-group">
                   <label>Delivery Option</label>
-                  <div className="delivery-option-badge">
-                    <Truck size={15} color="#10b981" />
+                  <div className="delivery-option-badge" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px', background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: '10px', fontSize: '13px', fontWeight: '600', color: '#065f46', minHeight: '42px' }}>
+                    <Truck size={16} color="#10b981" />
                     <span>{isFreeShipping ? 'Free Express Delivery (1-2 Days)' : `Standard Delivery (${curr} ${shippingFee})`}</span>
                   </div>
                 </div>
@@ -256,7 +322,7 @@ export const CheckoutModal = () => {
               <div className="checkout-step-actions">
                 <button 
                   className="checkout-btn" 
-                  onClick={() => setStep(2)}
+                  onClick={handleProceedToPayment}
                 >
                   <span>Continue to Payment</span>
                   <ArrowRight size={16} />
@@ -320,7 +386,7 @@ export const CheckoutModal = () => {
                   <div className="checkout-form-grid card-fields-grid" style={{ marginTop: '16px' }}>
                     <div className="form-group full-width">
                       <div className="card-label-row">
-                        <label>Card Number</label>
+                        <label>Card Number *</label>
                         <span className="ssl-lock-badge">
                           <Lock size={11} /> 256-bit SSL Encrypted
                         </span>
@@ -329,10 +395,18 @@ export const CheckoutModal = () => {
                         type="text" 
                         name="cardNumber"
                         value={formData.cardNumber}
-                        onChange={handleChange}
-                        placeholder="4242 4242 4242 4242"
+                        onChange={(e) => {
+                          const val = e.target.value.replace(/\D/g, '').substring(0, 16);
+                          const formatted = val.match(/.{1,4}/g)?.join(' ') || val;
+                          setFormData({ ...formData, cardNumber: formatted });
+                          if (formErrors.cardNumber) setFormErrors({ ...formErrors, cardNumber: null });
+                        }}
+                        placeholder="4242  ••••  ••••  4242"
                         className="monospace-input"
+                        style={{ borderColor: formErrors.cardNumber ? '#ef4444' : undefined }}
+                        maxLength={19}
                       />
+                      {formErrors.cardNumber && <span style={{ fontSize: '11px', color: '#ef4444', marginTop: '2px', display: 'block' }}>{formErrors.cardNumber}</span>}
                     </div>
                     <div className="form-group full-width">
                       <label>Cardholder Name</label>
@@ -345,24 +419,39 @@ export const CheckoutModal = () => {
                       />
                     </div>
                     <div className="form-group">
-                      <label>Expiry Date</label>
+                      <label>Expiry Date *</label>
                       <input 
                         type="text" 
                         name="cardExpiry"
                         value={formData.cardExpiry}
-                        onChange={handleChange}
+                        onChange={(e) => {
+                          let val = e.target.value.replace(/\D/g, '').substring(0, 4);
+                          if (val.length >= 2) val = `${val.substring(0, 2)}/${val.substring(2)}`;
+                          setFormData({ ...formData, cardExpiry: val });
+                          if (formErrors.cardExpiry) setFormErrors({ ...formErrors, cardExpiry: null });
+                        }}
                         placeholder="MM/YY" 
+                        style={{ borderColor: formErrors.cardExpiry ? '#ef4444' : undefined }}
+                        maxLength={5}
                       />
+                      {formErrors.cardExpiry && <span style={{ fontSize: '11px', color: '#ef4444', marginTop: '2px', display: 'block' }}>{formErrors.cardExpiry}</span>}
                     </div>
                     <div className="form-group">
-                      <label>CVC / CVV</label>
+                      <label>CVC / CVV *</label>
                       <input 
                         type="text" 
                         name="cardCvc"
                         value={formData.cardCvc}
-                        onChange={handleChange}
+                        onChange={(e) => {
+                          const val = e.target.value.replace(/\D/g, '').substring(0, 4);
+                          setFormData({ ...formData, cardCvc: val });
+                          if (formErrors.cardCvc) setFormErrors({ ...formErrors, cardCvc: null });
+                        }}
                         placeholder="888" 
+                        style={{ borderColor: formErrors.cardCvc ? '#ef4444' : undefined }}
+                        maxLength={4}
                       />
+                      {formErrors.cardCvc && <span style={{ fontSize: '11px', color: '#ef4444', marginTop: '2px', display: 'block' }}>{formErrors.cardCvc}</span>}
                     </div>
                   </div>
                 </div>
@@ -448,8 +537,21 @@ export const CheckoutModal = () => {
                 </div>
               </div>
 
-              {/* Payment Actions */}
-              <div className="checkout-step-actions payment-actions">
+              {/* Payment Actions (Sticky Bottom Bar) */}
+              <div 
+                className="checkout-step-actions payment-actions"
+                style={{
+                  position: 'sticky',
+                  bottom: '-24px',
+                  background: 'var(--color-surface, #ffffff)',
+                  paddingTop: '16px',
+                  paddingBottom: '16px',
+                  borderTop: '1px solid var(--color-border, #e2e8f0)',
+                  boxShadow: '0 -8px 20px rgba(0,0,0,0.06)',
+                  zIndex: 20,
+                  marginTop: '16px'
+                }}
+              >
                 <button 
                   onClick={() => setStep(1)}
                   className="checkout-back-btn"
