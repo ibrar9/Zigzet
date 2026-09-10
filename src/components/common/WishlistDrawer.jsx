@@ -12,7 +12,8 @@ export const WishlistDrawer = () => {
     addToCart,
     navigatePage,
     settings,
-    showToast
+    showToast,
+    formatPrice
   } = useStore();
 
   if (!isWishlistOpen) return null;
@@ -122,7 +123,7 @@ export const WishlistDrawer = () => {
 
                       <div className="cart-item-footer">
                         <span className="cart-item-price">
-                          {curr} {Number(product.price).toFixed(2)}
+                          {formatPrice(product.price)}
                         </span>
 
                         <button

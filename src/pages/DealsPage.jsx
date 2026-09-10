@@ -4,7 +4,7 @@ import { useStore } from '../context/StoreContext';
 import { ProductCard } from '../components/common/ProductCard';
 
 export const DealsPage = () => {
-  const { products, showToast, coupons: adminCoupons, campaign, settings } = useStore();
+  const { products, showToast, coupons: adminCoupons, campaign, settings, formatPrice } = useStore();
   const [copiedCode, setCopiedCode] = useState(null);
   const [dealFilter, setDealFilter] = useState('all');
 
@@ -140,8 +140,8 @@ export const DealsPage = () => {
 
           <div className="coupons-grid">
             {activeCouponsList.map((c) => {
-              const discountLabel = c.discount || (c.type === 'percentage' ? `${c.value}% OFF` : `${c.value} ${curr} OFF`);
-              const descLabel = c.description || (c.minSpend ? `On orders over ${c.minSpend} ${curr}` : 'Applicable on storewide items');
+              const discountLabel = c.discount || (c.type === 'percentage' ? `${c.value}% OFF` : `${formatPrice(c.value)} OFF`);
+              const descLabel = c.description || (c.minSpend ? `On orders over ${formatPrice(c.minSpend)}` : 'Applicable on storewide items');
               const expiryLabel = c.expires || (c.expiryDate ? `Expires ${c.expiryDate}` : 'Valid today');
 
               return (
@@ -197,7 +197,7 @@ export const DealsPage = () => {
             {[
               { id: 'all', label: 'All Deals' },
               { id: 'big-discount', label: '30%+ OFF' },
-              { id: 'under-100', label: `Under ${curr} 100` },
+              { id: 'under-100', label: `Under ${formatPrice(100)}` },
               { id: 'sunscreen', label: 'Sun Care Deals' },
               { id: 'cleansers', label: 'Cleanser Specials' },
               { id: 'serums', label: 'Serum Bundles' }

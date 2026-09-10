@@ -3,8 +3,8 @@ import { Truck, ArrowRight } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
 export const ShippingCallout = () => {
-  const { settings, navigatePage } = useStore();
-  const threshold = settings?.freeShippingThreshold || 50;
+  const { settings, navigatePage, formatPrice } = useStore();
+  const threshold = settings?.freeShippingThreshold || 150;
 
   return (
     <section className="shipping-callout-section">
@@ -16,7 +16,7 @@ export const ShippingCallout = () => {
             </div>
             <div className="callout-text">
               <h3>Fast &amp; Reliable Express Delivery</h3>
-              <p>Enjoy free express shipping on orders over {settings.currency || 'AED'} {threshold} with full real-time package tracking.</p>
+              <p>Enjoy free express shipping on orders over {formatPrice(threshold)} with full real-time package tracking.</p>
             </div>
           </div>
 

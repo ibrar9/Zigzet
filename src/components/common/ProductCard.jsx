@@ -10,7 +10,8 @@ export const ProductCard = ({ product }) => {
     setQuickViewProduct, 
     openNotifyModal,
     setIsCheckoutOpen,
-    settings 
+    settings,
+    formatPrice
   } = useStore();
 
   const [selectedColor, setSelectedColor] = useState(
@@ -178,9 +179,9 @@ export const ProductCard = ({ product }) => {
 
         {/* Price Row (Dynamic Currency) */}
         <div className="product-price-row">
-          <span className="current-price">{settings?.currency || 'AED'} {Number(product.price).toFixed(2)}</span>
+          <span className="current-price">{formatPrice(product.price)}</span>
           {product.originalPrice && Number(product.originalPrice) > Number(product.price) && (
-            <span className="original-price">{settings?.currency || 'AED'} {Number(product.originalPrice).toFixed(2)}</span>
+            <span className="original-price">{formatPrice(product.originalPrice)}</span>
           )}
         </div>
 

@@ -36,7 +36,8 @@ export const CheckoutModal = () => {
     integrations,
     settings,
     currentUser,
-    showToast
+    showToast,
+    formatPrice
   } = useStore();
 
   const [step, setStep] = useState(1);
@@ -142,6 +143,8 @@ export const CheckoutModal = () => {
         : formData.paymentMethod,
       total: cartTotal,
       subtotal: cartSubtotal,
+      currency: settings?.currency || 'AED',
+      currencySymbol: settings?.currencySymbol,
       discount: couponDiscountAmount,
       couponCode: appliedCoupon ? appliedCoupon.code : null,
       items: cart
@@ -302,7 +305,7 @@ export const CheckoutModal = () => {
                   <label>Delivery Option</label>
                   <div className="delivery-option-badge" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px', background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: '10px', fontSize: '13px', fontWeight: '600', color: '#065f46', minHeight: '42px' }}>
                     <Truck size={16} color="#10b981" />
-                    <span>{isFreeShipping ? 'Free Express Delivery (1-2 Days)' : `Standard Delivery (${curr} ${shippingFee})`}</span>
+                    <span>{isFreeShipping ? 'Free Express Delivery (1-2 Days)' : `Standard Delivery (${formatPrice(shippingFee)})`}</span>
                   </div>
                 </div>
               </div>
@@ -311,11 +314,11 @@ export const CheckoutModal = () => {
               <div className="checkout-mini-summary">
                 <div className="mini-summary-line">
                   <span>Cart Items ({cart.reduce((s, i) => s + i.quantity, 0)})</span>
-                  <strong>{curr} {cartSubtotal.toFixed(2)}</strong>
+                  <strong>{formatPrice(cartSubtotal)}</strong>
                 </div>
                 <div className="mini-summary-line">
                   <span>Delivery</span>
-                  <span style={{ color: '#10b981', fontWeight: '700' }}>{isFreeShipping ? 'FREE' : `${curr} ${shippingFee.toFixed(2)}`}</span>
+                  <span style={{ color: '#10b981', fontWeight: '700' }}>{isFreeShipping ? 'FREE' : formatPrice(shippingFee)}</span>
                 </div>
               </div>
 
@@ -461,7 +464,7 @@ export const CheckoutModal = () => {
                 <div className="tabby-split-info">
                   <div className="tabby-header">
                     <Sparkles size={16} color="#059669" />
-                    <strong>Split in 4 interest-free payments of {curr} {(cartTotal / 4).toFixed(2)}</strong>
+                    <strong>Split in 4 interest-free payments of {formatPrice(cartTotal / 4)}</strong>
                   </div>
                   <p>No interest. No hidden fees. Instant approval at checkout with Emirates ID.</p>
                 </div>
@@ -482,7 +485,7 @@ export const CheckoutModal = () => {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <Tag size={15} color="#10b981" />
                       <span style={{ fontSize: '13px', fontWeight: '700', color: '#065f46' }}>
-                        Coupon Applied: <strong>{appliedCoupon.code}</strong> (-{curr} {couponDiscountAmount.toFixed(2)})
+                        Coupon Applied: <strong>{appliedCoupon.code}</strong> (-{formatPrice(couponDiscountAmount)})
                       </span>
                     </div>
                     <button
@@ -515,25 +518,25 @@ export const CheckoutModal = () => {
               <div className="checkout-summary-box">
                 <div className="price-summary-row">
                   <span>Items Subtotal</span>
-                  <span>{curr} {cartSubtotal.toFixed(2)}</span>
+                  <span>{formatPrice(cartSubtotal)}</span>
                 </div>
                 {appliedCoupon && (
                   <div className="price-summary-row promo-discount-row">
                     <span>Promo Discount ({appliedCoupon.code})</span>
-                    <span>-{curr} {couponDiscountAmount.toFixed(2)}</span>
+                    <span>-{formatPrice(couponDiscountAmount)}</span>
                   </div>
                 )}
                 <div className="price-summary-row">
                   <span>UAE Delivery</span>
-                  <span>{isFreeShipping ? 'FREE' : `${curr} ${shippingFee.toFixed(2)}`}</span>
+                  <span>{isFreeShipping ? 'FREE' : formatPrice(shippingFee)}</span>
                 </div>
                 <div className="price-summary-row">
                   <span>Estimated VAT (5%)</span>
-                  <span>{curr} {estimatedTax.toFixed(2)}</span>
+                  <span>{formatPrice(estimatedTax)}</span>
                 </div>
                 <div className="price-summary-row total">
                   <span>Total Amount Due</span>
-                  <span className="total-due-val">{curr} {cartTotal.toFixed(2)}</span>
+                  <span className="total-due-val">{formatPrice(cartTotal)}</span>
                 </div>
               </div>
 
@@ -564,7 +567,7 @@ export const CheckoutModal = () => {
                   onClick={handlePlaceOrder}
                 >
                   <Lock size={15} />
-                  <span>Pay &amp; Place Order ({curr} {cartTotal.toFixed(2)})</span>
+                  <span>Pay &amp; Place Order ({formatPrice(cartTotal)})</span>
                 </button>
               </div>
             </div>
@@ -587,7 +590,7 @@ export const CheckoutModal = () => {
               <div className="order-confirmed-recap-card">
                 <div className="recap-row">
                   <span>Order Total:</span>
-                  <strong style={{ color: '#10b981' }}>{curr} {Number(completedOrder.total).toFixed(2)}</strong>
+                  <strong style={{ color: '#10b981' }}>{formatPrice(completedOrder.total, { currency: completedOrder.currency })}</strong>
                 </div>
                 <div className="recap-row">
                   <span>Payment Method:</span>

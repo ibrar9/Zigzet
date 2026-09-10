@@ -18,7 +18,8 @@ export const CartDrawer = () => {
     setIsCheckoutOpen,
     navigatePage,
     products,
-    addToCart
+    addToCart,
+    formatPrice
   } = useStore();
 
   const [orderNote, setOrderNote] = useState('');
@@ -74,7 +75,7 @@ export const CartDrawer = () => {
               </span>
             ) : (
               <span>
-                Add <strong>{curr} {remainingForFree.toFixed(2)}</strong> more for <strong>FREE Delivery</strong>
+                Add <strong>{formatPrice(remainingForFree)}</strong> more for <strong>FREE Delivery</strong>
               </span>
             )}
             <span className="meter-percent">{Math.round(progressPercent)}%</span>
@@ -150,7 +151,7 @@ export const CartDrawer = () => {
                         </div>
 
                         <span className="cart-item-price">
-                          {curr} {(item.price * item.quantity).toFixed(2)}
+                          {formatPrice(item.price * item.quantity)}
                         </span>
                       </div>
                     </div>
@@ -171,7 +172,7 @@ export const CartDrawer = () => {
                         <img src={cp.image} alt={cp.name} className="cross-sell-img" />
                         <div className="cross-sell-info">
                           <span className="cross-sell-name">{cp.name}</span>
-                          <span className="cross-sell-price">{curr} {Number(cp.price).toFixed(2)}</span>
+                          <span className="cross-sell-price">{formatPrice(cp.price)}</span>
                         </div>
                         <button 
                           className="cross-sell-add-btn"
@@ -215,22 +216,22 @@ export const CartDrawer = () => {
           <div className="drawer-footer" style={{ paddingBottom: 'max(24px, env(safe-area-inset-bottom, 24px))' }}>
             <div className="price-summary-row">
               <span>Subtotal</span>
-              <span>{curr} {cartSubtotal.toFixed(2)}</span>
+              <span>{formatPrice(cartSubtotal)}</span>
             </div>
 
             <div className="price-summary-row">
               <span>Estimated Shipping</span>
-              <span>{isFreeShipping ? 'FREE' : `${curr} ${shippingFee.toFixed(2)}`}</span>
+              <span>{isFreeShipping ? 'FREE' : formatPrice(shippingFee)}</span>
             </div>
 
             <div className="price-summary-row">
               <span>Estimated VAT (5%)</span>
-              <span>{curr} {estimatedTax.toFixed(2)}</span>
+              <span>{formatPrice(estimatedTax)}</span>
             </div>
 
             <div className="price-summary-row total">
               <span>Total</span>
-              <span>{curr} {cartTotal.toFixed(2)}</span>
+              <span>{formatPrice(cartTotal)}</span>
             </div>
 
             <button 

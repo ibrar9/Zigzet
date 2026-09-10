@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { initialProducts } from '../data/initialProducts';
 import { initialOrders } from '../data/initialOrders';
 import { initialCoupons } from '../data/initialCoupons';
@@ -113,6 +113,24 @@ const defaultSeo = {
   }
 };
 
+export const DEFAULT_EXCHANGE_RATES = {
+  AED: 1.0,
+  USD: 0.272294, // 1 USD = 3.6725 AED (exact peg)
+  SAR: 1.021103, // 1 SAR = 0.9793 AED (exact peg)
+  EUR: 0.234052, // 1 EUR = ~4.27 AED
+  GBP: 0.200960, // 1 GBP = ~4.98 AED
+  CAD: 0.375000  // 1 CAD = ~2.67 AED
+};
+
+export const CURRENCY_SYMBOLS = {
+  AED: 'AED ',
+  USD: '$',
+  EUR: '€',
+  GBP: '£',
+  SAR: 'SAR ',
+  CAD: 'CA$'
+};
+
 const defaultSettings = {
   announcement: 'Free Express Delivery Across UAE on Orders Over 150 AED',
   freeShippingThreshold: 150,
@@ -218,6 +236,53 @@ export const StoreProvider = ({ children }) => {
       return null;
     }
   });
+
+  // Live / Cached Exchange Rates (Base: 1 AED)
+  const [currencyRates, setCurrencyRates] = useState(() => {
+    try {
+      const saved = localStorage.getItem('zigzet_forex_rates_v1');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && typeof parsed.USD === 'number') {
+          return { ...DEFAULT_EXCHANGE_RATES, ...parsed };
+        }
+      }
+    } catch (e) {
+      console.warn('Could not read saved exchange rates:', e);
+    }
+    return DEFAULT_EXCHANGE_RATES;
+  });
+
+  // Background fetch of real live forex rates from open exchange API
+  useEffect(() => {
+    let isMounted = true;
+    const fetchRates = async () => {
+      try {
+        const res = await fetch('https://open.er-api.com/v6/latest/AED');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data && data.result === 'success' && data.rates && isMounted) {
+          const freshRates = {
+            AED: 1.0,
+            USD: Number(data.rates.USD) || DEFAULT_EXCHANGE_RATES.USD,
+            SAR: Number(data.rates.SAR) || DEFAULT_EXCHANGE_RATES.SAR,
+            EUR: Number(data.rates.EUR) || DEFAULT_EXCHANGE_RATES.EUR,
+            GBP: Number(data.rates.GBP) || DEFAULT_EXCHANGE_RATES.GBP,
+            CAD: Number(data.rates.CAD) || DEFAULT_EXCHANGE_RATES.CAD
+          };
+          setCurrencyRates((prev) => ({ ...prev, ...freshRates }));
+          try {
+            localStorage.setItem('zigzet_forex_rates_v1', JSON.stringify(freshRates));
+          } catch {}
+        }
+      } catch (err) {
+        // Fallback silently to exact pegged rates
+        console.log('Using baseline pegged forex rates:', err?.message);
+      }
+    };
+    fetchRates();
+    return () => { isMounted = false; };
+  }, []);
 
   // Registered user accounts (persisted in localStorage)
   const [userAccounts, setUserAccounts] = useState(() => {
@@ -574,12 +639,33 @@ export const StoreProvider = ({ children }) => {
   };
 
   const changeCurrency = (currCode) => {
+    const symbol = CURRENCY_SYMBOLS[currCode] || `${currCode} `;
     setSettings((prev) => ({
       ...prev,
       currency: currCode,
-      currencySymbol: currCode === 'USD' ? '$' : currCode === 'EUR' ? '€' : currCode === 'GBP' ? '£' : `${currCode} `
+      currencySymbol: symbol
     }));
   };
+
+  const convertPrice = useCallback((amountInAED, targetCurrency) => {
+    const num = Number(amountInAED) || 0;
+    const curr = targetCurrency || settings?.currency || 'AED';
+    const rate = currencyRates[curr] || DEFAULT_EXCHANGE_RATES[curr] || 1;
+    return Number((num * rate).toFixed(2));
+  }, [currencyRates, settings?.currency]);
+
+  const formatPrice = useCallback((amountInAED, options = {}) => {
+    const curr = options.currency || settings?.currency || 'AED';
+    const converted = convertPrice(amountInAED, curr);
+    if (options.rawNumber) return converted;
+
+    if (curr === 'USD') return `$${converted.toFixed(2)}`;
+    if (curr === 'EUR') return `€${converted.toFixed(2)}`;
+    if (curr === 'GBP') return `£${converted.toFixed(2)}`;
+    if (curr === 'CAD') return `CA$${converted.toFixed(2)}`;
+    if (curr === 'SAR') return `SAR ${converted.toFixed(2)}`;
+    return `AED ${converted.toFixed(2)}`;
+  }, [convertPrice, settings?.currency]);
 
   // Persistence Effects
   useEffect(() => { localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products)); }, [products]);
@@ -1215,6 +1301,10 @@ export const StoreProvider = ({ children }) => {
     const orderTotal = orderData.total || cartTotal;
     const orderedItems = orderData.items || [...cart];
 
+    const orderCurrency = orderData.currency || settings?.currency || 'AED';
+    const exchangeRate = currencyRates[orderCurrency] || DEFAULT_EXCHANGE_RATES[orderCurrency] || 1;
+    const convertedTotal = convertPrice(orderTotal, orderCurrency);
+
     const newOrder = {
       id: orderId,
       customerName: orderData.customerName || 'Demo Customer',
@@ -1222,11 +1312,15 @@ export const StoreProvider = ({ children }) => {
       date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
       total: orderTotal,
       subtotal: cartSubtotal,
+      currency: orderCurrency,
+      currencySymbol: CURRENCY_SYMBOLS[orderCurrency] || `${orderCurrency} `,
+      exchangeRate: exchangeRate,
+      convertedTotal: convertedTotal,
       discount: couponDiscountAmount,
       couponCode: appliedCoupon ? appliedCoupon.code : null,
       status: 'Processing',
       paymentMethod: orderData.paymentMethod || 'Credit Card (Visa)',
-      shippingAddress: orderData.shippingAddress || '742 Evergreen Terrace, Springfield, OR',
+      shippingAddress: orderData.shippingAddress || 'Downtown Dubai, Boulevard Plaza Tower 1',
       items: orderedItems.map((item) => ({
         id: item.id,
         name: item.name,
@@ -1806,7 +1900,12 @@ export const StoreProvider = ({ children }) => {
         theme,
         setTheme,
         toggleTheme,
-        changeCurrency
+        changeCurrency,
+        convertPrice,
+        formatPrice,
+        currencyRates,
+        convertedCartTotal: convertPrice(cartTotal),
+        convertedCartSubtotal: convertPrice(cartSubtotal)
       }}
     >
       {children}

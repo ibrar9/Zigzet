@@ -14,7 +14,8 @@ export const ProductQuickView = () => {
     setIsCheckoutOpen,
     openNotifyModal,
     settings,
-    showToast
+    showToast,
+    formatPrice
   } = useStore();
 
   const [quantity, setQuantity] = useState(1);
@@ -147,11 +148,11 @@ export const ProductQuickView = () => {
             {/* Price (Dynamic Currency) */}
             <div className="quick-view-price-row">
               <span className="quick-view-current-price">
-                {curr} {Number(product.price).toFixed(2)}
+                {formatPrice(product.price)}
               </span>
               {product.originalPrice && Number(product.originalPrice) > Number(product.price) && (
                 <span className="quick-view-original-price">
-                  {curr} {Number(product.originalPrice).toFixed(2)}
+                  {formatPrice(product.originalPrice)}
                 </span>
               )}
             </div>

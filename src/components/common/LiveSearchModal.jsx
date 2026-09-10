@@ -13,7 +13,8 @@ export const LiveSearchModal = () => {
     setQuickViewProduct,
     addToCart,
     settings,
-    showToast
+    showToast,
+    formatPrice
   } = useStore();
 
   const [selectedCatFilter, setSelectedCatFilter] = useState('all');
@@ -222,9 +223,9 @@ export const LiveSearchModal = () => {
 
                   <div className="live-search-card-action">
                     <div className="live-search-card-price">
-                      <span className="current-price">{curr} {Number(prod.price).toFixed(2)}</span>
+                      <span className="current-price">{formatPrice(prod.price)}</span>
                       {prod.originalPrice && Number(prod.originalPrice) > Number(prod.price) && (
-                        <span className="orig-price">{curr} {Number(prod.originalPrice).toFixed(2)}</span>
+                        <span className="orig-price">{formatPrice(prod.originalPrice)}</span>
                       )}
                     </div>
 

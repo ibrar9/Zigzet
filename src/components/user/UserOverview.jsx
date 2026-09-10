@@ -53,7 +53,7 @@ const STAT_CARDS = (orders, inProgress, wishlistLen, couponsLen) => [
 ];
 
 export const UserOverview = ({ setActiveTab, myOrders, inProgress }) => {
-  const { wishlist, coupons, navigatePage, currentUser, products, settings, userAddresses, reorderItems } = useStore();
+  const { wishlist, coupons, navigatePage, currentUser, products, settings, userAddresses, reorderItems, formatPrice } = useStore();
 
   const firstName = currentUser?.name?.split(' ')[0] || 'there';
   const recentOrders = myOrders.slice(0, 3);
@@ -144,7 +144,7 @@ export const UserOverview = ({ setActiveTab, myOrders, inProgress }) => {
                           </div>
                         </td>
                         <td>
-                          <p className="ud2-order-price">{settings?.currency || 'AED'} {(order.total || 0).toFixed(2)}</p>
+                          <p className="ud2-order-price">{formatPrice(order.total || 0, { currency: order.currency })}</p>
                           <p className="ud2-order-items-count">{order.items?.length || 1} Item</p>
                         </td>
                         <td>
@@ -222,7 +222,7 @@ export const UserOverview = ({ setActiveTab, myOrders, inProgress }) => {
                       </span>
                     </div>
                     <p className="ud2-rec-name">{p.name}</p>
-                    <p className="ud2-rec-price">{settings?.currency || 'AED'} {Number(p.price).toFixed(2)}</p>
+                    <p className="ud2-rec-price">{formatPrice(p.price)}</p>
                   </button>
                 ))}
               </div>

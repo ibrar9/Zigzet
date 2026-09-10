@@ -14,7 +14,8 @@ export const UserPayment = () => {
     userWallet, 
     redeemGiftCard, 
     addWalletFunds,
-    settings 
+    settings,
+    formatPrice
   } = useStore();
 
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
@@ -102,10 +103,10 @@ export const UserPayment = () => {
                 Zigzet Cash Wallet
               </span>
               <h3 style={{ fontSize: 32, fontWeight: 800, margin: '6px 0 2px 0', letterSpacing: '-0.02em' }}>
-                {settings?.currency || 'AED'} {Number(userWallet?.balance || 0).toFixed(2)}
+                {formatPrice(userWallet?.balance || 0)}
               </h3>
               <p style={{ fontSize: 12.5, color: '#e9d5ff' }}>
-                {settings?.currency || 'AED'} {Number(userWallet?.cashbackEarned || 45).toFixed(2)} total cashback earned
+                {formatPrice(userWallet?.cashbackEarned || 45)} total cashback earned
               </p>
             </div>
             <div style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(255,255,255,0.15)', display: 'grid', placeItems: 'center' }}>
@@ -411,7 +412,7 @@ export const UserPayment = () => {
                         cursor: 'pointer'
                       }}
                     >
-                      {settings?.currency || 'AED'} {amt}
+                      {formatPrice(Number(amt))}
                     </button>
                   ))}
                 </div>

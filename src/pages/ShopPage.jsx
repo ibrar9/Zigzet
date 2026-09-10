@@ -30,7 +30,8 @@ export const ShopPage = () => {
     setActiveBrand,
     searchQuery, 
     setSearchQuery,
-    settings
+    settings,
+    formatPrice
   } = useStore();
 
   const [selectedCategories, setSelectedCategories] = useState(
@@ -386,7 +387,7 @@ export const ShopPage = () => {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                   <h4 className="filter-title" style={{ margin: 0 }}>Max Price</h4>
                   <span style={{ fontSize: '14px', fontWeight: '800', color: 'var(--color-text-primary, #111827)' }}>
-                    {curr} {priceRange}
+                    {formatPrice(priceRange)}
                   </span>
                 </div>
 
@@ -394,9 +395,9 @@ export const ShopPage = () => {
                 <div className="price-presets-row">
                   {[
                     { label: 'All', val: 500 },
-                    { label: `< 50`, val: 50 },
-                    { label: `< 100`, val: 100 },
-                    { label: `< 200`, val: 200 }
+                    { label: `< ${formatPrice(50)}`, val: 50 },
+                    { label: `< ${formatPrice(100)}`, val: 100 },
+                    { label: `< ${formatPrice(200)}`, val: 200 }
                   ].map((preset) => (
                     <button
                       key={preset.val}
@@ -574,7 +575,7 @@ export const ShopPage = () => {
 
                 {priceRange < 500 && (
                   <span className="filter-chip">
-                    Under {curr} {priceRange}
+                    Under {formatPrice(priceRange)}
                     <button onClick={() => setPriceRange(500)} aria-label="Remove price filter">
                       <X size={11} />
                     </button>

@@ -3,13 +3,13 @@ import { Truck, ShieldCheck, Headphones, HeartHandshake } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
 export const TrustBadges = () => {
-  const { settings } = useStore();
+  const { settings, formatPrice } = useStore();
 
   const badges = [
     {
       icon: <Truck size={28} strokeWidth={1.75} />,
       title: 'Free Express Delivery',
-      description: `On Orders Over ${settings.currency || 'AED'} ${settings.freeShippingThreshold || 150}`
+      description: `On Orders Over ${formatPrice(settings.freeShippingThreshold || 150)}`
     },
     {
       icon: <ShieldCheck size={28} strokeWidth={1.75} />,

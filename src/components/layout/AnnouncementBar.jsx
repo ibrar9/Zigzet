@@ -3,7 +3,7 @@ import { ChevronDown, Check, Globe, DollarSign } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
 export const AnnouncementBar = () => {
-  const { settings, changeCurrency } = useStore();
+  const { settings, changeCurrency, formatPrice } = useStore();
   const [currencyOpen, setCurrencyOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const [selectedLang, setSelectedLang] = useState('English');
@@ -43,7 +43,7 @@ export const AnnouncementBar = () => {
     <div className="announcement-bar">
       <div className="container announcement-content">
         <div className="announcement-text">
-          <span>{(settings.announcement || 'Free Express Delivery Across UAE on Orders Over 150 AED').replace(/✨|🔥|🎉/g, '').trim()}</span>
+          <span>Free UAE Express Delivery on Orders Over {formatPrice(settings.freeShippingThreshold || 150)}</span>
         </div>
 
         <div className="announcement-controls">

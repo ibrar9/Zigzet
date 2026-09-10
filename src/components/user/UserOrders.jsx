@@ -22,7 +22,7 @@ const STEP_FLAGS = {
 };
 
 export const UserOrders = ({ myOrders, setActiveTab }) => {
-  const { navigatePage, settings, reorderItems } = useStore();
+  const { navigatePage, settings, reorderItems, formatPrice } = useStore();
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('All');
   const [expanded, setExpanded] = useState(null);
@@ -101,7 +101,7 @@ export const UserOrders = ({ myOrders, setActiveTab }) => {
                     <p className="ud2-order-name2">{item?.name || 'Order'}</p>
                     <p className="ud2-order-sub2">Order #{order.id} &nbsp;·&nbsp; {order.date} &nbsp;·&nbsp; {order.items?.length || 1} item(s)</p>
                   </div>
-                  <div className="ud2-order-price2">{settings?.currency || 'AED'} {Number(order.total || 0).toFixed(2)}</div>
+                  <div className="ud2-order-price2">{formatPrice(order.total || 0, { currency: order.currency })}</div>
                   <span className="ud2-status-badge" style={{ color: meta.color, background: meta.bg }}>{meta.label}</span>
                   
                   <div className="ud2-order-card2-btns">
@@ -162,7 +162,7 @@ export const UserOrders = ({ myOrders, setActiveTab }) => {
                             <span>Qty: {it.quantity}</span>
                           </div>
                           <div style={{ textAlign: 'right' }}>
-                            <p className="ud2-item-price">{settings?.currency || 'AED'} {((Number(it.price) || 0) * it.quantity).toFixed(2)}</p>
+                            <p className="ud2-item-price">{formatPrice((Number(it.price) || 0) * it.quantity, { currency: order.currency })}</p>
                             <button
                               onClick={() => reorderItems([it])}
                               style={{ background: 'none', border: 'none', color: '#7c3aed', fontSize: 11.5, fontWeight: 700, cursor: 'pointer', padding: 0, marginTop: 4 }}
@@ -188,7 +188,7 @@ export const UserOrders = ({ myOrders, setActiveTab }) => {
                         </div>
                       )}
                       <div className="ud2-info-chip total">
-                        <p>Order Total</p><span>{settings?.currency || 'AED'} {(order.total || 0).toFixed(2)}</span>
+                        <p>Order Total</p><span>{formatPrice(order.total || 0, { currency: order.currency })}</span>
                       </div>
                     </div>
 
@@ -290,8 +290,8 @@ export const UserOrders = ({ myOrders, setActiveTab }) => {
                   <tr key={idx} style={{ borderBottom: '1px solid #f1f5f9', fontSize: 13, color: '#334155' }}>
                     <td style={{ padding: '10px 4px', fontWeight: 600 }}>{it.name}</td>
                     <td style={{ padding: '10px 4px', textAlign: 'center' }}>{it.quantity}</td>
-                    <td style={{ padding: '10px 4px', textAlign: 'right' }}>{settings?.currency || 'AED'} {Number(it.price || 0).toFixed(2)}</td>
-                    <td style={{ padding: '10px 4px', textAlign: 'right', fontWeight: 700 }}>{settings?.currency || 'AED'} {(Number(it.price || 0) * it.quantity).toFixed(2)}</td>
+                    <td style={{ padding: '10px 4px', textAlign: 'right' }}>{formatPrice(it.price || 0, { currency: invoiceOrder.currency })}</td>
+                    <td style={{ padding: '10px 4px', textAlign: 'right', fontWeight: 700 }}>{formatPrice((Number(it.price || 0) * it.quantity), { currency: invoiceOrder.currency })}</td>
                   </tr>
                 ))}
               </tbody>
@@ -302,17 +302,17 @@ export const UserOrders = ({ myOrders, setActiveTab }) => {
               <div style={{ width: '220px', display: 'flex', flexDirection: 'column', gap: 6, fontSize: 13 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', color: '#64748b' }}>
                   <span>Subtotal:</span>
-                  <span>{settings?.currency || 'AED'} {(Number(invoiceOrder.subtotal || invoiceOrder.total) || 0).toFixed(2)}</span>
+                  <span>{formatPrice(Number(invoiceOrder.subtotal || invoiceOrder.total) || 0, { currency: invoiceOrder.currency })}</span>
                 </div>
                 {invoiceOrder.discount > 0 && (
                   <div style={{ display: 'flex', justifyContent: 'space-between', color: '#16a34a' }}>
                     <span>Discount:</span>
-                    <span>-{settings?.currency || 'AED'} {Number(invoiceOrder.discount).toFixed(2)}</span>
+                    <span>-{formatPrice(invoiceOrder.discount, { currency: invoiceOrder.currency })}</span>
                   </div>
                 )}
                 <div style={{ display: 'flex', justifyContent: 'space-between', color: '#64748b' }}>
                   <span>Estimated Tax (5%):</span>
-                  <span>{settings?.currency || 'AED'} {((invoiceOrder.total || 0) * 0.05).toFixed(2)}</span>
+                  <span>{formatPrice((invoiceOrder.total || 0) * 0.05, { currency: invoiceOrder.currency })}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', color: '#64748b' }}>
                   <span>Shipping:</span>
@@ -320,7 +320,7 @@ export const UserOrders = ({ myOrders, setActiveTab }) => {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 800, fontSize: 15, color: '#0f172a', borderTop: '2px solid #e2e8f0', paddingTop: 8, marginTop: 4 }}>
                   <span>Invoice Total:</span>
-                  <span style={{ color: '#7c3aed' }}>{settings?.currency || 'AED'} {Number(invoiceOrder.total || 0).toFixed(2)}</span>
+                  <span style={{ color: '#7c3aed' }}>{formatPrice(invoiceOrder.total || 0, { currency: invoiceOrder.currency })}</span>
                 </div>
               </div>
             </div>

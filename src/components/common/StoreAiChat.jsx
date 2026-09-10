@@ -34,7 +34,8 @@ export const StoreAiChat = () => {
     isCheckoutOpen,
     isCartOpen,
     isWishlistOpen,
-    isSearchOpen
+    isSearchOpen,
+    formatPrice
   } = useStore();
 
   const isAnyModalOpen = Boolean(quickViewProduct || isCheckoutOpen || isCartOpen || isWishlistOpen || isSearchOpen);
@@ -519,7 +520,7 @@ export const StoreAiChat = () => {
                               </span>
                               <div className="ai-prod-meta-row">
                                 <span className="ai-prod-price">
-                                  {currency} {Number(prod.price).toFixed(2)}
+                                  {formatPrice(prod.price)}
                                 </span>
                                 {prod.rating && (
                                   <span className="ai-prod-rating">★ {prod.rating}</span>

@@ -3,7 +3,7 @@ import { Truck, Search, CheckCircle2, Package, MapPin, Clock, ArrowRight, Shield
 import { useStore } from '../context/StoreContext';
 
 export const TrackOrderPage = () => {
-  const { orders, settings } = useStore();
+  const { orders, settings, formatPrice } = useStore();
   const [orderInput, setOrderInput] = useState('ORD-9841');
   const [searchedOrder, setSearchedOrder] = useState(
     orders.find((o) => o.id === 'ORD-9841') || orders[0] || null
@@ -164,12 +164,12 @@ export const TrackOrderPage = () => {
                   {searchedOrder.items && searchedOrder.items.map((item, i) => (
                     <div key={i} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
                       <span style={{ color: 'var(--color-text-primary, #111827)', fontWeight: '500' }}>{item.name} (x{item.quantity})</span>
-                      <span style={{ fontWeight: '700' }}>{curr} {(item.price * item.quantity).toFixed(2)}</span>
+                      <span style={{ fontWeight: '700' }}>{formatPrice(item.price * item.quantity, { currency: searchedOrder.currency })}</span>
                     </div>
                   ))}
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13.5px', fontWeight: '800', borderTop: '1px solid var(--color-border, #e2e8f0)', paddingTop: '6px', marginTop: '4px', color: 'var(--color-text-primary, #111827)' }}>
                     <span>Total Amount</span>
-                    <span style={{ color: '#10b981' }}>{curr} {Number(searchedOrder.total).toFixed(2)}</span>
+                    <span style={{ color: '#10b981' }}>{formatPrice(searchedOrder.total, { currency: searchedOrder.currency })}</span>
                   </div>
                 </div>
               </div>
