@@ -183,7 +183,47 @@ const defaultCms = {
     }
   ],
   bannerHeadline: 'Fast & Reliable UAE Express Delivery',
-  bannerSubtext: 'Get your authentic skincare orders delivered quickly with real-time tracking.'
+  bannerSubtext: 'Get your authentic skincare orders delivered quickly with real-time tracking.',
+  promoBannersAutoPlay: true,
+  promoBannersInterval: 4500,
+  promoBanners: [
+    {
+      id: 'promo-1',
+      title: 'Advanced UV Shield SPF50+',
+      subtitle: 'Airy Korean sunscreens for 100% daily invisible protection',
+      buttonText: 'Shop Sun Care →',
+      linkType: 'category',
+      linkValue: 'sun-care',
+      buttonPosition: 'bottom-left',
+      badge: 'Summer Essential',
+      image: 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=1400&auto=format&fit=crop&q=85',
+      active: true
+    },
+    {
+      id: 'promo-2',
+      title: 'Glass Skin Barrier Boost',
+      subtitle: 'Triple PDRN & Hyaluronic Micro-Essence for deep hydration',
+      buttonText: 'Explore Serums →',
+      linkType: 'category',
+      linkValue: 'serums-essences',
+      buttonPosition: 'bottom-left',
+      badge: 'Best Seller',
+      image: 'https://images.unsplash.com/photo-1608248597359-009949989823?w=1400&auto=format&fit=crop&q=85',
+      active: true
+    },
+    {
+      id: 'promo-3',
+      title: 'Flash Savings & Luxury Bundles',
+      subtitle: 'Save up to 35% on dermatologically proven beauty sets',
+      buttonText: 'Shop Flash Deals →',
+      linkType: 'page',
+      linkValue: 'deals',
+      buttonPosition: 'bottom-left',
+      badge: 'Limited Offer',
+      image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=1400&auto=format&fit=crop&q=85',
+      active: true
+    }
+  ]
 };
 
 const defaultCampaign = {
@@ -500,7 +540,8 @@ export const StoreProvider = ({ children }) => {
         return {
           ...defaultCms,
           ...parsed,
-          heroSlides: (parsed.heroSlides && parsed.heroSlides.length > 0) ? parsed.heroSlides : defaultCms.heroSlides
+          heroSlides: (parsed.heroSlides && parsed.heroSlides.length > 0) ? parsed.heroSlides : defaultCms.heroSlides,
+          promoBanners: (parsed.promoBanners && parsed.promoBanners.length > 0) ? parsed.promoBanners : defaultCms.promoBanners
         };
       }
       return defaultCms;

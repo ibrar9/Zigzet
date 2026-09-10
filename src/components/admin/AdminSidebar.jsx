@@ -104,7 +104,7 @@ export const AdminSidebar = ({ isMobileOpen, setIsMobileOpen, onOpenInbox, onOpe
       title: 'STORE MANAGEMENT',
       items: [
         { id: 'seo', label: 'SEO & Search Engine', icon: <Globe size={17} /> },
-        { id: 'customizer', label: 'Visual Hero CMS', icon: <Palette size={17} /> },
+        { id: 'customizer', label: 'Homepage Banners CMS', icon: <Palette size={17} /> },
         { id: 'staff', label: 'Staff & Roles', icon: <ShieldCheck size={17} /> },
         { 
           id: 'integrations', 

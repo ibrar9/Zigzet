@@ -15081,3 +15081,343 @@ img {
     padding: 14px 16px !important;
   }
 }
+
+/* ==========================================================================
+   Homepage Center Scrolling Promotional Banners Carousel
+   ========================================================================== */
+.center-promo-banners-section {
+  padding: 8px 0 32px 0;
+  position: relative;
+}
+
+.center-promo-carousel-wrapper {
+  position: relative;
+  width: 100%;
+  height: 350px;
+  border-radius: 22px;
+  overflow: hidden;
+  background-color: #0f172a;
+  box-shadow: 0 12px 36px -8px rgba(15, 23, 42, 0.12), 0 4px 14px -3px rgba(15, 23, 42, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  user-select: none;
+  touch-action: pan-y;
+}
+
+.center-promo-slides {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.center-promo-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.center-promo-slide-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.center-promo-slide:hover .center-promo-slide-img {
+  transform: scale(1.03);
+}
+
+.center-promo-slide-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(15, 23, 42, 0.78) 0%,
+    rgba(15, 23, 42, 0.35) 40%,
+    rgba(15, 23, 42, 0.05) 75%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+/* Floating Content & CTA Button Overlay ("Sirf Button Ho Uske Upar") */
+.center-promo-content-overlay {
+  position: absolute;
+  bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 3;
+  max-width: 620px;
+}
+
+.center-promo-content-overlay.align-bottom-left {
+  left: 36px;
+  right: auto;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.center-promo-content-overlay.align-bottom-center {
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: center;
+  text-align: center;
+}
+
+.center-promo-content-overlay.align-bottom-right {
+  right: 36px;
+  left: auto;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.center-promo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #ffffff;
+  font-size: 11.5px;
+  font-weight: 800;
+  padding: 4px 14px;
+  border-radius: 9999px;
+  letter-spacing: 0.04em;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.center-promo-badge .sparkle-icon {
+  color: #fde047;
+}
+
+.center-promo-title {
+  margin: 0;
+  color: #ffffff;
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+.center-promo-subtitle {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 13.5px;
+  line-height: 1.45;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Primary CTA Button on Top */
+.center-promo-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 800;
+  padding: 12px 28px;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(255, 255, 255, 0.4);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.center-promo-cta-btn .cta-arrow-icon {
+  color: #7c3aed;
+  transition: transform 0.22s ease;
+}
+
+.center-promo-cta-btn:hover {
+  background: #7c3aed;
+  color: #ffffff;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 10px 28px rgba(124, 58, 237, 0.45);
+}
+
+.center-promo-cta-btn:hover .cta-arrow-icon {
+  color: #ffffff;
+  transform: translateX(4px);
+}
+
+.center-promo-cta-btn:active {
+  transform: scale(0.98);
+}
+
+/* Navigation Chevrons (Desktop) */
+.center-promo-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.16);
+  z-index: 5;
+  transition: all 0.2s ease;
+}
+
+.center-promo-nav-btn:hover {
+  background: #ffffff;
+  color: #7c3aed;
+  transform: translateY(-50%) scale(1.08);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.22);
+}
+
+.center-promo-nav-btn.nav-prev {
+  left: 18px;
+}
+
+.center-promo-nav-btn.nav-next {
+  right: 18px;
+}
+
+/* Pagination Dots */
+.center-promo-pagination {
+  position: absolute;
+  bottom: 16px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  z-index: 5;
+}
+
+.center-promo-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.45);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0;
+}
+
+.center-promo-dot.is-active {
+  width: 26px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.center-promo-counter-pill {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 11px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 4;
+}
+
+/* ==========================================================================
+   Mobile Responsive Adjustments for Center Promo Banners Carousel
+   ========================================================================== */
+@media (max-width: 768px) {
+  .center-promo-banners-section {
+    padding: 6px 0 20px 0;
+  }
+
+  .center-promo-carousel-wrapper {
+    height: 205px;
+    border-radius: 16px;
+  }
+
+  .center-promo-nav-btn {
+    display: none !important;
+  }
+
+  .center-promo-content-overlay {
+    bottom: 14px !important;
+    left: 14px !important;
+    right: 14px !important;
+    transform: none !important;
+    align-items: flex-start !important;
+    gap: 8px;
+  }
+
+  .center-promo-content-overlay.align-bottom-center,
+  .center-promo-content-overlay.align-bottom-right {
+    left: 14px !important;
+    right: 14px !important;
+    transform: none !important;
+    align-items: flex-start !important;
+  }
+
+  .center-promo-badge {
+    font-size: 9.5px;
+    padding: 2.5px 9px;
+  }
+
+  .center-promo-title {
+    font-size: 16px;
+    line-height: 1.15;
+  }
+
+  .center-promo-subtitle {
+    font-size: 11px;
+    line-height: 1.25;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .center-promo-cta-btn {
+    padding: 8px 18px;
+    font-size: 12px;
+    font-weight: 800;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  }
+
+  .center-promo-cta-btn .cta-arrow-icon {
+    width: 13px;
+    height: 13px;
+  }
+
+  .center-promo-pagination {
+    bottom: 10px;
+    right: 12px;
+    gap: 5px;
+  }
+
+  .center-promo-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .center-promo-dot.is-active {
+    width: 18px;
+  }
+
+  .center-promo-counter-pill {
+    top: 10px;
+    right: 10px;
+    font-size: 10px;
+    padding: 2.5px 8px;
+  }
+}
+
