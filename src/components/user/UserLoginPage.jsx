@@ -46,9 +46,9 @@ export const UserLoginPage = () => {
         <div className="nfloat nfloat-bag-lg">
           <svg viewBox="0 0 80 90" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="5" y="25" width="70" height="60" rx="10" fill="white" stroke="#e0e4f0" strokeWidth="2"/>
-            <path d="M28 25 C28 14 52 14 52 25" stroke="#5b4fff" strokeWidth="3" strokeLinecap="round" fill="none"/>
-            <path d="M32 52 L30 62 Q40 68 50 62 L48 52" fill="#5b4fff" opacity="0.15" stroke="#5b4fff" strokeWidth="1.5"/>
-            <circle cx="33" cy="48" r="3" fill="#5b4fff" opacity="0.6"/>
+            <path d="M28 25 C28 14 52 14 52 25" stroke="#5A1F2D" strokeWidth="3" strokeLinecap="round" fill="none"/>
+            <path d="M32 52 L30 62 Q40 68 50 62 L48 52" fill="#5A1F2D" opacity="0.15" stroke="#5A1F2D" strokeWidth="1.5"/>
+            <circle cx="33" cy="48" r="3" fill="#5A1F2D" opacity="0.6"/>
           </svg>
         </div>
         <div className="nfloat nfloat-squiggle1">
@@ -69,27 +69,27 @@ export const UserLoginPage = () => {
         <div className="nfloat nfloat-cart">
           <svg viewBox="0 0 100 90" fill="none">
             <rect x="15" y="8" width="70" height="55" rx="8" fill="white" stroke="#dde2f0" strokeWidth="2"/>
-            <path d="M5 20 L20 20 L30 55 L75 55 L85 28 L25 28" stroke="#5b4fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-            <circle cx="38" cy="72" r="7" fill="white" stroke="#5b4fff" strokeWidth="2.5"/>
-            <circle cx="65" cy="72" r="7" fill="white" stroke="#5b4fff" strokeWidth="2.5"/>
+            <path d="M5 20 L20 20 L30 55 L75 55 L85 28 L25 28" stroke="#5A1F2D" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
+            <circle cx="38" cy="72" r="7" fill="white" stroke="#5A1F2D" strokeWidth="2.5"/>
+            <circle cx="65" cy="72" r="7" fill="white" stroke="#5A1F2D" strokeWidth="2.5"/>
           </svg>
         </div>
         <div className="nfloat nfloat-box">
           <div className="nfloat-icon-card">
             <svg viewBox="0 0 32 32" fill="none" width="28" height="28">
-              <rect x="3" y="12" width="26" height="18" rx="3" fill="#5b4fff" opacity="0.12"/>
-              <path d="M3 15 L16 22 L29 15" stroke="#5b4fff" strokeWidth="2" fill="none"/>
-              <path d="M16 22 L16 30" stroke="#5b4fff" strokeWidth="2"/>
-              <path d="M9 4 L16 7 L23 4" stroke="#5b4fff" strokeWidth="2" fill="none"/>
-              <rect x="3" y="7" width="26" height="15" rx="3" stroke="#5b4fff" strokeWidth="2" fill="none"/>
+              <rect x="3" y="12" width="26" height="18" rx="3" fill="#5A1F2D" opacity="0.12"/>
+              <path d="M3 15 L16 22 L29 15" stroke="#5A1F2D" strokeWidth="2" fill="none"/>
+              <path d="M16 22 L16 30" stroke="#5A1F2D" strokeWidth="2"/>
+              <path d="M9 4 L16 7 L23 4" stroke="#5A1F2D" strokeWidth="2" fill="none"/>
+              <rect x="3" y="7" width="26" height="15" rx="3" stroke="#5A1F2D" strokeWidth="2" fill="none"/>
             </svg>
           </div>
         </div>
         <div className="nfloat nfloat-tag">
           <div className="nfloat-icon-card">
             <svg viewBox="0 0 32 32" fill="none" width="28" height="28">
-              <path d="M4 4 L4 16 L16 28 Q20 32 24 28 L28 24 Q32 20 28 16 L16 4 Z" fill="#5b4fff" opacity="0.12" stroke="#5b4fff" strokeWidth="2"/>
-              <circle cx="10" cy="10" r="2.5" fill="#5b4fff"/>
+              <path d="M4 4 L4 16 L16 28 Q20 32 24 28 L28 24 Q32 20 28 16 L16 4 Z" fill="#5A1F2D" opacity="0.12" stroke="#5A1F2D" strokeWidth="2"/>
+              <circle cx="10" cy="10" r="2.5" fill="#5A1F2D"/>
             </svg>
           </div>
         </div>
@@ -108,7 +108,7 @@ export const UserLoginPage = () => {
         {/* Logo */}
         <div className="nlogin-logo" onClick={() => navigatePage('home')}>
           <div className="nlogin-logo-icon">
-            <ShoppingBag size={28} color="#5b4fff" />
+            <ShoppingBag size={28} color="#5A1F2D" />
           </div>
           <p className="nlogin-logo-text">Zigzet</p>
         </div>

@@ -485,7 +485,7 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          boxShadow: '0 4px 10px rgba(90, 31, 45, )'
+                          boxShadow: '0 4px 10px rgba(90, 31, 45, 0.25)'
                         }}
                       >
                         <img
@@ -717,7 +717,7 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
                           background: '#f8fafc',
                           overflow: 'hidden',
                           cursor: 'pointer',
-                          boxShadow: isPrimary ? '0 4px 12px rgba(90, 31, 45, )' : 'none',
+                          boxShadow: isPrimary ? '0 4px 12px rgba(90, 31, 45, 0.25)' : 'none',
                           transition: 'all 0.2s ease'
                         }}
                       >
@@ -919,7 +919,7 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
                     <span style={{ fontSize: '11px', color: '#202124', display: 'block' }}>
                       https://zigzet.com › shop › {formData.name ? formData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') : 'product'}
                     </span>
-                    <span style={{ fontSize: '15px', color: '#1a0dab', fontWeight: '400', display: 'block', margin: '2px 0' }}>
+                    <span style={{ fontSize: '15px', color: '#5A1F2D', fontWeight: '400', display: 'block', margin: '2px 0' }}>
                       {formData.metaTitle || (formData.name ? `${formData.name} - Only AED ${formData.price || '0.00'} | Zigzet` : 'Product Title')}
                     </span>
                     <span style={{ fontSize: '12px', color: '#4d5156', display: 'block', lineHeight: '1.4' }}>

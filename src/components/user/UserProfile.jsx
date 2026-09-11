@@ -96,14 +96,14 @@ export const UserProfile = () => {
                 height: '100%', 
                 borderRadius: '50%', 
                 overflow: 'hidden', 
-                background: 'linear-gradient(135deg, #5A1F2D, #a855f7)',
+                background: 'linear-gradient(135deg, #5A1F2D, #461722)',
                 display: 'grid', 
                 placeItems: 'center', 
                 fontSize: 32, 
                 fontWeight: 700, 
                 color: '#fff',
                 border: '3px solid #fff',
-                boxShadow: '0 8px 20px -4px rgba(90, 31, 45, )'
+                boxShadow: '0 8px 20px -4px rgba(90, 31, 45, 0.25)'
               }}
             >
               {currentUser?.avatar ? (
@@ -276,7 +276,7 @@ export const UserProfile = () => {
                       border: currentUser?.avatar === url ? '3px solid #5A1F2D' : '2px solid #e2e8f0',
                       padding: 0,
                       cursor: 'pointer',
-                      boxShadow: currentUser?.avatar === url ? '0 0 0 3px rgba(90, 31, 45, )' : 'none'
+                      boxShadow: currentUser?.avatar === url ? '0 0 0 3px rgba(90, 31, 45, 0.25)' : 'none'
                     }}
                   >
                     <img src={url} alt={`Avatar ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />

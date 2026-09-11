@@ -215,7 +215,7 @@ export const UserSupport = () => {
                               padding: '12px 16px', 
                               borderRadius: 12, 
                               background: msg.isStaff ? '#fdf7f8' : '#f1f5f9',
-                              border: msg.isStaff ? '1px solid #e9d5ff' : '1px solid #e2e8f0',
+                              border: msg.isStaff ? '1px solid #ebd0d7' : '1px solid #e2e8f0',
                               borderTopLeftRadius: msg.isStaff ? 2 : 12,
                               borderTopRightRadius: !msg.isStaff ? 2 : 12
                             }}>

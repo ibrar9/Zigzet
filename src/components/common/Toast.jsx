@@ -12,7 +12,7 @@ export const Toast = () => {
       {toasts.map((toast) => (
         <div key={toast.id} className={`toast-item ${toast.type}`}>
           {toast.type === 'info' ? (
-            <Info size={20} color="#93c5fd" />
+            <Info size={20} color="#ebd0d7" />
           ) : (
             <CheckCircle2 size={20} color="#86efac" />
           )}

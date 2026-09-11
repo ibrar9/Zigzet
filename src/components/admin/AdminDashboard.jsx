@@ -389,7 +389,7 @@ export const AdminDashboard = () => {
           <div className="top-products-grid">
             {sortedTopProducts.map((prod, idx) => {
               const progressVal = Math.min(100, Math.max(30, (prod.salesCount || 10) * 1.5));
-              const barColors = ['#10b981', '#5A1F2D', '#f97316', '#06b6d4', '#5A1F2D'];
+              const barColors = ['#10b981', '#5A1F2D', '#f97316', '#7a2d3e', '#5A1F2D'];
               const color = barColors[idx % barColors.length];
 
               return (

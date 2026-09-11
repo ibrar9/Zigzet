@@ -154,7 +154,7 @@ export const AdminSidebar = ({ isMobileOpen, setIsMobileOpen, onOpenInbox, onOpe
                 />
                 <path 
                   d="M2 12L12 17L22 12" 
-                  stroke="#9333ea" 
+                  stroke="#461722" 
                   strokeWidth="2.5" 
                   strokeLinecap="round" 
                   strokeLinejoin="round"

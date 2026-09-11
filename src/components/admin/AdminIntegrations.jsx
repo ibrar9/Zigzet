@@ -101,7 +101,7 @@ export const AdminIntegrations = () => {
       case 'stripe':
         return <CreditCard size={22} color="#5A1F2D" />;
       case 'paypal':
-        return <Wallet size={22} color="#0284c7" />;
+        return <Wallet size={22} color="#5A1F2D" />;
       case 'shipping':
         return <Truck size={22} color="#f59e0b" />;
       case 'marketing':
@@ -113,7 +113,7 @@ export const AdminIntegrations = () => {
       case 'whatsapp':
         return <Phone size={22} color="#22c55e" />;
       case 'webhooks':
-        return <Code size={22} color="#06b6d4" />;
+        return <Code size={22} color="#7a2d3e" />;
       default:
         return <Sliders size={22} color="#64748b" />;
     }
@@ -503,7 +503,7 @@ export const AdminIntegrations = () => {
                             border: '1px solid',
                             borderColor: formData.mode === mode ? '#5A1F2D' : '#e2e8f0',
                             background: formData.mode === mode ? '#faf0f2' : '#ffffff',
-                            color: formData.mode === mode ? '#4338ca' : '#475569',
+                            color: formData.mode === mode ? '#5A1F2D' : '#475569',
                             fontWeight: '700',
                             fontSize: '13px',
                             textTransform: 'uppercase',

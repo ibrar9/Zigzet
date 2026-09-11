@@ -102,7 +102,7 @@ export const UserAddresses = () => {
                   flexDirection: 'column',
                   justifyContent: 'space-between',
                   gap: 16,
-                  boxShadow: addr.isDefault ? '0 8px 24px -6px rgba(90, 31, 45, )' : 'none'
+                  boxShadow: addr.isDefault ? '0 8px 24px -6px rgba(90, 31, 45, 0.15)' : 'none'
                 }}
               >
                 <div>

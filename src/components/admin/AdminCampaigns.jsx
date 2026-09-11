@@ -53,7 +53,7 @@ export const AdminCampaigns = () => {
           marginBottom: '24px',
           borderRadius: '16px',
           border: 'none',
-          boxShadow: form.isActive ? '0 12px 28px -6px rgba(90, 31, 45, )' : 'none'
+          boxShadow: form.isActive ? '0 12px 28px -6px rgba(90, 31, 45, 0.25)' : 'none'
         }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>

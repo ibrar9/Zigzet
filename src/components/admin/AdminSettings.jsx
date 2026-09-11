@@ -163,7 +163,7 @@ export const AdminSettings = () => {
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                         <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#5A1F2D" />
                         <path d="M2 17L12 22L22 17" stroke="#5A1F2D" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                        <path d="M2 12L12 17L22 12" stroke="#9333ea" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M2 12L12 17L22 12" stroke="#461722" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </div>
                     <span>Default SVG Icon + "{formSettings.storeName || 'Zigzet'}"</span>

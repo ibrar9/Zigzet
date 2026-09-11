@@ -87,11 +87,11 @@ export const UserPayment = () => {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 20, marginBottom: 28 }}>
         {/* Wallet Balance Hero Card */}
         <div style={{ 
-          background: 'linear-gradient(135deg, #4c1d95 0%, #5A1F2D 60%, #9333ea 100%)', 
+          background: 'linear-gradient(135deg, #2d0a12 0%, #5A1F2D 60%, #461722 100%)', 
           borderRadius: 18, 
           padding: 24, 
           color: '#fff',
-          boxShadow: '0 12px 30px -8px rgba(90, 31, 45, )',
+          boxShadow: '0 12px 30px -8px rgba(90, 31, 45, 0.25)',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
@@ -105,7 +105,7 @@ export const UserPayment = () => {
               <h3 style={{ fontSize: 32, fontWeight: 800, margin: '6px 0 2px 0', letterSpacing: '-0.02em' }}>
                 {formatPrice(userWallet?.balance || 0)}
               </h3>
-              <p style={{ fontSize: 12.5, color: '#e9d5ff' }}>
+              <p style={{ fontSize: 12.5, color: '#ebd0d7' }}>
                 {formatPrice(userWallet?.cashbackEarned || 45)} total cashback earned
               </p>
             </div>

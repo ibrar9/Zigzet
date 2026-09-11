@@ -344,7 +344,7 @@ export const AdminCustomizer = () => {
         <button 
           onClick={handleSaveAll}
           className="hero-cta-btn" 
-          style={{ padding: '10px 24px', fontSize: '13.5px', background: '#5A1F2D', boxShadow: '0 4px 14px rgba(90, 31, 45, )' }}
+          style={{ padding: '10px 24px', fontSize: '13.5px', background: '#5A1F2D', boxShadow: '0 4px 14px rgba(90, 31, 45, 0.25)' }}
         >
           <Save size={16} />
           <span>Save All Changes Live</span>
@@ -368,7 +368,7 @@ export const AdminCustomizer = () => {
             border: 'none',
             background: activeTab === 'center-banners' ? '#5A1F2D' : '#f1f5f9',
             color: activeTab === 'center-banners' ? '#ffffff' : '#475569',
-            boxShadow: activeTab === 'center-banners' ? '0 4px 12px rgba(90, 31, 45, )' : 'none',
+            boxShadow: activeTab === 'center-banners' ? '0 4px 12px rgba(90, 31, 45, 0.25)' : 'none',
             transition: 'all 0.2s'
           }}
         >
@@ -394,7 +394,7 @@ export const AdminCustomizer = () => {
             border: 'none',
             background: activeTab === 'hero-slider' ? '#5A1F2D' : '#f1f5f9',
             color: activeTab === 'hero-slider' ? '#ffffff' : '#475569',
-            boxShadow: activeTab === 'hero-slider' ? '0 4px 12px rgba(90, 31, 45, )' : 'none',
+            boxShadow: activeTab === 'hero-slider' ? '0 4px 12px rgba(90, 31, 45, 0.25)' : 'none',
             transition: 'all 0.2s'
           }}
         >
@@ -772,7 +772,7 @@ export const AdminCustomizer = () => {
                         fontSize: '13px',
                         fontWeight: '700',
                         cursor: 'pointer',
-                        boxShadow: '0 2px 8px rgba(90, 31, 45, )',
+                        boxShadow: '0 2px 8px rgba(90, 31, 45, 0.25)',
                         transition: 'all 0.2s'
                       }}
                     >
@@ -1050,7 +1050,7 @@ export const AdminCustomizer = () => {
                   : currentPreviewHero.bgTheme === 'amber'
                   ? 'linear-gradient(120deg, #fffbeb 0%, #fef3c7 100%)'
                   : currentPreviewHero.bgTheme === 'lavender'
-                  ? 'linear-gradient(120deg, #fdf7f8 0%, #f3e8ff 100%)'
+                  ? 'linear-gradient(120deg, #fdf7f8 0%, #faf0f2 100%)'
                   : currentPreviewHero.bgTheme === 'mint'
                   ? 'linear-gradient(120deg, #f0fdf4 0%, #dcfce7 100%)'
                   : 'linear-gradient(120deg, #f8fafc 0%, #e2e8f0 100%)',
@@ -1244,7 +1244,7 @@ export const AdminCustomizer = () => {
                         fontSize: '13px',
                         fontWeight: '700',
                         cursor: 'pointer',
-                        boxShadow: '0 2px 8px rgba(90, 31, 45, )',
+                        boxShadow: '0 2px 8px rgba(90, 31, 45, 0.25)',
                         transition: 'all 0.2s'
                       }}
                     >
@@ -1401,7 +1401,7 @@ export const AdminCustomizer = () => {
           type="button"
           onClick={handleSaveAll}
           className="hero-cta-btn"
-          style={{ padding: '12px 36px', fontSize: '14px', background: '#5A1F2D', boxShadow: '0 4px 16px rgba(90, 31, 45, )' }}
+          style={{ padding: '12px 36px', fontSize: '14px', background: '#5A1F2D', boxShadow: '0 4px 16px rgba(90, 31, 45, 0.25)' }}
         >
           <Save size={17} />
           <span>Save & Apply All Homepage Banners</span>

@@ -40,7 +40,7 @@ export const UserNotifications = ({ setActiveTab }) => {
       case 'promo':
         return { icon: Tag, color: '#ea580c', bg: '#ffedd5' };
       case 'support':
-        return { icon: MessageSquare, color: '#0284c7', bg: '#e0f2fe' };
+        return { icon: MessageSquare, color: '#5A1F2D', bg: '#faf0f2' };
       case 'loyalty':
         return { icon: Award, color: '#16a34a', bg: '#dcfce7' };
       default:

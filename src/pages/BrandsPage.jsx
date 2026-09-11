@@ -153,7 +153,7 @@ export const BrandsPage = () => {
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = '0 12px 28px -6px rgba(90, 31, 45, )';
+                  e.currentTarget.style.boxShadow = '0 12px 28px -6px rgba(90, 31, 45, 0.15)';
                   e.currentTarget.style.borderColor = '#c98595';
                 }}
                 onMouseLeave={(e) => {

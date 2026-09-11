@@ -516,7 +516,7 @@ export const AdminSEO = () => {
 
                     <h4 style={{
                       fontSize: serpDevice === 'mobile' ? '17px' : '19px',
-                      color: '#1a0dab',
+                      color: '#5A1F2D',
                       fontWeight: '400',
                       lineHeight: '1.3',
                       margin: '4px 0',
@@ -538,9 +538,9 @@ export const AdminSEO = () => {
 
                     {/* Sitelinks simulation */}
                     <div style={{ display: 'flex', gap: '14px', marginTop: '10px', paddingTop: '8px', borderTop: '1px solid #f1f5f9' }}>
-                      <span style={{ fontSize: '12px', color: '#1a0dab' }}>Shop Catalog</span>
-                      <span style={{ fontSize: '12px', color: '#1a0dab' }}>Flash Deals</span>
-                      <span style={{ fontSize: '12px', color: '#1a0dab' }}>Track Order</span>
+                      <span style={{ fontSize: '12px', color: '#5A1F2D' }}>Shop Catalog</span>
+                      <span style={{ fontSize: '12px', color: '#5A1F2D' }}>Flash Deals</span>
+                      <span style={{ fontSize: '12px', color: '#5A1F2D' }}>Track Order</span>
                     </div>
                   </div>
                 </div>
