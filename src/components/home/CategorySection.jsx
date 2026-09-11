@@ -1,10 +1,9 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
-import { categories } from '../../data/categories';
 import { useStore } from '../../context/StoreContext';
 
 export const CategorySection = () => {
-  const { activeCategory, setActiveCategory } = useStore();
+  const { activeCategory, setActiveCategory, categories } = useStore();
 
   const handleCategoryClick = (categoryId) => {
     if (activeCategory === categoryId) {

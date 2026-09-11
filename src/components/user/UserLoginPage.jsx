@@ -1,21 +1,27 @@
 import React, { useState } from 'react';
-import { Mail, Lock, Eye, EyeOff, ShoppingBag, User, ArrowRight, AlertCircle } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ShoppingBag, User, ArrowRight, AlertCircle, CheckCircle2, X } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
 export const UserLoginPage = () => {
-  const { loginUser, registerUser, navigatePage } = useStore();
+  const { loginUser, registerUser, resetUserPassword, navigatePage } = useStore();
   const [isSignup, setIsSignup] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '' });
+  const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '', agreeTerms: false });
   const [errors, setErrors] = useState({});
+
+  // Forgot Password modal state
+  const [showForgotModal, setShowForgotModal] = useState(false);
+  const [forgotForm, setForgotForm] = useState({ email: '', newPassword: '', confirmPassword: '' });
+  const [forgotStatus, setForgotStatus] = useState({ loading: false, error: '', success: '' });
 
   const validate = () => {
     const e = {};
     if (isSignup && !form.name.trim()) e.name = 'Full name required';
-    if (!form.email.trim() || !/\S+@\S+\.\S+/.test(form.email)) e.email = 'Valid email required';
+    if (!form.email.trim() || !/\S+@\S+\.\S+/.test(form.email.trim())) e.email = 'Valid email required';
     if (!form.password || form.password.length < 6) e.password = 'Min. 6 characters';
     if (isSignup && form.password !== form.confirm) e.confirm = 'Passwords do not match';
+    if (isSignup && !form.agreeTerms) e.agreeTerms = 'You must agree to the Terms & Privacy Policy';
     return e;
   };
 
@@ -25,14 +31,45 @@ export const UserLoginPage = () => {
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
     setLoading(true);
     await new Promise(r => setTimeout(r, 600));
+    const trimmedEmail = form.email.trim().toLowerCase();
     const success = isSignup
-      ? registerUser({ name: form.name, email: form.email, password: form.password })
-      : loginUser(form.email, form.password);
+      ? registerUser({ name: form.name.trim(), email: trimmedEmail, password: form.password })
+      : loginUser(trimmedEmail, form.password);
     setLoading(false);
     if (!success) {
       setErrors({ general: isSignup ? 'Email already registered.' : 'Invalid email or password.' });
     } else {
       navigatePage('user-dashboard');
+    }
+  };
+
+  const handleForgotSubmit = async (e) => {
+    e.preventDefault();
+    setForgotStatus({ loading: true, error: '', success: '' });
+    if (!forgotForm.email.trim() || !/\S+@\S+\.\S+/.test(forgotForm.email.trim())) {
+      setForgotStatus({ loading: false, error: 'Please enter a valid email address.', success: '' });
+      return;
+    }
+    if (!forgotForm.newPassword || forgotForm.newPassword.length < 6) {
+      setForgotStatus({ loading: false, error: 'Password must be at least 6 characters.', success: '' });
+      return;
+    }
+    if (forgotForm.newPassword !== forgotForm.confirmPassword) {
+      setForgotStatus({ loading: false, error: 'Passwords do not match.', success: '' });
+      return;
+    }
+
+    await new Promise(r => setTimeout(r, 600));
+    const res = resetUserPassword(forgotForm.email.trim().toLowerCase(), forgotForm.newPassword);
+    if (res.success) {
+      setForgotStatus({ loading: false, error: '', success: 'Password reset successfully! You can now log in.' });
+      setTimeout(() => {
+        setShowForgotModal(false);
+        setForgotForm({ email: '', newPassword: '', confirmPassword: '' });
+        setForgotStatus({ loading: false, error: '', success: '' });
+      }, 1500);
+    } else {
+      setForgotStatus({ loading: false, error: res.message || 'Email not found in our records.', success: '' });
     }
   };
 
@@ -190,9 +227,26 @@ export const UserLoginPage = () => {
             </div>
           )}
 
+          {isSignup && (
+            <div style={{ marginTop: '12px', marginBottom: '8px' }}>
+              <label style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', cursor: 'pointer', fontSize: '13px', color: '#4a5568' }}>
+                <input
+                  type="checkbox"
+                  checked={form.agreeTerms}
+                  onChange={e => set('agreeTerms', e.target.checked)}
+                  style={{ accentColor: '#5A1F2D', marginTop: '3px', cursor: 'pointer' }}
+                />
+                <span>
+                  I agree to the <a href="#privacy" onClick={(e) => { e.preventDefault(); alert('Please review our full Terms of Service & Privacy Policy below in the website footer.'); }} style={{ color: '#5A1F2D', fontWeight: 600, textDecoration: 'underline' }}>Terms of Service & Privacy Policy</a>.
+                </span>
+              </label>
+              {errors.agreeTerms && <span className="nlogin-err" style={{ display: 'block', marginTop: '4px' }}>{errors.agreeTerms}</span>}
+            </div>
+          )}
+
           {!isSignup && (
             <div className="nlogin-forgot">
-              <button type="button">Forgot Password?</button>
+              <button type="button" onClick={() => setShowForgotModal(true)}>Forgot Password?</button>
             </div>
           )}
 
@@ -217,13 +271,236 @@ export const UserLoginPage = () => {
             onClick={() => {
               setIsSignup(p => !p);
               setErrors({});
-              setForm({ name: '', email: '', password: '', confirm: '' });
+              setForm({ name: '', email: '', password: '', confirm: '', agreeTerms: false });
             }}
           >
             {isSignup ? 'Sign In' : 'Create Account'}
           </button>
         </p>
       </div>
+
+      {/* Forgot Password Modal */}
+      {showForgotModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.55)',
+          backdropFilter: 'blur(4px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 99999,
+          padding: '16px'
+        }}>
+          <div style={{
+            background: '#ffffff',
+            borderRadius: '16px',
+            maxWidth: '440px',
+            width: '100%',
+            padding: '28px',
+            boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
+            position: 'relative',
+            animation: 'fadeInUp 0.25s ease'
+          }}>
+            <button
+              onClick={() => setShowForgotModal(false)}
+              style={{
+                position: 'absolute',
+                top: '16px',
+                right: '16px',
+                border: 'none',
+                background: '#f3f4f6',
+                borderRadius: '50%',
+                width: '32px',
+                height: '32px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#6b7280'
+              }}
+            >
+              <X size={18} />
+            </button>
+
+            <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+              <div style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: '50%',
+                background: 'rgba(90, 31, 45, 0.1)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 12px auto'
+              }}>
+                <Lock size={24} color="#5A1F2D" />
+              </div>
+              <h3 style={{ fontSize: '20px', fontWeight: 700, color: '#111827', margin: '0 0 6px 0' }}>
+                Reset Your Password
+              </h3>
+              <p style={{ fontSize: '13px', color: '#6b7280', margin: 0 }}>
+                Enter your registered account email and choose a new password.
+              </p>
+            </div>
+
+            {forgotStatus.error && (
+              <div style={{
+                background: '#fef2f2',
+                border: '1px solid #fee2e2',
+                color: '#dc2626',
+                borderRadius: '8px',
+                padding: '10px 14px',
+                fontSize: '13px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                marginBottom: '16px'
+              }}>
+                <AlertCircle size={16} />
+                <span>{forgotStatus.error}</span>
+              </div>
+            )}
+
+            {forgotStatus.success && (
+              <div style={{
+                background: '#f0fdf4',
+                border: '1px solid #dcfce7',
+                color: '#16a34a',
+                borderRadius: '8px',
+                padding: '10px 14px',
+                fontSize: '13px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                marginBottom: '16px'
+              }}>
+                <CheckCircle2 size={16} />
+                <span>{forgotStatus.success}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleForgotSubmit}>
+              <div style={{ marginBottom: '14px' }}>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#374151', marginBottom: '6px' }}>
+                  Registered Email Address
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <input
+                    type="email"
+                    required
+                    placeholder="name@example.com"
+                    value={forgotForm.email}
+                    onChange={e => setForgotForm(f => ({ ...f, email: e.target.value }))}
+                    style={{
+                      width: '100%',
+                      padding: '10px 12px 10px 38px',
+                      borderRadius: '8px',
+                      border: '1px solid #d1d5db',
+                      fontSize: '14px',
+                      outline: 'none',
+                      boxSizing: 'border-box'
+                    }}
+                  />
+                  <Mail size={16} color="#9ca3af" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
+                </div>
+              </div>
+
+              <div style={{ marginBottom: '14px' }}>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#374151', marginBottom: '6px' }}>
+                  New Password
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <input
+                    type="password"
+                    required
+                    placeholder="Min. 6 characters"
+                    value={forgotForm.newPassword}
+                    onChange={e => setForgotForm(f => ({ ...f, newPassword: e.target.value }))}
+                    style={{
+                      width: '100%',
+                      padding: '10px 12px 10px 38px',
+                      borderRadius: '8px',
+                      border: '1px solid #d1d5db',
+                      fontSize: '14px',
+                      outline: 'none',
+                      boxSizing: 'border-box'
+                    }}
+                  />
+                  <Lock size={16} color="#9ca3af" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
+                </div>
+              </div>
+
+              <div style={{ marginBottom: '20px' }}>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#374151', marginBottom: '6px' }}>
+                  Confirm New Password
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <input
+                    type="password"
+                    required
+                    placeholder="Confirm new password"
+                    value={forgotForm.confirmPassword}
+                    onChange={e => setForgotForm(f => ({ ...f, confirmPassword: e.target.value }))}
+                    style={{
+                      width: '100%',
+                      padding: '10px 12px 10px 38px',
+                      borderRadius: '8px',
+                      border: '1px solid #d1d5db',
+                      fontSize: '14px',
+                      outline: 'none',
+                      boxSizing: 'border-box'
+                    }}
+                  />
+                  <Lock size={16} color="#9ca3af" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button
+                  type="button"
+                  onClick={() => setShowForgotModal(false)}
+                  style={{
+                    flex: 1,
+                    padding: '10px',
+                    borderRadius: '8px',
+                    border: '1px solid #d1d5db',
+                    background: '#ffffff',
+                    color: '#374151',
+                    fontWeight: 600,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={forgotStatus.loading}
+                  style={{
+                    flex: 2,
+                    padding: '10px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    background: '#5A1F2D',
+                    color: '#ffffff',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    opacity: forgotStatus.loading ? 0.7 : 1
+                  }}
+                >
+                  {forgotStatus.loading ? 'Updating...' : 'Set New Password'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

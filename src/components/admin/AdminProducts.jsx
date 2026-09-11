@@ -20,10 +20,9 @@ import {
 import { useStore } from '../../context/StoreContext';
 import { ProductModal } from './ProductModal';
 import { CustomDropdown } from '../common/CustomDropdown';
-import { categories } from '../../data/categories';
 
 export const AdminProducts = () => {
-  const { products, addProduct, updateProduct, deleteProduct, toggleProductActive } = useStore();
+  const { products, categories, addProduct, updateProduct, deleteProduct, toggleProductActive } = useStore();
 
   const [search, setSearch] = useState('');
   const [catFilter, setCatFilter] = useState('all');

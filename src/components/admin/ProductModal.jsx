@@ -16,12 +16,11 @@ import {
   FolderOpen,
   ArrowRight
 } from 'lucide-react';
-import { categories } from '../../data/categories';
 import { CustomDropdown } from '../common/CustomDropdown';
 import { useStore } from '../../context/StoreContext';
 
 export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
-  const { products, showToast } = useStore();
+  const { products, categories, showToast } = useStore();
   const primaryFileInputRef = useRef(null);
   const galleryFileInputRef = useRef(null);
 

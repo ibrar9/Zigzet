@@ -16,7 +16,6 @@ import {
   ChevronDown
 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
-import { categories } from '../data/categories';
 import { ProductCard } from '../components/common/ProductCard';
 import { CustomDropdown } from '../components/common/CustomDropdown';
 import { ProductGridSkeleton } from '../components/common/Skeleton';
@@ -24,6 +23,7 @@ import { ProductGridSkeleton } from '../components/common/Skeleton';
 export const ShopPage = () => {
   const { 
     products, 
+    categories,
     activeCategory, 
     setActiveCategory, 
     activeBrand,

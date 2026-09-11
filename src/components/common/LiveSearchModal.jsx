@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { X, Search, ShoppingCart, ArrowRight, Sparkles, Star, TrendingUp } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
-import { categories } from '../../data/categories';
 
 export const LiveSearchModal = () => {
   const { 
@@ -10,6 +9,7 @@ export const LiveSearchModal = () => {
     searchQuery, 
     setSearchQuery, 
     products, 
+    categories,
     setQuickViewProduct,
     addToCart,
     settings,

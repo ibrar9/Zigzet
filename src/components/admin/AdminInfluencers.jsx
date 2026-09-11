@@ -28,8 +28,14 @@ export const AdminInfluencers = () => {
     updateInfluencer, 
     toggleInfluencerStatus, 
     deleteInfluencer, 
+    approveInfluencerPayout,
+    rejectInfluencerPayout,
     showToast 
   } = useStore();
+
+  const [activeSubTab, setActiveSubTab] = useState('roster'); // 'roster' | 'payouts'
+  const [rejectingPayout, setRejectingPayout] = useState(null);
+  const [rejectionReason, setRejectionReason] = useState('');
 
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
@@ -70,6 +76,24 @@ export const AdminInfluencers = () => {
     const totalPoints = influencers.reduce((acc, i) => acc + (Number(i.pointsEarned) || 0), 0);
     return { totalCount, totalSales, totalOrders, totalPoints };
   }, [influencers]);
+
+  const allPayouts = useMemo(() => {
+    const list = [];
+    (influencers || []).forEach((inf) => {
+      (inf.payouts || []).forEach((p) => {
+        list.push({
+          ...p,
+          influencerId: inf.id,
+          influencerName: inf.name,
+          influencerHandle: inf.handle,
+          influencerEmail: inf.email
+        });
+      });
+    });
+    return list.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+  }, [influencers]);
+
+  const pendingPayoutsCount = allPayouts.filter((p) => p.status === 'Pending').length;
 
   // Filtered Roster
   const filteredInfluencers = useMemo(() => {
@@ -211,176 +235,433 @@ export const AdminInfluencers = () => {
         </div>
       </div>
 
-      {/* Toolbar / Search & Filter */}
-      <div className="admin-card" style={{ marginBottom: '20px', padding: '16px 20px' }}>
-        <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', alignItems: 'center' }}>
-          <div style={{ flex: 1, minWidth: '240px', position: 'relative' }}>
-            <input
-              type="text"
-              className="admin-input"
-              placeholder="Search by creator name, @handle, coupon code, or email..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              style={{ paddingLeft: '38px' }}
-            />
-            <Search size={16} color="#94a3b8" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
-          </div>
+      {/* Sub-Tab Navigation */}
+      <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', borderBottom: '1px solid #e2e8f0', paddingBottom: '10px' }}>
+        <button
+          type="button"
+          onClick={() => setActiveSubTab('roster')}
+          style={{
+            padding: '8px 18px',
+            borderRadius: '8px',
+            fontWeight: 600,
+            fontSize: '13.5px',
+            cursor: 'pointer',
+            border: 'none',
+            background: activeSubTab === 'roster' ? '#5A1F2D' : '#f1f5f9',
+            color: activeSubTab === 'roster' ? '#ffffff' : '#475569',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            transition: 'all 0.2s'
+          }}
+        >
+          <Users size={16} />
+          <span>Creator Partners ({influencers.length})</span>
+        </button>
 
-          <div style={{ display: 'flex', gap: '10px' }}>
-            <select
-              className="admin-input"
-              style={{ width: 'auto' }}
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
-            >
-              <option value="all">All Statuses</option>
-              <option value="active">Active Only</option>
-              <option value="suspended">Suspended</option>
-            </select>
-
-            <select
-              className="admin-input"
-              style={{ width: 'auto' }}
-              value={filterPlatform}
-              onChange={(e) => setFilterPlatform(e.target.value)}
-            >
-              <option value="all">All Platforms</option>
-              <option value="instagram">Instagram</option>
-              <option value="tiktok">TikTok</option>
-              <option value="youtube">YouTube</option>
-            </select>
-          </div>
-        </div>
+        <button
+          type="button"
+          onClick={() => setActiveSubTab('payouts')}
+          style={{
+            padding: '8px 18px',
+            borderRadius: '8px',
+            fontWeight: 600,
+            fontSize: '13.5px',
+            cursor: 'pointer',
+            border: 'none',
+            background: activeSubTab === 'payouts' ? '#5A1F2D' : '#f1f5f9',
+            color: activeSubTab === 'payouts' ? '#ffffff' : '#475569',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            transition: 'all 0.2s'
+          }}
+        >
+          <DollarSign size={16} />
+          <span>Payout &amp; Withdrawal Requests ({allPayouts.length})</span>
+          {pendingPayoutsCount > 0 && (
+            <span style={{
+              background: '#ef4444',
+              color: '#ffffff',
+              fontSize: '11px',
+              padding: '2px 8px',
+              borderRadius: '9999px',
+              fontWeight: 700
+            }}>
+              {pendingPayoutsCount} pending
+            </span>
+          )}
+        </button>
       </div>
 
-      {/* Influencers Table */}
-      <div className="admin-card">
-        <div className="admin-card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h3 style={{ margin: 0, fontSize: '16px', fontWeight: '700' }}>
-            Creator Roster ({filteredInfluencers.length})
-          </h3>
-          <span className="admin-badge-role">Live Attribution Active</span>
-        </div>
+      {/* ── View 1: Creator Partners Roster ── */}
+      {activeSubTab === 'roster' && (
+        <>
+          {/* Toolbar / Search & Filter */}
+          <div className="admin-card" style={{ marginBottom: '20px', padding: '16px 20px' }}>
+            <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', alignItems: 'center' }}>
+              <div style={{ flex: 1, minWidth: '240px', position: 'relative' }}>
+                <input
+                  type="text"
+                  className="admin-input"
+                  placeholder="Search by creator name, @handle, coupon code, or email..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  style={{ paddingLeft: '38px' }}
+                />
+                <Search size={16} color="#94a3b8" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
+              </div>
 
-        <div className="admin-card-body" style={{ padding: 0 }}>
-          <div className="table-responsive">
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <select
+                  className="admin-input"
+                  style={{ width: 'auto' }}
+                  value={filterStatus}
+                  onChange={(e) => setFilterStatus(e.target.value)}
+                >
+                  <option value="all">All Statuses</option>
+                  <option value="active">Active Only</option>
+                  <option value="suspended">Suspended</option>
+                </select>
+
+                <select
+                  className="admin-input"
+                  style={{ width: 'auto' }}
+                  value={filterPlatform}
+                  onChange={(e) => setFilterPlatform(e.target.value)}
+                >
+                  <option value="all">All Platforms</option>
+                  <option value="Instagram">Instagram</option>
+                  <option value="TikTok">TikTok</option>
+                  <option value="YouTube">YouTube</option>
+                  <option value="Blog">Blog</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Influencers Table */}
+          <div className="admin-card" style={{ padding: 0, overflow: 'hidden' }}>
+            <div className="admin-table-responsive">
+              <table className="admin-table">
+                <thead>
+                  <tr>
+                    <th>Influencer</th>
+                    <th>Platform &amp; Niche</th>
+                    <th>Exclusive Coupon</th>
+                    <th>Commission</th>
+                    <th>Sales Driven</th>
+                    <th>Points Earned</th>
+                    <th>Status</th>
+                    <th>Joined</th>
+                    <th style={{ textAlign: 'right' }}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredInfluencers.map((inf) => (
+                    <tr key={inf.id}>
+                      {/* Influencer Profile */}
+                      <td>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                          <img
+                            src={inf.avatar}
+                            alt={inf.name}
+                            style={{ width: '38px', height: '38px', borderRadius: '50%', objectFit: 'cover' }}
+                          />
+                          <div>
+                            <div style={{ fontWeight: 600, color: '#0f172a', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                              <span>{inf.name}</span>
+                              {inf.tier && (
+                                <span style={{
+                                  fontSize: '10px',
+                                  padding: '1px 6px',
+                                  borderRadius: '4px',
+                                  background: '#fef3c7',
+                                  color: '#b45309',
+                                  fontWeight: 700
+                                }}>
+                                  {inf.tier}
+                                </span>
+                              )}
+                            </div>
+                            <div style={{ fontSize: '12px', color: '#64748b' }}>
+                              {inf.handle} • {inf.email}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+
+                      {/* Platform */}
+                      <td>
+                        <span className="admin-status-badge" style={{ background: '#f1f5f9', color: '#475569' }}>
+                          {inf.platform}
+                        </span>
+                        <div style={{ fontSize: '11.5px', color: '#64748b', marginTop: '2px' }}>
+                          {inf.niche}
+                        </div>
+                      </td>
+
+                      {/* Coupon */}
+                      <td>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span style={{
+                            fontFamily: 'monospace',
+                            fontWeight: 700,
+                            padding: '3px 8px',
+                            background: '#faf0f2',
+                            color: '#5A1F2D',
+                            borderRadius: '4px',
+                            border: '1px dashed #5A1F2D'
+                          }}>
+                            {inf.couponCode}
+                          </span>
+                          <span style={{ fontSize: '11px', color: '#10b981', fontWeight: 600 }}>
+                            {inf.discountPercent}% OFF
+                          </span>
+                        </div>
+                      </td>
+
+                      {/* Commission */}
+                      <td>
+                        <span style={{ fontWeight: 600, color: '#0f172a' }}>
+                          {inf.commissionRate}%
+                        </span>
+                        <div style={{ fontSize: '11px', color: '#64748b' }}>per sale</div>
+                      </td>
+
+                      {/* Sales Driven */}
+                      <td>
+                        <div style={{ fontWeight: 700, color: '#0f172a' }}>
+                          ${(Number(inf.totalSales) || 0).toLocaleString()}
+                        </div>
+                        <div style={{ fontSize: '11px', color: '#64748b' }}>
+                          {inf.totalOrders || 0} customer orders
+                        </div>
+                      </td>
+
+                      {/* Points */}
+                      <td>
+                        <div style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '4px',
+                          fontWeight: 700,
+                          color: '#5A1F2D',
+                          background: '#faf0f2',
+                          padding: '3px 8px',
+                          borderRadius: '12px'
+                        }}>
+                          <Sparkles size={12} />
+                          <span>{(Number(inf.pointsEarned) || 0).toLocaleString()} pts</span>
+                        </div>
+                        <div style={{ fontSize: '11px', color: '#64748b', marginTop: '2px' }}>
+                          Balance: {(Number(inf.pointsBalance) || 0).toLocaleString()} pts
+                        </div>
+                      </td>
+
+                      {/* Status */}
+                      <td>
+                        <button
+                          onClick={() => toggleInfluencerStatus(inf.id)}
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            cursor: 'pointer',
+                            padding: 0
+                          }}
+                          title="Click to toggle status"
+                        >
+                          <span className={`admin-status-badge ${inf.status === 'Active' ? 'active' : 'suspended'}`}>
+                            {inf.status}
+                          </span>
+                        </button>
+                      </td>
+
+                      {/* Joined Date */}
+                      <td style={{ fontSize: '12.5px', color: '#64748b' }}>
+                        {inf.joinedDate || 'Recently'}
+                      </td>
+
+                      {/* Actions */}
+                      <td style={{ textAlign: 'right' }}>
+                        <div style={{ display: 'flex', gap: '6px', justifyContent: 'flex-end' }}>
+                          <button
+                            className="admin-btn-icon"
+                            onClick={() => openOrdersModal(inf)}
+                            title="View Orders & Commission Log"
+                          >
+                            <Eye size={15} />
+                          </button>
+                          <button
+                            className="admin-btn-icon"
+                            onClick={() => openEditModal(inf)}
+                            title="Edit Commission & Coupon"
+                          >
+                            <Edit size={15} />
+                          </button>
+                          <button
+                            className="admin-btn-icon delete"
+                            onClick={() => {
+                              if (window.confirm(`Are you sure you want to remove ${inf.name} from the Creator Program?`)) {
+                                deleteInfluencer(inf.id);
+                              }
+                            }}
+                            title="Delete Influencer"
+                          >
+                            <Trash2 size={15} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+
+                  {filteredInfluencers.length === 0 && (
+                    <tr>
+                      <td colSpan="9" style={{ textAlign: 'center', padding: '40px 20px', color: '#64748b' }}>
+                        No matching influencers found. Click "Add Creator Manually" to register one.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* ── View 2: Payout & Withdrawal Requests ── */}
+      {activeSubTab === 'payouts' && (
+        <div className="admin-card" style={{ padding: 0, overflow: 'hidden' }}>
+          <div className="admin-table-responsive">
             <table className="admin-table">
               <thead>
                 <tr>
-                  <th>Creator / Handle</th>
-                  <th>Platform & Reach</th>
-                  <th>Assigned Coupon</th>
-                  <th>Total Sales</th>
-                  <th>Orders</th>
-                  <th>Points Balance</th>
-                  <th>Commission</th>
+                  <th>Request ID &amp; Date</th>
+                  <th>Creator Partner</th>
+                  <th>Points Withdrawn</th>
+                  <th>Cash Equivalent</th>
+                  <th>Payout Destination</th>
                   <th>Status</th>
                   <th style={{ textAlign: 'right' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredInfluencers.map((inf) => (
-                  <tr key={inf.id}>
-                    <td>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        <img
-                          src={inf.avatar}
-                          alt={inf.name}
-                          style={{ width: '42px', height: '42px', borderRadius: '50%', objectFit: 'cover' }}
-                        />
-                        <div>
-                          <div style={{ fontWeight: '700', color: '#0f172a', fontSize: '14px' }}>{inf.name}</div>
-                          <div style={{ color: '#5A1F2D', fontWeight: '600', fontSize: '12px' }}>{inf.handle}</div>
-                          <div style={{ color: '#94a3b8', fontSize: '11px' }}>{inf.email}</div>
+                {allPayouts.map((p) => {
+                  const isPending = p.status === 'Pending';
+                  const isApproved = p.status === 'Approved' || p.status === 'Completed';
+                  const isRejected = p.status === 'Rejected';
+
+                  return (
+                    <tr key={p.id}>
+                      <td>
+                        <span style={{ fontWeight: 700, color: '#0f172a', fontFamily: 'monospace' }}>
+                          #{p.id}
+                        </span>
+                        <div style={{ fontSize: '11.5px', color: '#64748b', marginTop: '2px' }}>
+                          {p.date}
                         </div>
-                      </div>
-                    </td>
+                      </td>
 
-                    <td>
-                      <div style={{ fontWeight: '600', fontSize: '13px' }}>{inf.platform}</div>
-                      <div style={{ fontSize: '12px', color: '#64748b' }}>{inf.followers} followers</div>
-                      <div style={{ fontSize: '11px', color: '#94a3b8' }}>{inf.niche}</div>
-                    </td>
+                      <td>
+                        <div style={{ fontWeight: 600, color: '#0f172a' }}>{p.influencerName}</div>
+                        <div style={{ fontSize: '12px', color: '#64748b' }}>
+                          {p.influencerHandle} • {p.influencerEmail}
+                        </div>
+                      </td>
 
-                    <td>
-                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#faf0f2', border: '1px solid #f2d6dc', padding: '4px 10px', borderRadius: '8px' }}>
-                        <Tag size={13} color="#5A1F2D" />
-                        <span style={{ fontWeight: '800', color: '#5A1F2D', fontSize: '13px' }}>{inf.couponCode}</span>
-                        <span style={{ fontSize: '11px', color: '#059669', fontWeight: '700' }}>({inf.discountPercent || 15}% OFF)</span>
-                      </div>
-                    </td>
+                      <td>
+                        <span style={{
+                          fontWeight: 700,
+                          color: '#5A1F2D',
+                          background: '#faf0f2',
+                          padding: '3px 8px',
+                          borderRadius: '12px',
+                          fontSize: '12px'
+                        }}>
+                          {p.points} pts
+                        </span>
+                      </td>
 
-                    <td>
-                      <div style={{ fontWeight: '800', color: '#0f172a', fontSize: '14px' }}>
-                        ${(Number(inf.totalSales) || 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                      </div>
-                    </td>
+                      <td>
+                        <span style={{ fontWeight: 700, color: '#10b981', fontSize: '14px' }}>
+                          {p.amount}
+                        </span>
+                      </td>
 
-                    <td>
-                      <span style={{ fontWeight: '700', color: '#334155' }}>{inf.totalOrders || 0}</span>
-                    </td>
+                      <td>
+                        <div style={{ fontSize: '13px', color: '#334155', fontWeight: 500 }}>
+                          {p.method}
+                        </div>
+                        {p.rejectionReason && (
+                          <div style={{ fontSize: '11.5px', color: '#ef4444', marginTop: '3px' }}>
+                            Reason: {p.rejectionReason}
+                          </div>
+                        )}
+                      </td>
 
-                    <td>
-                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', color: '#d97706', fontWeight: '700' }}>
-                        <Award size={14} />
-                        <span>{(inf.pointsBalance || 0).toLocaleString()} pts</span>
-                      </div>
-                      <div style={{ fontSize: '11px', color: '#94a3b8' }}>
-                        Lifetime: {(inf.pointsEarned || 0).toLocaleString()}
-                      </div>
-                    </td>
+                      <td>
+                        <span className={`admin-status-badge ${isApproved ? 'active' : isPending ? 'pending' : 'suspended'}`}>
+                          {p.status}
+                        </span>
+                      </td>
 
-                    <td>
-                      <span style={{ fontWeight: '700', color: '#5A1F2D' }}>{inf.commissionRate || 10}%</span>
-                    </td>
+                      <td style={{ textAlign: 'right' }}>
+                        {isPending ? (
+                          <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+                            <button
+                              onClick={() => approveInfluencerPayout(p.influencerId, p.id)}
+                              style={{
+                                padding: '6px 14px',
+                                borderRadius: '6px',
+                                border: 'none',
+                                background: '#10b981',
+                                color: '#ffffff',
+                                fontSize: '12px',
+                                fontWeight: 600,
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '4px'
+                              }}
+                            >
+                              <CheckCircle size={13} /> Approve
+                            </button>
+                            <button
+                              onClick={() => {
+                                setRejectingPayout(p);
+                                setRejectionReason('');
+                              }}
+                              style={{
+                                padding: '6px 14px',
+                                borderRadius: '6px',
+                                border: '1px solid #fee2e2',
+                                background: '#fef2f2',
+                                color: '#ef4444',
+                                fontSize: '12px',
+                                fontWeight: 600,
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '4px'
+                              }}
+                            >
+                              <XCircle size={13} /> Reject
+                            </button>
+                          </div>
+                        ) : (
+                          <span style={{ fontSize: '12px', color: '#94a3b8' }}>
+                            {p.processedAt ? `Processed on ${p.processedAt}` : 'Finalized'}
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
 
-                    <td>
-                      <span
-                        className={`admin-status-badge ${inf.status === 'Active' ? 'status-completed' : 'status-cancelled'}`}
-                        style={{ cursor: 'pointer' }}
-                        onClick={() => toggleInfluencerStatus(inf.id)}
-                        title="Click to toggle status"
-                      >
-                        {inf.status}
-                      </span>
-                    </td>
-
-                    <td style={{ textAlign: 'right' }}>
-                      <div style={{ display: 'inline-flex', gap: '6px' }}>
-                        <button
-                          className="admin-btn-icon"
-                          onClick={() => openOrdersModal(inf)}
-                          title="View Referred Customer Orders"
-                        >
-                          <Eye size={15} />
-                        </button>
-                        <button
-                          className="admin-btn-icon"
-                          onClick={() => openEditModal(inf)}
-                          title="Edit Commission & Coupon"
-                        >
-                          <Edit size={15} />
-                        </button>
-                        <button
-                          className="admin-btn-icon delete"
-                          onClick={() => {
-                            if (window.confirm(`Are you sure you want to remove ${inf.name} from the Creator Program?`)) {
-                              deleteInfluencer(inf.id);
-                            }
-                          }}
-                          title="Delete Influencer"
-                        >
-                          <Trash2 size={15} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-
-                {filteredInfluencers.length === 0 && (
+                {allPayouts.length === 0 && (
                   <tr>
-                    <td colSpan="9" style={{ textAlign: 'center', padding: '40px 20px', color: '#64748b' }}>
-                      No matching influencers found. Click "Add Creator Manually" to register one.
+                    <td colSpan="7" style={{ textAlign: 'center', padding: '50px 20px', color: '#64748b' }}>
+                      No payout or withdrawal requests submitted yet.
                     </td>
                   </tr>
                 )}
@@ -388,7 +669,68 @@ export const AdminInfluencers = () => {
             </table>
           </div>
         </div>
-      </div>
+      )}
+
+      {/* Reject Payout Modal */}
+      {rejectingPayout && (
+        <div className="inf-modal-backdrop" onClick={() => setRejectingPayout(null)}>
+          <div className="inf-modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '440px' }}>
+            <div className="inf-modal-header">
+              <h4>Reject Payout Request #{rejectingPayout.id}</h4>
+              <button className="inf-modal-close" onClick={() => setRejectingPayout(null)}>×</button>
+            </div>
+            <div className="inf-modal-body">
+              <p style={{ fontSize: '13px', color: '#475569', marginBottom: '14px' }}>
+                Rejecting this request for <strong>{rejectingPayout.influencerName}</strong> will immediately refund <strong>{rejectingPayout.points} points</strong> back to their balance.
+              </p>
+              <div style={{ marginBottom: '16px' }}>
+                <label className="admin-label">Reason for Rejection *</label>
+                <textarea
+                  className="admin-input"
+                  rows={3}
+                  placeholder="e.g. Invalid account details or pending fraud check"
+                  value={rejectionReason}
+                  onChange={(e) => setRejectionReason(e.target.value)}
+                  style={{ resize: 'vertical' }}
+                />
+              </div>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button
+                  type="button"
+                  className="admin-btn-secondary"
+                  onClick={() => setRejectingPayout(null)}
+                  style={{ flex: 1 }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    rejectInfluencerPayout(
+                      rejectingPayout.influencerId,
+                      rejectingPayout.id,
+                      rejectionReason.trim() || 'Declined by Administrator.'
+                    );
+                    setRejectingPayout(null);
+                  }}
+                  style={{
+                    flex: 1,
+                    padding: '10px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    background: '#ef4444',
+                    color: '#ffffff',
+                    fontWeight: 600,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Confirm Reject
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Modal: Add Influencer Manually */}
       {isAddModalOpen && (

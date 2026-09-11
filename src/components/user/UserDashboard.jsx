@@ -35,7 +35,7 @@ export const UserDashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const myOrders = orders.filter(o =>
-    o.email?.toLowerCase() === currentUser?.email?.toLowerCase() || !currentUser?.email
+    currentUser?.email && o.email?.toLowerCase() === currentUser.email.toLowerCase()
   );
   const inProgress = myOrders.filter(o => o.status === 'Processing' || o.status === 'Shipped').length;
   const unreadNotifs = (userNotifications || []).filter(n => n.unread).length;

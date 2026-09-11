@@ -1,10 +1,9 @@
 import React from 'react';
 import { ArrowRight, Sparkles, Layers } from 'lucide-react';
-import { categories } from '../data/categories';
 import { useStore } from '../context/StoreContext';
 
 export const CategoriesPage = () => {
-  const { products, navigatePage } = useStore();
+  const { products, navigatePage, categories } = useStore();
 
   const handleExploreCategory = (catId) => {
     navigatePage('shop', catId);

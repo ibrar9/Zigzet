@@ -21,6 +21,7 @@ import {
   initialUserWallet
 } from '../data/initialUserData';
 import { initialInfluencers } from '../data/initialInfluencers';
+import { categories as initialCategories } from '../data/categories';
 
 const StoreContext = createContext();
 
@@ -63,7 +64,8 @@ const STORAGE_KEYS = {
   INTEGRATIONS: 'zigzet_integrations_v2',
   THEME: 'zigzet_theme_v1',
   INFLUENCERS: 'zigzet_influencers_v1',
-  CURRENT_INFLUENCER: 'zigzet_current_influencer_v1'
+  CURRENT_INFLUENCER: 'zigzet_current_influencer_v1',
+  CATEGORIES: 'zigzet_categories_v2'
 };
 
 const defaultSeo = {
@@ -259,14 +261,13 @@ export const StoreProvider = ({ children }) => {
   // Navigation & Page State
   const [currentPage, setCurrentPage] = useState('home');
 
-  // Admin Authentication State
+  // Admin Authentication State (Requires explicit true from sessionStorage)
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(() => {
     try {
       const auth = sessionStorage.getItem(STORAGE_KEYS.ADMIN_AUTH);
-      if (auth === 'false') return false;
-      return true;
+      return auth === 'true';
     } catch {
-      return true;
+      return false;
     }
   });
 
@@ -443,6 +444,24 @@ export const StoreProvider = ({ children }) => {
       return initialProducts;
     }
   });
+
+  // 1b. Dynamic Categories State (Fully managed via Admin Panel)
+  const [categories, setCategories] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.CATEGORIES);
+      return saved ? JSON.parse(saved) : initialCategories;
+    } catch {
+      return initialCategories;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEYS.CATEGORIES, JSON.stringify(categories));
+    } catch (e) {
+      console.error('Error saving categories:', e);
+    }
+  }, [categories]);
 
   // 2. Orders state
   const [orders, setOrders] = useState(() => {
@@ -823,6 +842,38 @@ export const StoreProvider = ({ children }) => {
       } else {
         setViewMode('store');
       }
+
+      // Automatically capture affiliate referral code or coupon from URL (?ref=... or #shop?ref=...)
+      try {
+        const searchParams = new URLSearchParams(window.location.search);
+        let refCode = searchParams.get('ref') || searchParams.get('affiliate') || searchParams.get('coupon');
+
+        if (!refCode && window.location.hash && window.location.hash.includes('?')) {
+          const hashQuery = window.location.hash.split('?')[1];
+          if (hashQuery) {
+            const hashParams = new URLSearchParams(hashQuery);
+            refCode = hashParams.get('ref') || hashParams.get('affiliate') || hashParams.get('coupon');
+            const prodId = hashParams.get('product');
+            if (prodId && products.length > 0) {
+              const matchedP = products.find(p => p.id === prodId);
+              if (matchedP) setQuickViewProduct(matchedP);
+            }
+          }
+        }
+
+        if (refCode) {
+          const cleanRef = refCode.trim().toUpperCase();
+          sessionStorage.setItem('zigzet_active_referral_code', cleanRef);
+          // Auto-apply promo coupon if found and not already applied
+          const foundCoupon = coupons.find(c => c.code.toUpperCase() === cleanRef && c.isActive);
+          if (foundCoupon && (!appliedCoupon || appliedCoupon.code !== cleanRef)) {
+            setAppliedCoupon(foundCoupon);
+            showToast('Creator Promo Applied!', `Exclusive coupon "${cleanRef}" (${foundCoupon.value}% Off) has been activated!`);
+          }
+        }
+      } catch (e) {
+        console.warn('Could not parse referral parameters:', e);
+      }
     };
 
     handleRouteChange();
@@ -832,7 +883,7 @@ export const StoreProvider = ({ children }) => {
       window.removeEventListener('hashchange', handleRouteChange);
       window.removeEventListener('popstate', handleRouteChange);
     };
-  }, []);
+  }, [coupons, appliedCoupon, products]);
 
   // Toast System
   const showToast = (title, message, type = 'success') => {
@@ -1272,18 +1323,42 @@ export const StoreProvider = ({ children }) => {
     showToast('Review Deleted', 'Your review has been removed.', 'info');
   };
 
-  // Cart Operations
+  // Cart Operations with Strict Stock Boundary Enforcement
   const addToCart = (product, quantity = 1) => {
+    const availableStock = product.stock !== undefined ? product.stock : 25;
+    if (availableStock <= 0) {
+      showToast('Out of Stock', `Sorry, "${product.name}" is currently out of stock.`, 'error');
+      return false;
+    }
+
+    let actualAdded = quantity;
     setCart((prev) => {
       const existing = prev.find((item) => item.id === product.id);
+      const currentQty = existing ? existing.quantity : 0;
+      if (currentQty + quantity > availableStock) {
+        actualAdded = Math.max(0, availableStock - currentQty);
+      }
+      if (actualAdded <= 0) {
+        return prev;
+      }
       if (existing) {
         return prev.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
+          item.id === product.id ? { ...item, quantity: item.quantity + actualAdded } : item
         );
       }
-      return [...prev, { ...product, quantity }];
+      return [...prev, { ...product, quantity: actualAdded }];
     });
-    showToast('Added to Bag', `${product.name} (x${quantity}) added to your shopping bag.`);
+
+    if (actualAdded <= 0) {
+      showToast('Maximum in Bag', `All ${availableStock} available units are already in your shopping bag.`, 'warning');
+      return false;
+    } else if (actualAdded < quantity) {
+      showToast('Stock Limit Reached', `Only ${actualAdded} unit(s) added due to remaining inventory limit (${availableStock} max).`, 'warning');
+      return true;
+    } else {
+      showToast('Added to Bag', `${product.name} (x${actualAdded}) added to your shopping bag.`);
+      return true;
+    }
   };
 
   const updateCartQuantity = (productId, quantity) => {
@@ -1291,8 +1366,14 @@ export const StoreProvider = ({ children }) => {
       removeFromCart(productId);
       return;
     }
+    const matchedP = products.find(p => p.id === productId);
+    const availableStock = matchedP?.stock !== undefined ? matchedP.stock : 25;
+    const finalQty = Math.min(quantity, availableStock);
+    if (quantity > availableStock) {
+      showToast('Stock Limit', `Only ${availableStock} units available in inventory.`, 'warning');
+    }
     setCart((prev) =>
-      prev.map((item) => (item.id === productId ? { ...item, quantity } : item))
+      prev.map((item) => (item.id === productId ? { ...item, quantity: finalQty } : item))
     );
   };
 
@@ -1643,6 +1724,17 @@ export const StoreProvider = ({ children }) => {
     setCoupons((prev) =>
       prev.map((c) => (c.id === couponId ? { ...c, isActive: !c.isActive } : c))
     );
+  };
+
+  const updateCoupon = (couponId, updatedData) => {
+    setCoupons((prev) =>
+      prev.map((c) => (c.id === couponId ? { 
+        ...c, 
+        ...updatedData, 
+        code: updatedData.code ? updatedData.code.trim().toUpperCase() : c.code 
+      } : c))
+    );
+    showToast('Coupon Updated', 'Discount coupon details have been updated.');
   };
 
   const applyCouponCode = (code) => {
@@ -2109,6 +2201,132 @@ export const StoreProvider = ({ children }) => {
     return true;
   };
 
+  const approveInfluencerPayout = (influencerId, payoutId) => {
+    setInfluencers((prev) =>
+      prev.map((inf) => {
+        if (inf.id === influencerId) {
+          const updatedPayouts = (inf.payouts || []).map((p) =>
+            p.id === payoutId ? { ...p, status: 'Completed', completedAt: new Date().toISOString().split('T')[0] } : p
+          );
+          return { ...inf, payouts: updatedPayouts };
+        }
+        return inf;
+      })
+    );
+    setCurrentInfluencer((curr) => {
+      if (curr && curr.id === influencerId) {
+        const updatedPayouts = (curr.payouts || []).map((p) =>
+          p.id === payoutId ? { ...p, status: 'Completed', completedAt: new Date().toISOString().split('T')[0] } : p
+        );
+        return { ...curr, payouts: updatedPayouts };
+      }
+      return curr;
+    });
+    showToast('Payout Approved', `Payout #${payoutId} has been marked as Completed / Dispatched.`);
+  };
+
+  const rejectInfluencerPayout = (influencerId, payoutId, reason = 'Verification failed') => {
+    let refundPoints = 0;
+    setInfluencers((prev) =>
+      prev.map((inf) => {
+        if (inf.id === influencerId) {
+          const targetPayout = (inf.payouts || []).find((p) => p.id === payoutId);
+          refundPoints = targetPayout ? targetPayout.points : 0;
+          const updatedPayouts = (inf.payouts || []).map((p) =>
+            p.id === payoutId ? { ...p, status: 'Rejected', rejectionReason: reason } : p
+          );
+          return {
+            ...inf,
+            pointsBalance: (inf.pointsBalance || 0) + refundPoints,
+            payouts: updatedPayouts
+          };
+        }
+        return inf;
+      })
+    );
+    setCurrentInfluencer((curr) => {
+      if (curr && curr.id === influencerId) {
+        const targetPayout = (curr.payouts || []).find((p) => p.id === payoutId);
+        const refund = targetPayout ? targetPayout.points : 0;
+        const updatedPayouts = (curr.payouts || []).map((p) =>
+          p.id === payoutId ? { ...p, status: 'Rejected', rejectionReason: reason } : p
+        );
+        return {
+          ...curr,
+          pointsBalance: (curr.pointsBalance || 0) + refund,
+          payouts: updatedPayouts
+        };
+      }
+      return curr;
+    });
+    showToast('Payout Rejected', `Payout #${payoutId} rejected. ${refundPoints} points refunded to creator.`);
+  };
+
+  // 13. Dynamic Categories Management
+  const addCategory = (catData) => {
+    const newCat = {
+      ...catData,
+      id: catData.id || catData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      itemCount: catData.itemCount || '0 products'
+    };
+    setCategories((prev) => [...prev, newCat]);
+    showToast('Category Created', `"${newCat.name}" added to store departments.`);
+    return newCat;
+  };
+
+  const updateCategory = (catId, updatedData) => {
+    setCategories((prev) =>
+      prev.map((c) => (c.id === catId ? { ...c, ...updatedData } : c))
+    );
+    showToast('Category Updated', 'Department details saved successfully.');
+  };
+
+  const deleteCategory = (catId) => {
+    setCategories((prev) => prev.filter((c) => c.id !== catId));
+    showToast('Category Removed', 'Department removed from catalog.', 'info');
+  };
+
+  // 14. Customer CRM Management
+  const addCustomer = (customerData) => {
+    const newCust = {
+      ...customerData,
+      id: 'cust-' + Date.now(),
+      orders: parseInt(customerData.orders) || 0,
+      spent: customerData.spent || '$0.00',
+      avatar: customerData.avatar || `https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80`,
+      status: customerData.status || 'Active Customer',
+      lastActive: 'Just now',
+      registeredAt: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+    };
+    setCustomers((prev) => [newCust, ...prev]);
+    showToast('Customer Created', `${newCust.name} added to CRM.`);
+    return newCust;
+  };
+
+  const updateCustomer = (customerId, updatedData) => {
+    setCustomers((prev) =>
+      prev.map((c) => (c.id === customerId ? { ...c, ...updatedData } : c))
+    );
+    showToast('Customer Updated', 'Customer profile updated successfully.');
+  };
+
+  const deleteCustomer = (customerId) => {
+    setCustomers((prev) => prev.filter((c) => c.id !== customerId));
+    showToast('Customer Removed', 'Customer record deleted from CRM.', 'info');
+  };
+
+  // 15. User Password Reset
+  const resetUserPassword = (email, newPassword) => {
+    const cleanEmail = email.trim().toLowerCase();
+    const accountIndex = userAccounts.findIndex(a => a.email.toLowerCase() === cleanEmail);
+    if (accountIndex === -1) {
+      return { success: false, message: 'No registered account found with this email address.' };
+    }
+    setUserAccounts(prev => prev.map(a => a.email.toLowerCase() === cleanEmail ? { ...a, password: newPassword } : a));
+    showToast('Password Reset', 'Your password has been successfully updated! You can now sign in.');
+    return { success: true };
+  };
+
   return (
     <StoreContext.Provider
       value={{
@@ -2261,7 +2479,18 @@ export const StoreProvider = ({ children }) => {
         updateInfluencer,
         toggleInfluencerStatus,
         deleteInfluencer,
-        requestInfluencerPayout
+        requestInfluencerPayout,
+        approveInfluencerPayout,
+        rejectInfluencerPayout,
+        categories,
+        addCategory,
+        updateCategory,
+        deleteCategory,
+        updateCoupon,
+        addCustomer,
+        updateCustomer,
+        deleteCustomer,
+        resetUserPassword
       }}
     >
       {children}

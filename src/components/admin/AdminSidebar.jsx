@@ -28,7 +28,8 @@ import {
   FileText,
   ShieldCheck,
   Globe,
-  Sparkles
+  Sparkles,
+  Layers
 } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
@@ -75,6 +76,7 @@ export const AdminSidebar = ({ isMobileOpen, setIsMobileOpen, onOpenInbox, onOpe
           badgeColor: '#10b981'
         },
         { id: 'products', label: 'Products & Stock', icon: <Package size={17} /> },
+        { id: 'categories', label: 'Categories Manager', icon: <Layers size={17} /> },
         { id: 'coupons', label: 'Discount Coupons', icon: <Tag size={17} /> },
         { 
           id: 'influencers', 

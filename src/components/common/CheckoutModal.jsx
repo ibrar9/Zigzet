@@ -43,6 +43,7 @@ export const CheckoutModal = () => {
   const [step, setStep] = useState(1);
   const [couponInput, setCouponInput] = useState('');
   const [formErrors, setFormErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState(() => ({
     firstName: currentUser?.name ? currentUser.name.split(' ')[0] : '',
     lastName: currentUser?.name ? currentUser.name.split(' ').slice(1).join(' ') : '',
@@ -131,28 +132,36 @@ export const CheckoutModal = () => {
     }
   };
 
-  const handlePlaceOrder = (e) => {
+  const handlePlaceOrder = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return;
     if (!validateStep2()) return;
-    const orderData = {
-      customerName: `${formData.firstName} ${formData.lastName}`.trim(),
-      email: formData.email,
-      shippingAddress: `${formData.address}, ${formData.city}, ${formData.state} ${formData.zip}`.trim(),
-      paymentMethod: formData.paymentMethod === 'Credit Card' 
-        ? `Credit Card (${formData.cardNumber.slice(-4) ? `•••• ${formData.cardNumber.slice(-4)}` : 'Visa'})` 
-        : formData.paymentMethod,
-      total: cartTotal,
-      subtotal: cartSubtotal,
-      currency: settings?.currency || 'AED',
-      currencySymbol: settings?.currencySymbol,
-      discount: couponDiscountAmount,
-      couponCode: appliedCoupon ? appliedCoupon.code : null,
-      items: cart
-    };
 
-    const newOrder = createOrder(orderData);
-    setCompletedOrder(newOrder);
-    setStep(3);
+    setIsSubmitting(true);
+    try {
+      await new Promise(r => setTimeout(r, 400));
+      const orderData = {
+        customerName: `${formData.firstName} ${formData.lastName}`.trim(),
+        email: formData.email,
+        shippingAddress: `${formData.address}, ${formData.city}, ${formData.state} ${formData.zip}`.trim(),
+        paymentMethod: formData.paymentMethod === 'Credit Card' 
+          ? `Credit Card (${formData.cardNumber.slice(-4) ? `•••• ${formData.cardNumber.slice(-4)}` : 'Visa'})` 
+          : formData.paymentMethod,
+        total: cartTotal,
+        subtotal: cartSubtotal,
+        currency: settings?.currency || 'AED',
+        currencySymbol: settings?.currencySymbol,
+        discount: couponDiscountAmount,
+        couponCode: appliedCoupon ? appliedCoupon.code : null,
+        items: cart
+      };
+
+      const newOrder = createOrder(orderData);
+      setCompletedOrder(newOrder);
+      setStep(3);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleClose = () => {
@@ -563,11 +572,13 @@ export const CheckoutModal = () => {
                   <span>Back</span>
                 </button>
                 <button 
-                  className="checkout-btn place-order-btn" 
+                  className={`checkout-btn place-order-btn ${isSubmitting ? 'loading' : ''}`}
                   onClick={handlePlaceOrder}
+                  disabled={isSubmitting}
+                  style={{ opacity: isSubmitting ? 0.7 : 1, cursor: isSubmitting ? 'not-allowed' : 'pointer' }}
                 >
                   <Lock size={15} />
-                  <span>Pay &amp; Place Order ({formatPrice(cartTotal)})</span>
+                  <span>{isSubmitting ? 'Processing Payment...' : `Pay & Place Order (${formatPrice(cartTotal)})`}</span>
                 </button>
               </div>
             </div>

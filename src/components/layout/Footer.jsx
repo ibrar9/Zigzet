@@ -1,10 +1,11 @@
-import React from 'react';
-import { Heart, User, ShieldCheck, Sparkles, ArrowRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { Heart, User, ShieldCheck, Sparkles, ArrowRight, Instagram, Facebook, Youtube, Twitter, X, FileText, Lock } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
 export const Footer = () => {
   const { setIsWishlistOpen, navigatePage, currentUser, showToast, settings } = useStore();
   const storeName = settings?.storeName || 'Zigzet';
+  const [legalModal, setLegalModal] = useState(null); // 'privacy' | 'terms' | null
 
   const handleSubscribe = (e) => {
     e.preventDefault();
@@ -23,9 +24,110 @@ export const Footer = () => {
             <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: '1.6', marginBottom: '14px' }}>
               Your premium destination for curated authentic beauty, modern skincare, and lifestyle essentials with fast delivery.
             </p>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#10b981', fontWeight: '600' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#10b981', fontWeight: '600', marginBottom: '14px' }}>
               <ShieldCheck size={16} />
               <span>100% Encrypted & Safe Checkout</span>
+            </div>
+
+            {/* Social Media Links */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <a 
+                href="https://instagram.com" 
+                target="_blank" 
+                rel="noreferrer"
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  background: 'rgba(90, 31, 45, 0.08)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#5A1F2D',
+                  transition: 'all 0.2s'
+                }}
+                title="Follow us on Instagram"
+              >
+                <Instagram size={16} />
+              </a>
+              <a 
+                href="https://tiktok.com" 
+                target="_blank" 
+                rel="noreferrer"
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  background: 'rgba(90, 31, 45, 0.08)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#5A1F2D',
+                  transition: 'all 0.2s'
+                }}
+                title="Follow us on TikTok"
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/>
+                </svg>
+              </a>
+              <a 
+                href="https://youtube.com" 
+                target="_blank" 
+                rel="noreferrer"
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  background: 'rgba(90, 31, 45, 0.08)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#5A1F2D',
+                  transition: 'all 0.2s'
+                }}
+                title="Watch tutorials on YouTube"
+              >
+                <Youtube size={16} />
+              </a>
+              <a 
+                href="https://facebook.com" 
+                target="_blank" 
+                rel="noreferrer"
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  background: 'rgba(90, 31, 45, 0.08)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#5A1F2D',
+                  transition: 'all 0.2s'
+                }}
+                title="Like us on Facebook"
+              >
+                <Facebook size={16} />
+              </a>
+              <a 
+                href="https://twitter.com" 
+                target="_blank" 
+                rel="noreferrer"
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '50%',
+                  background: 'rgba(90, 31, 45, 0.08)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#5A1F2D',
+                  transition: 'all 0.2s'
+                }}
+                title="Follow us on X"
+              >
+                <Twitter size={16} />
+              </a>
             </div>
           </div>
 
@@ -79,12 +181,14 @@ export const Footer = () => {
               <button 
                 type="submit" 
                 style={{
-                  backgroundColor: '#111827',
+                  backgroundColor: '#5A1F2D',
                   color: '#fff',
                   padding: '8px 14px',
                   borderRadius: '9999px',
                   fontSize: '12.5px',
-                  fontWeight: '600'
+                  fontWeight: '600',
+                  border: 'none',
+                  cursor: 'pointer'
                 }}
               >
                 Join
@@ -152,7 +256,7 @@ export const Footer = () => {
         </div>
       </div>
 
-      {/* Bottom Bar matching exact reference image */}
+      {/* Bottom Bar */}
       <div className="container footer-container" style={{ paddingTop: '18px' }}>
         {/* Footer Left */}
         <div className="footer-left">
@@ -189,16 +293,176 @@ export const Footer = () => {
 
         {/* Footer Right */}
         <div className="footer-right">
-          <a href="#privacy" onClick={(e) => { e.preventDefault(); showToast('Privacy Policy', 'Your personal data is encrypted and 100% secure.', 'info'); }}>
+          <button 
+            onClick={() => setLegalModal('privacy')}
+            style={{ background: 'none', border: 'none', color: '#64748b', fontSize: '12.5px', cursor: 'pointer', padding: 0 }}
+          >
             Privacy Policy
-          </a>
+          </button>
           <span className="footer-divider">|</span>
-          <a href="#terms" onClick={(e) => { e.preventDefault(); showToast('Terms of Service', '30-Day money back guarantee on all authentic purchases.', 'info'); }}>
+          <button 
+            onClick={() => setLegalModal('terms')}
+            style={{ background: 'none', border: 'none', color: '#64748b', fontSize: '12.5px', cursor: 'pointer', padding: 0 }}
+          >
             Terms of Service
-          </a>
+          </button>
           <span className="footer-flag" title="United States">USA</span>
         </div>
       </div>
+
+      {/* Interactive Legal Policy Modal */}
+      {legalModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.6)',
+          backdropFilter: 'blur(5px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 999999,
+          padding: '20px'
+        }}>
+          <div style={{
+            background: '#ffffff',
+            borderRadius: '16px',
+            maxWidth: '650px',
+            width: '100%',
+            maxHeight: '85vh',
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+            boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)'
+          }}>
+            {/* Modal Header */}
+            <div style={{
+              padding: '20px 24px',
+              borderBottom: '1px solid #e2e8f0',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              background: '#fafafa'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{
+                  width: '36px',
+                  height: '36px',
+                  borderRadius: '8px',
+                  background: 'rgba(90, 31, 45, 0.1)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#5A1F2D'
+                }}>
+                  {legalModal === 'privacy' ? <Lock size={18} /> : <FileText size={18} />}
+                </div>
+                <div>
+                  <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 700, color: '#0f172a' }}>
+                    {legalModal === 'privacy' ? 'Privacy & Data Protection Policy' : 'Terms of Service & Sales Agreement'}
+                  </h3>
+                  <span style={{ fontSize: '12px', color: '#64748b' }}>
+                    Last Updated: September 2026 · Official {storeName} Legal Document
+                  </span>
+                </div>
+              </div>
+              <button
+                onClick={() => setLegalModal(null)}
+                style={{
+                  border: 'none',
+                  background: '#f1f5f9',
+                  borderRadius: '50%',
+                  width: '32px',
+                  height: '32px',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#64748b'
+                }}
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            {/* Modal Scrollable Body */}
+            <div style={{ padding: '24px', overflowY: 'auto', fontSize: '13.5px', lineHeight: '1.7', color: '#334155' }}>
+              {legalModal === 'privacy' ? (
+                <div>
+                  <h4 style={{ color: '#0f172a', fontSize: '15px', fontWeight: 700, marginTop: 0 }}>1. Data Collection and Integrity</h4>
+                  <p>
+                    At {storeName}, we are committed to safeguarding your privacy. When you visit our website, register an account, or complete a purchase, we collect necessary customer details such as your name, billing address, shipping address, email address, and order records. We utilize bank-grade 256-bit TLS/SSL encryption for all transactions.
+                  </p>
+
+                  <h4 style={{ color: '#0f172a', fontSize: '15px', fontWeight: 700, marginTop: '16px' }}>2. Use of Information</h4>
+                  <p>
+                    Your personal information is used exclusively to fulfill purchases, process dispatch tracking, communicate real-time order updates, prevent fraudulent transactions, and—with your consent—send personalized promotional offers and flash discount vouchers. We do not sell, rent, or trade your personally identifiable information to third parties.
+                  </p>
+
+                  <h4 style={{ color: '#0f172a', fontSize: '15px', fontWeight: 700, marginTop: '16px' }}>3. Creator & Affiliate Attribution Cookies</h4>
+                  <p>
+                    When accessing {storeName} via an influencer partner link (containing referral identifiers such as <code>?ref=CODE</code>), a session identifier is securely stored to accurately attribute commission points and automatically apply your exclusive creator discounts.
+                  </p>
+
+                  <h4 style={{ color: '#0f172a', fontSize: '15px', fontWeight: 700, marginTop: '16px' }}>4. Your Rights</h4>
+                  <p>
+                    You maintain the right to view, modify, or request the deletion of your account records at any time by accessing your User Dashboard or contacting our 24/7 customer care concierge.
+                  </p>
+                </div>
+              ) : (
+                <div>
+                  <h4 style={{ color: '#0f172a', fontSize: '15px', fontWeight: 700, marginTop: 0 }}>1. Store Agreement & Terms</h4>
+                  <p>
+                    By accessing, browsing, or purchasing from {storeName}, you agree to be bound by these Terms of Service. All product descriptions, pricing, and stock availability are subject to change without prior notice.
+                  </p>
+
+                  <h4 style={{ color: '#0f172a', fontSize: '15px', fontWeight: 700, marginTop: '16px' }}>2. Pricing, Coupons & Orders</h4>
+                  <p>
+                    Promotional coupon codes and influencer vouchers must be applied at checkout prior to final payment submission. Discount codes may not be combined unless explicitly stated. In the event an item is ordered beyond physical warehouse availability, our operations team will issue an immediate full refund or priority restock allocation.
+                  </p>
+
+                  <h4 style={{ color: '#0f172a', fontSize: '15px', fontWeight: 700, marginTop: '16px' }}>3. 30-Day Money-Back Guarantee & Returns</h4>
+                  <p>
+                    We stand behind the authenticity and quality of every product sold on {storeName}. Unopened items in their original packaging are eligible for return and full refund within 30 days of delivery.
+                  </p>
+
+                  <h4 style={{ color: '#0f172a', fontSize: '15px', fontWeight: 700, marginTop: '16px' }}>4. Creator Program Terms</h4>
+                  <p>
+                    Influencer partners must adhere to standard FTC disclosure guidelines when sharing affiliate links and promotional vouchers. Fraudulent self-referrals or code abuse may result in commission forfeiture and account suspension.
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div style={{
+              padding: '16px 24px',
+              borderTop: '1px solid #e2e8f0',
+              display: 'flex',
+              justifyContent: 'flex-end',
+              background: '#fafafa'
+            }}>
+              <button
+                onClick={() => setLegalModal(null)}
+                style={{
+                  padding: '9px 24px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  background: '#5A1F2D',
+                  color: '#ffffff',
+                  fontWeight: 600,
+                  fontSize: '13px',
+                  cursor: 'pointer'
+                }}
+              >
+                I Understand &amp; Agree
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </footer>
   );
 };

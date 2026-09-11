@@ -24,11 +24,11 @@ import {
   ShieldAlert
 } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
-import { categories } from '../../data/categories';
 
 export const Header = () => {
   const { 
     products,
+    categories,
     cartItemsCount, 
     wishlist, 
     setIsCartOpen, 

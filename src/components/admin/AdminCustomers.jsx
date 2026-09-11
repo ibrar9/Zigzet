@@ -16,15 +16,31 @@ import {
   MessageSquare,
   Award,
   CreditCard,
-  Truck
+  Truck,
+  Plus,
+  Edit,
+  Trash2
 } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
 export const AdminCustomers = ({ onOpenInbox }) => {
-  const { customers, orders, userAccounts, loyaltyProgram } = useStore();
+  const { customers, orders, userAccounts, loyaltyProgram, addCustomer, updateCustomer, deleteCustomer, showToast } = useStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [activeFilter, setActiveFilter] = useState('all'); // 'all' | 'registered' | 'buyers' | 'vip'
   const [selectedCustomer, setSelectedCustomer] = useState(null);
+
+  // Add / Edit Modal State
+  const [isCustomerModalOpen, setIsCustomerModalOpen] = useState(false);
+  const [editingCustomer, setEditingCustomer] = useState(null);
+  const [customerForm, setCustomerForm] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
+    city: '',
+    status: 'Active Customer',
+    spent: '$0.00'
+  });
 
   // Combine customers with registered userAccounts to ensure complete synchronization
   const allCustomersMap = new Map();
@@ -118,6 +134,72 @@ export const AdminCustomers = ({ onOpenInbox }) => {
   const totalActiveBuyersCount = customerList.filter((c) => c.orderCount > 0).length;
   const totalRevenueAll = customerList.reduce((acc, c) => acc + c.totalSpentNum, 0);
 
+  const handleOpenAddCustomer = () => {
+    setEditingCustomer(null);
+    setCustomerForm({
+      name: '',
+      email: '',
+      phone: '',
+      address: '',
+      city: '',
+      status: 'Active Customer',
+      spent: '$0.00'
+    });
+    setIsCustomerModalOpen(true);
+  };
+
+  const handleOpenEditCustomer = (cust) => {
+    setEditingCustomer(cust);
+    setCustomerForm({
+      name: cust.name || '',
+      email: cust.email || '',
+      phone: cust.phone || '',
+      address: cust.address || '',
+      city: cust.city || '',
+      status: cust.status || 'Active Customer',
+      spent: cust.spent || '$0.00'
+    });
+    setIsCustomerModalOpen(true);
+  };
+
+  const handleSaveCustomer = (e) => {
+    e.preventDefault();
+    if (!customerForm.name.trim() || !customerForm.email.trim()) {
+      showToast('Validation Error', 'Name and valid email are required.', 'error');
+      return;
+    }
+
+    if (editingCustomer) {
+      updateCustomer(editingCustomer.id, {
+        name: customerForm.name.trim(),
+        email: customerForm.email.trim().toLowerCase(),
+        phone: customerForm.phone.trim(),
+        address: customerForm.address.trim(),
+        city: customerForm.city.trim(),
+        location: customerForm.city ? `${customerForm.city}, US` : 'United States',
+        status: customerForm.status
+      });
+    } else {
+      addCustomer({
+        name: customerForm.name.trim(),
+        email: customerForm.email.trim().toLowerCase(),
+        phone: customerForm.phone.trim(),
+        address: customerForm.address.trim(),
+        city: customerForm.city.trim(),
+        location: customerForm.city ? `${customerForm.city}, US` : 'United States',
+        status: customerForm.status
+      });
+    }
+    setIsCustomerModalOpen(false);
+    setEditingCustomer(null);
+  };
+
+  const handleDeleteCustomer = (cust) => {
+    if (window.confirm(`Are you sure you want to remove ${cust.name} from the CRM?`)) {
+      deleteCustomer(cust.id);
+    }
+  };
+
   return (
     <div className="admin-page-container">
       {/* Header Bar */}
@@ -129,7 +211,16 @@ export const AdminCustomers = ({ onOpenInbox }) => {
           </p>
         </div>
 
-        <div className="admin-page-actions">
+        <div className="admin-page-actions" style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          <button
+            className="hero-cta-btn"
+            onClick={handleOpenAddCustomer}
+            style={{ padding: '8px 18px', fontSize: '13px', background: '#5A1F2D', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}
+          >
+            <Plus size={15} />
+            <span>Add Customer</span>
+          </button>
+
           <div className="admin-search-wrapper" style={{ width: '280px' }}>
             <Search size={16} className="search-icon" />
             <input
@@ -289,13 +380,14 @@ export const AdminCustomers = ({ onOpenInbox }) => {
                 </div>
               </div>
 
-              <div className="customer-card-footer">
+              <div className="customer-card-footer" style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
                 <button 
                   className="customer-view-history-btn"
                   onClick={() => setSelectedCustomer(cust)}
+                  style={{ flex: 1 }}
                 >
                   <Package size={13} />
-                  <span>View Orders ({cust.orderCount})</span>
+                  <span>Orders ({cust.orderCount})</span>
                 </button>
 
                 <button 
@@ -306,7 +398,26 @@ export const AdminCustomers = ({ onOpenInbox }) => {
                   title="Send message to customer"
                 >
                   <MessageSquare size={13} />
-                  <span>Message</span>
+                </button>
+
+                <button
+                  type="button"
+                  className="admin-btn-icon"
+                  onClick={() => handleOpenEditCustomer(cust)}
+                  title="Edit Customer"
+                  style={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '8px', border: '1px solid #e2e8f0', background: '#ffffff', color: '#475569', cursor: 'pointer' }}
+                >
+                  <Edit size={13} />
+                </button>
+
+                <button
+                  type="button"
+                  className="admin-btn-icon delete"
+                  onClick={() => handleDeleteCustomer(cust)}
+                  title="Delete Customer"
+                  style={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '8px', border: '1px solid #fee2e2', background: '#fef2f2', color: '#ef4444', cursor: 'pointer' }}
+                >
+                  <Trash2 size={13} />
                 </button>
               </div>
             </div>
@@ -499,6 +610,118 @@ export const AdminCustomers = ({ onOpenInbox }) => {
                 <span>Message Customer in Inbox</span>
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add / Edit Customer Modal */}
+      {isCustomerModalOpen && (
+        <div className="modal-overlay open" onClick={() => setIsCustomerModalOpen(false)}>
+          <div className="modal-box" style={{ maxWidth: '500px', padding: '28px' }} onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close-icon" onClick={() => setIsCustomerModalOpen(false)}>
+              <X size={18} />
+            </button>
+
+            <div style={{ marginBottom: '20px', paddingBottom: '12px', borderBottom: '1px solid #e2e8f0' }}>
+              <h3 style={{ fontSize: '19px', fontWeight: 800, color: '#0f172a', margin: '0 0 4px 0' }}>
+                {editingCustomer ? 'Edit Customer Profile' : 'Add New Customer'}
+              </h3>
+              <p style={{ fontSize: '13px', color: '#64748b', margin: 0 }}>
+                {editingCustomer ? `Updating details for ${editingCustomer.name}` : 'Register a new customer account in the CRM'}
+              </p>
+            </div>
+
+            <form onSubmit={handleSaveCustomer}>
+              <div style={{ marginBottom: '14px' }}>
+                <label className="admin-label">Full Name *</label>
+                <input
+                  type="text"
+                  required
+                  className="admin-input"
+                  placeholder="e.g. John Doe"
+                  value={customerForm.name}
+                  onChange={(e) => setCustomerForm({ ...customerForm, name: e.target.value })}
+                />
+              </div>
+
+              <div style={{ marginBottom: '14px' }}>
+                <label className="admin-label">Email Address *</label>
+                <input
+                  type="email"
+                  required
+                  className="admin-input"
+                  placeholder="john.doe@example.com"
+                  value={customerForm.email}
+                  onChange={(e) => setCustomerForm({ ...customerForm, email: e.target.value })}
+                />
+              </div>
+
+              <div style={{ marginBottom: '14px' }}>
+                <label className="admin-label">Phone Number</label>
+                <input
+                  type="text"
+                  className="admin-input"
+                  placeholder="+1 (555) 000-0000"
+                  value={customerForm.phone}
+                  onChange={(e) => setCustomerForm({ ...customerForm, phone: e.target.value })}
+                />
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '14px' }}>
+                <div>
+                  <label className="admin-label">Address</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    placeholder="Street Address"
+                    value={customerForm.address}
+                    onChange={(e) => setCustomerForm({ ...customerForm, address: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <label className="admin-label">City</label>
+                  <input
+                    type="text"
+                    className="admin-input"
+                    placeholder="City"
+                    value={customerForm.city}
+                    onChange={(e) => setCustomerForm({ ...customerForm, city: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <div style={{ marginBottom: '20px' }}>
+                <label className="admin-label">Customer Status / Segment</label>
+                <select
+                  className="admin-input"
+                  value={customerForm.status}
+                  onChange={(e) => setCustomerForm({ ...customerForm, status: e.target.value })}
+                >
+                  <option value="Active Customer">Active Customer</option>
+                  <option value="Registered Member">Registered Member</option>
+                  <option value="VIP Elite">VIP Elite</option>
+                  <option value="Wholesale Buyer">Wholesale Buyer</option>
+                </select>
+              </div>
+
+              <div style={{ display: 'flex', gap: '10px' }}>
+                <button
+                  type="button"
+                  className="admin-btn-secondary"
+                  onClick={() => setIsCustomerModalOpen(false)}
+                  style={{ flex: 1 }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="hero-cta-btn"
+                  style={{ flex: 2, padding: '10px', fontSize: '13px', background: '#5A1F2D', borderRadius: '8px' }}
+                >
+                  {editingCustomer ? 'Save Customer Changes' : 'Create Customer'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

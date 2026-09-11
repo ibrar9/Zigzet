@@ -5,6 +5,7 @@ import { AdminSidebar } from './AdminSidebar';
 import { AdminHeader } from './AdminHeader';
 import { AdminDashboard } from './AdminDashboard';
 import { AdminProducts } from './AdminProducts';
+import { AdminCategories } from './AdminCategories';
 import { AdminOrders } from './AdminOrders';
 import { AdminCustomers } from './AdminCustomers';
 import { AdminWallet } from './AdminWallet';
@@ -78,6 +79,7 @@ export const AdminPanel = () => {
           {adminTab === 'dashboard' && <AdminDashboard />}
           {adminTab === 'analytics' && <AdminAnalytics />}
           {adminTab === 'products' && <AdminProducts />}
+          {adminTab === 'categories' && <AdminCategories />}
           {adminTab === 'orders' && <AdminOrders />}
           {adminTab === 'coupons' && <AdminCoupons />}
           {adminTab === 'influencers' && <AdminInfluencers />}

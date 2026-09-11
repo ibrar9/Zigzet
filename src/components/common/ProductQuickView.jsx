@@ -229,12 +229,30 @@ export const ProductQuickView = () => {
                     </button>
                     <span>{quantity}</span>
                     <button 
-                      onClick={() => setQuantity(quantity + 1)}
+                      onClick={() => {
+                        const maxStock = product.stock !== undefined ? product.stock : 25;
+                        if (quantity < maxStock) {
+                          setQuantity(quantity + 1);
+                        } else {
+                          showToast('Max Stock Reached', `Only ${maxStock} unit(s) available in inventory.`, 'info');
+                        }
+                      }}
+                      disabled={quantity >= (product.stock !== undefined ? product.stock : 25)}
                       aria-label="Increase quantity"
+                      style={{
+                        opacity: quantity >= (product.stock !== undefined ? product.stock : 25) ? 0.4 : 1,
+                        cursor: quantity >= (product.stock !== undefined ? product.stock : 25) ? 'not-allowed' : 'pointer'
+                      }}
                     >
                       +
                     </button>
                   </div>
+
+                  {quantity >= (product.stock !== undefined ? product.stock : 25) && (
+                    <span style={{ fontSize: '11px', color: '#e11d48', fontWeight: '700', padding: '2px 8px', background: '#fff1f2', borderRadius: '6px' }}>
+                      Max {product.stock} units
+                    </span>
+                  )}
 
                   <button
                     className={`quick-view-wish-btn ${isSaved ? 'active' : ''}`}

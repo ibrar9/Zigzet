@@ -3,6 +3,7 @@ import {
   Tag, 
   Plus, 
   Trash2, 
+  Edit,
   Search, 
   Copy, 
   Calendar, 
@@ -19,11 +20,12 @@ import { useStore } from '../../context/StoreContext';
 import { CustomDropdown } from '../common/CustomDropdown';
 
 export const AdminCoupons = () => {
-  const { coupons, addCoupon, deleteCoupon, toggleCouponActive, showToast } = useStore();
+  const { coupons, addCoupon, updateCoupon, deleteCoupon, toggleCouponActive, showToast } = useStore();
 
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingCoupon, setEditingCoupon] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
 
   const [form, setForm] = useState({
@@ -66,22 +68,8 @@ export const AdminCoupons = () => {
     setTimeout(() => setCopiedId(null), 2000);
   };
 
-  const handleCreate = (e) => {
-    e.preventDefault();
-    if (!form.code.trim()) {
-      showToast('Invalid Promo Code', 'Please enter a valid coupon promo code.', 'info');
-      return;
-    }
-
-    addCoupon({
-      ...form,
-      value: parseFloat(form.value) || 10,
-      minSpend: parseFloat(form.minSpend) || 0,
-      maxDiscount: parseFloat(form.maxDiscount) || 100,
-      usageLimit: parseInt(form.usageLimit) || 100
-    });
-
-    setIsModalOpen(false);
+  const handleOpenAdd = () => {
+    setEditingCoupon(null);
     setForm({
       code: '',
       description: '',
@@ -92,6 +80,50 @@ export const AdminCoupons = () => {
       expiryDate: '2026-12-31',
       usageLimit: 100
     });
+    setIsModalOpen(true);
+  };
+
+  const handleOpenEdit = (c) => {
+    setEditingCoupon(c);
+    setForm({
+      code: c.code || '',
+      description: c.description || '',
+      type: c.type || 'percentage',
+      value: c.value !== undefined ? c.value : 20,
+      minSpend: c.minSpend !== undefined ? c.minSpend : 50,
+      maxDiscount: c.maxDiscount !== undefined ? c.maxDiscount : 100,
+      expiryDate: c.expiryDate || '2026-12-31',
+      usageLimit: c.usageLimit || 100
+    });
+    setIsModalOpen(true);
+  };
+
+  const handleCreateOrUpdate = (e) => {
+    e.preventDefault();
+    if (!form.code.trim()) {
+      showToast('Invalid Promo Code', 'Please enter a valid coupon promo code.', 'info');
+      return;
+    }
+
+    const payload = {
+      code: form.code.trim().toUpperCase(),
+      description: form.description.trim(),
+      type: form.type,
+      value: parseFloat(form.value) || 10,
+      minSpend: parseFloat(form.minSpend) || 0,
+      maxDiscount: parseFloat(form.maxDiscount) || 100,
+      expiryDate: form.expiryDate,
+      usageLimit: parseInt(form.usageLimit) || 100
+    };
+
+    if (editingCoupon) {
+      updateCoupon(editingCoupon.id, payload);
+    } else {
+      addCoupon(payload);
+    }
+
+    setIsModalOpen(false);
+    setEditingCoupon(null);
   };
 
   return (
@@ -106,7 +138,7 @@ export const AdminCoupons = () => {
         <div className="admin-page-actions">
           <button
             className="hero-cta-btn"
-            onClick={() => setIsModalOpen(true)}
+            onClick={handleOpenAdd}
             style={{ padding: '10px 22px', fontSize: '13.5px' }}
           >
             <Plus size={16} />
@@ -292,17 +324,26 @@ export const AdminCoupons = () => {
 
                   {/* Actions */}
                   <td style={{ textAlign: 'right' }}>
-                    <button
-                      className="action-circle-btn delete"
-                      onClick={() => {
-                        if (window.confirm(`Delete coupon code "${c.code}"?`)) {
-                          deleteCoupon(c.id);
-                        }
-                      }}
-                      title="Delete Coupon"
-                    >
-                      <Trash2 size={14} />
-                    </button>
+                    <div style={{ display: 'flex', gap: '6px', justifyContent: 'flex-end' }}>
+                      <button
+                        className="action-circle-btn"
+                        onClick={() => handleOpenEdit(c)}
+                        title="Edit Promo Code"
+                      >
+                        <Edit size={14} />
+                      </button>
+                      <button
+                        className="action-circle-btn delete"
+                        onClick={() => {
+                          if (window.confirm(`Delete coupon code "${c.code}"?`)) {
+                            deleteCoupon(c.id);
+                          }
+                        }}
+                        title="Delete Coupon"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -320,7 +361,7 @@ export const AdminCoupons = () => {
         </div>
       </div>
 
-      {/* Create Coupon Modal */}
+      {/* Create / Edit Coupon Modal */}
       {isModalOpen && (
         <div className="modal-overlay open" onClick={() => setIsModalOpen(false)}>
           <div className="modal-box" style={{ maxWidth: '560px', padding: '32px' }} onClick={(e) => e.stopPropagation()}>
@@ -333,11 +374,11 @@ export const AdminCoupons = () => {
                 Promotional Campaign
               </span>
               <h3 style={{ fontSize: '20px', fontWeight: '800', marginTop: '2px', color: '#0f172a' }}>
-                Create New Coupon Code
+                {editingCoupon ? 'Edit Coupon Code' : 'Create New Coupon Code'}
               </h3>
             </div>
 
-            <form onSubmit={handleCreate}>
+            <form onSubmit={handleCreateOrUpdate}>
               <div className="checkout-form-grid">
                 {/* Code */}
                 <div className="form-group">
@@ -437,7 +478,7 @@ export const AdminCoupons = () => {
                   style={{ padding: '10px 28px', fontSize: '13.5px' }}
                 >
                   <Save size={15} />
-                  <span>Create Coupon</span>
+                  <span>{editingCoupon ? 'Save Coupon Changes' : 'Create Coupon'}</span>
                 </button>
               </div>
             </form>

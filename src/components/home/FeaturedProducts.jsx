@@ -4,13 +4,12 @@ import { ProductCard } from '../common/ProductCard';
 import { ProductGridSkeleton } from '../common/Skeleton';
 import { PromoBanners } from './PromoBanners';
 import { useStore } from '../../context/StoreContext';
-import { categories } from '../../data/categories';
 
 const INITIAL_BATCH_SIZE = 32;
 const LOAD_MORE_STEP = 16;
 
 export const FeaturedProducts = () => {
-  const { products, activeCategory, setActiveCategory, navigatePage } = useStore();
+  const { products, categories, activeCategory, setActiveCategory, navigatePage } = useStore();
   const [visibleCount, setVisibleCount] = useState(INITIAL_BATCH_SIZE);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [isSwitching, setIsSwitching] = useState(false);
