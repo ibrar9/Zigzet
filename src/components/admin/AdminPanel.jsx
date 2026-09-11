@@ -21,6 +21,7 @@ import { AdminInvoices } from './AdminInvoices';
 import { AdminStaff } from './AdminStaff';
 import { AdminSEO } from './AdminSEO';
 import { AdminIntegrations } from './AdminIntegrations';
+import { AdminInfluencers } from './AdminInfluencers';
 import { AdminInboxDrawer } from './AdminInboxDrawer';
 import { AdminNotificationsDrawer } from './AdminNotificationsDrawer';
 import { 
@@ -79,6 +80,7 @@ export const AdminPanel = () => {
           {adminTab === 'products' && <AdminProducts />}
           {adminTab === 'orders' && <AdminOrders />}
           {adminTab === 'coupons' && <AdminCoupons />}
+          {adminTab === 'influencers' && <AdminInfluencers />}
           {adminTab === 'campaigns' && <AdminCampaigns />}
           {adminTab === 'abandoned-carts' && <AdminAbandonedCarts />}
           {adminTab === 'customers' && <AdminCustomers onOpenInbox={() => setIsInboxOpen(true)} />}

@@ -27,7 +27,8 @@ import {
   Palette,
   FileText,
   ShieldCheck,
-  Globe
+  Globe,
+  Sparkles
 } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
@@ -43,7 +44,8 @@ export const AdminSidebar = ({ isMobileOpen, setIsMobileOpen, onOpenInbox, onOpe
     abandonedCarts, 
     reviews, 
     coupons,
-    integrations 
+    integrations,
+    influencers
   } = useStore();
 
   const unreadInboxCount = inboxMessages.filter((m) => m.unread).length;
@@ -74,6 +76,13 @@ export const AdminSidebar = ({ isMobileOpen, setIsMobileOpen, onOpenInbox, onOpe
         },
         { id: 'products', label: 'Products & Stock', icon: <Package size={17} /> },
         { id: 'coupons', label: 'Discount Coupons', icon: <Tag size={17} /> },
+        { 
+          id: 'influencers', 
+          label: 'Influencer Program', 
+          icon: <Sparkles size={17} />,
+          badge: influencers?.length > 0 ? `${influencers.length} live` : null,
+          badgeColor: '#5A1F2D'
+        },
         { id: 'campaigns', label: 'Flash Sale Timer', icon: <Zap size={17} /> },
         { 
           id: 'abandoned-carts', 

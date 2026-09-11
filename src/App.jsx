@@ -26,6 +26,7 @@ const ContactPage = lazy(() => import('./pages/ContactPage').then((m) => ({ defa
 const AdminPanel = lazy(() => import('./components/admin/AdminPanel').then((m) => ({ default: m.AdminPanel })));
 const UserDashboard = lazy(() => import('./components/user/UserDashboard').then((m) => ({ default: m.UserDashboard })));
 const UserLoginPage = lazy(() => import('./components/user/UserLoginPage').then((m) => ({ default: m.UserLoginPage })));
+const InfluencerPortal = lazy(() => import('./components/influencer/InfluencerPortal').then((m) => ({ default: m.InfluencerPortal })));
 
 // Interactive Common Modals and Drawers
 import { CartDrawer } from './components/common/CartDrawer';
@@ -48,6 +49,17 @@ function App() {
       <Suspense fallback={<PageLoader />}>
         <SEOHead />
         <AdminPanel />
+        <Toast />
+      </Suspense>
+    );
+  }
+
+  // Full-screen Influencer & Creator Portal (lazy loaded)
+  if (currentPage === 'influencer-portal' || currentPage === 'influencer' || currentPage === 'influencer-dashboard') {
+    return (
+      <Suspense fallback={<PageLoader />}>
+        <SEOHead />
+        <InfluencerPortal />
         <Toast />
       </Suspense>
     );

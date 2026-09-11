@@ -20,6 +20,7 @@ import {
   initialSavedCards,
   initialUserWallet
 } from '../data/initialUserData';
+import { initialInfluencers } from '../data/initialInfluencers';
 
 const StoreContext = createContext();
 
@@ -60,7 +61,9 @@ const STORAGE_KEYS = {
   USER_WALLET: 'zigzet_user_wallet_v1',
   SEO: 'zigzet_seo_v2',
   INTEGRATIONS: 'zigzet_integrations_v2',
-  THEME: 'zigzet_theme_v1'
+  THEME: 'zigzet_theme_v1',
+  INFLUENCERS: 'zigzet_influencers_v1',
+  CURRENT_INFLUENCER: 'zigzet_current_influencer_v1'
 };
 
 const defaultSeo = {
@@ -621,6 +624,79 @@ export const StoreProvider = ({ children }) => {
       return initialIntegrations;
     }
   });
+
+  // Influencers & Creators State
+  const [influencers, setInfluencers] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.INFLUENCERS);
+      return saved ? JSON.parse(saved) : initialInfluencers;
+    } catch {
+      return initialInfluencers;
+    }
+  });
+
+  const [currentInfluencer, setCurrentInfluencer] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.CURRENT_INFLUENCER);
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEYS.INFLUENCERS, JSON.stringify(influencers));
+    } catch (e) {
+      console.error(e);
+    }
+  }, [influencers]);
+
+  useEffect(() => {
+    try {
+      if (currentInfluencer) {
+        localStorage.setItem(STORAGE_KEYS.CURRENT_INFLUENCER, JSON.stringify(currentInfluencer));
+      } else {
+        localStorage.removeItem(STORAGE_KEYS.CURRENT_INFLUENCER);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, [currentInfluencer]);
+
+  // Auto-sync influencer coupons into store coupons list so checkout works seamlessly
+  useEffect(() => {
+    setCoupons((prevCoupons) => {
+      let updated = [...prevCoupons];
+      let hasChanges = false;
+      influencers.forEach((inf) => {
+        if (inf.couponCode && inf.status === 'Active') {
+          const codeUpper = inf.couponCode.toUpperCase();
+          const existingIdx = updated.findIndex((c) => c.code.toUpperCase() === codeUpper);
+          if (existingIdx === -1) {
+            updated.push({
+              id: 'coup-inf-' + inf.id,
+              code: codeUpper,
+              description: `Creator ${inf.name} exclusive discount`,
+              type: 'percentage',
+              value: inf.discountPercent || 15,
+              minSpend: 0,
+              maxDiscount: 200,
+              expiryDate: '2027-12-31',
+              usageLimit: 10000,
+              usageCount: inf.totalOrders || 0,
+              isActive: true,
+              isInfluencer: true,
+              influencerId: inf.id,
+              influencerName: inf.name
+            });
+            hasChanges = true;
+          }
+        }
+      });
+      return hasChanges ? updated : prevCoupons;
+    });
+  }, [influencers]);
 
   // Settings
   const [settings, setSettings] = useState(() => {
@@ -1400,6 +1476,80 @@ export const StoreProvider = ({ children }) => {
 
     setOrders((prev) => [newOrder, ...prev]);
 
+    // Influencer Attribution & Points Hook
+    const usedCouponCode = appliedCoupon ? appliedCoupon.code : orderData.couponCode;
+    if (usedCouponCode) {
+      const codeUpper = usedCouponCode.toUpperCase();
+      setInfluencers((prevInf) =>
+        prevInf.map((inf) => {
+          if (inf.couponCode && inf.couponCode.toUpperCase() === codeUpper) {
+            const commission = (orderTotal * (inf.commissionRate || 10)) / 100;
+            const pointsEarned = Math.round(commission);
+            const referredOrder = {
+              id: orderId,
+              date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+              customerName: orderData.customerName || 'Customer',
+              total: orderTotal,
+              discount: couponDiscountAmount,
+              pointsEarned: pointsEarned,
+              status: 'Completed'
+            };
+            return {
+              ...inf,
+              totalSales: Number(((inf.totalSales || 0) + orderTotal).toFixed(2)),
+              totalOrders: (inf.totalOrders || 0) + 1,
+              pointsEarned: (inf.pointsEarned || 0) + pointsEarned,
+              pointsBalance: (inf.pointsBalance || 0) + pointsEarned,
+              referredOrders: [referredOrder, ...(inf.referredOrders || [])]
+            };
+          }
+          return inf;
+        })
+      );
+
+      setCurrentInfluencer((curr) => {
+        if (curr && curr.couponCode && curr.couponCode.toUpperCase() === codeUpper) {
+          const commission = (orderTotal * (curr.commissionRate || 10)) / 100;
+          const pointsEarned = Math.round(commission);
+          const referredOrder = {
+            id: orderId,
+            date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+            customerName: orderData.customerName || 'Customer',
+            total: orderTotal,
+            discount: couponDiscountAmount,
+            pointsEarned: pointsEarned,
+            status: 'Completed'
+          };
+          return {
+            ...curr,
+            totalSales: Number(((curr.totalSales || 0) + orderTotal).toFixed(2)),
+            totalOrders: (curr.totalOrders || 0) + 1,
+            pointsEarned: (curr.pointsEarned || 0) + pointsEarned,
+            pointsBalance: (curr.pointsBalance || 0) + pointsEarned,
+            referredOrders: [referredOrder, ...(curr.referredOrders || [])]
+          };
+        }
+        return curr;
+      });
+
+      const matchingInf = influencers.find(
+        (i) => i.couponCode && i.couponCode.toUpperCase() === codeUpper
+      );
+      if (matchingInf) {
+        setNotifications((prevN) => [
+          {
+            id: 'notif-inf-' + Date.now(),
+            title: 'Influencer Sale Referred!',
+            description: `Order #${orderId} ($${orderTotal.toFixed(2)}) used ${matchingInf.name}'s code "${matchingInf.couponCode}".`,
+            time: 'Just now',
+            type: 'sale',
+            unread: true
+          },
+          ...prevN
+        ]);
+      }
+    }
+
     // Update CRM Customers
     setCustomers((prevCusts) => {
       const emailMatch = prevCusts.findIndex(
@@ -1803,6 +1953,162 @@ export const StoreProvider = ({ children }) => {
     showToast('Store Reset', 'Reset all store data to initial demo state.', 'info');
   };
 
+  // 12. Influencer Program Methods
+  const registerInfluencer = (infData) => {
+    const existing = influencers.find(
+      (i) => i.email.toLowerCase() === (infData.email || '').toLowerCase()
+    );
+    if (existing) {
+      showToast('Account Exists', 'An influencer account with this email already exists.', 'error');
+      return false;
+    }
+
+    let code = (infData.couponCode || infData.name.replace(/[^a-zA-Z0-9]/g, '').slice(0, 8) + '15').toUpperCase();
+    const existingCode = influencers.some((i) => i.couponCode && i.couponCode.toUpperCase() === code);
+    if (existingCode) {
+      code = `${code}${Math.floor(10 + Math.random() * 90)}`;
+    }
+
+    const newInfluencer = {
+      id: 'inf-' + Date.now(),
+      name: infData.name,
+      email: infData.email,
+      password: infData.password || 'password123',
+      avatar: infData.avatar || `https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80`,
+      platform: infData.platform || 'Instagram',
+      handle: infData.handle ? (infData.handle.startsWith('@') ? infData.handle : `@${infData.handle}`) : `@${infData.name.toLowerCase().replace(/\s+/g, '')}`,
+      profileUrl: infData.profileUrl || `https://${(infData.platform || 'instagram').toLowerCase()}.com`,
+      followers: infData.followers || '10K-50K',
+      niche: infData.niche || 'Lifestyle & Beauty',
+      couponCode: code,
+      discountPercent: 15,
+      commissionRate: 10,
+      pointsEarned: 100,
+      pointsBalance: 100,
+      totalSales: 0,
+      totalOrders: 0,
+      status: 'Active',
+      tier: 'Rising Creator',
+      joinedDate: new Date().toISOString().split('T')[0],
+      referredOrders: [],
+      payouts: []
+    };
+
+    setInfluencers((prev) => [newInfluencer, ...prev]);
+    setCurrentInfluencer(newInfluencer);
+
+    setNotifications((prevN) => [
+      {
+        id: 'notif-new-inf-' + Date.now(),
+        title: 'New Creator Joined!',
+        description: `${newInfluencer.name} (${newInfluencer.handle}) joined the Creator Program with code "${newInfluencer.couponCode}".`,
+        time: 'Just now',
+        type: 'info',
+        unread: true
+      },
+      ...prevN
+    ]);
+
+    showToast('Welcome Creator!', `Your application is approved! Use your exclusive coupon ${code}.`);
+    return true;
+  };
+
+  const loginInfluencer = (email, password) => {
+    const found = influencers.find(
+      (i) => i.email.toLowerCase() === email.toLowerCase() && i.password === password
+    );
+    if (!found) {
+      showToast('Login Failed', 'Invalid creator email or password.', 'error');
+      return false;
+    }
+    if (found.status === 'Suspended') {
+      showToast('Account Suspended', 'Your influencer partner account is suspended. Please contact support.', 'error');
+      return false;
+    }
+
+    setCurrentInfluencer(found);
+    showToast('Welcome Back!', `Logged in as ${found.name} (${found.handle}).`);
+    return true;
+  };
+
+  const logoutInfluencer = () => {
+    setCurrentInfluencer(null);
+    showToast('Signed Out', 'Creator account logged out.', 'info');
+  };
+
+  const updateInfluencer = (id, updates) => {
+    setInfluencers((prev) =>
+      prev.map((i) => (i.id === id ? { ...i, ...updates } : i))
+    );
+    setCurrentInfluencer((curr) => (curr && curr.id === id ? { ...curr, ...updates } : curr));
+    showToast('Influencer Updated', 'Partner profile saved successfully.');
+  };
+
+  const toggleInfluencerStatus = (id) => {
+    setInfluencers((prev) =>
+      prev.map((i) => {
+        if (i.id === id) {
+          const nextStatus = i.status === 'Active' ? 'Suspended' : 'Active';
+          showToast('Status Changed', `${i.name}'s account is now ${nextStatus}.`);
+          return { ...i, status: nextStatus };
+        }
+        return i;
+      })
+    );
+  };
+
+  const deleteInfluencer = (id) => {
+    setInfluencers((prev) => prev.filter((i) => i.id !== id));
+    setCurrentInfluencer((curr) => (curr && curr.id === id ? null : curr));
+    showToast('Influencer Removed', 'Creator removed from partner registry.', 'info');
+  };
+
+  const requestInfluencerPayout = (influencerId, pointsToRedeem, method, details) => {
+    const inf = influencers.find((i) => i.id === influencerId);
+    if (!inf) return false;
+    if ((inf.pointsBalance || 0) < pointsToRedeem) {
+      showToast('Insufficient Points', 'You do not have enough points for this payout.', 'error');
+      return false;
+    }
+
+    const cashAmount = pointsToRedeem / 10;
+    const newPayout = {
+      id: 'PAY-' + Math.floor(100 + Math.random() * 900),
+      date: new Date().toISOString().split('T')[0],
+      points: pointsToRedeem,
+      amount: cashAmount,
+      method: method || 'PayPal',
+      details: details || '',
+      status: 'Processing'
+    };
+
+    const updatedInf = {
+      ...inf,
+      pointsBalance: (inf.pointsBalance || 0) - pointsToRedeem,
+      payouts: [newPayout, ...(inf.payouts || [])]
+    };
+
+    setInfluencers((prev) => prev.map((i) => (i.id === influencerId ? updatedInf : i)));
+    if (currentInfluencer && currentInfluencer.id === influencerId) {
+      setCurrentInfluencer(updatedInf);
+    }
+
+    setNotifications((prevN) => [
+      {
+        id: 'notif-payout-' + Date.now(),
+        title: 'Influencer Payout Request',
+        description: `${inf.name} requested payout of $${cashAmount.toFixed(2)} (${pointsToRedeem} pts) via ${method}.`,
+        time: 'Just now',
+        type: 'alert',
+        unread: true
+      },
+      ...prevN
+    ]);
+
+    showToast('Payout Requested!', `Redeemed ${pointsToRedeem} points for $${cashAmount.toFixed(2)} via ${method}.`);
+    return true;
+  };
+
   return (
     <StoreContext.Provider
       value={{
@@ -1946,7 +2252,16 @@ export const StoreProvider = ({ children }) => {
         formatPrice,
         currencyRates,
         convertedCartTotal: convertPrice(cartTotal),
-        convertedCartSubtotal: convertPrice(cartSubtotal)
+        convertedCartSubtotal: convertPrice(cartSubtotal),
+        influencers,
+        currentInfluencer,
+        registerInfluencer,
+        loginInfluencer,
+        logoutInfluencer,
+        updateInfluencer,
+        toggleInfluencerStatus,
+        deleteInfluencer,
+        requestInfluencerPayout
       }}
     >
       {children}

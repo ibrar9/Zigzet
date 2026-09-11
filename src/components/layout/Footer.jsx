@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, User, ShieldCheck } from 'lucide-react';
+import { Heart, User, ShieldCheck, Sparkles, ArrowRight } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
 export const Footer = () => {
@@ -46,6 +46,14 @@ export const Footer = () => {
             <span className="footer-nav-link" onClick={() => navigatePage('contact')}>24/7 Support</span>
             <span className="footer-nav-link" onClick={() => setIsWishlistOpen(true)}>Saved Wishlist</span>
             <span className="footer-nav-link" onClick={() => navigatePage(currentUser ? 'user-dashboard' : 'user-login')}>My Profile</span>
+            <span 
+              className="footer-nav-link" 
+              onClick={() => navigatePage('influencer-portal')}
+              style={{ color: '#5A1F2D', fontWeight: '700', display: 'inline-flex', alignItems: 'center', gap: '5px' }}
+            >
+              <Sparkles size={13} />
+              <span>Influencer & Creator Hub</span>
+            </span>
           </div>
 
           {/* Newsletter Box */}
@@ -84,6 +92,64 @@ export const Footer = () => {
             </form>
           </div>
         </div>
+
+        {/* Creator / Influencer Invitation Banner */}
+        <div style={{
+          marginTop: '28px',
+          padding: '16px 22px',
+          borderRadius: '16px',
+          background: 'linear-gradient(135deg, #faf0f2 0%, #ffffff 100%)',
+          border: '1px solid #f2d6dc',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '12px'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{
+              width: '38px',
+              height: '38px',
+              borderRadius: '10px',
+              background: 'linear-gradient(135deg, #5A1F2D, #461722)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#fff',
+              flexShrink: 0
+            }}>
+              <Sparkles size={18} />
+            </div>
+            <div>
+              <div style={{ fontSize: '13.5px', fontWeight: '800', color: '#111827' }}>
+                Join the Zigzet Creator & Influencer Program
+              </div>
+              <div style={{ fontSize: '12px', color: '#64748b' }}>
+                Earn up to 12% commission, exclusive follower discount codes, and points on every sale.
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={() => navigatePage('influencer-portal')}
+            style={{
+              padding: '9px 18px',
+              borderRadius: '9999px',
+              background: '#5A1F2D',
+              color: '#fff',
+              fontSize: '12.5px',
+              fontWeight: '700',
+              border: 'none',
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              boxShadow: '0 2px 8px rgba(90, 31, 45, 0.25)'
+            }}
+          >
+            <span>Apply as Influencer</span>
+            <ArrowRight size={14} />
+          </button>
+        </div>
       </div>
 
       {/* Bottom Bar matching exact reference image */}
@@ -104,6 +170,15 @@ export const Footer = () => {
           >
             <User size={15} />
             <span>My Account</span>
+          </span>
+          <span className="footer-divider">|</span>
+          <span 
+            className="footer-link" 
+            onClick={() => navigatePage('influencer-portal')}
+            style={{ color: '#5A1F2D', fontWeight: '700' }}
+          >
+            <Sparkles size={14} color="#5A1F2D" />
+            <span>Creator Portal</span>
           </span>
         </div>
 
