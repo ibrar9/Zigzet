@@ -160,7 +160,7 @@ export const AdminSEO = () => {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1.25fr 1fr', gap: '24px', alignItems: 'start' }}>
+      <div className="admin-seo-grid">
         
         {/* LEFT COLUMN: Settings Form */}
         <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -182,8 +182,8 @@ export const AdminSEO = () => {
             <div className="admin-card-body" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div>
                 <label className="admin-label">
-                  Global Site Title
-                  <span style={{ fontSize: '11px', color: titleLen > 60 ? '#ef4444' : '#64748b', marginLeft: 'auto' }}>
+                  <span>Global Site Title</span>
+                  <span style={{ fontSize: '11px', color: titleLen > 60 ? '#ef4444' : '#64748b' }}>
                     {titleLen}/60 chars {titleLen > 60 ? '(Too Long)' : '(Optimal)'}
                   </span>
                 </label>
@@ -198,8 +198,8 @@ export const AdminSEO = () => {
 
               <div>
                 <label className="admin-label">
-                  Global Meta Description
-                  <span style={{ fontSize: '11px', color: descLen > 160 ? '#ef4444' : '#64748b', marginLeft: 'auto' }}>
+                  <span>Global Meta Description</span>
+                  <span style={{ fontSize: '11px', color: descLen > 160 ? '#ef4444' : '#64748b' }}>
                     {descLen}/160 chars {descLen > 160 ? '(Will be truncated)' : '(Optimal)'}
                   </span>
                 </label>
@@ -213,7 +213,9 @@ export const AdminSEO = () => {
               </div>
 
               <div>
-                <label className="admin-label">Meta Keywords (Comma separated)</label>
+                <label className="admin-label">
+                  <span>Meta Keywords (Comma separated)</span>
+                </label>
                 <input
                   type="text"
                   className="admin-input"
@@ -225,7 +227,9 @@ export const AdminSEO = () => {
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
                 <div>
-                  <label className="admin-label">Canonical Domain URL</label>
+                  <label className="admin-label">
+                    <span>Canonical Domain URL</span>
+                  </label>
                   <input
                     type="url"
                     className="admin-input"
@@ -236,7 +240,9 @@ export const AdminSEO = () => {
                 </div>
 
                 <div>
-                  <label className="admin-label">Social Share OG Image URL</label>
+                  <label className="admin-label">
+                    <span>Social Share OG Image URL</span>
+                  </label>
                   <input
                     type="url"
                     className="admin-input"
@@ -266,7 +272,7 @@ export const AdminSEO = () => {
             <div className="admin-card-body" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <div>
                 <label className="admin-label">
-                  Google Search Console Token (<code style={{ fontSize: '11px', color: '#5A1F2D' }}>google-site-verification</code>)
+                  <span>Google Search Console Token (<code style={{ fontSize: '11px', color: '#5A1F2D' }}>google-site-verification</code>)</span>
                 </label>
                 <div style={{ display: 'flex', gap: '8px' }}>
                   <input
@@ -275,24 +281,28 @@ export const AdminSEO = () => {
                     value={formData.googleSiteVerification}
                     onChange={(e) => setFormData({ ...formData, googleSiteVerification: e.target.value })}
                     placeholder="e.g. pWrOVdd1M2K-eGgalaSy6SBjoSIaXZVTeSc4W3fQc1I"
+                    style={{ flex: 1 }}
                   />
                   <button
                     type="button"
                     className="admin-btn-secondary"
                     onClick={() => copyToClipboard(formData.googleSiteVerification, 'gtoken')}
                     title="Copy Token"
+                    style={{ padding: '0 16px', flexShrink: 0 }}
                   >
                     {copiedKey === 'gtoken' ? <Check size={16} color="#10b981" /> : <Copy size={16} />}
                   </button>
                 </div>
-                <span style={{ fontSize: '11.5px', color: '#64748b', marginTop: '4px', display: 'block' }}>
-                  Automatically injected into <code style={{ backgroundColor: '#f1f5f9', padding: '1px 5px', borderRadius: '4px' }}>&lt;meta name="google-site-verification"&gt;</code>.
+                <span style={{ fontSize: '11.5px', color: '#64748b', marginTop: '6px', display: 'block' }}>
+                  Automatically injected into <code style={{ backgroundColor: '#f1f5f9', padding: '2px 6px', borderRadius: '4px' }}>&lt;meta name="google-site-verification"&gt;</code>.
                 </span>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
                 <div>
-                  <label className="admin-label">Google Analytics 4 (GA4) ID</label>
+                  <label className="admin-label">
+                    <span>Google Analytics 4 (GA4) ID</span>
+                  </label>
                   <input
                     type="text"
                     className="admin-input"
@@ -303,7 +313,9 @@ export const AdminSEO = () => {
                 </div>
 
                 <div>
-                  <label className="admin-label">Meta (Facebook) Pixel ID</label>
+                  <label className="admin-label">
+                    <span>Meta (Facebook) Pixel ID</span>
+                  </label>
                   <input
                     type="text"
                     className="admin-input"
@@ -364,9 +376,11 @@ export const AdminSEO = () => {
                 ))}
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                 <div>
-                  <label className="admin-label">Page Title</label>
+                  <label className="admin-label">
+                    <span>Page Title</span>
+                  </label>
                   <input
                     type="text"
                     className="admin-input"
@@ -377,7 +391,9 @@ export const AdminSEO = () => {
                 </div>
 
                 <div>
-                  <label className="admin-label">Page Meta Description</label>
+                  <label className="admin-label">
+                    <span>Page Meta Description</span>
+                  </label>
                   <textarea
                     rows={2}
                     className="admin-input"
@@ -388,7 +404,9 @@ export const AdminSEO = () => {
                 </div>
 
                 <div>
-                  <label className="admin-label">Page Keywords</label>
+                  <label className="admin-label">
+                    <span>Page Keywords</span>
+                  </label>
                   <input
                     type="text"
                     className="admin-input"
@@ -604,12 +622,13 @@ export const AdminSEO = () => {
                     readOnly
                     className="admin-input"
                     value={`${formData.canonicalUrl || 'https://zigzet.com'}/sitemap.xml`}
-                    style={{ fontSize: '12px', backgroundColor: '#ffffff' }}
+                    style={{ fontSize: '12.5px', backgroundColor: '#ffffff', flex: 1 }}
                   />
                   <button
                     type="button"
                     className="admin-btn-secondary"
                     onClick={() => copyToClipboard(`${formData.canonicalUrl || 'https://zigzet.com'}/sitemap.xml`, 'sitemap')}
+                    style={{ padding: '0 16px', flexShrink: 0 }}
                   >
                     {copiedKey === 'sitemap' ? <Check size={15} color="#10b981" /> : <Copy size={15} />}
                   </button>
@@ -628,12 +647,13 @@ export const AdminSEO = () => {
                     readOnly
                     className="admin-input"
                     value={`${formData.canonicalUrl || 'https://zigzet.com'}/robots.txt`}
-                    style={{ fontSize: '12px', backgroundColor: '#ffffff' }}
+                    style={{ fontSize: '12.5px', backgroundColor: '#ffffff', flex: 1 }}
                   />
                   <button
                     type="button"
                     className="admin-btn-secondary"
                     onClick={() => copyToClipboard(`${formData.canonicalUrl || 'https://zigzet.com'}/robots.txt`, 'robots')}
+                    style={{ padding: '0 16px', flexShrink: 0 }}
                   >
                     {copiedKey === 'robots' ? <Check size={15} color="#10b981" /> : <Copy size={15} />}
                   </button>

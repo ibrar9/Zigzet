@@ -4029,6 +4029,301 @@ img {
   background-color: #fee2e2;
 }
 
+/* ==========================================================================
+   Admin Generic Layout, Page Containers & Headers
+   ========================================================================== */
+.admin-page-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.admin-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 4px;
+}
+
+.admin-section-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+  margin: 4px 0 0 0;
+  font-family: var(--font-primary);
+}
+
+.admin-section-desc {
+  font-size: 13px;
+  color: #64748b;
+  margin: 4px 0 0 0;
+  line-height: 1.45;
+}
+
+.admin-page-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Admin Form Controls, Cards, Labels, & Buttons
+   ========================================================================== */
+.admin-card {
+  background-color: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.admin-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 6px 18px -4px rgba(0, 0, 0, 0.06);
+}
+
+.admin-card-header {
+  padding: 16px 22px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.admin-card-body {
+  padding: 22px;
+}
+
+.admin-label {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 13px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 8px;
+  gap: 8px;
+}
+
+.admin-input {
+  width: 100% !important;
+  display: block !important;
+  padding: 11px 14px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #0f172a;
+  background-color: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  outline: none;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.admin-input:focus {
+  background-color: #ffffff;
+  border-color: #5A1F2D;
+  box-shadow: 0 0 0 3px rgba(90, 31, 45, 0.08);
+}
+
+.admin-input::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+textarea.admin-input {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.55;
+}
+
+/* Global input reset within admin layout to ensure clean modern inputs */
+.zigzet-admin-layout input:not([type='checkbox']):not([type='radio']):not(.admin-input),
+.zigzet-admin-layout textarea:not(.admin-input),
+.zigzet-admin-layout select:not(.admin-input) {
+  font-family: inherit;
+  box-sizing: border-box;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  padding: 8px 12px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.zigzet-admin-layout input:not([type='checkbox']):not([type='radio']):not(.admin-input):focus,
+.zigzet-admin-layout textarea:not(.admin-input):focus,
+.zigzet-admin-layout select:not(.admin-input):focus {
+  border-color: #5A1F2D;
+}
+
+.admin-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #5A1F2D 0%, #461722 100%);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(90, 31, 45, 0.25);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.admin-btn-primary:hover {
+  background: linear-gradient(135deg, #461722 0%, #38111a 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(90, 31, 45, 0.35);
+}
+
+.admin-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1.5px solid #e2e8f0;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.admin-btn-secondary:hover {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+.admin-badge-role {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.admin-badge-admin {
+  background-color: #faf0f2;
+  color: #5A1F2D;
+  border: 1px solid #ebd0d7;
+}
+
+.admin-switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.admin-seo-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 1180px) {
+  .admin-seo-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Dashboard helper classes */
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot.purple {
+  background-color: #5A1F2D;
+}
+
+.dot.slate {
+  background-color: #cbd5e1;
+}
+
+.analysis-legends {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.analysis-date-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.analysis-date-btn:hover {
+  background-color: #ffffff;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+.chart-canvas-wrapper {
+  position: relative;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.analysis-svg-chart {
+  width: 100%;
+  height: 180px;
+  overflow: visible;
+}
+
+.table-bold-cell {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
 /* --------------------------------------------------------------------------
    Dashboard Layout Cards
    -------------------------------------------------------------------------- */
