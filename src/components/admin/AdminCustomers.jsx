@@ -376,7 +376,7 @@ export const AdminCustomers = ({ onOpenInbox }) => {
             {/* Orders Section */}
             <div className="customer-modal-orders-section">
               <h4 style={{ fontSize: '15px', fontWeight: '800', color: '#0f172a', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <ShoppingBag size={16} color="#7c3aed" />
+                <ShoppingBag size={16} color="#5A1F2D" />
                 <span>Complete Purchase History ({selectedCustomer.matchedOrders.length} recorded orders)</span>
               </h4>
 
@@ -488,7 +488,7 @@ export const AdminCustomers = ({ onOpenInbox }) => {
                   padding: '9px 20px',
                   borderRadius: '10px',
                   border: 'none',
-                  backgroundColor: '#7c3aed',
+                  backgroundColor: '#5A1F2D',
                   color: '#ffffff',
                   fontWeight: '700',
                   fontSize: '13px',

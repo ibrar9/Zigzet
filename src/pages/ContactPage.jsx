@@ -57,7 +57,7 @@ export const ContactPage = () => {
       <div className="shop-header-banner">
         <div className="container">
           <div style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
-            <span style={{ fontSize: '12.5px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#7c3aed' }}>
+            <span style={{ fontSize: '12.5px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5A1F2D' }}>
               We Are Here For You 24/7
             </span>
             <h1 style={{ fontSize: '36px', fontWeight: '800', marginTop: '6px', marginBottom: '8px', color: 'var(--color-text-primary, #0f172a)' }}>
@@ -110,8 +110,8 @@ export const ContactPage = () => {
                   <label>Inquiry Topic</label>
                   <CustomDropdown
                     options={[
-                      { value: 'General Inquiry', label: 'General Inquiry', dot: '#7c3aed' },
-                      { value: 'Order Tracking & Status', label: 'Order Tracking & Status', dot: '#3b82f6' },
+                      { value: 'General Inquiry', label: 'General Inquiry', dot: '#5A1F2D' },
+                      { value: 'Order Tracking & Status', label: 'Order Tracking & Status', dot: '#5A1F2D' },
                       { value: 'Returns & Refunds', label: 'Returns & Refunds', dot: '#f59e0b' },
                       { value: 'Skincare Advice & Ingredients', label: 'Skincare Advice & Ingredients', dot: '#10b981' },
                       { value: 'Wholesale & Bulk Orders', label: 'Wholesale & Bulk Orders', dot: '#ec4899' }
@@ -148,7 +148,7 @@ export const ContactPage = () => {
           {/* Info Side Cards */}
           <div className="contact-info-cards-col">
             <div className="contact-info-card">
-              <div className="contact-info-icon" style={{ background: '#f5f3ff', color: '#7c3aed' }}>
+              <div className="contact-info-icon" style={{ background: '#faf0f2', color: '#5A1F2D' }}>
                 <Mail size={22} />
               </div>
               <div>
@@ -158,7 +158,7 @@ export const ContactPage = () => {
                 <p style={{ fontSize: '13.5px', color: 'var(--color-text-muted, #6b7280)' }}>
                   24/7 dedicated inbox assistance
                 </p>
-                <a href="mailto:support@zigzet.com" style={{ color: '#7c3aed', fontWeight: '700', fontSize: '14px', marginTop: '4px', display: 'inline-block' }}>
+                <a href="mailto:support@zigzet.com" style={{ color: '#5A1F2D', fontWeight: '700', fontSize: '14px', marginTop: '4px', display: 'inline-block' }}>
                   support@zigzet.com
                 </a>
               </div>
@@ -182,7 +182,7 @@ export const ContactPage = () => {
             </div>
 
             <div className="contact-info-card">
-              <div className="contact-info-icon" style={{ background: '#eff6ff', color: '#2563eb' }}>
+              <div className="contact-info-icon" style={{ background: '#faf0f2', color: '#5A1F2D' }}>
                 <MapPin size={22} />
               </div>
               <div>

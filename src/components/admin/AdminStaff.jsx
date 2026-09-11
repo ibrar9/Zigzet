@@ -30,8 +30,8 @@ export const AdminStaff = () => {
   });
 
   const roleOptions = [
-    { value: 'Store Owner / Super Admin', label: 'Store Owner / Super Admin', dot: '#7c3aed' },
-    { value: 'Operations & Logistics Lead', label: 'Operations & Logistics Lead', dot: '#3b82f6' },
+    { value: 'Store Owner / Super Admin', label: 'Store Owner / Super Admin', dot: '#5A1F2D' },
+    { value: 'Operations & Logistics Lead', label: 'Operations & Logistics Lead', dot: '#5A1F2D' },
     { value: 'Customer Care Specialist', label: 'Customer Care Specialist', dot: '#10b981' },
     { value: 'Marketing & Growth Manager', label: 'Marketing & Growth Manager', dot: '#f59e0b' },
     { value: 'Financial Auditor', label: 'Financial Auditor', dot: '#64748b' }
@@ -165,7 +165,7 @@ export const AdminStaff = () => {
 
                   {/* Role */}
                   <td>
-                    <span style={{ fontWeight: '700', color: '#7c3aed', background: '#f5f3ff', padding: '4px 10px', borderRadius: '8px', fontSize: '12px' }}>
+                    <span style={{ fontWeight: '700', color: '#5A1F2D', background: '#faf0f2', padding: '4px 10px', borderRadius: '8px', fontSize: '12px' }}>
                       {s.role}
                     </span>
                   </td>
@@ -227,7 +227,7 @@ export const AdminStaff = () => {
             </button>
 
             <div style={{ marginBottom: '20px', paddingBottom: '14px', borderBottom: '1px solid #e2e8f0' }}>
-              <span style={{ fontSize: '12px', color: '#7c3aed', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <span style={{ fontSize: '12px', color: '#5A1F2D', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 Team Security & Access
               </span>
               <h3 style={{ fontSize: '20px', fontWeight: '800', marginTop: '2px', color: '#0f172a' }}>

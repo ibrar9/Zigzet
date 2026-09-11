@@ -153,8 +153,8 @@ export const BrandsPage = () => {
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-4px)';
-                  e.currentTarget.style.boxShadow = '0 12px 28px -6px rgba(124, 58, 237, 0.15)';
-                  e.currentTarget.style.borderColor = '#c4b5fd';
+                  e.currentTarget.style.boxShadow = '0 12px 28px -6px rgba(90, 31, 45, )';
+                  e.currentTarget.style.borderColor = '#c98595';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'translateY(0)';
@@ -170,7 +170,7 @@ export const BrandsPage = () => {
                         <h3 style={{ fontSize: '20px', fontWeight: '800', color: '#0f172a', margin: 0 }}>
                           {brand.name}
                         </h3>
-                        <ShieldCheck size={16} color="#7c3aed" />
+                        <ShieldCheck size={16} color="#5A1F2D" />
                       </div>
                       <span style={{ fontSize: '12px', color: '#64748b' }}>
                         Official Store Catalog
@@ -181,8 +181,8 @@ export const BrandsPage = () => {
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '4px',
-                      background: '#f5f3ff',
-                      color: '#7c3aed',
+                      background: '#faf0f2',
+                      color: '#5A1F2D',
                       fontSize: '12px',
                       fontWeight: '800',
                       padding: '4px 10px',
@@ -257,15 +257,15 @@ export const BrandsPage = () => {
                   paddingTop: '14px',
                   borderTop: '1px solid #f1f5f9'
                 }}>
-                  <span style={{ fontSize: '13px', fontWeight: '700', color: '#7c3aed' }}>
+                  <span style={{ fontSize: '13px', fontWeight: '700', color: '#5A1F2D' }}>
                     View All {brand.count} Products
                   </span>
                   <div style={{
                     width: '32px',
                     height: '32px',
                     borderRadius: '50%',
-                    background: '#f5f3ff',
-                    color: '#7c3aed',
+                    background: '#faf0f2',
+                    color: '#5A1F2D',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -287,7 +287,7 @@ export const BrandsPage = () => {
               style={{
                 padding: '8px 18px',
                 borderRadius: '8px',
-                background: '#7c3aed',
+                background: '#5A1F2D',
                 color: '#fff',
                 border: 'none',
                 fontSize: '13px',

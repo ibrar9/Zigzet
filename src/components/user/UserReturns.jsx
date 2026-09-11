@@ -85,7 +85,7 @@ export const UserReturns = () => {
         <button 
           className="ud2-btn-track" 
           onClick={handleOpenModal}
-          style={{ background: '#7c3aed', color: '#fff', display: 'flex', alignItems: 'center', gap: 6, padding: '10px 18px', borderRadius: 10, fontSize: 13.5, fontWeight: 600 }}
+          style={{ background: '#5A1F2D', color: '#fff', display: 'flex', alignItems: 'center', gap: 6, padding: '10px 18px', borderRadius: 10, fontSize: 13.5, fontWeight: 600 }}
         >
           <Plus size={16} /> Request Return
         </button>
@@ -94,7 +94,7 @@ export const UserReturns = () => {
       {/* Return Policy Notice Card */}
       <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 14, padding: '16px 20px', marginBottom: 24, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <div style={{ background: '#ede9fe', color: '#7c3aed', width: 40, height: 40, borderRadius: 10, display: 'grid', placeItems: 'center' }}>
+          <div style={{ background: '#f6e6e9', color: '#5A1F2D', width: 40, height: 40, borderRadius: 10, display: 'grid', placeItems: 'center' }}>
             <ShieldCheck size={20} />
           </div>
           <div>
@@ -129,7 +129,7 @@ export const UserReturns = () => {
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
                       <span style={{ fontWeight: 800, fontSize: 16, color: '#0f172a' }}>Return #{ret.id}</span>
-                      <span style={{ background: '#ede9fe', color: '#7c3aed', fontSize: 11.5, fontWeight: 700, padding: '2px 8px', borderRadius: 6 }}>
+                      <span style={{ background: '#f6e6e9', color: '#5A1F2D', fontSize: 11.5, fontWeight: 700, padding: '2px 8px', borderRadius: 6 }}>
                         {ret.status}
                       </span>
                     </div>
@@ -160,13 +160,13 @@ export const UserReturns = () => {
                   <div className="ud2-steps" style={{ margin: 0 }}>
                     {RETURN_STEPS.map((step, i) => (
                       <div key={step} className="ud2-step-item">
-                        <div className={`ud2-step-circle ${steps[i] ? 'done' : ''}`} style={steps[i] ? { background: '#7c3aed', color: '#fff' } : {}}>
+                        <div className={`ud2-step-circle ${steps[i] ? 'done' : ''}`} style={steps[i] ? { background: '#5A1F2D', color: '#fff' } : {}}>
                           {steps[i] ? <CheckCircle2 size={14} /> : <span>{i + 1}</span>}
                         </div>
                         {i < RETURN_STEPS.length - 1 && (
-                          <div className={`ud2-step-line ${steps[i + 1] ? 'done' : ''}`} style={steps[i + 1] ? { background: '#7c3aed' } : {}} />
+                          <div className={`ud2-step-line ${steps[i + 1] ? 'done' : ''}`} style={steps[i + 1] ? { background: '#5A1F2D' } : {}} />
                         )}
-                        <p className={`ud2-step-name ${steps[i] ? 'done' : ''}`} style={steps[i] ? { color: '#7c3aed', fontWeight: 700 } : {}}>
+                        <p className={`ud2-step-name ${steps[i] ? 'done' : ''}`} style={steps[i] ? { color: '#5A1F2D', fontWeight: 700 } : {}}>
                           {step}
                         </p>
                       </div>
@@ -197,7 +197,7 @@ export const UserReturns = () => {
                       <strong>Reason:</strong> <span style={{ color: '#0f172a' }}>{ret.reason}</span>
                     </p>
                     <p style={{ fontSize: 12.5, color: '#475569' }}>
-                      <strong>Resolution:</strong> <span style={{ color: '#7c3aed', fontWeight: 600 }}>{ret.resolution}</span>
+                      <strong>Resolution:</strong> <span style={{ color: '#5A1F2D', fontWeight: 600 }}>{ret.resolution}</span>
                     </p>
                   </div>
                 </div>
@@ -234,7 +234,7 @@ export const UserReturns = () => {
                 <p style={{ fontSize: 13, color: '#64748b', marginBottom: 16 }}>You must place an order before requesting a return.</p>
                 <button 
                   onClick={() => { setIsModalOpen(false); navigatePage('shop'); }}
-                  style={{ background: '#7c3aed', color: '#fff', border: 'none', padding: '9px 18px', borderRadius: 8, fontWeight: 600, cursor: 'pointer' }}
+                  style={{ background: '#5A1F2D', color: '#fff', border: 'none', padding: '9px 18px', borderRadius: 8, fontWeight: 600, cursor: 'pointer' }}
                 >
                   Browse Shop
                 </button>
@@ -312,8 +312,8 @@ export const UserReturns = () => {
                           gap: 10, 
                           padding: 10, 
                           borderRadius: 8, 
-                          border: resolution === res.id ? '2px solid #7c3aed' : '1px solid #cbd5e1',
-                          background: resolution === res.id ? '#faf5ff' : '#fff',
+                          border: resolution === res.id ? '2px solid #5A1F2D' : '1px solid #cbd5e1',
+                          background: resolution === res.id ? '#fdf7f8' : '#fff',
                           cursor: 'pointer'
                         }}
                       >
@@ -323,7 +323,7 @@ export const UserReturns = () => {
                           value={res.id}
                           checked={resolution === res.id}
                           onChange={() => setResolution(res.id)}
-                          style={{ marginTop: 3, accentColor: '#7c3aed' }}
+                          style={{ marginTop: 3, accentColor: '#5A1F2D' }}
                         />
                         <div>
                           <p style={{ fontWeight: 600, fontSize: 13, color: '#1e293b' }}>{res.title}</p>
@@ -357,7 +357,7 @@ export const UserReturns = () => {
                   </button>
                   <button
                     type="submit"
-                    style={{ flex: 1, padding: '11px', borderRadius: 10, border: 'none', background: '#7c3aed', color: '#fff', fontWeight: 600, cursor: 'pointer' }}
+                    style={{ flex: 1, padding: '11px', borderRadius: 10, border: 'none', background: '#5A1F2D', color: '#fff', fontWeight: 600, cursor: 'pointer' }}
                   >
                     Submit Return
                   </button>

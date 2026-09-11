@@ -27,9 +27,9 @@ export const AdminAbandonedCarts = () => {
   const lostValue = abandonedCarts.reduce((sum, c) => sum + (c.cartTotal || 0), 0);
 
   const filterOptions = [
-    { value: 'all', label: 'All Sessions', dot: '#7c3aed', badge: totalAbandoned },
+    { value: 'all', label: 'All Sessions', dot: '#5A1F2D', badge: totalAbandoned },
     { value: 'Pending', label: 'Needs Follow-Up', dot: '#ea580c', badge: pendingRecovery },
-    { value: 'Email Sent', label: 'Recovery Sent', dot: '#3b82f6', badge: emailsSent }
+    { value: 'Email Sent', label: 'Recovery Sent', dot: '#5A1F2D', badge: emailsSent }
   ];
 
   const filteredCarts = abandonedCarts.filter((c) => {
@@ -193,9 +193,9 @@ export const AdminAbandonedCarts = () => {
                     <td>
                       <span
                         style={{
-                          background: '#f5f3ff',
-                          color: '#7c3aed',
-                          border: '1px dashed #c4b5fd',
+                          background: '#faf0f2',
+                          color: '#5A1F2D',
+                          border: '1px dashed #c98595',
                           padding: '3px 8px',
                           borderRadius: '6px',
                           fontSize: '11.5px',
@@ -210,7 +210,7 @@ export const AdminAbandonedCarts = () => {
                     {/* Status */}
                     <td>
                       <span className={`status-pill ${isSent ? 'completed' : 'pending'}`}>
-                        <span className="status-dot-indicator" style={{ backgroundColor: isSent ? '#3b82f6' : '#ea580c' }} />
+                        <span className="status-dot-indicator" style={{ backgroundColor: isSent ? '#5A1F2D' : '#ea580c' }} />
                         {c.recoveryStatus}
                       </span>
                     </td>
@@ -228,7 +228,7 @@ export const AdminAbandonedCarts = () => {
                           borderRadius: '8px',
                           fontSize: '12.5px',
                           fontWeight: '700',
-                          background: isSent ? '#f1f5f9' : '#7c3aed',
+                          background: isSent ? '#f1f5f9' : '#5A1F2D',
                           color: isSent ? '#94a3b8' : '#ffffff',
                           cursor: isSent ? 'default' : 'pointer',
                           transition: 'all 0.15s ease'

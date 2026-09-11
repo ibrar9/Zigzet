@@ -306,7 +306,7 @@ export const ProductQuickView = () => {
                 <span>Free Express Delivery over {curr} {settings?.freeShippingThreshold || 150}</span>
               </div>
               <div className="trust-item">
-                <Shield size={14} color="#7c3aed" />
+                <Shield size={14} color="#5A1F2D" />
                 <span>100% Authentic Guarantee</span>
               </div>
             </div>

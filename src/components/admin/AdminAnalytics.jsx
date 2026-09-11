@@ -34,8 +34,8 @@ export const AdminAnalytics = () => {
   const conversionRate = '3.84%';
 
   const categoryBreakdown = [
-    { name: 'Electronics & Audio', share: 44, revenue: '$22,450', color: '#7c3aed' },
-    { name: 'Modern Fashion', share: 28, revenue: '$14,280', color: '#3b82f6' },
+    { name: 'Electronics & Audio', share: 44, revenue: '$22,450', color: '#5A1F2D' },
+    { name: 'Modern Fashion', share: 28, revenue: '$14,280', color: '#5A1F2D' },
     { name: 'Home & Living', share: 18, revenue: '$9,180', color: '#10b981' },
     { name: 'Beauty & Skincare', share: 10, revenue: '$5,100', color: '#f59e0b' }
   ];
@@ -153,7 +153,7 @@ export const AdminAnalytics = () => {
               <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#0f172a' }}>Revenue by Product Department</h3>
               <p style={{ fontSize: '12.5px', color: '#64748b' }}>Sales volume breakdown across departments</p>
             </div>
-            <PieChart size={18} color="#7c3aed" />
+            <PieChart size={18} color="#5A1F2D" />
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -185,7 +185,7 @@ export const AdminAnalytics = () => {
               <h3 style={{ fontSize: '16px', fontWeight: '800', color: '#0f172a' }}>Peak Order Placement Hours</h3>
               <p style={{ fontSize: '12.5px', color: '#64748b' }}>Customer purchase distribution by time of day</p>
             </div>
-            <Clock size={18} color="#2563eb" />
+            <Clock size={18} color="#5A1F2D" />
           </div>
 
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', height: '160px', paddingTop: '20px', gap: '8px' }}>
@@ -197,7 +197,7 @@ export const AdminAnalytics = () => {
                     width: '100%',
                     maxWidth: '36px',
                     height: `${slot.height}%`,
-                    background: slot.height === 100 ? 'linear-gradient(180deg, #7c3aed 0%, #4f46e5 100%)' : '#e0e7ff',
+                    background: slot.height === 100 ? 'linear-gradient(180deg, #5A1F2D 0%, #461722 100%)' : '#f6e6e9',
                     borderRadius: '6px 6px 0 0',
                     transition: 'height 0.3s ease'
                   }}

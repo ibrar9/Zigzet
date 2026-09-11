@@ -23,9 +23,9 @@ export const AdminShipments = () => {
   const [isLabelModalOpen, setIsLabelModalOpen] = useState(false);
 
   const carriers = [
-    { value: 'FedEx', label: 'FedEx Express Worldwide', dot: '#4f46e5' },
+    { value: 'FedEx', label: 'FedEx Express Worldwide', dot: '#461722' },
     { value: 'DHL', label: 'DHL International Express', dot: '#eab308' },
-    { value: 'USPS', label: 'USPS Priority USA', dot: '#2563eb' },
+    { value: 'USPS', label: 'USPS Priority USA', dot: '#5A1F2D' },
     { value: 'UPS', label: 'UPS Ground Air', dot: '#92400e' }
   ];
 
@@ -142,13 +142,13 @@ export const AdminShipments = () => {
                     </span>
                   </td>
                   <td>
-                    <span style={{ fontFamily: 'monospace', fontWeight: '700', color: '#7c3aed', background: '#f5f3ff', padding: '3px 8px', borderRadius: '6px', fontSize: '11.5px' }}>
+                    <span style={{ fontFamily: 'monospace', fontWeight: '700', color: '#5A1F2D', background: '#faf0f2', padding: '3px 8px', borderRadius: '6px', fontSize: '11.5px' }}>
                       {ord.trackingNumber || `ZG-USPS-${ord.id}`}
                     </span>
                   </td>
                   <td>
                     <span className={`status-pill ${ord.status.toLowerCase()}`}>
-                      <span className="status-dot-indicator" style={{ backgroundColor: ord.status === 'Delivered' ? '#10b981' : ord.status === 'Shipped' ? '#f59e0b' : '#3b82f6' }} />
+                      <span className="status-dot-indicator" style={{ backgroundColor: ord.status === 'Delivered' ? '#10b981' : ord.status === 'Shipped' ? '#f59e0b' : '#5A1F2D' }} />
                       {ord.status}
                     </span>
                   </td>

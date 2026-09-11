@@ -6,7 +6,7 @@ const TIERS = [
   { name: 'Bronze Explorer', minSpend: 0, next: 500, color: '#92400e', bg: '#fef3c7', icon: Star, perks: ['1x Points on purchases', 'Member-only deals', 'Birthday discount 5%'] },
   { name: 'Silver Member', minSpend: 500, next: 1500, color: '#475569', bg: '#f1f5f9', icon: Zap, perks: ['1.25x Points', 'Free Express Delivery', 'Early Sale Access'] },
   { name: 'Gold VIP', minSpend: 1500, next: 3000, color: '#d97706', bg: '#fef3c7', icon: Crown, perks: ['1.5x Points', 'Priority Support', 'Monthly exclusive offer'] },
-  { name: 'Platinum Elite', minSpend: 3000, next: null, color: '#7c3aed', bg: '#ede9fe', icon: Crown, perks: ['2x Points', 'Birthday gift', 'Early Product Access', 'Free returns'] },
+  { name: 'Platinum Elite', minSpend: 3000, next: null, color: '#5A1F2D', bg: '#f6e6e9', icon: Crown, perks: ['2x Points', 'Birthday gift', 'Early Product Access', 'Free returns'] },
 ];
 
 const HISTORY = [

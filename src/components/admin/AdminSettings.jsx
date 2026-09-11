@@ -28,10 +28,10 @@ export const AdminSettings = () => {
 
   const currencyOptions = [
     { value: 'AED', label: 'AED (د.إ - UAE Dirham)', dot: '#10b981' },
-    { value: 'USD', label: 'USD ($ - United States Dollar)', dot: '#3b82f6' },
+    { value: 'USD', label: 'USD ($ - United States Dollar)', dot: '#5A1F2D' },
     { value: 'SAR', label: 'SAR (﷼ - Saudi Riyal)', dot: '#059669' },
-    { value: 'EUR', label: 'EUR (€ - European Union Euro)', dot: '#8b5cf6' },
-    { value: 'GBP', label: 'GBP (£ - British Pound)', dot: '#6366f1' },
+    { value: 'EUR', label: 'EUR (€ - European Union Euro)', dot: '#7a2d3e' },
+    { value: 'GBP', label: 'GBP (£ - British Pound)', dot: '#5A1F2D' },
     { value: 'CAD', label: 'CAD ($ - Canadian Dollar)', dot: '#f97316' }
   ];
 
@@ -113,7 +113,7 @@ export const AdminSettings = () => {
             ========================================================================= */}
         <div className="dash-card" style={{ padding: '28px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px', paddingBottom: '14px', borderBottom: '1px solid #f1f5f9' }}>
-            <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: '#ede9fe', color: '#7c3aed', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: '#f6e6e9', color: '#5A1F2D', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Image size={20} />
             </div>
             <div>
@@ -159,10 +159,10 @@ export const AdminSettings = () => {
                   />
                 ) : (
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#94a3b8', fontSize: '13px' }}>
-                    <div style={{ width: '28px', height: '28px', borderRadius: '7px', background: '#f5f3ff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div style={{ width: '28px', height: '28px', borderRadius: '7px', background: '#faf0f2', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                        <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#7c3aed" />
-                        <path d="M2 17L12 22L22 17" stroke="#7c3aed" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#5A1F2D" />
+                        <path d="M2 17L12 22L22 17" stroke="#5A1F2D" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                         <path d="M2 12L12 17L22 12" stroke="#9333ea" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </div>
@@ -246,7 +246,7 @@ export const AdminSettings = () => {
                       style={{ width: '16px', height: '16px', objectFit: 'contain', flexShrink: 0, borderRadius: '2px' }}
                     />
                   ) : (
-                    <div style={{ width: '16px', height: '16px', borderRadius: '3px', background: '#7c3aed', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '9px', fontWeight: '900', flexShrink: 0 }}>
+                    <div style={{ width: '16px', height: '16px', borderRadius: '3px', background: '#5A1F2D', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '9px', fontWeight: '900', flexShrink: 0 }}>
                       Z
                     </div>
                   )}
@@ -365,7 +365,7 @@ export const AdminSettings = () => {
             ========================================================================= */}
         <div className="dash-card" style={{ padding: '28px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px', paddingBottom: '14px', borderBottom: '1px solid #f1f5f9' }}>
-            <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: '#eff6ff', color: '#3b82f6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: '#faf0f2', color: '#5A1F2D', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Bell size={20} />
             </div>
             <div>

@@ -470,7 +470,7 @@ export const StoreAiChat = () => {
               <div key={m.id} className={`ai-message-row ${m.sender === 'user' ? 'user' : 'ai'}`}>
                 {m.sender === 'ai' && (
                   <div className="ai-msg-avatar">
-                    <Bot size={15} color="#7c3aed" />
+                    <Bot size={15} color="#5A1F2D" />
                   </div>
                 )}
 
@@ -483,7 +483,7 @@ export const StoreAiChat = () => {
                       <div className="ai-order-card">
                         <div className="ai-order-head">
                           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                            <Truck size={15} color="#7c3aed" />
+                            <Truck size={15} color="#5A1F2D" />
                             <strong>Order #{m.orderCard.id}</strong>
                           </div>
                           <span className="status-pill completed" style={{ fontSize: '11px', padding: '2px 8px' }}>
@@ -493,7 +493,7 @@ export const StoreAiChat = () => {
                         <div style={{ fontSize: '12px', color: '#475569', marginTop: '6px' }}>
                           <div>Customer: <strong>{m.orderCard.customerName}</strong></div>
                           <div>Total: <strong>{currency} {Number(m.orderCard.total).toFixed(2)}</strong></div>
-                          <div>Tracking: <code style={{ color: '#7c3aed', fontWeight: '700' }}>{m.orderCard.trackingNumber}</code></div>
+                          <div>Tracking: <code style={{ color: '#5A1F2D', fontWeight: '700' }}>{m.orderCard.trackingNumber}</code></div>
                         </div>
                       </div>
                     )}
@@ -586,7 +586,7 @@ export const StoreAiChat = () => {
             {isTyping && (
               <div className="ai-message-row ai">
                 <div className="ai-msg-avatar">
-                  <Bot size={15} color="#7c3aed" />
+                  <Bot size={15} color="#5A1F2D" />
                 </div>
                 <div className="ai-msg-bubble typing">
                   <span className="typing-dot"></span>

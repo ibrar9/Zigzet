@@ -37,8 +37,8 @@ export const AdminOrders = () => {
 
   // 2. Dropdown Options
   const statusFilterOptions = [
-    { value: 'all', label: 'All Statuses', dot: '#7c3aed', badge: totalOrders },
-    { value: 'Processing', label: 'Processing', dot: '#3b82f6', badge: processingCount },
+    { value: 'all', label: 'All Statuses', dot: '#5A1F2D', badge: totalOrders },
+    { value: 'Processing', label: 'Processing', dot: '#5A1F2D', badge: processingCount },
     { value: 'Shipped', label: 'Shipped', dot: '#f59e0b', badge: shippedCount },
     { value: 'Delivered', label: 'Delivered', dot: '#10b981', badge: deliveredCount },
     { value: 'Cancelled', label: 'Cancelled', dot: '#ef4444' }
@@ -46,7 +46,7 @@ export const AdminOrders = () => {
 
   const updateStatusOptions = [
     { value: 'Pending', label: 'Pending', dot: '#64748b' },
-    { value: 'Processing', label: 'Processing', dot: '#3b82f6' },
+    { value: 'Processing', label: 'Processing', dot: '#5A1F2D' },
     { value: 'Shipped', label: 'Shipped', dot: '#f59e0b' },
     { value: 'Delivered', label: 'Delivered', dot: '#10b981' },
     { value: 'Cancelled', label: 'Cancelled', dot: '#ef4444' }
@@ -189,7 +189,7 @@ export const AdminOrders = () => {
                 const isProcessing = ord.status === 'Processing';
                 const isCancelled = ord.status === 'Cancelled';
 
-                const statusColor = isDelivered ? '#10b981' : isShipped ? '#f59e0b' : isProcessing ? '#3b82f6' : isCancelled ? '#ef4444' : '#64748b';
+                const statusColor = isDelivered ? '#10b981' : isShipped ? '#f59e0b' : isProcessing ? '#5A1F2D' : isCancelled ? '#ef4444' : '#64748b';
 
                 return (
                   <tr key={ord.id}>
@@ -240,8 +240,8 @@ export const AdminOrders = () => {
                           style={{
                             fontSize: '12px',
                             fontWeight: '600',
-                            color: '#7c3aed',
-                            background: '#f5f3ff',
+                            color: '#5A1F2D',
+                            background: '#faf0f2',
                             padding: '2px 8px',
                             borderRadius: '6px'
                           }}

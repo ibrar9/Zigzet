@@ -389,7 +389,7 @@ export const AdminDashboard = () => {
           <div className="top-products-grid">
             {sortedTopProducts.map((prod, idx) => {
               const progressVal = Math.min(100, Math.max(30, (prod.salesCount || 10) * 1.5));
-              const barColors = ['#10b981', '#7c3aed', '#f97316', '#06b6d4', '#6366f1'];
+              const barColors = ['#10b981', '#5A1F2D', '#f97316', '#06b6d4', '#5A1F2D'];
               const color = barColors[idx % barColors.length];
 
               return (
@@ -503,7 +503,7 @@ export const AdminDashboard = () => {
                             className="stats-progress-bar"
                             style={{
                               width: `${Math.min(100, (p.stock / 50) * 100)}%`,
-                              backgroundColor: p.stock <= 5 ? '#ef4444' : p.isActive ? '#7c3aed' : '#9ca3af'
+                              backgroundColor: p.stock <= 5 ? '#ef4444' : p.isActive ? '#5A1F2D' : '#9ca3af'
                             }}
                           />
                         </div>

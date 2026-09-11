@@ -61,7 +61,7 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
   const categoryOptions = categories.map((c) => ({
     value: c.id,
     label: c.name,
-    dot: c.id === 'electronics' ? '#3b82f6' : c.id === 'fashion' ? '#ec4899' : c.id === 'beauty' ? '#8b5cf6' : '#10b981'
+    dot: c.id === 'electronics' ? '#5A1F2D' : c.id === 'fashion' ? '#ec4899' : c.id === 'beauty' ? '#7a2d3e' : '#10b981'
   }));
 
   useEffect(() => {
@@ -296,7 +296,7 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
         </button>
 
         <div style={{ marginBottom: '20px', paddingBottom: '14px', borderBottom: '1px solid #e2e8f0' }}>
-          <span style={{ fontSize: '12px', color: '#7c3aed', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          <span style={{ fontSize: '12px', color: '#5A1F2D', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             {editingProduct ? 'Inventory Update' : 'New Catalog Item'}
           </span>
           <h3 style={{ fontSize: '22px', fontWeight: '800', marginTop: '2px', color: '#0f172a' }}>
@@ -333,7 +333,7 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
             <div className="form-group">
               <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span>Brand Name *</span>
-                <span style={{ fontSize: '11px', color: '#7c3aed', fontWeight: '700' }}>Select or type new</span>
+                <span style={{ fontSize: '11px', color: '#5A1F2D', fontWeight: '700' }}>Select or type new</span>
               </label>
               <input
                 type="text"
@@ -407,7 +407,7 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
                       borderRadius: '6px',
                       border: 'none',
                       background: imageInputMode === 'upload' ? '#ffffff' : 'transparent',
-                      color: imageInputMode === 'upload' ? '#7c3aed' : '#64748b',
+                      color: imageInputMode === 'upload' ? '#5A1F2D' : '#64748b',
                       fontSize: '12px',
                       fontWeight: '700',
                       cursor: 'pointer',
@@ -427,7 +427,7 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
                       borderRadius: '6px',
                       border: 'none',
                       background: imageInputMode === 'url' ? '#ffffff' : 'transparent',
-                      color: imageInputMode === 'url' ? '#7c3aed' : '#64748b',
+                      color: imageInputMode === 'url' ? '#5A1F2D' : '#64748b',
                       fontSize: '12px',
                       fontWeight: '700',
                       cursor: 'pointer',
@@ -458,8 +458,8 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
                   onDragLeave={() => setIsDragging(false)}
                   onDrop={handleDrop}
                   style={{
-                    border: isDragging ? '2px dashed #7c3aed' : '1.5px dashed #cbd5e1',
-                    background: isDragging ? '#f5f3ff' : '#f8fafc',
+                    border: isDragging ? '2px dashed #5A1F2D' : '1.5px dashed #cbd5e1',
+                    background: isDragging ? '#faf0f2' : '#f8fafc',
                     borderRadius: '12px',
                     padding: '16px',
                     transition: 'all 0.2s ease',
@@ -478,14 +478,14 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
                           width: '74px',
                           height: '74px',
                           borderRadius: '10px',
-                          border: '2px solid #7c3aed',
+                          border: '2px solid #5A1F2D',
                           overflow: 'hidden',
                           flexShrink: 0,
                           background: '#ffffff',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          boxShadow: '0 4px 10px rgba(124, 58, 237, 0.15)'
+                          boxShadow: '0 4px 10px rgba(90, 31, 45, )'
                         }}
                       >
                         <img
@@ -544,7 +544,7 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
                           alignItems: 'center',
                           justifyContent: 'center',
                           margin: '0 auto 8px auto',
-                          color: '#7c3aed'
+                          color: '#5A1F2D'
                         }}
                       >
                         <Upload size={20} />
@@ -616,9 +616,9 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                 <div>
                   <label style={{ margin: 0, fontSize: '13.5px', fontWeight: '800', color: '#0f172a', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <Layers size={16} color="#7c3aed" />
+                    <Layers size={16} color="#5A1F2D" />
                     <span>Product Image Gallery (Zoom & Angle Views)</span>
-                    <span style={{ fontSize: '11px', fontWeight: '700', padding: '1px 8px', borderRadius: '12px', background: '#f5f3ff', color: '#7c3aed' }}>
+                    <span style={{ fontSize: '11px', fontWeight: '700', padding: '1px 8px', borderRadius: '12px', background: '#faf0f2', color: '#5A1F2D' }}>
                       {formData.images?.length || 0} Photos
                     </span>
                   </label>
@@ -644,9 +644,9 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
                     style={{
                       padding: '6px 12px',
                       borderRadius: '8px',
-                      border: '1px solid #7c3aed',
-                      background: '#f5f3ff',
-                      color: '#7c3aed',
+                      border: '1px solid #5A1F2D',
+                      background: '#faf0f2',
+                      color: '#5A1F2D',
                       fontSize: '12px',
                       fontWeight: '700',
                       cursor: 'pointer',
@@ -693,7 +693,7 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
                   <button
                     type="button"
                     onClick={handleAddGalleryUrl}
-                    style={{ padding: '7px 14px', borderRadius: '6px', background: '#7c3aed', color: '#fff', border: 'none', fontSize: '12px', fontWeight: '700', cursor: 'pointer' }}
+                    style={{ padding: '7px 14px', borderRadius: '6px', background: '#5A1F2D', color: '#fff', border: 'none', fontSize: '12px', fontWeight: '700', cursor: 'pointer' }}
                   >
                     Add
                   </button>
@@ -713,11 +713,11 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
                           position: 'relative',
                           aspectRatio: '1 / 1',
                           borderRadius: '10px',
-                          border: isPrimary ? '2.5px solid #7c3aed' : '1px solid #e2e8f0',
+                          border: isPrimary ? '2.5px solid #5A1F2D' : '1px solid #e2e8f0',
                           background: '#f8fafc',
                           overflow: 'hidden',
                           cursor: 'pointer',
-                          boxShadow: isPrimary ? '0 4px 12px rgba(124, 58, 237, 0.2)' : 'none',
+                          boxShadow: isPrimary ? '0 4px 12px rgba(90, 31, 45, )' : 'none',
                           transition: 'all 0.2s ease'
                         }}
                       >
@@ -734,7 +734,7 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
                               position: 'absolute',
                               top: '4px',
                               left: '4px',
-                              background: '#7c3aed',
+                              background: '#5A1F2D',
                               color: '#ffffff',
                               fontSize: '9.5px',
                               fontWeight: '800',
@@ -823,19 +823,19 @@ export const ProductModal = ({ isOpen, onClose, onSave, editingProduct }) => {
                   justifyContent: 'space-between',
                   padding: '12px 16px',
                   borderRadius: '10px',
-                  backgroundColor: showSeoFields ? '#f5f3ff' : '#f8fafc',
-                  border: '1px solid ' + (showSeoFields ? '#ddd6fe' : '#e2e8f0'),
+                  backgroundColor: showSeoFields ? '#faf0f2' : '#f8fafc',
+                  border: '1px solid ' + (showSeoFields ? '#ebd0d7' : '#e2e8f0'),
                   cursor: 'pointer',
                   transition: 'all 0.2s ease'
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Sparkles size={16} color="#7c3aed" />
+                  <Sparkles size={16} color="#5A1F2D" />
                   <span style={{ fontSize: '13px', fontWeight: '800', color: '#1e293b' }}>
                     Search Engine Optimization (SEO) & Google Rich Snippets
                   </span>
                 </div>
-                <span style={{ fontSize: '12px', fontWeight: '700', color: '#7c3aed' }}>
+                <span style={{ fontSize: '12px', fontWeight: '700', color: '#5A1F2D' }}>
                   {showSeoFields ? 'Hide SEO Options ▴' : 'Edit Google SEO ▾'}
                 </span>
               </div>

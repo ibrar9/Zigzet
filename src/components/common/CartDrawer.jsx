@@ -163,7 +163,7 @@ export const CartDrawer = () => {
               {crossSellProducts.length > 0 && (
                 <div className="cart-cross-sell-section">
                   <div className="cross-sell-title">
-                    <Sparkles size={13} color="#7c3aed" />
+                    <Sparkles size={13} color="#5A1F2D" />
                     <span>Pairs Well With Your Order</span>
                   </div>
                   <div className="cross-sell-list">

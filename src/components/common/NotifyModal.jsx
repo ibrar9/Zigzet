@@ -28,7 +28,7 @@ export const NotifyModal = () => {
 
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-          <div style={{ width: '54px', height: '54px', borderRadius: '9999px', background: '#f5f3ff', color: '#7c3aed', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px auto' }}>
+          <div style={{ width: '54px', height: '54px', borderRadius: '9999px', background: '#faf0f2', color: '#5A1F2D', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 12px auto' }}>
             <Bell size={26} />
           </div>
           <h3 style={{ fontSize: '20px', fontWeight: '800', color: '#0f172a', marginBottom: '4px' }}>
@@ -50,7 +50,7 @@ export const NotifyModal = () => {
             <div style={{ fontSize: '13.5px', fontWeight: '700', color: '#0f172a', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {notifyProduct.name}
             </div>
-            <div style={{ fontSize: '13px', fontWeight: '800', color: '#7c3aed', marginTop: '2px' }}>
+            <div style={{ fontSize: '13px', fontWeight: '800', color: '#5A1F2D', marginTop: '2px' }}>
               ${Number(notifyProduct.price).toFixed(2)}
             </div>
           </div>

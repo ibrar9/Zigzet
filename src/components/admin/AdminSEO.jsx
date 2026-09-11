@@ -169,7 +169,7 @@ export const AdminSEO = () => {
           <div className="admin-card">
             <div className="admin-card-header">
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{ padding: '8px', borderRadius: '8px', backgroundColor: '#eef2ff', color: '#6366f1' }}>
+                <div style={{ padding: '8px', borderRadius: '8px', backgroundColor: '#faf0f2', color: '#5A1F2D' }}>
                   <Globe size={18} />
                 </div>
                 <div>
@@ -266,7 +266,7 @@ export const AdminSEO = () => {
             <div className="admin-card-body" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <div>
                 <label className="admin-label">
-                  Google Search Console Token (<code style={{ fontSize: '11px', color: '#6366f1' }}>google-site-verification</code>)
+                  Google Search Console Token (<code style={{ fontSize: '11px', color: '#5A1F2D' }}>google-site-verification</code>)
                 </label>
                 <div style={{ display: 'flex', gap: '8px' }}>
                   <input
@@ -354,7 +354,7 @@ export const AdminSEO = () => {
                       border: 'none',
                       cursor: 'pointer',
                       whiteSpace: 'nowrap',
-                      backgroundColor: activePageOverride === page.id ? '#7c3aed' : '#f1f5f9',
+                      backgroundColor: activePageOverride === page.id ? '#5A1F2D' : '#f1f5f9',
                       color: activePageOverride === page.id ? '#ffffff' : '#475569',
                       transition: 'all 0.15s ease'
                     }}
@@ -409,7 +409,7 @@ export const AdminSEO = () => {
           <div className="admin-card">
             <div className="admin-card-header" style={{ justifyContent: 'space-between' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Sparkles size={16} color="#7c3aed" />
+                <Sparkles size={16} color="#5A1F2D" />
                 <h3 style={{ fontSize: '14px', fontWeight: '800', color: '#0f172a' }}>Live Search & Social Preview</h3>
               </div>
 
@@ -581,7 +581,7 @@ export const AdminSEO = () => {
           <div className="admin-card">
             <div className="admin-card-header">
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{ padding: '8px', borderRadius: '8px', backgroundColor: '#ede9fe', color: '#7c3aed' }}>
+                <div style={{ padding: '8px', borderRadius: '8px', backgroundColor: '#f6e6e9', color: '#5A1F2D' }}>
                   <Code size={18} />
                 </div>
                 <div>

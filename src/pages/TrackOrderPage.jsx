@@ -43,7 +43,7 @@ export const TrackOrderPage = () => {
       <div className="shop-header-banner">
         <div className="container">
           <div style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
-            <div className="hero-offer-badge" style={{ backgroundColor: '#eff6ff', color: '#2563eb', margin: '0 auto 12px auto' }}>
+            <div className="hero-offer-badge" style={{ backgroundColor: '#faf0f2', color: '#5A1F2D', margin: '0 auto 12px auto' }}>
               <Truck size={15} />
               <span>Live Order & Courier Tracking</span>
             </div>

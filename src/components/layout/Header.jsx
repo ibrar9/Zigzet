@@ -137,8 +137,8 @@ export const Header = () => {
           ) : (
             <div className="brand-logo-icon">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#7c3aed" />
-                <path d="M2 17L12 22L22 17" stroke="#7c3aed" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#5A1F2D" />
+                <path d="M2 17L12 22L22 17" stroke="#5A1F2D" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                 <path d="M2 12L12 17L22 12" stroke="#9333ea" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
@@ -282,7 +282,7 @@ export const Header = () => {
                 onMouseLeave={() => setBrandDropdownOpen(false)}
                 style={{ minWidth: '240px' }}
               >
-                <div style={{ padding: '8px 14px 6px 14px', borderBottom: '1px solid var(--color-border-light, #f1f5f9)', fontSize: '11px', fontWeight: '800', color: '#7c3aed', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                <div style={{ padding: '8px 14px 6px 14px', borderBottom: '1px solid var(--color-border-light, #f1f5f9)', fontSize: '11px', fontWeight: '800', color: '#5A1F2D', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   Official Brands
                 </div>
                 {uniqueBrands.map((b) => (
@@ -295,7 +295,7 @@ export const Header = () => {
                     }}
                   >
                     <span style={{ fontWeight: '600' }}>{b.name}</span>
-                    <span style={{ fontSize: '11px', color: '#7c3aed', background: 'var(--color-surface-subtle, #f5f3ff)', padding: '1px 6px', borderRadius: '8px', fontWeight: '700' }}>
+                    <span style={{ fontSize: '11px', color: '#5A1F2D', background: 'var(--color-surface-subtle, #faf0f2)', padding: '1px 6px', borderRadius: '8px', fontWeight: '700' }}>
                       {b.count}
                     </span>
                   </div>
@@ -473,7 +473,7 @@ export const Header = () => {
                   <div className="user-popover-guest">
                     <div className="guest-header">
                       <div className="guest-icon">
-                        <User size={24} color="#7c3aed" />
+                        <User size={24} color="#5A1F2D" />
                       </div>
                       <div>
                         <strong>Welcome to Zigzet</strong>
@@ -534,8 +534,8 @@ export const Header = () => {
                 ) : (
                   <div className="brand-logo-icon">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                      <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#7c3aed" />
-                      <path d="M2 17L12 22L22 17" stroke="#7c3aed" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#5A1F2D" />
+                      <path d="M2 17L12 22L22 17" stroke="#5A1F2D" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                       <path d="M2 12L12 17L22 12" stroke="#9333ea" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </div>

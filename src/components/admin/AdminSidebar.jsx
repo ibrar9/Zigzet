@@ -111,7 +111,7 @@ export const AdminSidebar = ({ isMobileOpen, setIsMobileOpen, onOpenInbox, onOpe
           label: 'Integrations & Apps', 
           icon: <Sliders size={17} />,
           badge: connectedCount > 0 ? `${connectedCount} live` : null,
-          badgeColor: '#6366f1'
+          badgeColor: '#5A1F2D'
         },
         { id: 'settings', label: 'Store Settings', icon: <Settings size={17} /> }
       ]
@@ -143,11 +143,11 @@ export const AdminSidebar = ({ isMobileOpen, setIsMobileOpen, onOpenInbox, onOpe
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                 <path 
                   d="M12 2L2 7L12 12L22 7L12 2Z" 
-                  fill="#7c3aed"
+                  fill="#5A1F2D"
                 />
                 <path 
                   d="M2 17L12 22L22 17" 
-                  stroke="#7c3aed" 
+                  stroke="#5A1F2D" 
                   strokeWidth="2.5" 
                   strokeLinecap="round" 
                   strokeLinejoin="round"
@@ -201,13 +201,13 @@ export const AdminSidebar = ({ isMobileOpen, setIsMobileOpen, onOpenInbox, onOpe
                           borderRadius: '10px',
                           fontSize: '13px',
                           fontWeight: isActive ? '700' : '500',
-                          color: isActive ? '#7c3aed' : '#475569',
-                          background: isActive ? '#f5f3ff' : 'transparent',
+                          color: isActive ? '#5A1F2D' : '#475569',
+                          background: isActive ? '#faf0f2' : 'transparent',
                           transition: 'all 0.15s ease'
                         }}
                       >
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                          <span style={{ color: isActive ? '#7c3aed' : '#64748b', display: 'flex', alignItems: 'center' }}>
+                          <span style={{ color: isActive ? '#5A1F2D' : '#64748b', display: 'flex', alignItems: 'center' }}>
                             {item.icon}
                           </span>
                           <span>{item.label}</span>
@@ -216,7 +216,7 @@ export const AdminSidebar = ({ isMobileOpen, setIsMobileOpen, onOpenInbox, onOpe
                         {item.badge && (
                           <span
                             style={{
-                              background: item.badgeColor || '#7c3aed',
+                              background: item.badgeColor || '#5A1F2D',
                               color: '#ffffff',
                               fontSize: '10.5px',
                               fontWeight: '800',
@@ -260,7 +260,7 @@ export const AdminSidebar = ({ isMobileOpen, setIsMobileOpen, onOpenInbox, onOpe
               marginBottom: '10px'
             }}
           >
-            <Store size={15} color="#7c3aed" />
+            <Store size={15} color="#5A1F2D" />
             <span>View Customer Store</span>
           </button>
 

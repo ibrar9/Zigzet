@@ -19,10 +19,10 @@ export const ModernUiShowcase = () => {
   const themes = {
     indigo: {
       name: 'Cyber Indigo',
-      primary: '#6366F1',
+      primary: '#5A1F2D',
       accent: '#38BDF8',
       glow: 'rgba(99, 102, 241, 0.35)',
-      gradient: 'linear-gradient(135deg, #6366F1 0%, #38BDF8 100%)',
+      gradient: 'linear-gradient(135deg, #5A1F2D 0%, #38BDF8 100%)',
       surface: 'rgba(15, 23, 42, 0.85)',
       border: 'rgba(99, 102, 241, 0.25)',
       badgeBg: 'rgba(99, 102, 241, 0.12)',

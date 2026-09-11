@@ -99,7 +99,7 @@ export const AdminLoyalty = () => {
                   padding: '14px 18px',
                   borderRadius: '12px',
                   border: '1px solid #e2e8f0',
-                  background: idx === 3 ? '#faf5ff' : '#ffffff',
+                  background: idx === 3 ? '#fdf7f8' : '#ffffff',
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center'
@@ -107,7 +107,7 @@ export const AdminLoyalty = () => {
               >
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <Crown size={14} color={idx === 3 ? '#7c3aed' : idx === 2 ? '#f59e0b' : '#64748b'} />
+                    <Crown size={14} color={idx === 3 ? '#5A1F2D' : idx === 2 ? '#f59e0b' : '#64748b'} />
                     <span style={{ fontWeight: '800', color: '#0f172a', fontSize: '14px' }}>{t.name}</span>
                   </div>
                   <span style={{ fontSize: '12px', color: '#64748b', marginTop: '2px', display: 'block' }}>
@@ -116,7 +116,7 @@ export const AdminLoyalty = () => {
                 </div>
 
                 <div style={{ textAlign: 'right' }}>
-                  <span style={{ fontSize: '13px', fontWeight: '800', color: '#7c3aed' }}>
+                  <span style={{ fontSize: '13px', fontWeight: '800', color: '#5A1F2D' }}>
                     ${t.minSpend}+ Spend
                   </span>
                 </div>

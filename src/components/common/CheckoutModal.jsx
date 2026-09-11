@@ -598,7 +598,7 @@ export const CheckoutModal = () => {
                 </div>
                 <div className="recap-row">
                   <span>Tracking Number:</span>
-                  <span style={{ fontFamily: 'monospace', color: '#7c3aed', fontWeight: '700' }}>{completedOrder.trackingNumber}</span>
+                  <span style={{ fontFamily: 'monospace', color: '#5A1F2D', fontWeight: '700' }}>{completedOrder.trackingNumber}</span>
                 </div>
                 <div className="recap-row">
                   <span>Status:</span>

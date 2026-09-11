@@ -96,14 +96,14 @@ export const UserProfile = () => {
                 height: '100%', 
                 borderRadius: '50%', 
                 overflow: 'hidden', 
-                background: 'linear-gradient(135deg, #7c3aed, #a855f7)',
+                background: 'linear-gradient(135deg, #5A1F2D, #a855f7)',
                 display: 'grid', 
                 placeItems: 'center', 
                 fontSize: 32, 
                 fontWeight: 700, 
                 color: '#fff',
                 border: '3px solid #fff',
-                boxShadow: '0 8px 20px -4px rgba(124, 58, 237, 0.35)'
+                boxShadow: '0 8px 20px -4px rgba(90, 31, 45, )'
               }}
             >
               {currentUser?.avatar ? (
@@ -123,7 +123,7 @@ export const UserProfile = () => {
                 width: 32,
                 height: 32,
                 borderRadius: '50%',
-                background: '#7c3aed',
+                background: '#5A1F2D',
                 color: '#fff',
                 border: '2px solid #fff',
                 display: 'grid',
@@ -142,7 +142,7 @@ export const UserProfile = () => {
           <p className="ud2-profile-user-email" style={{ fontSize: 13, color: '#64748b', marginBottom: 8 }}>
             {currentUser?.email || ''}
           </p>
-          <span className="ud2-profile-since" style={{ background: '#ede9fe', color: '#7c3aed', padding: '3px 10px', borderRadius: 12, fontSize: 11.5, fontWeight: 600 }}>
+          <span className="ud2-profile-since" style={{ background: '#f6e6e9', color: '#5A1F2D', padding: '3px 10px', borderRadius: 12, fontSize: 11.5, fontWeight: 600 }}>
             Member since {currentUser?.joinedAt || 'Aug 2026'}
           </span>
 
@@ -172,7 +172,7 @@ export const UserProfile = () => {
               <button 
                 className="ud2-profile-edit2" 
                 onClick={() => setEditing(true)}
-                style={{ background: '#7c3aed', color: '#fff', border: 'none', padding: '8px 14px', borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
+                style={{ background: '#5A1F2D', color: '#fff', border: 'none', padding: '8px 14px', borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
               >
                 <Edit3 size={14} /> Edit Profile
               </button>
@@ -242,9 +242,9 @@ export const UserProfile = () => {
                 width: '100%',
                 padding: '14px',
                 borderRadius: 12,
-                border: '2px dashed #7c3aed',
-                background: '#faf5ff',
-                color: '#7c3aed',
+                border: '2px dashed #5A1F2D',
+                background: '#fdf7f8',
+                color: '#5A1F2D',
                 fontWeight: 700,
                 fontSize: 14,
                 cursor: 'pointer',
@@ -261,7 +261,7 @@ export const UserProfile = () => {
             {/* Or choose preset avatars */}
             <div>
               <p style={{ fontSize: 13, fontWeight: 600, color: '#475569', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 6 }}>
-                <Sparkles size={14} color="#7c3aed" /> Or choose a stylish avatar:
+                <Sparkles size={14} color="#5A1F2D" /> Or choose a stylish avatar:
               </p>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginBottom: 20 }}>
                 {PRESET_AVATARS.map((url, idx) => (
@@ -273,10 +273,10 @@ export const UserProfile = () => {
                       aspectRatio: '1',
                       borderRadius: '50%',
                       overflow: 'hidden',
-                      border: currentUser?.avatar === url ? '3px solid #7c3aed' : '2px solid #e2e8f0',
+                      border: currentUser?.avatar === url ? '3px solid #5A1F2D' : '2px solid #e2e8f0',
                       padding: 0,
                       cursor: 'pointer',
-                      boxShadow: currentUser?.avatar === url ? '0 0 0 3px rgba(124, 58, 237, 0.25)' : 'none'
+                      boxShadow: currentUser?.avatar === url ? '0 0 0 3px rgba(90, 31, 45, )' : 'none'
                     }}
                   >
                     <img src={url} alt={`Avatar ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />

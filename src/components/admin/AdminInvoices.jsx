@@ -76,15 +76,15 @@ export const AdminInvoices = () => {
                     padding: '12px 14px',
                     borderRadius: '10px',
                     border: '1px solid',
-                    borderColor: isSelected ? '#7c3aed' : '#e2e8f0',
-                    background: isSelected ? '#f5f3ff' : '#ffffff',
+                    borderColor: isSelected ? '#5A1F2D' : '#e2e8f0',
+                    background: isSelected ? '#faf0f2' : '#ffffff',
                     cursor: 'pointer',
                     transition: 'all 0.15s ease',
                     textAlign: 'left'
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
-                    <strong style={{ fontSize: '13.5px', color: isSelected ? '#7c3aed' : '#0f172a' }}>
+                    <strong style={{ fontSize: '13.5px', color: isSelected ? '#5A1F2D' : '#0f172a' }}>
                       #{ord.id}
                     </strong>
                     <span style={{ fontSize: '13px', fontWeight: '800', color: '#0f172a' }}>
@@ -118,7 +118,7 @@ export const AdminInvoices = () => {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', borderBottom: '2px solid #0f172a', paddingBottom: '24px', marginBottom: '24px' }}>
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                  <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#7c3aed', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#5A1F2D', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Building2 size={16} color="#fff" />
                   </div>
                   <h2 style={{ fontSize: '24px', fontWeight: '900', color: '#0f172a', letterSpacing: '-0.02em', margin: 0 }}>
@@ -133,7 +133,7 @@ export const AdminInvoices = () => {
               </div>
 
               <div style={{ textAlign: 'right' }}>
-                <span style={{ fontSize: '20px', fontWeight: '900', color: '#7c3aed', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                <span style={{ fontSize: '20px', fontWeight: '900', color: '#5A1F2D', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   TAX INVOICE
                 </span>
                 <div style={{ marginTop: '6px', fontSize: '13px', color: '#334155' }}>
@@ -237,7 +237,7 @@ export const AdminInvoices = () => {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px', fontWeight: '900', color: '#0f172a', borderTop: '1.5px solid #0f172a', paddingTop: '8px' }}>
                   <span>Total Paid</span>
-                  <span style={{ color: '#7c3aed' }}>AED {Number(selectedOrder.total).toFixed(2)}</span>
+                  <span style={{ color: '#5A1F2D' }}>AED {Number(selectedOrder.total).toFixed(2)}</span>
                 </div>
               </div>
             </div>

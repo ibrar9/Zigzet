@@ -2,11 +2,12 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { ArrowRight, FilterX, Sparkles, ChevronDown, Check } from 'lucide-react';
 import { ProductCard } from '../common/ProductCard';
 import { ProductGridSkeleton } from '../common/Skeleton';
+import { PromoBanners } from './PromoBanners';
 import { useStore } from '../../context/StoreContext';
 import { categories } from '../../data/categories';
 
-const INITIAL_BATCH_SIZE = 8;
-const LOAD_MORE_STEP = 8;
+const INITIAL_BATCH_SIZE = 32;
+const LOAD_MORE_STEP = 16;
 
 export const FeaturedProducts = () => {
   const { products, activeCategory, setActiveCategory, navigatePage } = useStore();
@@ -72,7 +73,7 @@ export const FeaturedProducts = () => {
         <div className="section-header" style={{ marginBottom: '16px' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-              <span className="product-brand-tag" style={{ margin: 0, fontSize: '11.5px', color: '#7c3aed' }}>
+              <span className="product-brand-tag" style={{ margin: 0, fontSize: '11.5px', color: '#5A1F2D' }}>
                 ⭐ Curated K-Beauty Collection
               </span>
             </div>
@@ -136,21 +137,42 @@ export const FeaturedProducts = () => {
           })}
         </div>
 
-        {/* Products Grid */}
+        {/* Products Grid with Banner after every 16 products */}
         {isSwitching ? (
           <ProductGridSkeleton count={8} />
         ) : (
-          <div className="products-grid">
-            {displayedProducts.map((product, idx) => (
-              <div 
-                key={product.id} 
-                className="product-card-animated"
-                style={{ animationDelay: `${(idx % 8) * 0.05}s` }}
-              >
-                <ProductCard product={product} />
-              </div>
-            ))}
-          </div>
+          <>
+            {Array.from({ length: Math.ceil(displayedProducts.length / 16) || 1 }).map((_, chunkIdx) => {
+              const start = chunkIdx * 16;
+              const chunkProducts = displayedProducts.slice(start, start + 16);
+              if (chunkProducts.length === 0) return null;
+
+              const isFull16Chunk = chunkProducts.length === 16;
+              const isLastChunkOfFiltered = activeCategory !== 'all' && (start + chunkProducts.length === filteredProducts.length);
+              const showBannerAfterThisChunk = isFull16Chunk || isLastChunkOfFiltered;
+
+              return (
+                <React.Fragment key={`product-chunk-${chunkIdx}`}>
+                  <div className="products-grid" style={chunkIdx > 0 ? { marginTop: '18px' } : undefined}>
+                    {chunkProducts.map((product, pIdx) => (
+                      <div 
+                        key={product.id} 
+                        className="product-card-animated"
+                        style={{ animationDelay: `${(pIdx % 8) * 0.05}s` }}
+                      >
+                        <ProductCard product={product} />
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Banner after every 16 products */}
+                  {showBannerAfterThisChunk && (
+                    <PromoBanners embedded={true} initialIndex={chunkIdx} />
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </>
         )}
 
         {/* Loading Shimmer Skeleton when scrolling down */}

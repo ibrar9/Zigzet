@@ -47,13 +47,13 @@ export const AdminCampaigns = () => {
       <div 
         className="dash-card" 
         style={{ 
-          background: form.isActive ? 'linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%)' : '#f1f5f9', 
+          background: form.isActive ? 'linear-gradient(135deg, #5A1F2D 0%, #461722 100%)' : '#f1f5f9', 
           color: form.isActive ? '#ffffff' : '#64748b',
           padding: '24px 28px',
           marginBottom: '24px',
           borderRadius: '16px',
           border: 'none',
-          boxShadow: form.isActive ? '0 12px 28px -6px rgba(124, 58, 237, 0.35)' : 'none'
+          boxShadow: form.isActive ? '0 12px 28px -6px rgba(90, 31, 45, )' : 'none'
         }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
@@ -65,7 +65,7 @@ export const AdminCampaigns = () => {
             <h3 style={{ fontSize: '20px', fontWeight: '800', marginTop: '8px', color: form.isActive ? '#ffffff' : '#1e293b' }}>
               {form.headline}
             </h3>
-            <p style={{ fontSize: '13px', opacity: 0.9, marginTop: '2px', color: form.isActive ? '#e0e7ff' : '#64748b' }}>
+            <p style={{ fontSize: '13px', opacity: 0.9, marginTop: '2px', color: form.isActive ? '#f6e6e9' : '#64748b' }}>
               Customers receive an automatic {form.discountPercent}% checkout voucher.
             </p>
           </div>

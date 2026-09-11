@@ -24,7 +24,7 @@ export const UserSettings = () => {
     <button
       className={`ud2-toggle2 ${on ? 'on' : ''}`}
       onClick={onClick}
-      style={{ background: on ? '#7c3aed' : '#e5e7eb' }}
+      style={{ background: on ? '#5A1F2D' : '#e5e7eb' }}
     >
       <span className="ud2-toggle2-knob" />
     </button>

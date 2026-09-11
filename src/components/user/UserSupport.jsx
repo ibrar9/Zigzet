@@ -87,7 +87,7 @@ export const UserSupport = () => {
         <button 
           className="ud2-btn-track" 
           onClick={openNewTicketModal}
-          style={{ background: '#7c3aed', color: '#fff', display: 'flex', alignItems: 'center', gap: 6, padding: '10px 18px', borderRadius: 10, fontSize: 13.5, fontWeight: 600 }}
+          style={{ background: '#5A1F2D', color: '#fff', display: 'flex', alignItems: 'center', gap: 6, padding: '10px 18px', borderRadius: 10, fontSize: 13.5, fontWeight: 600 }}
         >
           <Plus size={16} /> Open Support Ticket
         </button>
@@ -106,7 +106,7 @@ export const UserSupport = () => {
         </div>
 
         <div className="ud2-section-card" style={{ padding: 16, borderRadius: 12, display: 'flex', alignItems: 'center', gap: 12, border: '1px solid #e2e8f0' }}>
-          <div style={{ width: 40, height: 40, borderRadius: 10, background: '#ede9fe', color: '#7c3aed', display: 'grid', placeItems: 'center' }}>
+          <div style={{ width: 40, height: 40, borderRadius: 10, background: '#f6e6e9', color: '#5A1F2D', display: 'grid', placeItems: 'center' }}>
             <Mail size={20} />
           </div>
           <div>
@@ -165,10 +165,10 @@ export const UserSupport = () => {
                   >
                     <div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                        <span style={{ fontWeight: 800, fontSize: 14, color: '#7c3aed' }}>{t.id}</span>
+                        <span style={{ fontWeight: 800, fontSize: 14, color: '#5A1F2D' }}>{t.id}</span>
                         <span style={{ 
-                          background: isResolved ? '#dcfce7' : '#ede9fe', 
-                          color: isResolved ? '#16a34a' : '#7c3aed', 
+                          background: isResolved ? '#dcfce7' : '#f6e6e9', 
+                          color: isResolved ? '#16a34a' : '#5A1F2D', 
                           fontSize: 11.5, 
                           fontWeight: 700, 
                           padding: '2px 8px', 
@@ -214,13 +214,13 @@ export const UserSupport = () => {
                             <div style={{ 
                               padding: '12px 16px', 
                               borderRadius: 12, 
-                              background: msg.isStaff ? '#faf5ff' : '#f1f5f9',
+                              background: msg.isStaff ? '#fdf7f8' : '#f1f5f9',
                               border: msg.isStaff ? '1px solid #e9d5ff' : '1px solid #e2e8f0',
                               borderTopLeftRadius: msg.isStaff ? 2 : 12,
                               borderTopRightRadius: !msg.isStaff ? 2 : 12
                             }}>
                               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, marginBottom: 4 }}>
-                                <span style={{ fontWeight: 700, fontSize: 12.5, color: msg.isStaff ? '#7c3aed' : '#0f172a' }}>
+                                <span style={{ fontWeight: 700, fontSize: 12.5, color: msg.isStaff ? '#5A1F2D' : '#0f172a' }}>
                                   {msg.sender}
                                 </span>
                                 <span style={{ fontSize: 11, color: '#94a3b8' }}>{msg.time}</span>
@@ -246,7 +246,7 @@ export const UserSupport = () => {
                             />
                             <button
                               onClick={() => handleSendReply(t.id)}
-                              style={{ background: '#7c3aed', color: '#fff', border: 'none', borderRadius: 10, padding: '0 18px', fontWeight: 600, fontSize: 13.5, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
+                              style={{ background: '#5A1F2D', color: '#fff', border: 'none', borderRadius: 10, padding: '0 18px', fontWeight: 600, fontSize: 13.5, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
                             >
                               <Send size={14} /> Send
                             </button>
@@ -277,7 +277,7 @@ export const UserSupport = () => {
       {/* FAQs Section */}
       <div className="ud2-section-card" style={{ padding: 22, borderRadius: 16, border: '1px solid #e2e8f0' }}>
         <h3 style={{ fontSize: 16, fontWeight: 700, color: '#0f172a', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 8 }}>
-          <HelpCircle size={18} style={{ color: '#7c3aed' }} /> Frequently Asked Questions
+          <HelpCircle size={18} style={{ color: '#5A1F2D' }} /> Frequently Asked Questions
         </h3>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -395,7 +395,7 @@ export const UserSupport = () => {
                 </button>
                 <button
                   type="submit"
-                  style={{ flex: 1, padding: '11px', borderRadius: 10, border: 'none', background: '#7c3aed', color: '#fff', fontWeight: 600, cursor: 'pointer' }}
+                  style={{ flex: 1, padding: '11px', borderRadius: 10, border: 'none', background: '#5A1F2D', color: '#fff', fontWeight: 600, cursor: 'pointer' }}
                 >
                   Submit Ticket
                 </button>

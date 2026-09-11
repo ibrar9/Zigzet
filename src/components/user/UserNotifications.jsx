@@ -36,7 +36,7 @@ export const UserNotifications = ({ setActiveTab }) => {
   const getIcon = (type) => {
     switch (type) {
       case 'order':
-        return { icon: Package, color: '#7c3aed', bg: '#ede9fe' };
+        return { icon: Package, color: '#5A1F2D', bg: '#f6e6e9' };
       case 'promo':
         return { icon: Tag, color: '#ea580c', bg: '#ffedd5' };
       case 'support':
@@ -44,7 +44,7 @@ export const UserNotifications = ({ setActiveTab }) => {
       case 'loyalty':
         return { icon: Award, color: '#16a34a', bg: '#dcfce7' };
       default:
-        return { icon: Bell, color: '#7c3aed', bg: '#ede9fe' };
+        return { icon: Bell, color: '#5A1F2D', bg: '#f6e6e9' };
     }
   };
 
@@ -61,8 +61,8 @@ export const UserNotifications = ({ setActiveTab }) => {
             <button
               onClick={markAllUserNotificationsRead}
               style={{
-                background: '#ede9fe',
-                color: '#7c3aed',
+                background: '#f6e6e9',
+                color: '#5A1F2D',
                 border: 'none',
                 padding: '8px 14px',
                 borderRadius: 8,
@@ -115,8 +115,8 @@ export const UserNotifications = ({ setActiveTab }) => {
             style={{
               padding: '8px 14px',
               borderRadius: 20,
-              border: filterType === tab.id ? '2px solid #7c3aed' : '1px solid #e2e8f0',
-              background: filterType === tab.id ? '#7c3aed' : '#fff',
+              border: filterType === tab.id ? '2px solid #5A1F2D' : '1px solid #e2e8f0',
+              background: filterType === tab.id ? '#5A1F2D' : '#fff',
               color: filterType === tab.id ? '#fff' : '#475569',
               fontWeight: 600,
               fontSize: 13,
@@ -160,8 +160,8 @@ export const UserNotifications = ({ setActiveTab }) => {
                 style={{
                   padding: 16,
                   borderRadius: 14,
-                  border: notif.unread ? '1.5px solid #c4b5fd' : '1px solid #e2e8f0',
-                  background: notif.unread ? '#faf5ff' : '#fff',
+                  border: notif.unread ? '1.5px solid #c98595' : '1px solid #e2e8f0',
+                  background: notif.unread ? '#fdf7f8' : '#fff',
                   display: 'flex',
                   alignItems: 'flex-start',
                   justifyContent: 'space-between',
@@ -177,7 +177,7 @@ export const UserNotifications = ({ setActiveTab }) => {
                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
                       <p style={{ fontWeight: 700, fontSize: 14.5, color: '#0f172a' }}>{notif.title}</p>
                       {notif.unread && (
-                        <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#7c3aed', display: 'inline-block' }} />
+                        <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#5A1F2D', display: 'inline-block' }} />
                       )}
                     </div>
                     <p style={{ fontSize: 13.5, color: '#475569', lineHeight: 1.4, marginBottom: 8 }}>{notif.message}</p>
@@ -191,7 +191,7 @@ export const UserNotifications = ({ setActiveTab }) => {
                           style={{
                             background: 'transparent',
                             border: 'none',
-                            color: '#7c3aed',
+                            color: '#5A1F2D',
                             fontSize: 12.5,
                             fontWeight: 700,
                             cursor: 'pointer',

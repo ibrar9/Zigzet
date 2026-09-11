@@ -99,7 +99,7 @@ export const AdminIntegrations = () => {
   const getAppIcon = (id) => {
     switch (id) {
       case 'stripe':
-        return <CreditCard size={22} color="#6366f1" />;
+        return <CreditCard size={22} color="#5A1F2D" />;
       case 'paypal':
         return <Wallet size={22} color="#0284c7" />;
       case 'shipping':
@@ -109,7 +109,7 @@ export const AdminIntegrations = () => {
       case 'analytics':
         return <BarChart3 size={22} color="#10b981" />;
       case 'pixels':
-        return <Target size={22} color="#8b5cf6" />;
+        return <Target size={22} color="#7a2d3e" />;
       case 'whatsapp':
         return <Phone size={22} color="#22c55e" />;
       case 'webhooks':
@@ -261,8 +261,8 @@ export const AdminIntegrations = () => {
                 padding: '7px 14px',
                 borderRadius: '20px',
                 border: '1px solid',
-                borderColor: isActive ? '#7c3aed' : '#e2e8f0',
-                background: isActive ? '#7c3aed' : '#ffffff',
+                borderColor: isActive ? '#5A1F2D' : '#e2e8f0',
+                background: isActive ? '#5A1F2D' : '#ffffff',
                 color: isActive ? '#ffffff' : '#475569',
                 fontSize: '12.5px',
                 fontWeight: isActive ? '700' : '500',
@@ -388,7 +388,7 @@ export const AdminIntegrations = () => {
                 {/* Extra metadata tags */}
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' }}>
                   {integ.mode && (
-                    <span style={{ fontSize: '11px', fontWeight: '700', padding: '2px 8px', borderRadius: '6px', background: integ.mode === 'live' ? '#eff6ff' : '#fffbeb', color: integ.mode === 'live' ? '#1d4ed8' : '#b45309', textTransform: 'uppercase' }}>
+                    <span style={{ fontSize: '11px', fontWeight: '700', padding: '2px 8px', borderRadius: '6px', background: integ.mode === 'live' ? '#faf0f2' : '#fffbeb', color: integ.mode === 'live' ? '#461722' : '#b45309', textTransform: 'uppercase' }}>
                       {integ.mode} Mode
                     </span>
                   )}
@@ -501,8 +501,8 @@ export const AdminIntegrations = () => {
                             padding: '8px',
                             borderRadius: '8px',
                             border: '1px solid',
-                            borderColor: formData.mode === mode ? '#6366f1' : '#e2e8f0',
-                            background: formData.mode === mode ? '#eef2ff' : '#ffffff',
+                            borderColor: formData.mode === mode ? '#5A1F2D' : '#e2e8f0',
+                            background: formData.mode === mode ? '#faf0f2' : '#ffffff',
                             color: formData.mode === mode ? '#4338ca' : '#475569',
                             fontWeight: '700',
                             fontSize: '13px',
@@ -524,7 +524,7 @@ export const AdminIntegrations = () => {
                       <button
                         type="button"
                         onClick={() => setShowSecrets(!showSecrets)}
-                        style={{ background: 'none', border: 'none', color: '#6366f1', fontSize: '11.5px', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
+                        style={{ background: 'none', border: 'none', color: '#5A1F2D', fontSize: '11.5px', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
                       >
                         {showSecrets ? <EyeOff size={12} /> : <Eye size={12} />} {showSecrets ? 'Hide' : 'Reveal'}
                       </button>
@@ -932,7 +932,7 @@ export const AdminIntegrations = () => {
                 </button>
                 <button
                   type="submit"
-                  style={{ padding: '9px 22px', borderRadius: '8px', border: 'none', background: '#7c3aed', color: '#ffffff', fontSize: '13px', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
+                  style={{ padding: '9px 22px', borderRadius: '8px', border: 'none', background: '#5A1F2D', color: '#ffffff', fontSize: '13px', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
                 >
                   <Check size={15} /> Save Configuration
                 </button>

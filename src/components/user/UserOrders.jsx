@@ -8,7 +8,7 @@ import { useStore } from '../../context/StoreContext';
 
 const STATUS_META = {
   'Delivered': { color: '#16a34a', bg: '#dcfce7', label: 'Delivered' },
-  'Shipped': { color: '#7c3aed', bg: '#ede9fe', label: 'Shipped' },
+  'Shipped': { color: '#5A1F2D', bg: '#f6e6e9', label: 'Shipped' },
   'Processing': { color: '#d97706', bg: '#fef3c7', label: 'In Transit' },
   'Cancelled': { color: '#dc2626', bg: '#fee2e2', label: 'Cancelled' },
 };
@@ -165,7 +165,7 @@ export const UserOrders = ({ myOrders, setActiveTab }) => {
                             <p className="ud2-item-price">{formatPrice((Number(it.price) || 0) * it.quantity, { currency: order.currency })}</p>
                             <button
                               onClick={() => reorderItems([it])}
-                              style={{ background: 'none', border: 'none', color: '#7c3aed', fontSize: 11.5, fontWeight: 700, cursor: 'pointer', padding: 0, marginTop: 4 }}
+                              style={{ background: 'none', border: 'none', color: '#5A1F2D', fontSize: 11.5, fontWeight: 700, cursor: 'pointer', padding: 0, marginTop: 4 }}
                             >
                               + Buy Again
                             </button>
@@ -215,7 +215,7 @@ export const UserOrders = ({ myOrders, setActiveTab }) => {
 
                       <button
                         onClick={() => setInvoiceOrder(order)}
-                        style={{ background: '#ede9fe', color: '#7c3aed', border: 'none', padding: '6px 14px', borderRadius: 8, fontSize: 12.5, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
+                        style={{ background: '#f6e6e9', color: '#5A1F2D', border: 'none', padding: '6px 14px', borderRadius: 8, fontSize: 12.5, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
                       >
                         <Printer size={13} /> Printable Invoice
                       </button>
@@ -235,7 +235,7 @@ export const UserOrders = ({ myOrders, setActiveTab }) => {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, borderBottom: '2px solid #f1f5f9', paddingBottom: 16 }}>
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                  <div style={{ width: 28, height: 28, borderRadius: 6, background: '#7c3aed', color: '#fff', display: 'grid', placeItems: 'center' }}>
+                  <div style={{ width: 28, height: 28, borderRadius: 6, background: '#5A1F2D', color: '#fff', display: 'grid', placeItems: 'center' }}>
                     <ShoppingBag size={16} />
                   </div>
                   <h2 style={{ fontSize: 20, fontWeight: 800, color: '#0f172a' }}>Zigzet Store</h2>
@@ -246,7 +246,7 @@ export const UserOrders = ({ myOrders, setActiveTab }) => {
               <div style={{ display: 'flex', gap: 8 }}>
                 <button
                   onClick={handlePrint}
-                  style={{ background: '#7c3aed', color: '#fff', border: 'none', borderRadius: 8, padding: '7px 12px', fontSize: 12.5, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
+                  style={{ background: '#5A1F2D', color: '#fff', border: 'none', borderRadius: 8, padding: '7px 12px', fontSize: 12.5, fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6 }}
                 >
                   <Printer size={14} /> Print
                 </button>
@@ -320,7 +320,7 @@ export const UserOrders = ({ myOrders, setActiveTab }) => {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 800, fontSize: 15, color: '#0f172a', borderTop: '2px solid #e2e8f0', paddingTop: 8, marginTop: 4 }}>
                   <span>Invoice Total:</span>
-                  <span style={{ color: '#7c3aed' }}>{formatPrice(invoiceOrder.total || 0, { currency: invoiceOrder.currency })}</span>
+                  <span style={{ color: '#5A1F2D' }}>{formatPrice(invoiceOrder.total || 0, { currency: invoiceOrder.currency })}</span>
                 </div>
               </div>
             </div>

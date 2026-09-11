@@ -42,7 +42,7 @@ export const AdminCoupons = () => {
   const totalRedemptions = coupons.reduce((sum, c) => sum + (c.usageCount || 0), 0);
 
   const filterOptions = [
-    { value: 'all', label: 'All Coupons', dot: '#7c3aed', badge: totalCoupons },
+    { value: 'all', label: 'All Coupons', dot: '#5A1F2D', badge: totalCoupons },
     { value: 'active', label: 'Active Codes', dot: '#10b981', badge: activeCouponsCount },
     { value: 'inactive', label: 'Disabled / Expired', dot: '#ef4444' }
   ];
@@ -207,9 +207,9 @@ export const AdminCoupons = () => {
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                       <div
                         style={{
-                          background: '#f5f3ff',
-                          color: '#7c3aed',
-                          border: '1.5px dashed #c4b5fd',
+                          background: '#faf0f2',
+                          color: '#5A1F2D',
+                          border: '1.5px dashed #c98595',
                           padding: '6px 12px',
                           borderRadius: '8px',
                           fontWeight: '800',
@@ -223,7 +223,7 @@ export const AdminCoupons = () => {
                         <span>{c.code}</span>
                         <button
                           onClick={() => handleCopy(c.code, c.id)}
-                          style={{ color: '#7c3aed', padding: '2px' }}
+                          style={{ color: '#5A1F2D', padding: '2px' }}
                           title="Copy Code"
                         >
                           {copiedId === c.id ? <Check size={13} color="#10b981" /> : <Copy size={13} />}
@@ -262,7 +262,7 @@ export const AdminCoupons = () => {
                         <div
                           style={{
                             height: '100%',
-                            background: '#7c3aed',
+                            background: '#5A1F2D',
                             width: `${Math.min(100, ((c.usageCount || 0) / (c.usageLimit || 100)) * 100)}%`
                           }}
                         />
@@ -329,7 +329,7 @@ export const AdminCoupons = () => {
             </button>
 
             <div style={{ marginBottom: '20px', paddingBottom: '14px', borderBottom: '1px solid #e2e8f0' }}>
-              <span style={{ fontSize: '12px', color: '#7c3aed', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <span style={{ fontSize: '12px', color: '#5A1F2D', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 Promotional Campaign
               </span>
               <h3 style={{ fontSize: '20px', fontWeight: '800', marginTop: '2px', color: '#0f172a' }}>
@@ -357,7 +357,7 @@ export const AdminCoupons = () => {
                   <label>Discount Type</label>
                   <CustomDropdown
                     options={[
-                      { value: 'percentage', label: 'Percentage (%) Off', dot: '#7c3aed' },
+                      { value: 'percentage', label: 'Percentage (%) Off', dot: '#5A1F2D' },
                       { value: 'fixed', label: 'Fixed Amount ($) Off', dot: '#10b981' }
                     ]}
                     value={form.type}

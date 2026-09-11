@@ -8,7 +8,7 @@ import { useStore } from '../../context/StoreContext';
 
 const STATUS_META = {
   'Delivered': { color: '#16a34a', bg: '#dcfce7', label: 'Delivered' },
-  'Shipped': { color: '#7c3aed', bg: '#ede9fe', label: 'Shipped' },
+  'Shipped': { color: '#5A1F2D', bg: '#f6e6e9', label: 'Shipped' },
   'Processing': { color: '#d97706', bg: '#fef3c7', label: 'In Transit' },
   'Cancelled': { color: '#dc2626', bg: '#fee2e2', label: 'Cancelled' },
 };
@@ -19,8 +19,8 @@ const STAT_CARDS = (orders, inProgress, wishlistLen, couponsLen) => [
     value: orders,
     sub: 'View all orders →',
     icon: ShoppingBag,
-    iconColor: '#7c3aed',
-    iconBg: '#ede9fe',
+    iconColor: '#5A1F2D',
+    iconBg: '#f6e6e9',
     tabId: 'orders'
   },
   {
@@ -201,7 +201,7 @@ export const UserOverview = ({ setActiveTab, myOrders, inProgress }) => {
                 <button onClick={() => navigatePage('shop')}>Shop Now</button>
               </div>
               <div className="ud2-promo-gift" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Gift size={24} color="#7c3aed" />
+                <Gift size={24} color="#5A1F2D" />
               </div>
             </div>
 

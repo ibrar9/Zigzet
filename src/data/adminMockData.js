@@ -77,7 +77,7 @@ export const topProductsData = [
     price: 349.99,
     salesCount: '3.6k sales',
     progress: 88,
-    barColor: '#7c3aed',
+    barColor: '#5A1F2D',
     image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500&auto=format&fit=crop&q=80'
   },
   {
@@ -104,7 +104,7 @@ export const topProductsData = [
     price: 249.99,
     salesCount: '900 sales',
     progress: 60,
-    barColor: '#6366f1',
+    barColor: '#5A1F2D',
     image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=500&auto=format&fit=crop&q=80'
   }
 ];
@@ -120,7 +120,7 @@ export const initialProductListTable = [
     startDate: 'Apr 24, 2023',
     statistics: 'Perfect',
     salesMetric: '1.2k sales',
-    progressColor: '#7c3aed',
+    progressColor: '#5A1F2D',
     isActive: true,
     image: 'https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=200&auto=format&fit=crop&q=80'
   },
@@ -148,7 +148,7 @@ export const initialProductListTable = [
     startDate: 'Apr 24, 2023',
     statistics: 'Perfect',
     salesMetric: '5.4k sales',
-    progressColor: '#7c3aed',
+    progressColor: '#5A1F2D',
     isActive: true,
     image: 'https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=200&auto=format&fit=crop&q=80'
   },
@@ -176,7 +176,7 @@ export const initialProductListTable = [
     startDate: 'May 10, 2023',
     statistics: 'Good',
     salesMetric: '890 sales',
-    progressColor: '#3b82f6',
+    progressColor: '#5A1F2D',
     isActive: true,
     image: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=200&auto=format&fit=crop&q=80'
   }

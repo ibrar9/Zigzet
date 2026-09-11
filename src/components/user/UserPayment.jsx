@@ -77,7 +77,7 @@ export const UserPayment = () => {
         <button 
           className="ud2-btn-track" 
           onClick={() => setIsCardModalOpen(true)}
-          style={{ background: '#7c3aed', color: '#fff', display: 'flex', alignItems: 'center', gap: 6, padding: '10px 18px', borderRadius: 10, fontSize: 13.5, fontWeight: 600 }}
+          style={{ background: '#5A1F2D', color: '#fff', display: 'flex', alignItems: 'center', gap: 6, padding: '10px 18px', borderRadius: 10, fontSize: 13.5, fontWeight: 600 }}
         >
           <Plus size={16} /> Add Payment Card
         </button>
@@ -87,11 +87,11 @@ export const UserPayment = () => {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 20, marginBottom: 28 }}>
         {/* Wallet Balance Hero Card */}
         <div style={{ 
-          background: 'linear-gradient(135deg, #4c1d95 0%, #7c3aed 60%, #9333ea 100%)', 
+          background: 'linear-gradient(135deg, #4c1d95 0%, #5A1F2D 60%, #9333ea 100%)', 
           borderRadius: 18, 
           padding: 24, 
           color: '#fff',
-          boxShadow: '0 12px 30px -8px rgba(124, 58, 237, 0.45)',
+          boxShadow: '0 12px 30px -8px rgba(90, 31, 45, )',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
@@ -119,7 +119,7 @@ export const UserPayment = () => {
               onClick={() => setIsTopUpModalOpen(true)}
               style={{
                 background: '#fff',
-                color: '#7c3aed',
+                color: '#5A1F2D',
                 border: 'none',
                 padding: '9px 18px',
                 borderRadius: 10,
@@ -141,7 +141,7 @@ export const UserPayment = () => {
         <div className="ud2-section-card" style={{ padding: 22, borderRadius: 18, border: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-              <Gift size={18} color="#7c3aed" />
+              <Gift size={18} color="#5A1F2D" />
               <h4 style={{ fontSize: 15, fontWeight: 700, color: '#0f172a' }}>Redeem Gift Card / Voucher</h4>
             </div>
             <p style={{ fontSize: 13, color: '#64748b', marginBottom: 14 }}>
@@ -156,7 +156,7 @@ export const UserPayment = () => {
               />
               <button
                 type="submit"
-                style={{ background: '#7c3aed', color: '#fff', border: 'none', padding: '0 18px', borderRadius: 10, fontWeight: 700, fontSize: 13, cursor: 'pointer' }}
+                style={{ background: '#5A1F2D', color: '#fff', border: 'none', padding: '0 18px', borderRadius: 10, fontWeight: 700, fontSize: 13, cursor: 'pointer' }}
               >
                 Redeem
               </button>
@@ -229,7 +229,7 @@ export const UserPayment = () => {
                     {!card.isDefault ? (
                       <button
                         onClick={() => setDefaultCard(card.id)}
-                        style={{ background: 'none', border: 'none', color: '#c4b5fd', fontSize: 12, fontWeight: 600, cursor: 'pointer', padding: 0 }}
+                        style={{ background: 'none', border: 'none', color: '#c98595', fontSize: 12, fontWeight: 600, cursor: 'pointer', padding: 0 }}
                       >
                         Set as Default
                       </button>
@@ -354,7 +354,7 @@ export const UserPayment = () => {
                   type="checkbox"
                   checked={cardForm.isDefault}
                   onChange={e => setCardForm({ ...cardForm, isDefault: e.target.checked })}
-                  style={{ width: 16, height: 16, accentColor: '#7c3aed' }}
+                  style={{ width: 16, height: 16, accentColor: '#5A1F2D' }}
                 />
                 Set as default payment method
               </label>
@@ -369,7 +369,7 @@ export const UserPayment = () => {
                 </button>
                 <button
                   type="submit"
-                  style={{ flex: 1, padding: '11px', borderRadius: 10, border: 'none', background: '#7c3aed', color: '#fff', fontWeight: 600, cursor: 'pointer' }}
+                  style={{ flex: 1, padding: '11px', borderRadius: 10, border: 'none', background: '#5A1F2D', color: '#fff', fontWeight: 600, cursor: 'pointer' }}
                 >
                   Save Card
                 </button>
@@ -405,9 +405,9 @@ export const UserPayment = () => {
                       style={{
                         padding: '10px',
                         borderRadius: 8,
-                        border: topUpAmount === amt ? '2px solid #7c3aed' : '1px solid #cbd5e1',
-                        background: topUpAmount === amt ? '#ede9fe' : '#fff',
-                        color: topUpAmount === amt ? '#7c3aed' : '#475569',
+                        border: topUpAmount === amt ? '2px solid #5A1F2D' : '1px solid #cbd5e1',
+                        background: topUpAmount === amt ? '#f6e6e9' : '#fff',
+                        color: topUpAmount === amt ? '#5A1F2D' : '#475569',
                         fontWeight: 700,
                         cursor: 'pointer'
                       }}
@@ -437,7 +437,7 @@ export const UserPayment = () => {
                 </button>
                 <button
                   type="submit"
-                  style={{ flex: 1, padding: '11px', borderRadius: 10, border: 'none', background: '#7c3aed', color: '#fff', fontWeight: 600, cursor: 'pointer' }}
+                  style={{ flex: 1, padding: '11px', borderRadius: 10, border: 'none', background: '#5A1F2D', color: '#fff', fontWeight: 600, cursor: 'pointer' }}
                 >
                   Confirm &amp; Add
                 </button>

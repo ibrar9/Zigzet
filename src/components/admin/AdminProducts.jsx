@@ -43,11 +43,11 @@ export const AdminProducts = () => {
 
   // 2. Dropdown Options
   const categoryOptions = [
-    { value: 'all', label: 'All Categories', dot: '#7c3aed', badge: totalProducts },
+    { value: 'all', label: 'All Categories', dot: '#5A1F2D', badge: totalProducts },
     ...categories.map((c) => ({
       value: c.id,
       label: c.name,
-      dot: c.id === 'electronics' ? '#3b82f6' : c.id === 'fashion' ? '#ec4899' : c.id === 'beauty' ? '#8b5cf6' : '#10b981',
+      dot: c.id === 'electronics' ? '#5A1F2D' : c.id === 'fashion' ? '#ec4899' : c.id === 'beauty' ? '#7a2d3e' : '#10b981',
       badge: products.filter((p) => p.category === c.id).length
     }))
   ];
@@ -418,7 +418,7 @@ export const AdminProducts = () => {
                     <p style={{ fontWeight: '600', color: '#475569' }}>No products match the selected filters.</p>
                     <button
                       onClick={() => { setSearch(''); setCatFilter('all'); setStockFilter('all'); }}
-                      style={{ marginTop: '8px', color: '#7c3aed', fontWeight: '600', fontSize: '13px' }}
+                      style={{ marginTop: '8px', color: '#5A1F2D', fontWeight: '600', fontSize: '13px' }}
                     >
                       Reset filters
                     </button>

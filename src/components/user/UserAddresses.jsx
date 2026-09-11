@@ -72,7 +72,7 @@ export const UserAddresses = () => {
         <button 
           className="ud2-btn-track" 
           onClick={openAddModal}
-          style={{ background: '#7c3aed', color: '#fff', display: 'flex', alignItems: 'center', gap: 6, padding: '10px 18px', borderRadius: 10, fontSize: 13.5, fontWeight: 600 }}
+          style={{ background: '#5A1F2D', color: '#fff', display: 'flex', alignItems: 'center', gap: 6, padding: '10px 18px', borderRadius: 10, fontSize: 13.5, fontWeight: 600 }}
         >
           <Plus size={16} /> Add New Address
         </button>
@@ -95,14 +95,14 @@ export const UserAddresses = () => {
                 className="ud2-section-card" 
                 style={{ 
                   position: 'relative', 
-                  border: addr.isDefault ? '2px solid #7c3aed' : '1px solid #e2e8f0',
+                  border: addr.isDefault ? '2px solid #5A1F2D' : '1px solid #e2e8f0',
                   borderRadius: 14,
                   padding: 20,
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-between',
                   gap: 16,
-                  boxShadow: addr.isDefault ? '0 8px 24px -6px rgba(124, 58, 237, 0.12)' : 'none'
+                  boxShadow: addr.isDefault ? '0 8px 24px -6px rgba(90, 31, 45, )' : 'none'
                 }}
               >
                 <div>
@@ -113,8 +113,8 @@ export const UserAddresses = () => {
                           display: 'inline-flex', 
                           alignItems: 'center', 
                           gap: 5, 
-                          background: isHome ? '#ede9fe' : '#f1f5f9', 
-                          color: isHome ? '#7c3aed' : '#475569', 
+                          background: isHome ? '#f6e6e9' : '#f1f5f9', 
+                          color: isHome ? '#5A1F2D' : '#475569', 
                           padding: '4px 10px', 
                           borderRadius: 8, 
                           fontSize: 12, 
@@ -166,7 +166,7 @@ export const UserAddresses = () => {
                   {!addr.isDefault ? (
                     <button 
                       onClick={() => setDefaultAddress(addr.id)}
-                      style={{ background: 'transparent', border: 'none', color: '#7c3aed', fontSize: 13, fontWeight: 600, cursor: 'pointer', padding: 0 }}
+                      style={{ background: 'transparent', border: 'none', color: '#5A1F2D', fontSize: 13, fontWeight: 600, cursor: 'pointer', padding: 0 }}
                     >
                       Set as Default
                     </button>
@@ -211,9 +211,9 @@ export const UserAddresses = () => {
                         flex: 1,
                         padding: '8px 12px',
                         borderRadius: 8,
-                        border: formData.type === t ? '2px solid #7c3aed' : '1px solid #cbd5e1',
-                        background: formData.type === t ? '#ede9fe' : '#fff',
-                        color: formData.type === t ? '#7c3aed' : '#475569',
+                        border: formData.type === t ? '2px solid #5A1F2D' : '1px solid #cbd5e1',
+                        background: formData.type === t ? '#f6e6e9' : '#fff',
+                        color: formData.type === t ? '#5A1F2D' : '#475569',
                         fontWeight: 600,
                         fontSize: 13,
                         cursor: 'pointer'
@@ -316,7 +316,7 @@ export const UserAddresses = () => {
                   type="checkbox"
                   checked={formData.isDefault}
                   onChange={e => setFormData(f => ({ ...f, isDefault: e.target.checked }))}
-                  style={{ width: 16, height: 16, accentColor: '#7c3aed' }}
+                  style={{ width: 16, height: 16, accentColor: '#5A1F2D' }}
                 />
                 Set as my default delivery address
               </label>
@@ -332,7 +332,7 @@ export const UserAddresses = () => {
                 </button>
                 <button
                   type="submit"
-                  style={{ flex: 1, padding: '11px', borderRadius: 10, border: 'none', background: '#7c3aed', color: '#fff', fontWeight: 600, cursor: 'pointer' }}
+                  style={{ flex: 1, padding: '11px', borderRadius: 10, border: 'none', background: '#5A1F2D', color: '#fff', fontWeight: 600, cursor: 'pointer' }}
                 >
                   {editingAddr ? 'Update Address' : 'Save Address'}
                 </button>

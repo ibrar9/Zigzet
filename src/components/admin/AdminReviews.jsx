@@ -28,7 +28,7 @@ export const AdminReviews = () => {
   const avgRating = (reviews.reduce((sum, r) => sum + r.rating, 0) / Math.max(1, totalReviews)).toFixed(1);
 
   const filterOptions = [
-    { value: 'all', label: 'All Reviews', dot: '#7c3aed', badge: totalReviews },
+    { value: 'all', label: 'All Reviews', dot: '#5A1F2D', badge: totalReviews },
     { value: 'Pending', label: 'Pending Moderation', dot: '#f59e0b', badge: pendingCount },
     { value: 'Approved', label: 'Approved & Live', dot: '#10b981', badge: approvedCount },
     { value: 'Rejected', label: 'Rejected / Spam', dot: '#ef4444' }
@@ -202,8 +202,8 @@ export const AdminReviews = () => {
 
             {/* Admin Reply Box */}
             {rev.adminReply ? (
-              <div style={{ background: '#f8fafc', padding: '14px 18px', borderRadius: '10px', borderLeft: '3px solid #7c3aed', marginTop: '12px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: '700', color: '#7c3aed', marginBottom: '4px' }}>
+              <div style={{ background: '#f8fafc', padding: '14px 18px', borderRadius: '10px', borderLeft: '3px solid #5A1F2D', marginTop: '12px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: '700', color: '#5A1F2D', marginBottom: '4px' }}>
                   <CornerDownRight size={13} />
                   <span>Zigzet Store Response:</span>
                 </div>
@@ -238,7 +238,7 @@ export const AdminReviews = () => {
                 ) : (
                   <button
                     onClick={() => setActiveReplyId(rev.id)}
-                    style={{ fontSize: '12.5px', color: '#7c3aed', fontWeight: '700', background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                    style={{ fontSize: '12.5px', color: '#5A1F2D', fontWeight: '700', background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                   >
                     <MessageSquare size={13} />
                     <span>Reply as Store Owner</span>

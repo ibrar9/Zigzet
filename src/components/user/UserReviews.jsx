@@ -95,8 +95,8 @@ export const UserReviews = () => {
             padding: '12px 18px',
             background: 'none',
             border: 'none',
-            borderBottom: activeSubTab === 'toReview' ? '2.5px solid #7c3aed' : '2.5px solid transparent',
-            color: activeSubTab === 'toReview' ? '#7c3aed' : '#64748b',
+            borderBottom: activeSubTab === 'toReview' ? '2.5px solid #5A1F2D' : '2.5px solid transparent',
+            color: activeSubTab === 'toReview' ? '#5A1F2D' : '#64748b',
             fontWeight: 700,
             fontSize: 14,
             cursor: 'pointer',
@@ -107,8 +107,8 @@ export const UserReviews = () => {
         >
           <span>To Review</span>
           <span style={{ 
-            background: activeSubTab === 'toReview' ? '#ede9fe' : '#f1f5f9', 
-            color: activeSubTab === 'toReview' ? '#7c3aed' : '#64748b', 
+            background: activeSubTab === 'toReview' ? '#f6e6e9' : '#f1f5f9', 
+            color: activeSubTab === 'toReview' ? '#5A1F2D' : '#64748b', 
             padding: '2px 8px', 
             borderRadius: 10, 
             fontSize: 11.5 
@@ -123,8 +123,8 @@ export const UserReviews = () => {
             padding: '12px 18px',
             background: 'none',
             border: 'none',
-            borderBottom: activeSubTab === 'myReviews' ? '2.5px solid #7c3aed' : '2.5px solid transparent',
-            color: activeSubTab === 'myReviews' ? '#7c3aed' : '#64748b',
+            borderBottom: activeSubTab === 'myReviews' ? '2.5px solid #5A1F2D' : '2.5px solid transparent',
+            color: activeSubTab === 'myReviews' ? '#5A1F2D' : '#64748b',
             fontWeight: 700,
             fontSize: 14,
             cursor: 'pointer',
@@ -135,8 +135,8 @@ export const UserReviews = () => {
         >
           <span>My Reviews</span>
           <span style={{ 
-            background: activeSubTab === 'myReviews' ? '#ede9fe' : '#f1f5f9', 
-            color: activeSubTab === 'myReviews' ? '#7c3aed' : '#64748b', 
+            background: activeSubTab === 'myReviews' ? '#f6e6e9' : '#f1f5f9', 
+            color: activeSubTab === 'myReviews' ? '#5A1F2D' : '#64748b', 
             padding: '2px 8px', 
             borderRadius: 10, 
             fontSize: 11.5 
@@ -197,7 +197,7 @@ export const UserReviews = () => {
                     <button
                       onClick={() => openReviewModal(item)}
                       style={{
-                        background: '#7c3aed',
+                        background: '#5A1F2D',
                         color: '#fff',
                         border: 'none',
                         borderRadius: 8,
@@ -261,8 +261,8 @@ export const UserReviews = () => {
                           </span>
                         )}
                         <span style={{ 
-                          background: r.status === 'Approved' ? '#ede9fe' : '#fef3c7', 
-                          color: r.status === 'Approved' ? '#7c3aed' : '#d97706', 
+                          background: r.status === 'Approved' ? '#f6e6e9' : '#fef3c7', 
+                          color: r.status === 'Approved' ? '#5A1F2D' : '#d97706', 
                           fontSize: 11, 
                           fontWeight: 700, 
                           padding: '2px 7px', 
@@ -288,8 +288,8 @@ export const UserReviews = () => {
 
                   {/* Admin reply if present */}
                   {r.adminReply && (
-                    <div style={{ marginTop: 12, padding: 12, background: '#faf5ff', borderLeft: '3px solid #7c3aed', borderRadius: '0 8px 8px 0' }}>
-                      <p style={{ fontWeight: 700, fontSize: 12.5, color: '#7c3aed', marginBottom: 2 }}>Zigzet Team Response:</p>
+                    <div style={{ marginTop: 12, padding: 12, background: '#fdf7f8', borderLeft: '3px solid #5A1F2D', borderRadius: '0 8px 8px 0' }}>
+                      <p style={{ fontWeight: 700, fontSize: 12.5, color: '#5A1F2D', marginBottom: 2 }}>Zigzet Team Response:</p>
                       <p style={{ fontSize: 12.5, color: '#475569' }}>{r.adminReply}</p>
                     </div>
                   )}
@@ -353,7 +353,7 @@ export const UserReviews = () => {
                     </button>
                   ))}
                 </div>
-                <p style={{ fontSize: 13, fontWeight: 600, color: '#7c3aed', marginTop: 6 }}>
+                <p style={{ fontSize: 13, fontWeight: 600, color: '#5A1F2D', marginTop: 6 }}>
                   {rating === 5 ? '⭐⭐⭐⭐⭐ Exceptional!' :
                    rating === 4 ? '⭐⭐⭐⭐ Great product' :
                    rating === 3 ? '⭐⭐⭐ Average' :
@@ -397,7 +397,7 @@ export const UserReviews = () => {
                 </button>
                 <button
                   type="submit"
-                  style={{ flex: 1, padding: '11px', borderRadius: 10, border: 'none', background: '#7c3aed', color: '#fff', fontWeight: 600, cursor: 'pointer' }}
+                  style={{ flex: 1, padding: '11px', borderRadius: 10, border: 'none', background: '#5A1F2D', color: '#fff', fontWeight: 600, cursor: 'pointer' }}
                 >
                   Post Review
                 </button>

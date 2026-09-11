@@ -238,7 +238,7 @@ export const ShopPage = () => {
             <span className="shop-banner-tag">
               {selectedBrands.length === 1 ? (
                 <>
-                  <ShieldCheck size={14} color="#7c3aed" />
+                  <ShieldCheck size={14} color="#5A1F2D" />
                   <span>Official Brand Store • 100% Authentic</span>
                 </>
               ) : (
@@ -299,7 +299,7 @@ export const ShopPage = () => {
               <div className="filter-group">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
                   <h4 className="filter-title" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <Award size={15} color="#7c3aed" />
+                    <Award size={15} color="#5A1F2D" />
                     <span>Brands</span>
                   </h4>
                   {selectedBrands.length > 0 && (

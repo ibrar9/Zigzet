@@ -333,7 +333,7 @@ export const AdminCustomizer = () => {
       <div className="admin-page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '20px' }}>
         <div>
           <h2 className="admin-section-title" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <Palette size={22} color="#7c3aed" />
+            <Palette size={22} color="#5A1F2D" />
             <span>Homepage Visual Banners CMS</span>
           </h2>
           <p className="admin-section-desc">
@@ -344,7 +344,7 @@ export const AdminCustomizer = () => {
         <button 
           onClick={handleSaveAll}
           className="hero-cta-btn" 
-          style={{ padding: '10px 24px', fontSize: '13.5px', background: '#7c3aed', boxShadow: '0 4px 14px rgba(124, 58, 237, 0.3)' }}
+          style={{ padding: '10px 24px', fontSize: '13.5px', background: '#5A1F2D', boxShadow: '0 4px 14px rgba(90, 31, 45, )' }}
         >
           <Save size={16} />
           <span>Save All Changes Live</span>
@@ -366,9 +366,9 @@ export const AdminCustomizer = () => {
             fontSize: '14px',
             cursor: 'pointer',
             border: 'none',
-            background: activeTab === 'center-banners' ? '#7c3aed' : '#f1f5f9',
+            background: activeTab === 'center-banners' ? '#5A1F2D' : '#f1f5f9',
             color: activeTab === 'center-banners' ? '#ffffff' : '#475569',
-            boxShadow: activeTab === 'center-banners' ? '0 4px 12px rgba(124, 58, 237, 0.25)' : 'none',
+            boxShadow: activeTab === 'center-banners' ? '0 4px 12px rgba(90, 31, 45, )' : 'none',
             transition: 'all 0.2s'
           }}
         >
@@ -392,9 +392,9 @@ export const AdminCustomizer = () => {
             fontSize: '14px',
             cursor: 'pointer',
             border: 'none',
-            background: activeTab === 'hero-slider' ? '#7c3aed' : '#f1f5f9',
+            background: activeTab === 'hero-slider' ? '#5A1F2D' : '#f1f5f9',
             color: activeTab === 'hero-slider' ? '#ffffff' : '#475569',
-            boxShadow: activeTab === 'hero-slider' ? '0 4px 12px rgba(124, 58, 237, 0.25)' : 'none',
+            boxShadow: activeTab === 'hero-slider' ? '0 4px 12px rgba(90, 31, 45, )' : 'none',
             transition: 'all 0.2s'
           }}
         >
@@ -415,8 +415,8 @@ export const AdminCustomizer = () => {
           <div className="dash-card" style={{ marginBottom: '24px', padding: '24px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Eye size={17} color="#7c3aed" />
-                <span style={{ fontSize: '13px', fontWeight: '800', textTransform: 'uppercase', color: '#7c3aed', letterSpacing: '0.05em' }}>
+                <Eye size={17} color="#5A1F2D" />
+                <span style={{ fontSize: '13px', fontWeight: '800', textTransform: 'uppercase', color: '#5A1F2D', letterSpacing: '0.05em' }}>
                   Live Center Banner Preview (Banner {promoPreviewIndex + 1} of {promoBanners.length})
                 </span>
               </div>
@@ -597,7 +597,7 @@ export const AdminCustomizer = () => {
                     }}
                   >
                     <span>{currentPreviewPromo.buttonText || 'Shop Now →'}</span>
-                    <ArrowRight size={14} color="#7c3aed" />
+                    <ArrowRight size={14} color="#5A1F2D" />
                   </button>
                 </div>
 
@@ -627,7 +627,7 @@ export const AdminCustomizer = () => {
           <div className="dash-card" style={{ marginBottom: '24px', padding: '20px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Layers size={17} color="#7c3aed" />
+                <Layers size={17} color="#5A1F2D" />
                 <span style={{ fontSize: '14px', fontWeight: '800', color: '#0f172a' }}>
                   Center Carousel Banners ({promoBanners.length})
                 </span>
@@ -659,8 +659,8 @@ export const AdminCustomizer = () => {
                     gap: '8px',
                     padding: '10px 14px',
                     borderRadius: '12px',
-                    border: idx === selectedPromoIndex ? '2px solid #7c3aed' : '1px solid #e2e8f0',
-                    background: idx === selectedPromoIndex ? '#f5f3ff' : '#ffffff',
+                    border: idx === selectedPromoIndex ? '2px solid #5A1F2D' : '1px solid #e2e8f0',
+                    background: idx === selectedPromoIndex ? '#faf0f2' : '#ffffff',
                     cursor: 'pointer',
                     transition: 'all 0.2s',
                     minWidth: '170px'
@@ -675,7 +675,7 @@ export const AdminCustomizer = () => {
                     />
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: '12.5px', fontWeight: '700', color: idx === selectedPromoIndex ? '#7c3aed' : '#1e293b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    <div style={{ fontSize: '12.5px', fontWeight: '700', color: idx === selectedPromoIndex ? '#5A1F2D' : '#1e293b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                       Banner #{idx + 1}
                     </div>
                     <div style={{ fontSize: '11px', color: '#64748b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
@@ -765,14 +765,14 @@ export const AdminCustomizer = () => {
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: '8px',
-                        background: '#7c3aed',
+                        background: '#5A1F2D',
                         color: '#ffffff',
                         padding: '10px 20px',
                         borderRadius: '10px',
                         fontSize: '13px',
                         fontWeight: '700',
                         cursor: 'pointer',
-                        boxShadow: '0 2px 8px rgba(124, 58, 237, 0.25)',
+                        boxShadow: '0 2px 8px rgba(90, 31, 45, )',
                         transition: 'all 0.2s'
                       }}
                     >
@@ -819,8 +819,8 @@ export const AdminCustomizer = () => {
                             padding: '3px 8px',
                             borderRadius: '6px',
                             border: '1px solid #e2e8f0',
-                            background: activePromo.image === preset.url ? '#ede9fe' : '#ffffff',
-                            color: activePromo.image === preset.url ? '#7c3aed' : '#475569',
+                            background: activePromo.image === preset.url ? '#f6e6e9' : '#ffffff',
+                            color: activePromo.image === preset.url ? '#5A1F2D' : '#475569',
                             cursor: 'pointer'
                           }}
                         >
@@ -937,7 +937,7 @@ export const AdminCustomizer = () => {
                       id="promo-show-text"
                       checked={activePromo.showText || false}
                       onChange={(e) => handleUpdateActivePromo('showText', e.target.checked)}
-                      style={{ width: '16px', height: '16px', accentColor: '#7c3aed' }}
+                      style={{ width: '16px', height: '16px', accentColor: '#5A1F2D' }}
                     />
                     <span>Show Headline & Subtitle Text Overlay</span>
                   </label>
@@ -981,7 +981,7 @@ export const AdminCustomizer = () => {
                   id="promo-autoplay-toggle"
                   checked={promoAutoPlay}
                   onChange={(e) => setPromoAutoPlay(e.target.checked)}
-                  style={{ width: '18px', height: '18px', accentColor: '#7c3aed', cursor: 'pointer' }}
+                  style={{ width: '18px', height: '18px', accentColor: '#5A1F2D', cursor: 'pointer' }}
                 />
                 <label htmlFor="promo-autoplay-toggle" style={{ fontSize: '13px', fontWeight: '700', color: '#1e293b', cursor: 'pointer', margin: 0 }}>
                   Enable Center Carousel Auto-Scroll
@@ -1016,8 +1016,8 @@ export const AdminCustomizer = () => {
           <div className="dash-card" style={{ marginBottom: '24px', padding: '24px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Eye size={17} color="#7c3aed" />
-                <span style={{ fontSize: '13px', fontWeight: '800', textTransform: 'uppercase', color: '#7c3aed', letterSpacing: '0.05em' }}>
+                <Eye size={17} color="#5A1F2D" />
+                <span style={{ fontSize: '13px', fontWeight: '800', textTransform: 'uppercase', color: '#5A1F2D', letterSpacing: '0.05em' }}>
                   Live Storefront Preview (Slide {heroPreviewIndex + 1} of {heroSlides.length})
                 </span>
               </div>
@@ -1050,7 +1050,7 @@ export const AdminCustomizer = () => {
                   : currentPreviewHero.bgTheme === 'amber'
                   ? 'linear-gradient(120deg, #fffbeb 0%, #fef3c7 100%)'
                   : currentPreviewHero.bgTheme === 'lavender'
-                  ? 'linear-gradient(120deg, #faf5ff 0%, #f3e8ff 100%)'
+                  ? 'linear-gradient(120deg, #fdf7f8 0%, #f3e8ff 100%)'
                   : currentPreviewHero.bgTheme === 'mint'
                   ? 'linear-gradient(120deg, #f0fdf4 0%, #dcfce7 100%)'
                   : 'linear-gradient(120deg, #f8fafc 0%, #e2e8f0 100%)',
@@ -1101,7 +1101,7 @@ export const AdminCustomizer = () => {
           <div className="dash-card" style={{ marginBottom: '24px', padding: '20px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Layers size={17} color="#7c3aed" />
+                <Layers size={17} color="#5A1F2D" />
                 <span style={{ fontSize: '14px', fontWeight: '800', color: '#0f172a' }}>
                   Active Hero Slides ({heroSlides.length})
                 </span>
@@ -1133,8 +1133,8 @@ export const AdminCustomizer = () => {
                     gap: '8px',
                     padding: '10px 16px',
                     borderRadius: '12px',
-                    border: idx === selectedHeroIndex ? '2px solid #7c3aed' : '1px solid #e2e8f0',
-                    background: idx === selectedHeroIndex ? '#f5f3ff' : '#ffffff',
+                    border: idx === selectedHeroIndex ? '2px solid #5A1F2D' : '1px solid #e2e8f0',
+                    background: idx === selectedHeroIndex ? '#faf0f2' : '#ffffff',
                     cursor: 'pointer',
                     transition: 'all 0.2s',
                     minWidth: '150px'
@@ -1149,7 +1149,7 @@ export const AdminCustomizer = () => {
                     />
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: '13px', fontWeight: '700', color: idx === selectedHeroIndex ? '#7c3aed' : '#1e293b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    <div style={{ fontSize: '13px', fontWeight: '700', color: idx === selectedHeroIndex ? '#5A1F2D' : '#1e293b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                       Slide #{idx + 1}
                     </div>
                     <div style={{ fontSize: '11px', color: '#64748b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
@@ -1237,14 +1237,14 @@ export const AdminCustomizer = () => {
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: '8px',
-                        background: '#7c3aed',
+                        background: '#5A1F2D',
                         color: '#ffffff',
                         padding: '10px 20px',
                         borderRadius: '10px',
                         fontSize: '13px',
                         fontWeight: '700',
                         cursor: 'pointer',
-                        boxShadow: '0 2px 8px rgba(124, 58, 237, 0.25)',
+                        boxShadow: '0 2px 8px rgba(90, 31, 45, )',
                         transition: 'all 0.2s'
                       }}
                     >
@@ -1357,7 +1357,7 @@ export const AdminCustomizer = () => {
           {/* Auto-Play Settings */}
           <div className="dash-card" style={{ padding: '24px', marginBottom: '24px' }}>
             <h3 style={{ fontSize: '15px', fontWeight: '800', color: '#0f172a', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Clock size={17} color="#7c3aed" />
+              <Clock size={17} color="#5A1F2D" />
               <span>Hero Slider Auto-Play Settings</span>
             </h3>
 
@@ -1368,7 +1368,7 @@ export const AdminCustomizer = () => {
                   id="admin-autoplay-toggle"
                   checked={heroAutoPlay}
                   onChange={(e) => setHeroAutoPlay(e.target.checked)}
-                  style={{ width: '18px', height: '18px', accentColor: '#7c3aed', cursor: 'pointer' }}
+                  style={{ width: '18px', height: '18px', accentColor: '#5A1F2D', cursor: 'pointer' }}
                 />
                 <label htmlFor="admin-autoplay-toggle" style={{ fontSize: '13.5px', fontWeight: '700', color: '#1e293b', cursor: 'pointer', margin: 0 }}>
                   Enable Automatic Slide Transitions
@@ -1401,7 +1401,7 @@ export const AdminCustomizer = () => {
           type="button"
           onClick={handleSaveAll}
           className="hero-cta-btn"
-          style={{ padding: '12px 36px', fontSize: '14px', background: '#7c3aed', boxShadow: '0 4px 16px rgba(124, 58, 237, 0.35)' }}
+          style={{ padding: '12px 36px', fontSize: '14px', background: '#5A1F2D', boxShadow: '0 4px 16px rgba(90, 31, 45, )' }}
         >
           <Save size={17} />
           <span>Save & Apply All Homepage Banners</span>

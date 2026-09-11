@@ -35,7 +35,7 @@ export const AboutPage = () => {
       <div className="shop-header-banner">
         <div className="container">
           <div style={{ maxWidth: '640px', margin: '0 auto', textAlign: 'center' }}>
-            <span style={{ fontSize: '12.5px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#7c3aed' }}>
+            <span style={{ fontSize: '12.5px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#5A1F2D' }}>
               About {storeName}
             </span>
             <h1 style={{ fontSize: '40px', fontWeight: '800', marginTop: '6px', marginBottom: '12px', letterSpacing: '-0.02em' }}>
